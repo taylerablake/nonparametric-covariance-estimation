@@ -1,0 +1,587 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{natbib} 
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{accents}
+
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{amsthm}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+
+
+\newcolumntype{C}[1]{>{\Centering}m{#1}}
+\renewcommand\tabularxcolumn[1]{C{#1}}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+\newcommand{\ms}{\scriptscriptstyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+\newcommand{\tildeK}{\tilde{K}}
+\newcommand{\Hilbert}{\mathcal{H}}
+\newcommand{\tildec}{\tilde{c}}
+\newcommand{\tildeS}{\tilde{S}}
+\newcommand{\tilded}{\tilde{d}}
+\newcommand{\tildeY}{\tilde{Y}}
+\newcommand{\tildey}{\tilde{y}}
+\newcommand{\tildeQ}{\tilde{Q}}
+\newcommand{\tildeR}{\tilde{R}}
+\newcommand{\tildeA}{\tilde{A}}
+\newcommand{\bfm}{\mbox{\boldmath $m$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfv}{\mbox{\boldmath $v$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\bibliographystyle{abbrvnat}
+
+\begin{document}
+
+\title{Bivariate Thin-plate Splines Models for Nonparametric Covariance Estimation with Longitudinal Data}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\maketitle
+
+The theoretical foundations of the thin-plate spline was laid in the seminal work of \citet{duchon1977splines}. For a bivariate function $f\left(x_1,x_1\right)$, the usual thin-plate spline functional ($d=m=2$) is given by
+
+\begin{equation} \label{eq:thin-plate-order-2-penalty}
+J_2 \left(f \right) = \int \limits_{-\infty}^{\infty} \int \limits_{-\infty}^{\infty}  \left( f_{{x_1} {x_1}}^2 + f_{{x_1} {x_2}}^2 + f_{{x_2} {x_2}}^2  \right) dx_1 dx_2
+\end{equation}
+
+and in general, 
+%\begin{equation} \label{eq:thin-plate-order-m-penalty}
+%J_m \left(f \right) = \sum_{\nu=0}^m \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}  {m \choose \nu} %\left(  \frac{\partial^m f}{\partial x_1^\nu \partial x_2^{m-\nu}}  \right)^2 dx_1 dx_2 .
+%\end{equation}
+
+For $d=2$, define the inner product of functions $f$ and $g$ as follows:
+
+\begin{equation} \label{eq:thin-plate-inner-product}
+\langle f,g \rangle = \sum_{\alpha_1 + \alpha_2=m} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \left(  \frac{\partial^m f}{\partial x_1^{\alpha_1} \partial x_2^{\alpha_2}}  \right)\left(  \frac{\partial^m g}{\partial x_1^{\alpha_1} \partial x_2^{\alpha_2}}  \right) dx_1 dx_2 .
+\end{equation}
+
+\bigskip
+
+We suppose that $f \in \mathcal{X}$, the space of functions with partial derivatives of total order $m$ belong to $\mathcal{L}_2\left(E^2\right)$. We endow $\mathcal{X}$ with seminorm $J^2_m\left( f \right)$; for such $\mathcal{X}$ to be a reproducing kernel Hilbert space, i.e. for the evaluation functionals to be bounded in $\mathcal{X}$, if it necessary and sufficient that $2m > d$. For $d=2$, we require $m>1$.
+
+\bigskip
+The data model for a random vector $y_i = \left(y_{i1},\dots, y_{i,M_i} \right)^\prime$ is given by 
+
+\begin{equation} \label{eq:functional-vc-ar-model}
+y_{ij} = \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik} + \sigma\left(v_{ijk}\right) e_{ij}
+\end{equation}
+\noindent
+where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$. We assume that $\phi^* \in \mathcal{X}$ and $e_{ij} \stackrel{\text{i.i.d.}}{\sim} N\left(0,1\right)$. If we have a random sample of observed vectors $y_1,\dots,y_N$ available for estimating $\phi^*$, then we take $\phi^*$ to be the minimizer of
+\begin{equation} \label{eq:thin-plate-loss-function}
+Q_\lambda \left( \phi^* \right) = \sum_{i=1}^N \sum_{j=2}^{n_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J_m^2 \left( \phi^* \right)
+\end{equation}
+\noindent
+where $\sigma^{2}_{ij} = \sigma^2\left(t_{ij}\right)$. The null space of the penalty functional $J_m^2 \left( \phi^* \right)$, denoted $\Hilbert_0$, corresponds to the $d_0={2+m-1 \choose 2}$-dimensional space spanned by the polynomials in two variables of total degree $< m$. For example, for $d=m=2$, we have that $d_0=3$, and the null space of $J^2_2$ is spanned by $\eta_1$, $\eta_2$, and $\eta_3$ where
+
+\[
+\eta_1\left(v\right) = 1,\quad \eta_2\left(v\right) = l, \quad \eta_2\left(v\right) = m.
+\]
+\noindent
+In general, we let $\eta_1,\dots, \eta_{d_0}$ denote the $d_0$ monomials of total degree less than $m$.
+
+\bigskip
+
+\citet{duchon1977splines} showed that if the $\left\{ v_{ijk} \right\}$ are such that the least squares regression of $\left\{ y_{ijk}\right\}$ on $\eta_1,\dots, \eta_{d_0}$ is unique, then there exists a unique minimizer of \ref{eq:thin-plate-loss-function}, $\phi^*_\lambda$, which has the form
+
+\begin{equation} \label{eq:unique-minimizer-of-loss}
+\phi^*_\lambda\left( v \right) = \sum_{\nu=0}^{d_0} d_\nu \eta_\nu \left( v \right) + \sum_{v_i \in \mathcal{V}} c_{i} E_m\left(v,v_i \right)
+\end{equation}
+\noindent
+where $\mathcal{V}$ denotes the set of unique within-subject pairs of observed $\left\{ v_{ijk} \right\}$. $E_m$ is a Green's function of the $m$-iterated Laplacian. Let
+
+\begin{align} \label{eq:thin-plate-pseudo-kernel-1}
+E_m\left( \tau \right) = \left \{ \begin{array}{ll}   \theta_{m,d} \vert \tau \vert^{2m-d}\log \vert \tau \vert  &  \quad 2m-d \mbox{\; even} \\
+					   \theta_{m,d} \vert \tau \vert^{2m-d}& \quad 2m-d \mbox{\; odd} \end{array} \right.
+\end{align}
+
+\begin{align} \label{eq:thin-plate-pseudo-kernel-2}
+\theta_{md} = \left \{ \begin{array}{cl}   \frac{ \left( -1 \right)^{\frac{d}{2} + 1 + m} }{ 2^{2m-1}\pi^{\frac{d}{2}}\left(m-1\right)! \left( m - \frac{d}{2} \right)! }   & \quad 2m-d \mbox{\; even} \\
+					   \frac{ \Gamma\left( \frac{d}{2} - m\right) }{ 2^{2m}\pi^{\frac{d}{2}}\left(m-1\right)! }    & \quad 2m-d \mbox{\; odd} \end{array} \right.
+\end{align}
+
+Defining $\vert v - v_i \vert = \bigg[ \left( l - l_i \right)^2 + \left( m - m_i \right)^2  \bigg]^{1/2}$, then we can write 
+\[
+E_m\left( v,\tilde{v} \right) = E_m\left(\vert v-\tilde{v} \vert \right) 
+\]
+\noindent
+Formally, we have that 
+\[
+\Delta^m E_m\left( \cdot,v_i \right) = \delta_{v_i}, 
+\]
+so 
+\[
+\Delta^m \phi^*_\lambda \left( v \right) = 0 \;\; \mbox{for}\;\;v \ne v_i, \;\;i=1,\dots, n 
+\]
+\noindent
+where $n = \vert \mathcal{V} \vert$.
+
+\bigskip
+The kernel $E_m$ is not positive definite, but rather \emph{conditionally positive definite}....
+
+
+Stack the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ into a single vector $Y$ of dimension $n_y=\left(\sum \limits_{i} M_i \right) - N$.  Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume has full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(v_i, v_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
+
+\begin{align}
+\begin{split} \label{eq:thin-plate-loss-function-matrix} 
+Q_\lambda\left(c,d\right) &= -\ell\left(Y \vert c,d\right) + \lambda J_m^2\left(\phi^*\right) \\
+&= \left( Y - W \left( Bd + Kc \right) \right)^\prime D^{-1} \left( Y - W \left( Bd + Kc \right) \right) + \lambda c^\prime Q c 
+\end{split}
+\end{align} 
+\bigskip
+\noindent
+ where $W$ is the matrix of autoregressive covariates constructed so that $\ref{eq:thin-plate-loss-function}$ and $\ref{eq:thin-plate-loss-function-matrix}$ are equivalent. 
+\bigskip
+Differentiating $Q_\lambda$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial Q_\lambda}{\partial c} = Q W^\prime D^{-1}\left[ W\left(Sd + Kc\right) - Y  \right] + \lambda Kc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    W'D^{-1} W \bigg[ Bd + Kc \bigg] + \lambda c  &= W' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+\noindent
+
+\begin{align*}
+\frac{\partial Q_\lambda}{\partial d} = S^\prime W^\prime D^{-1}\left[ W\left(Sd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda S' c  &= 0  
+\end{align*}
+\bigskip
+\noindent
+
+So, the coefficients satisfy the normal equations
+\begin{align} 
+Y &= W \bigg[ Bd + \left(Q  + \lambda \left(W^\prime D^{-1} W \right)^{-1} \right) c \bigg] \label{eq:simple-normal-eq-1} \\
+S' c  &= 0  \label{eq:simple-normal-eq-2}
+\end{align}
+\noindent
+
+Let 
+
+\begin{align*}
+\tildeQ &= \left(W'D^{-1}W\right) Q \left(W'D^{-1}W\right)\\
+ \tildec &= \left(W'D^{-1}W\right)^{-1}c\\
+\tildeS &= \left(W'D^{-1}W\right)S\\ 
+\tilded &= d\\
+\tildeY &= W'D^{-1}Y\\
+\end{align*}
+\bigskip
+\noindent
+then, the system defined by  \ref{eq:simple-normal-eq-1} and \ref{eq:simple-normal-eq-2} may be written
+
+\begin{align} 
+\tildeY &= \tildeS \tilded + \left(\tildeQ  + \lambda \left(W^\prime D^{-1} W \right) \right) \tildec \label{eq:transform-normal-eq-1} \\
+\tildeS' \tildec  &= 0  \label{eq:transform-normal-eq-2}
+\end{align}
+
+Using the QR decomposition of $\tildeS$, we may write 
+
+\begin{equation*}
+\tildeS =  F R = \begin{bmatrix} F_1 &  F_2 \end{bmatrix} \begin{bmatrix} R \\  0 \end{bmatrix} = F_1 R
+\end{equation*}
+\noindent
+where $F$ is an orthogonal matrix; $F_1$ has dimension $n \times d_0$,  and $F_2$ has dimension $n \times \left(n-d_0\right)$. Since $\tildeS'\tildec = 0$, $\tildec$ must belong to the subspace spanned by the columns of $F_2$, so 
+
+\[
+\tildec = F_2 \gamma
+\] 
+\noindent
+for some $\gamma \in \mathrm{R}^{n-d_0}$. Letting $M = W'D^{-1}W$ premultiplying \ref{eq:transform-normal-eq-1} by $F'_2$, it follows that 
+
+\begin{equation} \label{eq:solve-for-ctilde}
+\tildec =  F_2\bigg[ F'_2 \left( \tildeQ + \lambda M \right)F_2 \bigg]^{-1} F'_2 \tildeY
+\end{equation}
+\bigskip
+\noindent
+Using $\tildeS = F_1 R$, we can write
+\begin{equation} \label{eq:solve-for-dtilde}
+\tilded = R^{-1} F'_1 \bigg[ \tildeY - \left( \tildeQ + \lambda M \right) \tildec  \bigg]
+\end{equation}
+
+\section{Estimating the smoothing parameter}
+
+\subsection{Cross Validation}
+
+Let $\phi_{\left[kl\right]}^{*}$ be the minimizer of 
+
+\begin{equation}
+\sum_{\substack{i,j \\ \left(i,j\right)\neq \left(k,l\right)}}  \sigma^{-2}_{ij}\left( \tildey_{ij} -  \sum_{j'<j}\phi^*\left( v_{ijj'} \right) \tildey_{ij'} \right)^2 + \lambda \tilde{J}_m^2 \left( \phi^* \right),
+\end{equation}
+\bigskip
+where $\tilde{J}_m$ is the penalty term reparameterized according to the transformation defining $\tildec$:
+
+\begin{equation}
+\tilde{J}_m^2 \left( \phi^* \right) = \tildec' Q \tildec.
+\end{equation}
+
+The \emph{ordinary cross validation function} $V_0\left(\lambda\right)$ is given by 
+\begin{equation}
+\sum_{i=1}^{N} \sum_{j=2}^{n_i} \tilde{\sigma}_{ij}^{-2} \left( \tildey_{ij} -  \hat{\tildey}_{\left[ ij \right]}\right)^2.
+\end{equation}
+\bigskip
+\noindent
+where  $\hat{\tildey}_{\left[ ij \right]} = \sum_{k<j}\phi^*_{\left[ ij \right]}\left( v_{ijk} \right) \tildey_{ik}$. The value of $\lambda$ minimizing $V_0\left(\lambda\right)$ is the OCV estimate.% \citet{craven1978smoothing} presented the following lemma which demonstrates how to easily calculate $V_0$ via the smoothing matrix $A\left( \lambda \right)$.
+%
+%\begin{lemma} \label{lemma:leave-one-out}
+%Let  $\phi^{*[kl]}$ denote the $\phi^* \in \Hilbert$ minimizing 
+%\[
+%\sum_{\substack{i,j \\ \left(i,j\right)\neq \left(k,l\right)}}  \sigma^{-2}_{ij}\left( y_{ij} -  \sum_{j'<j}\phi^*\left( v_{ijj'} \right) y_{ij'} \right)^2 + \lambda J_m^2 \left( \phi^* \right).
+%\]
+%\bigskip
+%Fix $\left(k,l\right)$ and $y_{kl}$, and let $h_{\lambda,k,l}$ be the minimizer of 
+%\begin{equation}
+%\left(y_{kl} - \sum_{l' < l} h\left( v_{k,l,l'} \right) y_{kl'} \right)^2 + \sum_{\substack{i,j \\ \left(i,j\right)\neq \left(k,l\right)}}  \sigma^{-2}_{ij}\left( y_{ij} -  \sum_{j'<j}\phi^*\left( v_{ijj'} \right) y_{ij'} \right)^2 + \lambda J_m^2 \left( \phi^* \right)
+%\end{equation}
+%\bigskip
+%Then  $h_{\lambda,k,l} = \phi^{*[kl]}$.
+%\end{lemma}
+%
+%For the proof, see \citet{wahba1990spline} or  \citet{craven1978smoothing}. $y_{kl}$ is the $I^{th}$ element of the data vector $Y$, where $I = l + \sum_{i=1}^{k-1}n_i $.  Let
+%
+%\begin{equation}
+%a_{II}^* = \frac{}{}
+%\end{equation} 
+%
+%\begin{equation}
+%y_{ij} -  \hat{y}_{ij}^{\left[ ij \right]} = 
+%\end{equation} 
+
+Indexing the $\tildey_{ij}$ using a single integer $k = 1, \dots, n_y$, when the innovation variances are known, it can be shown that $V_0\left(\lambda\right)$ can be written 
+
+\begin{equation}
+V_0\left(\lambda\right) = \sum_{k=1}^{n_y} \left(\tilde{\sigma}_{k}^{-1} \left(\tildey_k - \hat{\tildey}_k\right) \right)^2/ \left(1-\tilde{a}_{kk}\left(\lambda\right)  \right)^2
+\end{equation} 
+\bigskip
+\noindent
+where $\left\{ \tilde{a}_{kk}\left( \lambda \right) \right\}$ are the diagonal elements of the smoothing matrix $\tilde{A}\left( \lambda \right)$ which satisfies
+\[
+\hat{\tildeY} = \tildeA\left(\lambda\right) \tildeY.
+\]
+\bigskip
+The \emph{generalized cross validation function} $V\left(\lambda\right)$ is obtained by replacing $a_{kk}$ by 
+
+\[
+\bar{a}\left(\lambda\right) = n^{-1}\sum_{j=1}^{n} \tilde{a}_{jj}\left(\lambda\right) = n^{-1} \textup{tr}\tilde{A}\left(\lambda\right).
+\]
+The GCV function is defined 
+\begin{align}
+\begin{split}
+V\left(\lambda\right) &=  \sum_{k=1}^{n} \left(\tilde{\sigma}_{k}^{-1} \left(\tildey_k - \hat{\tildey}_k\right) \right)^2/ \left(1-\bar{a}\left(\lambda\right) \right)^2\\
+&=\frac{ \vert \vert \tilde{D}^{-1/2}\left(I- \tilde{A}\left(\lambda\right) \right) \vert \vert^2}{\left[ \textup{tr}\left(I- \tilde{A}\left(\lambda\right) \right) \right]^2},
+\end{split}
+\end{align}
+\noindent
+where $\tilde{D} = $ is the diagonal matrix with $k^{th}$ diagonal element $\tilde{\sigma}_k^2$:
+\begin{align} 
+\begin{split} \label{eq:tilde-D}
+\tilde{D} = Cov\left(\tilde{e}\right) &= Cov\left( \tildeY - \tildeS \tilded - \tildeQ \tildec \right) \\
+%&= Cov\left( W'D^{-1}\left(Y - S d - Q c \right) \right) \\
+&= Cov\left(W'D^{-1} e\right) \\
+& = W'D^{-1}W 
+\end{split}
+\end{align}
+
+From \ref{eq:transform-normal-eq-1}, $\tildeA \left(\lambda\right) \tildeY = \tildeQ \tildec + \tildeS \tilded$, we can derive a simple expression for $I -\tildeA \left(\lambda\right)$:
+
+\begin{align}
+\begin{split} \label{eq:I-minus-A}
+\left(I -\tildeA \left(\lambda\right)\right)\tildeY &= \lambda \left(W'D^{-1}W\right) \tildec \\
+&= \lambda M  F_2\bigg[ F'_2 \left( \tildeQ + \lambda M \right)F_2 \bigg]^{-1} F'_2 \tildeY,
+\end{split}
+\end{align}
+\bigskip
+\noindent
+so that
+\[
+I -\tildeA \left(\lambda\right) = \lambda M F_2\bigg[ F'_2 \left( \tildeQ + \lambda M \right)F_2 \bigg]^{-1} F'_2 .
+\]
+\noindent
+
+\subsection{Unbiased Risk Estimate}
+\[
+U\left(\lambda\right) = \frac{ \left(D^{-1/2}Y\right)' \left( I - A\left(\lambda\right)\right) \left(D^{-1/2}Y\right)}{\left[\textup{det}^+ \left( I - A\left(\lambda\right)\right) \right]^{1/\left(n-d_0\right)}}
+\]
+\noindent
+where $\textup{det}^+\left(\cdot\right)$ denotes the product of the non-zero eigenvalues.
+
+
+
+
+\subsection{Generalized Maximum Likelihood}
+
+See pg. 68 of SS Anova Models.
+
+\[
+M\left(\lambda\right) = n_y^{-1} \vert \vert \left( I - A\left(\lambda\right)\right)D^{-1/2} Y\vert \vert^2 + 2\textup{tr}A\left(\lambda\right)
+\]
+
+
+
+
+
+
+
+
+
+\section{Computation}
+
+The minimization of XXXXX lies within a space $\Hilbert \subseteq \left \{ \phi^*: J\left(\phi^*\right) < \infty \right\}$ in which $J\left(\phi^*\right)$ is a square (semi) norm, or a subspace therein. The evaluation functional $\left[ \bfv \right] \phi^*$, which appears in the first term in XXXXX, is assumed to be continuous in $\Hilbert$. A space in which the evaluation functional is continuous is called a reproducing kernel Hilbert space (RKHS) endowed with reproducing kernel (RK) $Q\left(\cdot, \cdot\right)$, a non-negative definite function satisfying 
+
+\[
+\langle Q\left(\bfv,\cdot\right), phi^*\left(\cdot\right) \rangle
+\]
+\bigskip
+\noindent
+$\forall \phi^* \in \Hilbert$, where $\langle \cdot, \cdot \rangle$ is an inner product in $\Hilbert$. The norm and RK determine each other uniquely.
+
+Let $\mathcal{N}_J = \left\{ \phi^*:\; J\left(\phi^*\right) = 0\right\}$ denote the null space of $J$, and consider the tensor sum decomposition
+
+\[
+\Hilbert = \mathcal{N}_J \oplus \Hilbert_J.
+\]
+\noindent
+The space $\Hilbert_J$ is a RKHS having $J\left(\phi^*\right)$ as the squared norm. The minimizer of XXXX has form 
+
+\begin{equation} \label{eq:RKHS-functional-form}
+\phi^*\left(\bfv\right) = \sum_{\nu = 1}^{d_0} d_\nu \eta\left( \bfv \right) + \sum_{i=1}^n c_i Q\left(\bfv_i, \bfv \right),
+\end{equation} 
+\bigskip
+\noindent
+where $\lbrace \eta_\nu \rbrace$ is a basis for $\mathcal{N}_J$, and $Q_J$ is the RK in $\Hilbert_J$. 
+
+For $\bfv \in \mathcal{X}$ where $\mathcal{X}$ is a product domain, ANOVA decompositions can be characterized by 
+\begin{equation*}
+\Hilbert = \bigoplus\limits_{\beta=0}^{g} \Hilbert_\beta
+\end{equation*}
+\noindent
+and
+\begin{equation*}
+J\left(\phi^*\right) = \sum_{\beta=0}^{g} \theta^{-1}_\beta J_\beta \left( \phi^*_\beta \right),
+\end{equation*}
+\noindent
+where $\phi^*_\beta \in \Hilbert_\beta$, $J_\beta$ is the square norm in $\Hilbert_\beta$, and $0 < \theta_\beta < \infty$. This gives 
+
+\begin{align*}
+\Hilbert_0 &= \mathcal{N}_J \\
+\Hilbert_J &= \bigoplus\limits_{\beta=1}^{g} \Hilbert_\beta, \mbox{ and} \\
+Q &= \sum_{\beta=1}^g \theta_\beta Q_\beta,
+\end{align*}
+\noindent
+where $Q_\beta$ is the RK in $\Hilbert_\beta$. The $\left \{ \theta_\beta \right\}$ are additional smoothing parameters, which may or may not appear explicitly in notation to follow. 
+\bigskip
+The penalized likelihood is given by 
+
+\begin{equation}
+\ell_\lambda \left(c, d \right) = \bigg[ Y - W \left(Sd + Qc\right)\bigg]' D^{-1}\bigg[ Y - W \left(Sd + Qc\right)\bigg] + \lambda c'Qc.
+\end{equation}
+\bigskip
+\noindent
+Letting $\tildeY = D^{-1/2} Y$, $\tildeS = D^{-1/2} W S$, and $\tildeQ = D^{-1/2} W Q$, this may be written
+\begin{equation}
+\ell_\lambda \left(c, d \right) = \bigg[ \tildeY - \tildeS d - \tildeQ c\bigg]'\bigg[ \tildeY - \tildeS d - \tildeQ c\bigg] + \lambda c'Qc.
+\end{equation}
+
+Taking partial derivatives with respect to $d$ and $c$ and setting equal to zero yields normal equations 
+
+\begin{align}
+\begin{split}
+\tildeS'\tildeS d + \tildeS'\tildeQ c &= \tildeS' \tildeY \\
+\tildeQ'\tildeS d + \tildeQ'\tildeQ c + \lambda Q c &= \tildeQ' \tildeY, 
+\end{split}
+\end{align}
+\bigskip
+\noindent
+which is equivalent to solving 
+
+\begin{equation} \label{eq:vectorized-normal-equations}
+\begin{bmatrix}
+\tildeS'\tildeS & \tildeS'\tildeQ \\
+\tildeQ'\tildeS & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+\begin{bmatrix}
+d\\
+c\\
+\end{bmatrix}
+= \begin{bmatrix}
+\tildeS'\tildeY \\
+ \tildeQ'\tildeY\\
+\end{bmatrix}
+\end{equation}
+\bigskip
+Fixing smoothing parameters $\lambda$ and $\theta_\beta$ (hidden in $Q$ and $\tildeQ$ if present), assuming that $\tildeQ$ is full column rank, \ref{eq:vectorized-normal-equations} can be solved by the Cholesky decomposition of the $\left( n + d_0 \right) \times \left( n + d_0 \right)$ matrix followed by forward and backward substitution. See \citet{golub2012matrix}. Singularity of $\tildeQ$ demands special consideration. Write the Cholesky decomposition
+
+\begin{equation} \label{eq:normal-equation-cholesky}
+\begin{bmatrix}
+\tildeS'\tildeS & \tildeS'\tildeQ \\
+\tildeQ'\tildeS & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+= \begin{bmatrix}
+C'_1 & 0 \\
+C'_2  & C'_3 
+\end{bmatrix}
+\begin{bmatrix}
+C_1 & C_2 \\
+0  & C_3 
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\tildeS'\tildeS = C'_1 C_1$, $C_2 = C_1^{-T} \tildeS' \tildeQ$, and $C'_3 C'_3 = \lambda Q +  \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ$. Using an exchange of indices known as pivoting, one may write 
+
+\begin{equation*}
+C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
+\end{equation*}
+\noindent
+where $H_1$ is nonsingular. Define
+\begin{equation} \label{eq:cholesky-factor-mod}
+\tilde{C}_3 = \begin{bmatrix}
+H_1 & H2 \\
+0  & \delta I 
+\end{bmatrix}, \;\;
+\tilde{C} = \begin{bmatrix}
+C_1 & C_2 \\
+0  & \tilde{C}_3 
+\end{bmatrix};
+\end{equation}
+\noindent
+then
+\begin{equation} \label{eq:cholesky-factor-mod-inverse}
+\tilde{C}^{-1} = \begin{bmatrix}
+C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
+0  & \tilde{C}_3^{-1}
+\end{bmatrix}.
+\end{equation}
+
+Premultiplying \ref{eq:} by $\tilde{C}^{-T}$, straightforward algebra gives 
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky}
+\begin{bmatrix}
+I & 0 \\
+0 & \tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1}\\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}\\
+\end{bmatrix}
+= \begin{bmatrix}
+C_1^{-T} \tildeS'\tildeY \\
+\tilde{C}_3^{-T} \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right) \tildeY\\
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \right)'$. Partition $\tilde{C}_3 = \begin{bmatrix} K &  L\end{bmatrix}$; then $HK = I$ and $HL = 0$. So
+
+\begin{align*}
+\tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1} &= \begin{bmatrix} K' \\ L' \end{bmatrix} C'_3C_3 \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} K' \\ L' \end{bmatrix} H'H \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
+\end{align*}
+\noindent
+If $L'C_3^{T} C_3 L = 0$, then $L'\tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ L = 0$, so $L'\tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right) \tildeY = 0$. Thus, the linear system has form
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky-2}
+\begin{bmatrix}
+I & 0 & 0\\
+0 & I & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}_1\\
+\tilde{c}_2
+\end{bmatrix}
+= \begin{bmatrix}
+* \\
+* \\
+0
+\end{bmatrix},
+\end{equation}
+\noindent
+which can be solved, but with $c_2$ arbitrary. One may perform the Cholesky decomposition of \ref{eq:vectorized-normal-equations} with pivoting, replace the trailing $0$ with $\delta I$ for appropriate value of $\delta$, and proceed as if $\tildeQ$ were of full rank. 
+\bigskip
+
+It follows that
+
+\begin{equation} \label{eq:cholesky-smoothing-matrix}
+\widehat{\tildeY} = \tildeS d + \tildeQ c = \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda\right) \tildeY.
+\end{equation}
+
+\subsection{Minimization of GCV and GML scores with multiple smoothing parameters}
+
+The expression in \label{ref:cholesky-smoothing-matrix} permits the straightforward evaluation of the GCV score
+
+\begin{equation} \label{eq:general-GCV-score}
+V\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^2}
+\end{equation}
+\noindent
+and the GML score
+\begin{equation} \label{eq:general-GML-score}
+M\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right) \tildeY' \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY }{\left[ \mbox{det}^+\left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^{1/n_y}}.
+\end{equation}
+\noindent
+where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.
+\bigskip
+To minimize the functions $V\left(\lambda, \bftheta\right)$ and $M\left(\lambda, \bftheta\right)$ with respect to $\bftheta$ and $\lambda$, we iterate as follows:
+
+\begin{enumerate}
+\item Fix $\bftheta$; minimize $V\left(\lambda \vert \bftheta\right)$ or $M\left(\lambda \vert \bftheta\right)$ with respect to $\lambda$.
+\item Update $\bftheta$ using the current estimate of $\lambda$.
+\end{enumerate}
+\noindent
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\kappa = \log\left(\bftheta\right)$. Optimizing with respect to $\kappa$ rather than on the original scale is motivated by two driving factors: first, $\kappa$ is invariant to scale transformations. With examination of $V$ and $M$, it is immediate that the $\theta_i $ 
+
+
+
+\bibliography{Master}
+
+\end{document}
