@@ -40,6 +40,7 @@
 \newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
 \newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
 \newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
 \newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
 \newcommand{\bfe}{\mbox{\boldmath $e$}}
 \newcommand{\bff}{\mbox{\boldmath $f$}}
@@ -476,7 +477,7 @@ C_1 & C_2 \\
 \end{bmatrix}
 \end{equation}
 \noindent
-where $\tildeS'\tildeS = C'_1 C_1$, $C_2 = C_1^{-T} \tildeS' \tildeQ$, and $C'_3 C'_3 = \lambda Q +  \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ$. Using an exchange of indices known as pivoting, one may write 
+where $\tildeS'\tildeS = C'_1 C_1$, $C_2 = C_1^{-T} \tildeS' \tildeQ$, and $C'_3 C_3 = \lambda Q +  \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ$. Using an exchange of indices known as pivoting, one may write 
 
 \begin{equation*}
 C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
@@ -485,7 +486,7 @@ C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0
 where $H_1$ is nonsingular. Define
 \begin{equation} \label{eq:cholesky-factor-mod}
 \tilde{C}_3 = \begin{bmatrix}
-H_1 & H2 \\
+H_1 & H_2 \\
 0  & \delta I 
 \end{bmatrix}, \;\;
 \tilde{C} = \begin{bmatrix}
@@ -578,7 +579,7 @@ To minimize the functions $V\left(\lambda, \bftheta\right)$ and $M\left(\lambda,
 \item Update $\bftheta$ using the current estimate of $\lambda$.
 \end{enumerate}
 \noindent
-Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\kappa = \log\left(\bftheta\right)$. Optimizing with respect to $\kappa$ rather than on the original scale is motivated by two driving factors: first, $\kappa$ is invariant to scale transformations. With examination of $V$ and $M$, it is immediate that the $\theta_i $ 
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $V$ and $M$ and \ref{eq:cholesky-smoothing-matrix}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $V\left(\cdot\right)$ and $M\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
 
 
 
