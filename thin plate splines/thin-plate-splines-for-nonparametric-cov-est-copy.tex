@@ -11,7 +11,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{enumitem}
 \usepackage{accents}
-
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{framed}
 \usepackage{subcaption}
 \usepackage{mathtools}
@@ -34,11 +35,14 @@
 \newcommand{\PP}{\mathcal{P}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\myR}{\textrm{R}}
 \newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
 \newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
 \newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
 \newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
 \newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfeta}{\mbox{\boldmath $\eta$}}
+\newcommand{\bfepsilon}{\mbox{\boldmath $\epsilon$}}
 \newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
 \newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
 \newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
@@ -70,6 +74,9 @@
 \newcommand{\bfS}{\mbox{\boldmath $S$}}
 \newcommand{\bfZ}{\mbox{\boldmath $Z$}}
 \newcommand{\cardT}{\vert \mathcal{T} \vert}
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\proglang=\textsf
+\let\code=\texttt
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -121,13 +128,13 @@ y_{ij} = \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik} + \sigma\left(v_{ijk}\righ
 \noindent
 where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$. We assume that $\phi^* \in \mathcal{X}$ and $e_{ij} \stackrel{\text{i.i.d.}}{\sim} N\left(0,1\right)$. If we have a random sample of observed vectors $y_1,\dots,y_N$ available for estimating $\phi^*$, then we take $\phi^*$ to be the minimizer of
 \begin{equation} \label{eq:thin-plate-loss-function}
-Q_\lambda \left( \phi^* \right) = \sum_{i=1}^N \sum_{j=2}^{n_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J_m^2 \left( \phi^* \right)
+-\ell\left(Y \vert c,d\right) + \lambda J_m\left(\phi^*\right) = \sum_{i=1}^N \sum_{j=2}^{n_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J_m \left( \phi^* \right)
 \end{equation}
 \noindent
-where $\sigma^{2}_{ij} = \sigma^2\left(t_{ij}\right)$. The null space of the penalty functional $J_m^2 \left( \phi^* \right)$, denoted $\Hilbert_0$, corresponds to the $d_0={2+m-1 \choose 2}$-dimensional space spanned by the polynomials in two variables of total degree $< m$. For example, for $d=m=2$, we have that $d_0=3$, and the null space of $J^2_2$ is spanned by $\eta_1$, $\eta_2$, and $\eta_3$ where
+where $\sigma^{2}_{ij} = \sigma^2\left(t_{ij}\right)$. The null space of the penalty functional $J_m \left( \phi^* \right)$, denoted $\Hilbert_0$, corresponds to the $d_0={2+m-1 \choose 2}$-dimensional space spanned by the polynomials in two variables of total degree $< m$. For example, for $d=m=2$, we have that $d_0=3$, and the null space of $J_2$ is spanned by $\eta_1$, $\eta_2$, and $\eta_3$ where
 
 \[
-\eta_1\left(v\right) = 1,\quad \eta_2\left(v\right) = l, \quad \eta_2\left(v\right) = m.
+\eta_1\left(\bfv\right) = 1,\quad \eta_2\left(\bfv\right) = l, \quad \eta_3\left(\bfv\right) = m.
 \]
 \noindent
 In general, we let $\eta_1,\dots, \eta_{d_0}$ denote the $d_0$ monomials of total degree less than $m$.
@@ -137,10 +144,10 @@ In general, we let $\eta_1,\dots, \eta_{d_0}$ denote the $d_0$ monomials of tota
 \citet{duchon1977splines} showed that if the $\left\{ v_{ijk} \right\}$ are such that the least squares regression of $\left\{ y_{ijk}\right\}$ on $\eta_1,\dots, \eta_{d_0}$ is unique, then there exists a unique minimizer of \ref{eq:thin-plate-loss-function}, $\phi^*_\lambda$, which has the form
 
 \begin{equation} \label{eq:unique-minimizer-of-loss}
-\phi^*_\lambda\left( v \right) = \sum_{\nu=0}^{d_0} d_\nu \eta_\nu \left( v \right) + \sum_{v_i \in \mathcal{V}} c_{i} E_m\left(v,v_i \right)
+\phi^*_\lambda\left( \bfv \right) = \sum_{\nu=0}^{d_0} d_\nu \eta_\nu \left( \bfv \right) + \sum_{\bfv_i \in \mathcal{V}} c_{i} E_m\left(\bfv,\bfv_i \right)
 \end{equation}
 \noindent
-where $\mathcal{V}$ denotes the set of unique within-subject pairs of observed $\left\{ v_{ijk} \right\}$. $E_m$ is a Green's function of the $m$-iterated Laplacian. Let
+where $\mathcal{V}$ denotes the set of unique within-subject pairs of observed $\left\{ \bfv_{ijk} \right\}$. $E_m$ is a Green's function of the $m$-iterated Laplacian. Let
 
 \begin{align} \label{eq:thin-plate-pseudo-kernel-1}
 E_m\left( \tau \right) = \left \{ \begin{array}{ll}   \theta_{m,d} \vert \tau \vert^{2m-d}\log \vert \tau \vert  &  \quad 2m-d \mbox{\; even} \\
@@ -152,14 +159,14 @@ E_m\left( \tau \right) = \left \{ \begin{array}{ll}   \theta_{m,d} \vert \tau \v
 					   \frac{ \Gamma\left( \frac{d}{2} - m\right) }{ 2^{2m}\pi^{\frac{d}{2}}\left(m-1\right)! }    & \quad 2m-d \mbox{\; odd} \end{array} \right.
 \end{align}
 
-Defining $\vert v - v_i \vert = \bigg[ \left( l - l_i \right)^2 + \left( m - m_i \right)^2  \bigg]^{1/2}$, then we can write 
+Defining $\vert \bfv - \bfv_i \vert = \bigg[ \left( l - l_i \right)^2 + \left( m - m_i \right)^2  \bigg]^{1/2}$, then we can write 
 \[
-E_m\left( v,\tilde{v} \right) = E_m\left(\vert v-\tilde{v} \vert \right) 
+E_m\left( \bfv,\tilde{\bfv} \right) = E_m\left(\vert \bfv-\tilde{\bfv} \vert \right) 
 \]
 \noindent
 Formally, we have that 
 \[
-\Delta^m E_m\left( \cdot,v_i \right) = \delta_{v_i}, 
+\Delta^m E_m\left( \cdot,\bfv_i \right) = \delta_{\bfv_i}, 
 \]
 so 
 \[
@@ -169,15 +176,12 @@ so
 where $n = \vert \mathcal{V} \vert$.
 
 \bigskip
-The kernel $E_m$ is not positive definite, but rather \emph{conditionally positive definite}....
 
-
-Stack the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ into a single vector $Y$ of dimension $n_y=\left(\sum \limits_{i} M_i \right) - N$.  Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume has full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(v_i, v_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
+Let $Y$ denote the $n_y \times 1$ vector, $n_y=\left(\sum \limits_{i} M_i \right) - N$ resulting from stacking the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ one on top of each other. Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(\bfv_i\right)$, which we assume to be full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(\bfv_i, \bfv_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
 
 \begin{align}
-\begin{split} \label{eq:thin-plate-loss-function-matrix} 
-Q_\lambda\left(c,d\right) &= -\ell\left(Y \vert c,d\right) + \lambda J_m^2\left(\phi^*\right) \\
-&= \left( Y - W \left( Bd + Kc \right) \right)^\prime D^{-1} \left( Y - W \left( Bd + Kc \right) \right) + \lambda c^\prime Q c 
+\begin{split} \label{eq:penalized-likelihood-vectorized} 
+-\ell\left(Y \vert c,d\right) + \lambda J_m\left(\phi^*\right) = \left( Y - W \left( Bd + Kc \right) \right)^\prime D^{-1} \left( Y - W \left( Bd + Kc \right) \right) + \lambda c^\prime Q c 
 \end{split}
 \end{align} 
 \bigskip
@@ -257,13 +261,13 @@ Using $\tildeS = F_1 R$, we can write
 Let $\phi_{\left[kl\right]}^{*}$ be the minimizer of 
 
 \begin{equation}
-\sum_{\substack{i,j \\ \left(i,j\right)\neq \left(k,l\right)}}  \sigma^{-2}_{ij}\left( \tildey_{ij} -  \sum_{j'<j}\phi^*\left( v_{ijj'} \right) \tildey_{ij'} \right)^2 + \lambda \tilde{J}_m^2 \left( \phi^* \right),
+\sum_{\substack{i,j \\ \left(i,j\right)\neq \left(k,l\right)}}  \sigma^{-2}_{ij}\left( \tildey_{ij} -  \sum_{j'<j}\phi^*\left( v_{ijj'} \right) \tildey_{ij'} \right)^2 + \lambda \tilde{J}_m \left( \phi^* \right),
 \end{equation}
 \bigskip
 where $\tilde{J}_m$ is the penalty term reparameterized according to the transformation defining $\tildec$:
 
 \begin{equation}
-\tilde{J}_m^2 \left( \phi^* \right) = \tildec' Q \tildec.
+\tilde{J}_m\left( \phi^* \right) = \tildec' Q \tildec.
 \end{equation}
 
 The \emph{ordinary cross validation function} $V_0\left(\lambda\right)$ is given by 
@@ -357,8 +361,6 @@ U\left(\lambda\right) = \frac{ \left(D^{-1/2}Y\right)' \left( I - A\left(\lambda
 where $\textup{det}^+\left(\cdot\right)$ denotes the product of the non-zero eigenvalues.
 
 
-
-
 \subsection{Generalized Maximum Likelihood}
 
 See pg. 68 of SS Anova Models.
@@ -369,15 +371,9 @@ M\left(\lambda\right) = n_y^{-1} \vert \vert \left( I - A\left(\lambda\right)\ri
 
 
 
-
-
-
-
-
-
 \section{Computation}
 
-The minimization of XXXXX lies within a space $\Hilbert \subseteq \left \{ \phi^*: J\left(\phi^*\right) < \infty \right\}$ in which $J\left(\phi^*\right)$ is a square (semi) norm, or a subspace therein. The evaluation functional $\left[ \bfv \right] \phi^*$, which appears in the first term in XXXXX, is assumed to be continuous in $\Hilbert$. A space in which the evaluation functional is continuous is called a reproducing kernel Hilbert space (RKHS) endowed with reproducing kernel (RK) $Q\left(\cdot, \cdot\right)$, a non-negative definite function satisfying 
+The minimization of \ref{eq:penalized-likelihood-vectorized} lies within a space $\Hilbert \subseteq \left \{ \phi^*: J\left(\phi^*\right) < \infty \right\}$ in which $J\left(\phi^*\right)$ is a square (semi) norm, or a subspace therein. The evaluation functional $\left[ \bfv \right] \phi^*$, which appears in the first term in \ref{eq:penalized-likelihood-vectorized}, is assumed to be continuous in $\Hilbert$. A space in which the evaluation functional is continuous is called a reproducing kernel Hilbert space (RKHS) endowed with reproducing kernel (RK) $Q\left(\cdot, \cdot\right)$, a non-negative definite function satisfying 
 
 \[
 \langle Q\left(\bfv,\cdot\right), phi^*\left(\cdot\right) \rangle
@@ -392,7 +388,7 @@ Let $\mathcal{N}_J = \left\{ \phi^*:\; J\left(\phi^*\right) = 0\right\}$ denote 
 \Hilbert = \mathcal{N}_J \oplus \Hilbert_J.
 \]
 \noindent
-The space $\Hilbert_J$ is a RKHS having $J\left(\phi^*\right)$ as the squared norm. The minimizer of XXXX has form 
+The space $\Hilbert_J$ is a RKHS having $J\left(\phi^*\right)$ as the squared norm. The minimizer of \ref{eq:penalized-likelihood-vectorized} has form 
 
 \begin{equation} \label{eq:RKHS-functional-form}
 \phi^*\left(\bfv\right) = \sum_{\nu = 1}^{d_0} d_\nu \eta\left( \bfv \right) + \sum_{i=1}^n c_i Q\left(\bfv_i, \bfv \right),
@@ -503,7 +499,7 @@ C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
 \end{bmatrix}.
 \end{equation}
 
-Premultiplying \ref{eq:} by $\tilde{C}^{-T}$, straightforward algebra gives 
+Premultiplying \ref{eq:normal-equation-cholesky} by $\tilde{C}^{-T}$, straightforward algebra gives 
 
 \begin{equation} \label{eq:vectorized-normal-equations-cholesky}
 \begin{bmatrix}
@@ -553,16 +549,30 @@ which can be solved, but with $c_2$ arbitrary. One may perform the Cholesky deco
 
 It follows that
 
-\begin{equation} \label{eq:cholesky-smoothing-matrix}
-\widehat{\tildeY} = \tildeS d + \tildeQ c = \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda\right) \tildeY.
-\end{equation}
+\begin{equation} \label{eq:tildeY-hat-equals-tildeA-tildeY}
+\widehat{\tildeY} = \tildeS d + \tildeQ c = \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda, \bftheta\right) \tildeY.
+\end{equation} 
+\noindent
+where
+\begin{align}
+\begin{split} \label{eq:cholesky-tildeA}
+\tildeA\left(\lambda, \bftheta \right) =& \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix}  \\
+&= B + \left(I - B\right) \tildeQ \left[\tildeQ'\left( I - B \right)\tildeQ + \lambda Q\right]^{-1} \tildeQ'\left(I - B\right),
+\end{split}
+\end{align} 
+\noindent
+for
+\[
+B = \tildeS\left(\tildeS' \tildeS \right)^{-1}\tildeS'.
+\]
+
 
 \subsection{Minimization of GCV and GML scores with multiple smoothing parameters}
 
-The expression in \label{ref:cholesky-smoothing-matrix} permits the straightforward evaluation of the GCV score
+The expression in \ref{eq:cholesky-tildeA} permits the straightforward evaluation of the GCV score
 
 \begin{equation} \label{eq:general-GCV-score}
-V\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^2}
+V\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \textup{tr} \left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^2}
 \end{equation}
 \noindent
 and the GML score
@@ -579,7 +589,72 @@ To minimize the functions $V\left(\lambda, \bftheta\right)$ and $M\left(\lambda,
 \item Update $\bftheta$ using the current estimate of $\lambda$.
 \end{enumerate}
 \noindent
-Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $V$ and $M$ and \ref{eq:cholesky-smoothing-matrix}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $V\left(\cdot\right)$ and $M\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $V$ and $M$ and \ref{eq:cholesky-tildeA}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $V\left(\cdot\right)$ and $M\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
+
+\subsection{Algorithms}
+
+The main algorithm and discussion of its key components are presented in the section to follow. The minimization of the model selection criterion is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $V$ (or $M$) with respect to smoothing parameters via quasi-Newton iteration of \citet{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration with step-halving as safeguards. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
+
+
+
+\begin{algorithm}[H]
+\caption{ }
+\begin{algorithmic}
+\STATE \textbf{Initialization:} 
+	\STATE Set $\Delta \bfkappa := 0$; \;$\bfkappa_{-}:=\bfkappa_{0}$; \;$V_- = \infty$; \;( or $M_- = \infty$)
+
+\STATE \textbf{Iteration:} 
+	\WHILE{not converged}
+		\STATE For current value $\bfkappa_* = \bfkappa_- + \Delta \bfkappa$, compute $Q_*^\theta = \sum_{\beta = 1}^g \theta_\beta Q_\beta$. 
+		\STATE Compute $\tildeA\left(\lambda \vert \bftheta_* \right) = \tildeA\left(\lambda, \exp\left({\bfkappa_*} \right)\right)$.
+		\STATE Minimize \begin{equation*} V\left(\lambda \vert \bfkappa_* \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \textup{tr} \left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right)  \right]^2} \end{equation*} or  \begin{equation*} 
+	M\left(\lambda \vert \bfkappa_* \right) = \frac{\left( 1/n_y \right) \tildeY' \left(I - \tildeA \left(\lambda \vert \bftheta_* \right)\right) \tildeY }{\left[ \mbox{det}^+\left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right)  \right]^{1/n_y}}.\end{equation*} \\
+			Set 
+			\begin{align*}
+			V_* := \min \limits_\lambda V\left( \lambda \vert \bfkappa_* \right) \\
+			\left( M_* := \min \limits_\lambda M\left(\lambda \vert \bfkappa_* \right) \right)
+			\end{align*}
+		\IF{$V_* > V_-$ (or $M_* > M_-$)}
+		 		\STATE Set $\Delta \bfkappa := \Delta \bfkappa/2$
+		 		\STATE Go to (1).
+		\ELSE
+		\STATE Continue
+		\ENDIF
+		\STATE Evaluate gradient $\mathbf{g} = \left(\partial /\partial \bfkappa\right) V\left(\bfkappa \vert \lambda\right)$ $\left(\mbox{or }\left(\partial /\partial \bfkappa\right) M\left(\bfkappa \vert \lambda\right) \right)$
+		\STATE Evaluate Hessian $H = \left(\partial^2 /\partial \bfkappa\partial \bfkappa' \right) V\left(\bfkappa \vert \lambda\right)$ $\left(\mbox{or } \left(\partial^2 /\partial \bfkappa\partial \bfkappa' \right) M\left(\bfkappa \vert \lambda \right) \right)$.
+		\STATE Calculate step $\Delta \bfkappa$:
+			\IF{$H$ positive definite}  
+				\STATE $\Delta \bfkappa := -H^{-1} \mathbf{g}$
+			\ELSE
+				\STATE $\Delta \bfkappa := -\tilde{H}^{-1} \mathbf{g}$, where $\tilde{H} = \textup{diag}\left(\bfepsilon\right)$ is positive definite.
+			\ENDIF
+	\ENDWHILE
+\STATE \textbf{Calculate optimal model:} 
+	\IF{$\Delta \kappa_\beta < -\gamma$, for $\gamma$ large}
+		\STATE Set $\kappa_{*\beta} := -\infty$
+	\ENDIF
+	\STATE Compute $Q_*^\theta = \sum_{\beta = 1}^g \theta_{*\beta} Q_\beta$;
+	\STATE Calculate $\begin{bmatrix} d \\ c \end{bmatrix} = \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ {\tildeQ_*^\theta}' \end{bmatrix} \tildeY$
+					
+\end{algorithmic}
+\end{algorithm}
+
+The update direction $\Delta \bfkappa = -\tilde{H}^{-1} \mathbf{g}$ is calculated via the modified Newton method on the modified Cholesky decomposition given in \ref{eq:cholesky-factor-mod}. Detailed discussion can be found in \citet{gill1981practical}.
+\bigskip
+
+The starting values for the $\theta$ quasi-Newton iteration are obtained with two passes of the fixed-$\theta$ outer loop as follows:
+
+\begin{enumerate}
+\item Set $\breve{\theta}_\beta^{-1} \propto \mbox{tr}\left( \tildeQ_\beta \right)$, minimize $V\left(\lambda\right)$ with respect to $\lambda$ to obtain $\breve{\phi}^*$. \label{theta-starting-values-1}
+\item Set $\check{\theta}_\beta^{-1} \propto  J_\beta\left(\breve{\phi}^*_\beta \right)$, minimize $V\left(\lambda\right)$ with respect to $\lambda$ to obtain $\check{\phi}^*$. \label{theta-starting-values-2}
+\end{enumerate}
+\noindent
+The first pass allows equal opportunity for each penalty to contribute to the GCV score, allowing for arbitrary scaling of $J_\beta \left(\phi^*_\beta\right)$. The second pass grants greater allowance to terms exhibiting strength in the first pass. The following $\theta$ iteration fixes $\lambda$ and starts from $\check{\theta}_\beta$. These are the starting values adopted by \citet{gu1991minimizing}; the starting values for the first pass loop are somewhat arbitrary, but are invariant to scalings of the $\theta_\beta$. The starting values in \ref{theta-starting-values-2} for the second pass of the outer are based on more involved assumptions derived from the background formulation of the smoothing problem. See \citet{gu1991minimizing} for a detailed discussion.
+
+\bigskip
+TO DO: Outline the argument for using the starting values $\breve{\theta}_\beta$
+\bigskip
+
 
 
 
