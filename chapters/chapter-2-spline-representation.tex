@@ -1,0 +1,984 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage{enumitem}
+\usepackage{accents}
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{cite}
+\usepackage{amsthm}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+
+
+\newcommand{\bfm}{\mbox{\boldmath $m}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\begingroup\lccode`~=`_
+\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
+\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
+
+\makeatletter
+\renewcommand{\theenumi}{\Roman{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\Alph{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+\renewcommand{\p@enumii}{\theenumi.}
+\makeatother
+
+\begin{document}
+
+%\nocite{*}
+\def\bL{\mathbf{L}}
+%\usepackage{mathtime}
+
+%%UNCOMMENT following line if you have package
+
+
+\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\bibliographystyle{plainnat}
+\maketitle
+
+\section{Smoothing Spline Varying-coefficient Models for Covariance Estimation}
+
+A predominant difficulty in the estimation of covariance matrices is the potentially high dimensionality of the problem, as the number of unknown elements in the covariance matrix grows quadratically with the size of the matrix. It is well-known that the sample covariance matrix can be unstable in high dimensions; ways for controlling the complexity of estimates is highly desirable for improving stability of estimates. In the longitudinal-data literature, it is a common practice to use parametric models for the covariance structure.  Many have specified parsimonious parametric models for $\phi_{ijk}$ to overcome the issue of dimensionality.   A commonly utilized approach in previous work is to model $\phi_{ijk} = z_{ijk}^T \gamma$ where $z_{ijk}$ is a vector of powers of time differences and $\gamma$ is a vector of unknown ``dependence'' parameters to be estimated from the data. \citet{chen2011efficient}, \citet{lin2009robust}, \citet{pan2003modelling},  and \citet{pourahmadi1999joint} define
+
+\begin{equation}
+z_{ijk}^T = \left(1, t_{ij} - t_{ik},\left( t_{ij} - t_{ik} \right)^2, \dots, \left(t_{ij} - t_{ik}\right)^{q-1} \right) \label{covmodel}
+\end{equation}
+
+Modeling the covariance in such a way is reduces a potentially high dimensional problem to something much more computationally feasible; if one models the innovation variances $\sigma^2\left(t\right)$ similarly using a $d$-dimensional vector of covariates, the problem reduces to estimating $q+d$ unconstrained parameters, where much of the dimensionality reduction is a result of characterizing the GARPs in terms of only the difference between pairs of observed time points, and not the time points themselves.  Modeling $\phi$ in such a way is equivalent to specifying a Toeplitz structure for $\Sigma$. A $p \times p$ Toeplitz matrix $M$ is a matrix with elements $m_{ij}$ such that $m_{ij} = m_{\vert i-j \vert}$ i.e. a matrix of the form
+
+\begin{equation}
+M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix} \label{toeplitz}
+\end{equation}
+
+\bigskip
+
+The estimated covariance matrix may be considerably biased when the specified parametric model is far from the truth.  To avoid model misspecification that potentially accompanies parametric analysis, many have alternatively  proposed nonparametric and semiparametric techniques approaches to estimation.  While these estimators can be very flexible and thus exhibit low bias, this advantage can be offset with high variance.  To balance the tradeoff between bias and variance, shrinkage or regularization may be applied to estimates to improve stability of estimators. \citet{diggle1998nonparametric} proposed nonparametric estimation of the covariance matrix of longitudinal data by smoothing raw sample variogram ordinates and squared residuals.  [DISCUSS THE NONPARAMETRIC SMOOTHER OF HANS GEORG MULLER HERE]  However, neither of these methods ensure that the resulting estimates are positive-definite.  
+
+\bigskip
+Several others have proposed methods for covariance estimation within the same paradigm of a smooth, continuous function underlying a discretized covariance matrix associated with the observed data. 
+\citet{pourahmadi1999joint} employ the Cholesky decomposition to guarantee positive-definiteness and imposed structure on the elements of the Cholesky decomposition and heuristically argue that $\phi_{t,t-l}$ should be monotonically decreasing in $l$. That is, the effect of $y_{t-l}$ on $y_t$ through the autoregressive parameterization should decrease as the distance in time between the two measurements increases. In similar spirit, others including \citet{bickel2008regularized} and \citet{levina2008sparse} enforce such structure by setting $\phi_{t,t-l}$ equal to zero for $l$ large enough, or equivalently, setting all subdiagonals of $T$ to zero beyond the $K^{th}$ off-diagonal. The tuning parameter $K$ is chosen using a model selection criterion such as Akaike information criterion, Bayesian information criterion, or cross validation or a variant thereof.  In terms of the autoregressive model corresponding to the Cholesky decomposition, this form of regularization, known as ``banding'' the Cholesky factor $T$, is equivalent to regressing $y_t$ on only its $K$ immediate predecessors, setting $\phi_{tj} = 0$ for $t-j>K$. 
+
+\bigskip
+
+From this perspective, it is apparent that the presentation of covariance estimation as a least squares regression problem suggests that the familiar ideas of model regularization for least-squares regression can be used for estimating covariances.  Wu and Pourahmadi \citet{wu2003nonparametric} proposed a two-step estimation procedure using nonparametric smoothing for regularized estimation of large covariance matrices.  In the first step, they derive a raw estimate of the covariance matrix and the estimated covariance matrix is subject to the modified Cholesky decomposition. In the second step, they apply local polynomial smoothing to the diagonal elements of $D$ and the subdiagonals of $T$. The use of the Cholesky parameterization guarantees that their estimate is guaranteed to be positive-definite, however, their procedure is not capable of handling missing data. \citet{huang2007estimation} 
+
+however, their two-step method did not utilize the information that many of the subdiagonals of T are essentially zeros at the first step. Inefficient estimation may result because of ignoring regularization structure in constructing the raw estimator. 
+
+Several have applied these approaches to covariance estimation; \citet{huang2007estimation} jointly model the mean and covariance matrix of longitudinal data using basis function expansions. They employ the Cholesky decomposition of the covariance matrix and treat the subdiagonals of $T$ as smooth functions, approximated by B-splines. Estimation is carried out by maximizing the normal likelihood. Their method permits subject-specific observations times, but assumes that observation times lie on some notion of a regular grid. They treat within-subject gaps in measurements as missing data and which they handle using the E-M algorithm. 
+
+\bigskip
+
+We naturally accommodate irregularly spaced data and unequal sample sizes between subjects by defining the autoregressive parameters as the values of a smooth function evaluated at within-subject pairs of observed time points.  Furthermore, by viewing $\phi\left(t,s\right)$ as a smooth \emph{bivariate} function, we can utilize the information across the subdiagonals of $T$ to inform the fit, rather than treating each subdiagonal separately.  As in the classical nonparametric function estimation setting, we assume $\phi$ to vary in a high-dimensional (possibly infinite) function space. We propose two representations of $\phi\left(\cdot, \cdot\right)$ and $\sigma\left(\cdot, \cdot\right)$: approximation by smoothing splines and approximation by B-spline basis expansion. 
+
+\subsection{Smoothing spline representation of $\phi$, $\sigma$}
+
+Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the reproducing kernel Hilbert space (r.k.h.s) corresponding to the tensor product of the first-order and second-order Sobolev spaces:
+
+\[
+\mathcal{H} = \mathcal{H}_{l} \otimes \mathcal{H}_{m}, \;\; \mathcal{H}_{l} = W_2\left(0,1\right),\;\;\mathcal{H}_{m} = W_1\left(0,1\right)\;\mbox{where }
+\]
+
+\[W_m\left(0,1\right) \equiv \lbrace f: \;\;f^\prime, \dots, f^{\left( m-1 \right)} \mbox{absolutely continuous}, \int_0^1 \left(f^{\left( m \right)}\right)^2 dt < \infty \rbrace\]
+\noindent
+We seek $\phi^*\left(\cdot, \cdot \right) \in \mathcal{H}$ which minimizes
+\begin{equation}
+\frac{1}{2}\sum_{i=1}^N \sum_{j=2}^{n_i} {\sigma^{-2}_{ij}}\left( y\left(t_{ij}\right) - \sum_{k=1}^{n_i - 1}\phi^*\left(l^i_{jk},m^i_{jk} \right)y\left(t_{ik}\right) \right)^2 + \lambda J\left(\phi^*\right)  
+\label{eq:objectivefun}
+\end{equation}
+\noindent
+where $P_1 \phi^*$ is the projection of $\phi^*$ onto $\mathcal{H}_1$, $J\left(\phi^*\right) = \vert \vert P_1 \phi^* \vert \vert^2$. Define the differential operator $M_\nu f = \int_0^1 f^{\left( m \right)}\left(x\right) dx\;,\;\; \nu = 1, \dots, m$ and endow $W_m\left(0,1\right)$ with inner product
+%\begin{equation}
+%\left< f,g\right> = \underbrace{\sum_{\nu=0}^{m-1} M_\nu f M_\nu g}_{\left< f,g\right>_0} + \underbrace{\int_0^1 f^{\left( m \right)}\left(x\right)g^{\left( m \right)}\left(x\right)dx}_{\left< f,g\right>_1}
+%\end{equation}
+
+\begin{equation}
+\left< f,g\right> = \left< f,g\right>_0 + \left< f,g\right>_1 = \sum_{\nu=0}^{m-1} M_\nu f M_\nu g + \int_0^1 f^{\left( m \right)}\left(x\right)g^{\left( m \right)}\left(x\right)dx
+\end{equation}
+\noindent
+which induces norm 
+\[
+\vert \vert f \vert \vert^2 = \left< f,f\right> = \left< f,f\right>_0 + \left< f,f\right>_1 = \vert \vert P_0 f \vert \vert^2 + \vert \vert P_1 f \vert \vert^2
+\]
+\noindent
+Let $k_j\left(x\right) = B_j\left(x\right)/{j!}$ for $x \in \left[0,1\right]$, where $B_j\left(x\right)$ is the $j^{th}$ Bernoulli polynomial which can be defined according to the recursive relationship:
+
+\[
+B_0\left(x\right) = 1,\;\;\;\;\;\; \frac{d}{dx} B_r\left(x\right) = rB_{r-1}\left(x\right)
+\]
+\noindent
+Noting that $M_\nu B_r = \delta_{\nu-r}$, $W_m$ can be written as a direct sum of the $m$ orthogonal subspaces: $\lbrace k_r \rbrace_{r=0}^{m-1}$ and $W_m^1$.   Here, $\lbrace k_r \rbrace$ is the subspace spanned by $k_r$ and $W_m^1$ is the space orthogonal to $W_m^0 \equiv \lbrace 1 \rbrace \oplus \lbrace k_1 \rbrace \oplus \dots \oplus \lbrace k_{m-1} \rbrace$ which satisfies 
+\[
+W_m^1 = \lbrace f: M_\nu f = 0,\;\; \nu = 0,1,\dots, m-1\rbrace
+\]
+
+\noindent
+Writing $\mathcal{H}$ as the tensor product of the two decomposed Sobolev spaces, we have
+
+\begin{eqnarray}
+\mathcal{H} = \mathcal{H}_l  \otimes \mathcal{H}_m &=& W_2 \otimes W_1 \label{eq:HilbertDecomp} \\ 
+&=& \left[ W_2^0 \oplus W_2^1 \right] \otimes \left[ W_1^0 \oplus W_1^1 \right] \nonumber \\ 
+&=& \left[ \left[ \lbrace 1 \rbrace \oplus \lbrace k_1 \rbrace \right] \oplus W_2^1 \right] \otimes \left[ \lbrace 1 \rbrace \oplus W_1^1 \right] \nonumber \\ 
+&=&\left[ \lbrace 1 \rbrace  \oplus \lbrace k_1 \rbrace \right] \oplus W_2^1 \oplus W_1^1 \oplus  \left[ \lbrace k_1 \rbrace  \otimes  W_1^1 \right]  \oplus  \left[W_2^1 \otimes  W_1^1   \right] \nonumber \\
+&\equiv& \left[ \mathcal{H}_{\mu^*} \oplus \mathcal{H}_l^0 \right] \oplus \left[ \mathcal{H}_l^1 \oplus \mathcal{H}_m^1 \oplus \mathcal{H}_{lm}^{01} \oplus \mathcal{H}_{lm}^{11}\right]
+\nonumber\\
+&=& \mathcal{H}_0 \oplus \mathcal{H}_1
+\nonumber
+\end{eqnarray} 
+
+\noindent
+where the functional components corresponding to $\mathcal{H}_\mu$, $\mathcal{H}_l^0$, $\mathcal{H}_l^1$, $\mathcal{H}_m^1$, and $\left[ \mathcal{H}_{lm}^{01} \oplus \mathcal{H}_{lm}^{11}\right]$ are the overall mean, the nonparametric main effect of $l$, the parametric main effect of $l$, the parametric main effect of $m$, the nonparametric-parametric interaction, and the parametric-parametric interaction (between $l$ and $m$). Given this decomposition of the function space, any $\phi^* \in \mathcal{H}$ may be written as a sum of components from each of the 
+
+\begin{equation}
+\phi^*\left(l,m\right) = \mu^* + \phi_l^*\left(l\right) + \phi_m^*\left(m\right) + \phi_{lm}^*\left(l,m\right)  \label{eq:ANOVAdecomp}
+\end{equation} 
+\noindent
+where $\int_{0}^1 \phi^*_{l}\left(l\right)dl = \int_{0}^1 \phi^*_{m}\left(m\right)dm = 0$, $\int_{0}^1 \phi^*_{lm}\left(l,m\right)dl = \int_{0}^1 \phi^*_{lm}\left(l,m\right)dm = 0$. The reproducing kernel (r.k.) for $\lbrace k_r \rbrace$ is $k_r\left(x \right)k_r\left(x^\prime \right)$. It can be verified that the r.k. for $W_m^1$ (Craven and Wahba 1979) is given by $R^1\left(x,x^\prime\right) = k_m\left(x \right)k_m\left(x^\prime \right) + \left( -1 \right)^{m-1}k_{2m}\left(\left[ x-x^\prime \right] \right)$
+where $\left[ \alpha \right]$ is the fractional part of $\alpha$. The r.k. for $W_m$ is given by 
+\begin{eqnarray*}
+R\left(x,x^\prime\right) &=& R^0\left(x,x^\prime\right) + R^1\left(x,x^\prime\right) \\
+&=&\left[ \sum_{\nu=1}^{m-1} k_\nu\left(x \right)k_\nu\left(x^\prime \right) \right]+ \left[ k_m\left(x \right)k_m\left(x^\prime \right) + \left( -1 \right)^{m-1}k_{2m}\left(\left[ x-x^\prime \right] \right)\right] \label{eq:RKforH1}
+\end{eqnarray*}
+\noindent
+Using the fact that the r.k. for a tensor product space is the product of the corresponding reproducing kernels, the r.k. for $\mathcal{H}$ is given by 
+\begin{eqnarray}
+R\left( \left(l,m\right),\left(l^\prime,m^\prime\right)\right) &=&  R_l\left(l,l^\prime\right) \times R_m\left(m,m^\prime\right) \nonumber \\
+ &=& \left[  R_l^0\left(l,l^\prime\right) + R_l^1\left(l,l^\prime\right) \right] \times \left[  R_m^0\left(l,l^\prime\right) + R_m^1\left(l,l^\prime\right) \right] \nonumber \\
+ &=& R_l^0\left(l,l^\prime\right)R_m^0\left(m,m^\prime\right) + R_l^0\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) \nonumber \\
+&\mbox{ }&\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; +  R_l^1\left(l,l^\prime\right) R_m^0\left(m,m^\prime\right)  + R_l^1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) \nonumber \\
+&=& \left[ k_1\left(l \right)k_1\left(l^\prime \right)\right] + \left[ R_l^1\left(l,l^\prime\right)  + k_1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) + R_l^1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right)\right] \nonumber \\
+&=& R^0\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right) + R^1\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right)
+\end{eqnarray}
+
+
+We must introduce some notation to simplify the following expression of the form of the elements in $\mathcal{H}$. Denote the set of unique pairs of observed within-subject time points and the corresponding set of unique transformed coordinates by $\mathcal{W}$ and $\mathcal{W}^*$, respectively:
+
+\begin{eqnarray*}
+\mathcal{W} &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij} ,t_{ik} \right)\\
+\mathcal{W}^* &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij}-t_{ik} ,\frac{1}{2}\left( t_{ij}+t_{ik} \right) \right) = \bigcup_{i=1}^N \bigcup_{j>k}\left(l^i_{jk},m^i_{jk} \right)\\
+\end{eqnarray*}
+\noindent
+with $\vert \mathcal{W}\vert = \vert \mathcal{W}^* \vert = N_{\phi^*}$. For simplicity of presentation, relabel the elements of $\mathcal{W}^*$ so that 
+\[
+\mathcal{W}^* = \lbrace \left( l_1,m_1 \right), \left( l_2,m_2 \right), \dots, \left( l_{N_{\phi^*}},m_{N_{\phi^*}} \right)  \rbrace
+\]
+\noindent
+Then we may verify that any $\phi^* \in \mathcal{H}$ can be written 
+\[
+\phi^*\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) + \rho\left(l,m\right)
+\]
+\noindent
+where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; span\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$. We do so by demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi^*\right)$. Consequently, if $\hat{\phi^*}$ is the minimizer of \eqref{eq:objectivefun}, then $\rho = 0$. Using the properties of reproducing kernels, we can rewrite $\phi^*$ as an inner product of itself with $R$:
+ 
+\begin{eqnarray*}
+\phi^*\left(l_j,m_j \right)  &=& \left< R\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),d_0 + d_1k_1\left(\cdot \right)\right. \\ 
+&\mbox{ }&\left. \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;+ \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) + \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left< R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right)\right> \\
+&\mbox{ }& + \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), d_0 + d_1k_1\left(\cdot \right)\right> \\
+&\mbox{ }& + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> \\
+&\mbox{ }& + \underbrace{\left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0} + \underbrace{\left<R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0}\\
+&=& d_0 + d_1k_1\left(\cdot \right) + \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(l_j,m_j\right) \right)
+\end{eqnarray*}
+\noindent
+
+
+Rewriting the data fit functional, we have that  
+ \begin{eqnarray*}
+&\mbox{ }&\sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \phi^*\left(t_{ij}, t_{ik}  \right) y\left(t_{ik}\right)  \right)^2  \\ 
+&=& \sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \left< R\left(\left(l^i_{jk},m^i_{jk}\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right> y\left(t_{ik}\right)  \right)^2  \\
+ \end{eqnarray*}
+\noindent
+which is free of $\rho$. Consider the contribution of any nonzero $\rho$ to $J\left(\phi^*\right)$: 
+  
+ \begin{eqnarray*}
+ J\left(\phi^*\right) &=& \vert \vert  P_1\phi^* \vert \vert^2\\
+ &=& \left< \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot \right), \sum_{j=1}^{N_{\phi^*}} c_j R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot\right)\right> \\
+ &=& \vert \vert \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left(\left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) \vert \vert^2 + \vert \vert  \rho \vert \vert^2 
+ \end{eqnarray*}
+\noindent
+Thus, including $\rho$ in $\phi^*$ only increases the penalty without improving (decreasing) the data fit functional, so we indeed have that the minimizer of \eqref{eq:objectivefun} has the form
+\begin{equation}
+ \phi^*\left(l,m\right) =  d_0 + d_1k_1\left(l\right) + \sum_{i=1}^{N_{\phi^*}} c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right)
+ \label{eq:finitedimsolution}
+ \end{equation}
+
+Let $\Phi^*$ be the $N_{\phi^*} \times 1$ vector of regression coefficients given by \eqref{eq:MyTransformedModel} corresponding to $\phi^*$ evaluated at the elements of $\mathcal{W}^*$, $\Phi^* = \left(\phi^*_1,\phi^*_2, \dots, \phi^*_{N_{\phi^*}}  \right)^T$. Let $d = \left(d_0, d_1\right)^T$, $c = \left(c_1, \dots, c_{N_{\phi^*}}  \right)^T$, and $b = \left(b_1, \dots, b_{N_m}  \right)^T$.   Define $K_{11}$, $K_{12}$, $K_{22}$, $B_{1}$, and $B_2$ as follows: 
+
+\[
+\begin{array}{ll}
+{K_{11}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(l_j,m_j\right)\right) &  i,j = 1, \dots, N_{\phi^*}\\
+{K_{12}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(0,m_j\right)\right) &  i = 1, \dots, N_{\phi^*},\;j = 1, \dots, N_m \\
+{K_{22}}\left[i,j\right] = R_1\left(\left(0,m_i\right),\left(0,m_j\right)\right) &  i,j = 1, \dots, N_m\\
+B_1\left[i , j\right] = k_j\left(l_i\right) &  i = 1, \dots, N_{\phi^*},\;j = 1, 2\\
+B_2\left[i , j\right] = k_j\left(0\right) &  i = 1, \dots, N_m,\;j = 1, 2\\
+\end{array}
+\]
+\[
+K = \left[\begin{array}{cc}
+		K_{11} & K_{12}\\
+		K_{12}^T & K_{22}
+		\end{array}\right] = \left[\begin{array}{c}
+		K_1\\
+		K_2
+		\end{array}\right]\\;\;\;\; B = \left[ \begin{array}{c}B_1\\
+										       B_2\end{array}\right] \]
+
+
+\noindent
+In matrix notation:
+\[
+\Phi^* = S d + R c							
+\]
+
+%and 
+%\begin{equation} \label{eq:loglik-phi-component}
+%\sum_{i = 1}^N \sum_{j = 2}^{m_i} \frac{\epsilon_{ij}^2}{\sigma_{ij}^{2}}
+%\end{equation}
+%
+%\begin{equation} \label{eq:loglik-sigma-component}
+%\sum_{ \bigcup t_{i1}}  \log \sigma_{i1}^2 + \sum_{i = 1}^N \frac{\epsilon_{i1}^2}{\sigma_{i1}^2}. 
+%\end{equation}
+%\noindent
+%and 
+%\begin{equation} \label{eq:loglik-phi-component}
+%\sum_{ \bigcup \limits_{k>1} t_{ik}}  \log \sigma_{ij}^2 + \sum_{i = 1}^N \sum_{j = 2}^{m_i} \sigma_{ij}^{-2}  \left( y_{ij} - \sum \limits_{k < j}\phi_{ijk} y_{ik} \right)^2 .
+%\end{equation}
+
+\section{A B-spline representation for pp functions}
+
+\begin{definition} \label{definition:order_k_Bspline}
+Let $t= \left\{ t_i \right\}$ denote a non-decreasing sequence. The $i^{th}$ B-spline of order $k$ which corresponds to the knot sequence $t$ is defined by 
+\begin{equation} \label{eq:bspline_definition}
+B_{i,k,t}\left(x\right) = \left(t_{i+k}-t_i\right)\left[t_i,\dots,t_{i+k}\right]\left(\cdot -x\right)_+^{k-1}
+\end{equation}
+\end{definition}
+
+The placeholder notation, $\left(\cdot - x\right)_+^{k-1}$, is used to indicate that the $k^{th}$ divided difference of the function $g\left(t \right) = \left(t-x\right)^{k-1}_+$ is obtained by fixing $x$ and applying the divided difference to $g\left(t \right)$ as a function of $t$ alone. Henceforth, we will write $B_i$ rather than $B_{i,k,t}$ when the spline order and knot sequence can be inferred from surrounding context.
+
+\subsection{Properties of B-splines}
+
+\begin{enumerate} \label{eq:BS_properties}
+\item \label{eq:BS_property_1} $B_i\left(x\right)$ has isolated support:
+\[
+B_i\left(x\right) = 0, \quad x \not \in \left[t_{i},t_{i+k}\right]
+\]
+To see this, note that if $x \not \in \left[t_{i},t_{i+k}\right]$, then $g\left(t \right) = \left(t-x\right)^{k-1}_+$ is a polynomial of degree $< k$ on $\left[t_{i},t_{i+k}\right]$, thus by \ref{dd_properties} \ref{eq:dd_property_5},
+\[
+\left[t_{i},\dots,t_{i+k}\right]g = 0.
+\]
+As a result, for a set of B-splines of order $k$ corresponding to the knot sequence $t$, only $k$ of them are nonzero on $\left[t_{j},t_{j+k}\right]$: $B_{j-k+1},B_{j-k+2},\dots,B_{j}$.
+\item \label{eq:BS_property_2} The $i^{th}$ B-spline of order is defined as the $k^{th}$ divided difference of $\left(\cdot - x\right)_+^{k-1}$ times a normalization factor: $\left(t_{i+k}-t_i\right)$. This normalization, using \ref{dd_properties} \ref{eq:dd_property_8}, allows us to write 
+\begin{equation} \label{eq:BS_norm_rr}
+B_i\left(x\right)=\left[t_{i+1},\dots,t_{i+k} \right]\left(\cdot - x\right)_+^{k-1} - \left[t_{i},\dots,t_{i+k-1} \right]\left(\cdot - x\right)_+^{k-1}
+\end{equation}
+For $x \in \left(t_{j},t_{j+1}\right)$, by \ref{dd_properties} \ref{eq:dd_property_1},
+\begin{align}
+\sum_{i} B_i\left(x\right) &=  \sum_{i=j+1-k}^{j} B_i\left(x\right) \nonumber\\
+&= \sum_{i=j+1-k}^{j} \left[t_{i+1},\dots,t_{i+k} \right] \left(\cdot - x\right)_+^{k-1} - \sum_{i=j+1-k}^{j} \left[t_{i},\dots,t_{i+k-1} \right] \left(\cdot - x\right)_+^{k-1} \nonumber \\
+&= \left[t_{j+1},\dots,t_{j+k} \right] \left(\cdot - x\right)_+^{k-1} - \left[t_{j+1-k},\dots,t_{j} \right] \left(\cdot - x\right)_+^{k-1} \nonumber \\
+&= 1 - 0 \label{eq:unity_equality}
+\end{align}
+The last equality in \ref{eq:unity_equality} is a consequence of the following: for $x \in \left(t_j,t_{j+1}\right)$, $g\left(t\right)=\left(t - x\right)_+^{k-1}$ is a $k-1$ degree polynomial with unit leading coefficient on $\left[ t_{j+1},t_{j+k} \right]$, so by \ref{dd_properties} \ref{eq:dd_property_5}, 
+\[
+\left[ t_{j+1},\dots,t_{j+k} \right]g=1.
+\]
+On $\left[ t_{j+1-k},t_{j} \right]$, $g$ is identically $0$, hence $\left[ t_{j+1-k},\dots,t_{j} \right]g = 0$.   
+\item \label{eq:BS_property_3}Each $B_i\left(x\right)$ is positive on its support. Applying Leibnitz's formula (\ref{dd_properties} \ref{eq:dd_property_4}) to the product
+\[
+\left[t_i,\dots,t_{i+k} \right]\left(t-x\right)_+^{k-1} = \left[t_i,\dots,t_{i+k} \right]\left(t-x\right) \left(t-x\right)_+^{k-2},
+\] 
+we have
+\begin{align}
+\left[t_i,\dots,t_{i+k} \right]\left(t-x\right)_+^{k-1} &=  \left[t_i,\dots,t_{i+k} \right]\left(t-x\right) \left(t-x\right)_+^{k-2} \nonumber\\
+&= \sum_{r=i}^{i+k}\left[t_i,\dots,t_{i+r} \right] \left(t-x\right)\left[ t_r,\dots,t_{i+k}\right]\left(t-x\right)_+^{k-2} \nonumber \\
+&= \bigg[ \left[t_i\right]\left(t-x \right) \bigg]\bigg[ \left[ t_i,\dots,t_{i+k}\right]\left(t-x\right)_+^{k-2}\ \bigg]\nonumber \\
+& \qquad \qquad + \bigg[ \left[t_i,t_{i+1}\right]\left(t-x \right) \bigg]\bigg[ \left[ t_{i+1},\dots,t_{i+k}\right]\left(t-x\right)_+^{k-2} \bigg] \nonumber \\
+&= \left(t_i-x \right) \left[ t_{i},\dots,t_{i+k}\right]\left(t-x\right)_+^{k-2} \nonumber \\
+& \qquad \qquad \qquad \qquad \qquad +  1 \cdot \left[ t_{i+1},\dots,t_{i+k}\right]\left(t-x\right)_+^{k-2} \label{eq:nonneg_star}
+\end{align}
+since $\left[ t_i,\dots,t_j\right]\left(\cdot-x\right) = 0$ for $j>i+1$. By \ref{dd_properties} \ref{eq:dd_property_8}, 
+\[
+\left(t_i-x \right) \left[ t_{i},\dots,t_{i+k}\right]g = \frac{t_i-x}{t_{i+k}-t_{i}}\bigg[\left[ t_{i+1},\dots,t_{i+k}\right]g -\left[ t_{i},\dots,t_{i+k-1}\right]g   \bigg],
+\]
+and we may express \ref{eq:nonneg_star} as 
+\begin{align*}
+\left[ t_{i},\dots,t_{i+k}\right]\left(\cdot - x\right)^{k-1}_+ &= \frac{x-t_i}{t_{i+k}-t_{i}}\left[ t_{i},\dots,t_{i+k-1}\right] \left(\cdot-x\right)_+^{k-2}  \\
+& \quad + \frac{t_{i+k}-x}{t_{i+k}-t_{i}}\left[ t_{i+1},\dots,t_{i+k}\right] \left(\cdot-x\right)_+^{k-2} 
+\end{align*}
+which we can write in terms of the normalized B-spline:
+\begin{equation} \label{eq:nonneg_starstar}
+\frac{B_{i,k}\left(x\right)}{t_{i+k}-t_i} = \frac{x-t_i}{t_{i+k}-t_{i}}\frac{B_{i,k-1}\left(x\right)}{t_{i+k-1}-t_i} + \frac{t_{i+k}-x}{t_{i+k}-t_{i}} \frac{B_{i+1,k-1}\left(x\right)}{t_{i+k}-t_{i+1}}
+\end{equation}
+This shows that we can write the $i^{th}$ B-spline of order $k$ as a convex combination of the $i^{th}$ and $\left(i+1\right)^{st}$ B-splines of order $k-1$ since 
+\[
+\frac{x-t_i}{t_{i+k}-t_{i}} + \frac{t_{i+k}-x}{t_{i+k}-t_{i}}  = 1,
+\]
+and each of these weights are positive for $t_i < x < t_{i+1}$. If
+\[
+\begin{array}{lr}
+B_{j,k-1}\left(x\right) > 0, & t_j < x < t_{j+k-1} \; \textup{for all } j,
+\end{array}
+\]
+then by \ref{eq:nonneg_starstar}, we have that 
+\[
+B_{i,k}\left(x\right) > 0,  \qquad t_i < x < t_{i+k}
+\]
+since $B_{j,k-1}= 0$ for $x \not \in \left[t_j,t_{j+k}\right]$ by \ref{eq:BS_properties} \ref{eq:BS_property_1} and by induction over $k$, starting with the fact that 
+\[
+B_j,1\left(x\right) = \left\{ \begin{array}{lr}
+1 & t_j \le x < t_{j+1}\\
+0 & otherwise
+\end{array}\right.
+\]
+Properties \ref{eq:BS_property_1}, \ref{eq:BS_property_2}, and \ref{eq:BS_property_3} demonstrate that a sequence of B-splines form a \emph{partition of unity}: a set of non-negative functions which sum, pointwise, to one.
+\end{enumerate}
+%
+%\begin{example}
+%Figure~\ref{fig:deboor_bspline_basis} show fives parabolic B-splines corresponding to the set of knots $\left\{0,1,1,3,4,6,6,6 \right\}$. It is clear that each spline has compact support and is non-negative on this support. The function values are provided at select domain values so that property \ref{eq:BS_property_2} is evident, though it is worth noting that 
+%\[
+%\sum_{i=1}^6 B_i\left(x\right) = 1
+%\]
+%only on $\left[\frac{1}{6},1\right]$. In particular, they do not sum to 1 on $\left(0,\frac{1}{6}\right)$. 
+%
+%Each $B_i$ is piecewise parabolic, with the breakpoints being locations of discontinuity of the function or one of its derivatives. $B_5$ is discontinuous at $x=6$, as the knot at 6 is repeated three times in the knot sequence defining $B_5$: $\left\{t_5,t_6,t_7,t_8\right\}$.
+%
+%$B_1$, $B_2$, and $B_4$ have discontinuous first derivatives since 1 is repeated twice in the knots defining $B_1$ and $B_2$, and 6 is repeated twice in the knots defining $B_4$. The relationship between knot replication and smoothness will be discussed in more detail in the following section.
+%
+%\begin{figure}[h]
+% \begin{center}
+% \graphicspath{{img/}}
+%  \includegraphics{deboor_parabolic_bsplines.png}
+%  %\caption{Parabolic B-splines corresponding to knot sequence $\{0,1,1,3,4,6,6,6\}$, illustrating the connection between knot multiplicity and smoothness.}\label{fig:deboor_bspline_basis}
+%\end{center}
+%\end{figure}
+%\end{example}
+
+
+\begin{definition} \label{B_representation_definition}
+The \emph{B-representation of } $f \in \PP_{k,\xi,\nu}$ consists of 
+\begin{enumerate}
+\item \label{eq:first_B_rep_piece} integers $k$ and $n$ specifying the order of $f$ as a pp function and the number of linear parameters, 
+\[
+n = kl - \sum_{i}\nu_i = \mbox{dim}\left(\PP_{k,\xi,\nu}\right),
+\]
+respectively. 
+\item \label{eq:second_B_rep_piece}The knot vector $t = \left \{t_i \right\}$, $i=1,\dots, n+k$ with elements arranged in increasing order, constructed according to Theorem~\ref{curryschoenbergthm}, via $\xi$ and $\nu$.
+\item \label{eq:third_B_rep_piece} The B-spline coefficients $\alpha=\left \{\alpha_i \right\}$, $i=1 ,\dots, n$ for the knot sequence, $t$.
+\end{enumerate}
+\end{definition}
+\vspace{1pt}
+Given \ref{eq:first_B_rep_piece}, \ref{eq:second_B_rep_piece}, and \ref{eq:third_B_rep_piece} in \ref{B_representation_definition}, the function value at $x\in \left[t_k, t_{n+1}\right]$ is given by 
+\begin{equation*}
+f\left(x\right) = \sum_{i=1}^n \alpha_i B_i\left(x\right),
+\end{equation*}
+and in particular, by \ref{eq:BS_property_1}, for $x\in \left[t_j, t_{j+1} \right]$,
+\[
+f\left(x\right) = \sum_{i=j}^{j+k-1} \alpha_i B_i\left(x\right).
+\]
+
+
+
+
+
+\section{Single-regressor varying coefficient models via B-spline basis expansions}
+
+Hastie and Tibshirani were the first to introduce the varying coefficient model, which supplies a modeling approach which permits interpolation of regressors and response variables which varying according to an \emph{indexing variable} at values of this indexing variable where there is either missing data of only a single observation and slope estimation is not feasible. In the section that follows, we will discuss the approach to smoothing the coefficient vector (and \emph{not} the regressor, $x\left(t\right)$) first, for mechanical demonstration of parameterization and estimation of the coefficient function via B-spline basis expansion, at a predetermined set of values of an indexing variable, $t$ (knots), then following the approach of Eilers and Marx by assuming that the number and position of the knots are unknown and using penalized B-splines, or P-splines. 
+
+Consider data of the form 
+\[
+\left(x_i, y_i, t_i\right), \qquad i=1,\dots,m
+\]
+where $y_i$ is the response, $x_i$ is the single (univariate) regressor variable, and $t_i$ is an indexing variable. We first consider a simple situation as an introductory warmup for demonstrating the mechanics of the varying coefficient model. Suppose we wish to fit a scatterplot smoother to the points $\left(t_i, y_i\right)$ using a B-spline basis expansion. Assume that we can model 
+
+\begin{equation} \label{eq:varying_intercept_only_model}
+y\left(t\right) = f\left(t\right) + \epsilon\left(t \right)
+\end{equation}
+
+where $\epsilon$ is a zero-mean error process.  Modeling the mean function as a $q^{th}$-order B-spline, we can rewrite \ref{eq:varying_intercept_only_model} as
+
+\begin{equation} \label{eq:varying_intercept_only_model_bspline}
+y\left(t\right) = \sum_{j=1}^{K} \alpha_j B_j\left(t\right) + \epsilon\left(t \right)
+\end{equation}
+
+Assume we use $K$ of basis functions in our expansion of $f$. Let $y= \left(y_1,\dots,y_m\right)^T$, and let $B$ denote the $m \times K$ design matrix with $i-j^{th}$ element given by the $j^{th}$ order-$q$ B-spline evaluated at the $i^{th}$ value of $t$: 
+
+\[
+b_{ij} = B_j\left(t_i\right),
+\]
+$i=1,\dots,m$, $j=1,\dots,K$. Then in matrix notation, we may write the mean vector
+
+\[
+\mu = E\left[y\right] = B\alpha
+\]
+\noindent
+where $\alpha$ is the vector of $K$ unknown basis coefficients. We take $\hat{\alpha}$ to be the minimizer of 
+
+\begin{align}
+S &= \sum_{i=1}^m \left(y_i - \sum_{j=1}^{K} \alpha_j B_j\left(t_i\right) \right)^2 \nonumber\\
+&=\vert y - B\alpha \vert^2 \label{eq:S_varying_intercept_model}
+\end{align}
+
+
+\[
+B^TB\alpha = B^Ty
+\]
+which has explicit solution
+\[
+\hat{\alpha} = \left(B^T B\right)^{-1}B^Ty
+\]
+
+Given $\hat{\alpha}$, one may estimate the response at any new value of $t$, say $t^*$, by 
+\[
+\hat{y}\left(t^*\right) = \sum_{j=1}^{K} \hat{\alpha_j}B_j\left(t^*\right).
+\]
+
+\subsection{B-spline estimators for varying coefficient models with fixed knots}
+
+To extend the varying intercept model \ref{eq:varying_intercept_only_model} to accommodate for controlling for another regressor, it is natural to consider the varying coefficient model; the single regressor varying-coefficient (VC) model extends the classical linear model by allowing the slope coefficient to vary smoothly in the dimension of the indexing variable, $t$.  The single-index varying coefficient model assumes that the mean response is of the form
+
+\begin{equation} \label{eq:simplest_VC_model_mean}
+E\left[ Y\left(t\right) \right] = \beta_0\left(t\right) + \beta_1\left(t\right)x\left(t\right)
+\end{equation}
+
+where $\beta_0\left(t\right)$ is the smooth varying intercept function and $\beta_1\left(t\right)$ is the smooth slope function of interest. This model generalizes the well known simple linear regression model 
+\[
+E\left[Y\left(t\right)\right] = \beta_0 + \beta_1 x\left(t\right)
+\]
+by trading the static regression coefficients for smooth coefficient functions which are assumed to varying across an indexing variable, $t$. This allows for the regressor variable to having modified effect, depending on the value of $t$. Using a set of predetermined knots along the $t$ axis, the VC model can be fit in a fashion similar to that required for fitting model \ref{eq:varying_intercept_only_model}, requiring only minor adjustments to the design matrix. In matrix notation as described in \ref{eq:S_varying_intercept_model}, the mean vector may be written
+
+\begin{equation} \label{eq:VC_mean_matrix}
+\mu = B\alpha_0 + diag\left\{x\left(t\right) \right\}B\alpha_1
+\end{equation} 
+\noindent
+where $diag\left\{x\left(t\right) \right\}$ is the $m \times m$ diagonal matrix of regressor measurements which ensures that the varying coefficients are appropriately weighted according to the correct value of $x$ by aligning the regressor function with the corresponding slope value. Letting $U = diag\left\{x\left(t\right) \right\}B$, \ref{eq:VC_mean_matrix} becomes
+
+\begin{align}
+\mu &= \left[ B | U \right] \left(\alpha_0^T,\alpha_1^T\right)^T \\
+&\equiv Q\alpha
+\end{align} 
+
+where $\alpha$ is the augmented vector of basis coefficients. Here, the same basis is used for smoothing both the varying intercept as well as the varying slope function; this is feasible because both components varying along the same indexing variable. One can relax this structure and allow each additive term to varying according to its own indexing variable. This, of course, requires a separate B-spline basis for each component. Again using least squares techniques as with the varying intercept-only model, we take $\hat{\alpha}$ to minimize
+
+\begin{equation} \label{eq:S_varying_intercept_slope_model}
+S = \vert y-Q\alpha \vert ^2
+\end{equation}
+which has explicit solution
+
+\[
+\hat{\alpha} =\left(Q^T Q\right)^{-1} Q^Ty.
+\]
+
+It is of interest to notice that $Q$ is simply a row scaling of the original B-spline design matrix, $B$; thus, accommodating a varying slope function equates to the simple basis function regression setting with a modified basis, $UB$. Using the modified basis functions as covariates, estimation of model the varying coefficient model equates to a multiple regression problem. Each of the estimated smooth components are given by 
+\[
+\hat{\beta}_k\left(t \right)= B\hat{\alpha}_k, \qquad k=0,1
+\]
+\noindent
+and the estimate of the smooth mean function is obtained via 
+\begin{align*}
+\hat{\mu} &= Q\hat{\alpha}\\
+&= Hy
+\end{align*}
+where $H = Q\left(Q^T Q\right)^{-1} Q^T$ is the ``hat'' matrix. This will be discussed in further detail in later sections on smoothing parameter selection and model tuning.
+
+
+
+
+
+%%==============================================================================================================================================
+%%==============================================================================================================================================
+%%==============================================================================================================================================
+
+
+
+
+
+\section{P-spline estimators for regularized estimation of fitted curves}
+
+The mechanics in the previous section rely on apriori knowledge of the number and locations of the knots $\left\{t_j\right\}$, $j=1,\dots,K$. In practice this information is readily available, but has a considerable impact on the behaviour of the estimated coefficient functions, as the smoothness of a fitted curve can be controlled by the number of B-splines used in the basis expansion used to approximate the curve. Fewer knots (thus, fewer basis functions) lead to smoother fits. This choice presents a model selection problem, as too many knots lead to overfitting while too few knots lead to underfitting. Optimal knot placement has been closely examined, with some authors proposing automatic methods for optimizing the number and the positions of the knots (Friedman and Silverman, 1989; Kooperberg and Stone, 1991,1992). This is a difficult numerical problem requiring nonlinear optimization, and is still an open problem today. However, limiting the number of B-splines is not the only approach to controlling the complexity of the fitted function. 
+
+As in chapter {\needsparaphrased{smoothing spline chapter}}, we can append a penalty on the coefficients of the basis functions to the goodness of fit measure, and by optimizing this augmented objective function, we can achieve as much smoothness in the fitted function as desired. cite{o1986statistical} was the first to propose using a rich B-spline basis and applying a discrete penalty to the spline coefficients. 
+
+ He proposed a penalty on the second derivative to restrict the flexibility of the fitted curve, similar to the penalty pioneered for smoothing splines by Reinsch (1967). This penalty has become the standard in much of the spline literature; see Eubank (1988), Wahba (1990) and Green and Silverman (1994). This measure of roughness of a curve is given by 
+ 
+ \[
+ J = \int_l^u \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx
+ \]
+ \noindent
+ where $l$ and $u$ are the bounds on the domain of $x$. Using the properties of B-splines, if $f\left(x\right) = \sum_{j} \beta_j B_j\left(x\right)$, one can derive a banded matrix $P$ such that 
+ \[
+ J = \beta^\prime P \beta
+ \] 
+ \noindent
+ where $\beta = \left(\beta_1,\dots, \beta_n\right)$, and the $i$-$j^{th}$ element of $P$ is given by
+ \[
+ p_{ij} = \int_l^u B_i^{\prime \prime} \left( x \right)B_j^{\prime \prime} \left( x \right)\;dx.
+ \]
+ \noindent
+ He then proposed minimizing
+ \begin{eqnarray*}
+ Q\left(\beta, \lambda \right) &=& \sum_{i=1}^m \left(y_i - \sum_{j} \beta_j B_j\left(x_i \right)\right)^2 + \lambda \int_l^u \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx\\
+ &=& \vert y - B\beta \vert  \vert^2 + \lambda\beta^\prime P \beta
+ \end{eqnarray*}
+
+The computation of $P$ is nontrivial and becomes very tedious when the third and fourth derivative are used as the roughness measure. cite{wand2008semiparametric} extend O'Sullivan's work to higher order derivatives for general degree B-splines and derive an exact matrix algebraic expression for the penalty matrices. In the cubic case, the expression is a result of the application of Simpson's Rule applied to the inter-knot differences since each $B_i^{\prime \prime} B_j^{\prime \prime}$ is a piecewise quadratic function. The penalty may be written
+ \[
+ P = \left(B^{\prime \prime}\right)^\prime \textup{diag}\left(\omega \right) B^{\prime \prime}, 
+ \]
+ \noindent
+ where $B^{\prime \prime}$ is the $3\left( n + 7 \right) \times \left( n + 4 \right)$ matrix with $i$-$j^{th}$ entry given by $B_j^{\prime \prime} \left(x_i^*\right)$, $x^*_i$ is the $i^{th}$ element of 
+ 
+\[
+\left( \phi_1,\frac{\phi_1+\phi_2}{2},\phi_2,\phi_2,\frac{\phi_2+\phi_3}{2},\phi_3,\dots,\phi_{n+7},\frac{\phi_{n+7}+\phi_{n+8}}{2},\phi_{n+8} \right),
+\]
+ \noindent
+ and $\omega$ is the $3\left(n+7\right) \times 1$ vector given by
+ 
+\begin{align*}
+\omega &= \left( \frac{1}{6}\left(\Delta \phi \right)_1,\frac{4}{6}\left(\Delta \phi \right)_1, \frac{1}{6}\left(\Delta \phi \right)_1,\frac{1}{6}\left(\Delta \phi \right)_2, \frac{4}{6}\left(\Delta \phi \right)_2,  \right. \\
+&\qquad   \left. {} \frac{1}{6}\left(\Delta \phi \right)_2 , \dots , \frac{1}{6}\left(\Delta \phi \right)_{n+7}, \frac{4}{6}\left(\Delta \phi \right)_{n+7}, \frac{1}{6}\left(\Delta \phi \right)_{n+7}  \right) \\
+\end{align*}
+\noindent
+ where $\left(\Delta \phi \right)_j = \phi_{j+1}-\phi_j$. They generalize this to the case of any order penalty and present a table of formulas for constructing any arbitrary penalty matrix, $P$.
+ 
+ %%==============================================================================================================================================
+ 
+ \subsection{Difference penalties}
+ 
+Imposing difference penalties on B-spline basis expansions generalizes and simplifies the approach outlined in the previous section in a way that permits application in any context where regression on B-splines is useful. Penalized B-splines, or \emph{P-splines}, are an alternative an approach to nonparametric smoothing which circumvent any complexity associated with constructing such penalty matrices by ommitting derivatives and integrals altogether. Instead, smoothness is imposed via a discrete penalty matrix based on finite difference formulas which is simple to compute. This approach achieves smoothness in fitted functions in two ways:
+
+\begin{enumerate}
+\item To avoid the difficulty of choosing the optimal set of knots, use a B-spline basis with a large number of equally spaced knots, purposefully overfitting the smooth coefficient vectors. 
+\item Augment the goodness of fit measure with a difference penalty to prevent overfitting and accomodate a potentially ill-conditioned fitting procedure.
+\end{enumerate}  
+ 
+Using the properties of B-splines derived in {\needsparaphrased{B-spline section}}, it is relatively straightforward to show that the simplified penalty is nearly equivalent to the derivative-based penalty and that for second order differences, P-splines are very similar to O'Sullivan's approach. In some applications, it can be useful to use differences of a smaller or higher order in the penalty, and the P-spline framework makes the use of a penalty of any arbitrary order nearly seamless. 
+ 
+Consider the varying intercept-only model defined in \ref{eq:varying_intercept_only_model} for the regression of $M$ data points $\left(t_i,y_i\right)$ on a set of $K$ B-splines, $\left\{B_j\right\}$.  By letting the number of knots, $K$, be relatively large, we allow more variation in fitted curve than the data reasonably justify. To make the result less flexible and avoid overfitting, O'Sullivan imposed a penalty on the second derivative of the fitted curve and appended this to the residual sum of squares, giving way to the objective function
+
+\begin{equation} \label{eq:univariate_bspline_ridge_penalty}
+\sum_{i=1}^m \left \{ y_i - \sum_{j=1}^K \beta_j B_j\left(t_i\right) \right \}^2 + \lambda \int_{t_{min}}^{t_{max}} \left\{  \sum_{j=1}^K \beta_j B^{\prime \prime}_j\left(t\right) \right\}^2 \; dt.
+\end{equation}
+
+The integral of the square of the second derivative of a fitted function has become common as a smoothness penalty since the seminal work on smoothing splines by Reinsch (1967), though it is useful to note that there is nothing particularly special about the second derivative. One could easily specify higher or lower order derivatives in smoothness penalties. In the context of smoothing splines, the first derivative leads to simple equations and a piecewise linear fit, while higher derivatives lead to systems of equations with a high bandwidth and a very smooth fit. 
+
+
+Proposed for smoothing curves by cite{whittaker1922new}, difference penalties have been utilized for nearly a century, with more recent applications  outlined in  cite{eilers1991penalized}, cite{eilers1991nonparametric}, and cite{eilers1995indirect}. The finite difference penalty is easily introduced into regression equations, making it feasible to evaluate the impact of different orders of the differences on the fitted model. In some applications, it is useful to work with third and fourth order differences, since for high values of $\lambda$, the fitted curve approaches a parametric polynomial model. Detailed discussion on the effect of the smoothing parameter on fitted functions will follow. Let $D_d$ denote the matrix difference operator; that is, $D_d\beta = \Delta^d \beta$, where
+
+ \begin{eqnarray*}
+ \Delta \alpha_j &=& \alpha_j - \alpha_{j-1},\\
+ \Delta^2 \alpha_j &=& \Delta\left(\Delta \alpha_j\right) = \alpha_j - 2\alpha_{j-1} + \alpha_{j-2},\\ 
+ \end{eqnarray*}
+\noindent 
+and in general,
+\begin{equation*}
+\Delta^d \alpha_j = \Delta\left(\Delta^{d-1} \alpha_j \right)
+\end{equation*}
+The $\left(K - d\right) \times K$ differencing matrix $D_d$ is sparse for reasonably small values of $d$; for example, $D_1$ and $D_2$ for small dimensions are given by 
+\[
+D_1 = \begin{bmatrix} -1&1&0&0\\ 0&-1&1&0\\ 0&0&-1&1 \end{bmatrix}; \qquad D_2 = \begin{bmatrix} 1&-2&1&0 \\ 0&-&-2&1\end{bmatrix}
+\]
+
+cite{eilers1996flexible} propose to base the penalty on (higher-order) finite differences of the coefficients of adjacent B-splines:
+
+ \[
+ \lambda\vert D_d\alpha\vert^2 = \lambda \alpha^\prime D^\prime_d D_d \alpha = \lambda \alpha^\prime P\alpha,
+ \] 
+
+
+
+Replacing O'Sullivan's penalty with the difference penalty, we can control the smoothness of the fitted mean function $\mu = \beta_0\left( t \right) = B\alpha$ by minimizing
+\begin{equation*} 
+S_\lambda = \vert y- B \alpha \vert^2 + \lambda\vert D_d\alpha \vert^2
+\end{equation*}
+
+This approach reduces the dimensionality of the problem to the number of B-splines, $K$ instead of the number of observations, $M$ , as with smoothing splines. The tuning parameter $\lambda$ permits continuous control over smoothness of the fit. We will demonstrate that the difference penalty is a good discrete approximation to the integrated square of the $k^{th}$ derivative, and with this penalty, moments of the data are conserved and polynomial regression models occur as limits for large values of $\lambda$. We will explore the connection between a penalty on second-order differences of the B-spline coefficients and O'Sullivan's choice of a penalty on the second derivative of the fitted function. However, the difference penalty can be handled mechanically for any order of the differences.
+cite{o1986statistical} used third-degree B-splines and the following penalty:
+
+\begin{equation} \label{eq:osullivan_univariate_bspline_penalty}
+h^2 P = \lambda \int_{t_{min}}^{t_{max}} \left\{ \sum_{j}  \alpha_j B_{j,3}^{\prime \prime} \left(t\right) \right\}^2\; dt
+\end{equation}
+\noindent
+From the derivative properties of B-splines, it follows that
+\begin{equation} \label{osullivan_univariate_bspline_penalty_via_deriv}
+h^2 P = \lambda \int_{t_{min}}^{t_{max}}  \sum_{j} \sum_{k} \Delta^2 \alpha_j \Delta^2 \alpha_k B_{j,1}\left(t\right)B_{k,1}\left(t\right) dt 
+\end{equation}
+\noindent
+Most of the cross products of $B_{j,1}(t)$ and $B_{k,1}(t)$ vanish since B-splines of degree 1 only overlap when $j$ is $k-1$, $k$, or $k+1$. Thus, we have that
+\begin{align}
+h^2 P = {} & \lambda \int_{t_{min}}^{t_{max}} \bigg[ \left\{ \sum_{j}  \Delta^2 \alpha_j  B_j\left(t,1\right)  \right\}^2  + 2 \sum_{j}\Delta^2 \alpha_j\Delta^2 \alpha_{j-1}B_j\left(t,1\right)B_{j-1}\left(t,1\right) \bigg] dt \nonumber \\ 
+= {} & \lambda \bigg[ \sum_j \left( \Delta^2\alpha_j \right)^2 \int_{t_{min}}^{t_{max}} B_j^2\left(t,1\right)\;dt + 2 \sum_j \Delta^2 \alpha_j\Delta^2 \alpha_{j-1} \bigg]
+\end{align}
+\noindent
+or
+\begin{align}
+h^2 P = \lambda \sum_j \left( \Delta^2\alpha_j \right)^2 \int_{t_{min}}^{t_{max}} B_{j,1}^2\left(t\right) dt {} & +  2\lambda \sum_j \Delta^2 \alpha_j \Delta^2 \alpha_{j-1}  \nonumber \\ 
+{} &+\int_{t_{min}}^{t_{max}} B_{j,1}\left(t\right)B_{j-1,1}\left(t\right) dt
+\end{align}
+\noindent
+which can be written as
+\begin{equation} \label{eq:osullivan_penalty_decomp}
+h^2 P = \lambda\left\{c_1 \sum_j\left( \Delta^2 \alpha_j\right)^2 + c_2 \sum_j\Delta^2 \alpha_j\Delta^2 \alpha_{j-1} \right\}
+\end{equation}
+\noindent
+where, for given equidistant knots, $c_1$ and $c_2$ are constants given by
+\begin{equation}
+\begin{split}
+c_1 & =   \int_{t_{min}}^{t_{max}} B_{j,1}^2\left(t\right) dt\\
+c_2 & = \int_{t_{min}}^{t_{max}} B_{j,1}\left(t\right)B_{j-1,1}\left(t\right) dt
+\end{split}
+\end{equation}
+
+O'Sullivan's ridge-like B-spline penalty in Equation~\ref{eq:osullivan_univariate_bspline_penalty} can be written as a linear combination of a difference penalty (\ref{eq:univariate_pspline_diff_penalty}) and the sum of the cross products of neighboring second differences. The second term in Equation~\ref{eq:osullivan_penalty_decomp} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in Equation~\ref{eq:osullivan_penalty_decomp} is used in the penalty. The additional complexity is due to overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. The use of a difference penalty allows us to sidestep the difficulty of constructing a procedure for incorporating the penalty in the likelihood equations. 
+
+Define $\hat{\alpha} = \left(\hat{\alpha}_1, \hat{\alpha}_2, \dots, \hat{\alpha}_K \right)$ to be the minimizer of $S_\lambda$:
+
+\begin{equation*}  
+S_\lambda = \sum_{i=1}^m \left\{ y_i - \sum_{j=1}^K \alpha_j B_j\left(t_i\right) \right\}^2 + \lambda \sum_{j=d+1}^K \left( \Delta^d\alpha_j \right)^2
+\end{equation*}
+\noindent
+In vector notation, this may be written
+
+\begin{align}
+\begin{split}
+S_\lambda &= \vert y- B\alpha  \vert^2  + \lambda \vert D_d \alpha\vert^2 \\
+&=  \left( y- B\alpha  \right)^T \left( y-B \alpha\right) + \lambda \alpha^T P \alpha
+\end{split} \label{eq:S_pen_varying_intercept_model}
+\end{align}
+\noindent
+where 
+\[
+P = D_d^T D_d
+\]
+\noindent
+and the elements of $B$ are given by $b_{ij} = B_j\left(t_i\right)$, as defined in \ref{eq:S_varying_intercept_model}. Taking derivatives on both sides of \ref{eq:S_pen_varying_intercept_model} with respect to $\alpha$ gives
+
+\begin{align}
+\frac{\partial}{\partial \alpha}S_\lambda ={} & \frac{\partial}{\partial \alpha}\left(\alpha^TB^TB \alpha -2y^T B^T\alpha+\lambda \alpha^T D_k^T D_k \alpha  \right) \nonumber \\
+= {} & 2B^TB \alpha - 2B^T y + 2\lambda D_d^TD_d\alpha \nonumber\\
+= {} & \left(B^T B +  \lambda D_d^TD_d\right)\alpha - B^T y \label{eq:dSlambda_dAlpha}
+\end{align} 
+\noindent
+
+and setting equal to zero yields normal equations:
+\begin{equation}\label{eq:S_lambda_normal_eq}
+B^T y = \left(B^T B +  \lambda D_d^TD_k\right)\alpha,
+\end{equation}
+which has explicit solution
+\[
+\hat{\alpha} = \left(B^T B +  \lambda D_d^TD_d\right)^{-1}B^T y
+\]
+\noindent
+The effective hat matrix is now
+\[
+H_\lambda - B\left(B^T B +  \lambda D_k^TD_k\right)^{-1}B^T 
+\]
+
+When $\lambda = 0$, we have the standard normal equations of linear regression with a B-spline basis, and with $k = 0$ \ref{eq:S_lambda_normal_eq} corresponds to the normal equations under the ridge regression penalty. When $\lambda > 0$, the penalty only influences the main diagonal and $k$ sub-diagonals of the system of equations. The compact support and limited overlap of the B-spline basis functions gives this system a banded structure, though exploiting this structure is of little utility since the number of equations is equal to the number of splines, which is generally moderate by design. 
+
+
+
+\subsubsection{P-splines for single-index VC models}
+
+The derivations in the previous section requiring little adjustment for accommodating a regressor and its corresponding varying slope function, as defined in Equation~\ref{eq:simplest_VC_model_mean} with $\mu\left(t\right) =  Q\alpha$, where 
+\[
+Q = \left[B | diag\left\{x\left(t\right) \right\}B \right]
+\]
+but now $B$ holds a rich B-spline basis with equally-spaced knots. If one wishes to allow for differing degrees of smoothing for each of the varying intercept term and the slope function, the P-spline objective function \ref{eq:S_pen_varying_intercept_model} must be further modified to accommodate multiple tuning parameters, $\lambda_i$, $i=0,1$. The objective function then becomes
+\begin{align} 
+\begin{split}
+S^*_\lambda &= \vert y- Q\alpha  \vert^2  + \lambda_0 \vert D_{d_0} \alpha_0 \vert^2 + \lambda_1 \vert D_{d_1} \alpha_1 \vert^2\\
+	&= \vert y- Q\alpha  \vert^2  + \vert \alpha^T P \alpha \vert^2
+\end{split} \label{eq:S_pen_star}
+\end{align}
+
+where the penalty has form $P = \mbox{block diag}\left(\lambda_0 D_{d_0}^TD_{d_0}, \lambda_1 D_{d_1}^TD_{d_1} \right)$. The minimizer of \ref{eq:S_pen_star} is given by
+\[
+\hat{\alpha} = \left(Q^T Q +  P\right)^{-1}Q^T y.
+\]
+
+The block diagonal structure of the penalty separates the penalization of each individual smooth component. The estimated mean function is then given by 
+\[
+\hat{\mu} = Q \hat{\alpha} = H y
+\] 
+where
+\begin{equation} \label{eq:simplest_VC_model_hat_matrix}
+H = Q\left(Q^T Q +  P\right)^{-1}Q^T.
+\end{equation}
+
+{\needsparaphrased{[Figure~\ref{fig:PS_VCM_section_figure_1} Need to explain figure 3 here. ]} }
+
+\begin{figure}[H]
+   \graphicspath{{img/}}
+   \centering
+  \includegraphics[scale=0.25]{PS_VCM_section_figure_1.png}
+\caption{\textit{100 simulated data points where} $y\left(t\right) = t \beta\left( t \right) + 0.2\epsilon\left(t\right)$ \textit{where} $\epsilon$ \textit{is a white noise process with unit variance, and} $\beta\left(t\right) = 2\sin\left(2\pi t\right)$.}
+\label{fig:PS_VCM_section_figure_1}
+\end{figure}
+
+\begin{figure}[H]
+ \begin{subfigure}{.48\textwidth}
+  \centering
+   \graphicspath{{img/}}
+ \includegraphics[scale=0.5]{PS_VCM_section_figure_2.png}
+ \caption{$\hat{\beta}\left(t\right)$}
+ \end{subfigure}
+ \begin{subfigure}{.48\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{PS_VCM_section_figure_3.png}
+ \caption{$\hat{\mu}\left(t\right) = t \hat{\beta}\left(t\right)$}
+\label{fig:PS_VCM_section_figure_2}
+ \end{subfigure}
+ \caption{\textit{Estimated coefficient function} $\hat{\beta}\left(t\right)$ \textit{and mean curve} $\hat{\mu}\left(t\right) = t \sin(2 \pi t)$ \textit{using a 80 B-splines basis functions of order 5 and a difference penalty of order} $k=3$.}
+\end{figure}
+
+The properties discussed in Section~\ref{BS_properties_continued} allude to how controlling the coefficients of a spline $f \in \mathscr{S}_{k,t}$ influences the shape of the overall function. Specifically, the form of the $j^{th}$ derivative provides an avenue of understanding how the differenced B-spline coefficient sequence is related to the volatility of the function on a given interval of its domain. The following figure visually explore the impact of the squared distance on adjacent basis coefficients on the function; a useful way of examining at P-splines is to consider the coefficients as the skeleton of the function, then draping the B-splines over them to put the flesh over the bones. A smoother sequence of coefficients leads to a smoother curve, which is clearly illustrated in Figure~\ref{fig:second_ord_PS_pen_SML_lambda}. As long as the coefficient sequence is smooth, the number of basis functions (and coefficients) is unimportant. The penalty ensures the smoothness of the skeleton.
+
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{pspline_pord2_xsmall_lambda.png}
+  \label{fig:pspline_small_lambda}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{pspline_pord2_small_lambda.png}
+  \label{fig:pspline_small_lambda}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{pspline_pord2_medium_lambda.png}
+  \label{fig:pspline_small_lambda}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{pspline_pord2_large_lambda.png}
+  \label{fig:pspline_small_lambda}
+\end{subfigure}
+\caption{\textit{Illustration of the impact of the second order difference penalty. The number of B-splines used is the same in each plot, with the value of the penalty parameter increasing from left to right and top to bottom across each plot. The fitted curve in the upper left plot is the most ``wiggly'' of any of the fits, as the penalty plays the weakest roll in the fitted coefficients there. The red circles are the values of each of the B-spline coefficients; as the penalty increases, they form as smoother sequence as we move across the four plots, which results in a smoother fitted function. As the penalty parameter approaches infinity, the fit approaches a linear function as shown in the bottom right plot.}}
+\label{fig:second_ord_PS_pen_SML_lambda}
+\end{figure}
+
+The number of B-splines can be much larger than the number of observations because penalty ensures that the fitting procedure well-conditioned. One could literally use a thousand splines to fit ten observations without problems. Figure~\ref{fig:overcomplete_basis_pspline} illustrates this utility of the penalty for simulated data. There are $m=10$ observations and $40 + 3$ cubic B-splines. This property of P-splines cannot be overly appreciated, as it allows us to completely circumvent the nontrivial task of the optimal selection of knot placement. But one simply cannot have too many B-splines. Unless computational constraints are of concern, which is possible with large models, it is prudent to use even more. Figure~\ref{fig:PS_penalty_section_figure_3} shows how the fitted function changes as the tuning parameter $\lambda$ is varied in the presence of sparsely sampled data. 
+
+\begin{figure}[H]   \label{fig:overcomplete_basis_pspline}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.75]{pspline_10obs_60_basis_functions.png}
+  \caption{P-spline smoothing of 10 observations using 60 B-spline basis functions.}
+\end{figure}
+
+\begin{figure}[H] \label{fig:PS_penalty_section_figure_3}
+\centering
+ \graphicspath{{img/}}
+  \includegraphics[width=4in, height=4in]{PS_penalty_section_figure_3.png}
+
+  \includegraphics[width=4in, height=4in]{PS_penalty_section_figure_4.png}
+ \caption{Fitted mean curves using a second (top) and third (bottom) order difference penalty for simulated data, sparsely sampled along the indexing variable: $y\left(t\right) = 1.2 + \sin\left(5t\right) + 0.2\epsilon_t$, where $\epsilon_t \stackrel{i.i.d.}{\sim}\textup{N}\left(0,1\right)$. A total of 10 data points were fit using a basis of 60 B-splines of degree $k=3$.}
+\end{figure}
+
+%%====================================================================================
+
+\subsection{Properties of P-splines}
+
+P-splines enjoy many advantageous properties, many due in part to the inherited properties of the B-spline basis functions on which a generous portion of their foundation is constructed. 
+
+\begin{enumerate} \label{eq:PS_properties}
+\item \begin{description}\item[Boundary effects]
+ P-splines show no boundary effects, as many types of kernel smoothers do. By this, we mean the spreading of a fitted curve or density outside of the (physical) domain of the data, generally accompanied by bending toward zero.
+\end{description}
+\item \begin{description}\item[P-splines fit polynomial data exactly.] 
+P-splines can fit polynomial data exactly. Given data $\left(t_i,y_i\right)$, if the $y_i$ are a polynomial in $t$ of degree $k$, then B-splines of degree $k$ or higher will fit the data exactly. 
+\begin{proof}
+This statement is equivalent to the claim that given $\xi = \left\{ \xi_i \right\}$, $i=1,\dots,l+1$, and $g$ such that $y\left(t\right) = g\left(t\right)$, we can find an $f \in \PP_{k,\xi} \bigcap \mathscr{C}^{\left(k-2\right)}$ which agrees with $g$ at the points $\tau_1 < \dots < \tau_n$  with $\tau_i \in \left[\xi_1,\xi_{l+1}\right]$ for all $i$, where
+\[
+n=k+l-1
+\]
+The solution, $f$ is constructed as follows: generate the knot sequence $t = \left\{t_i\right\}$ as per the recipe in Theorem~\ref{curryschoenbergthm}:
+\begin{align*}
+t_1 &= t_2 = \dots = t_k = \xi_1 & \\
+t_{k+i} &= \xi_{i+1}, & i=1,\dots,l-1\\
+t_{n+1} &= t_{n+2} = \dots = t_{n+k} = \xi_{l+1} & 
+\end{align*}
+
+Let $\left\{ B_{ik} \right\}$, $i=1,\dots,n$ be the corresponding sequence of B-splines of order $k$, which are a basis for $\PP_{k,\xi} \bigcap \mathscr{C}^{\left(k-2\right)}$ by Theorem~\ref{curryschoenbergthm}. Here, $\PP_{k,\xi} \bigcap \mathscr{C}^{\left(k-2\right)}$ denotes the space of pp functions with breakpoints $\xi$ having two continuous (global) derivatives. Then, cite{schoenberg1953polya} have shown that there exists exactly one $f \in \PP_{k,\xi} \bigcap \mathscr{C}^{\left(k-2\right)}$ agreeing with $g$ at $\tau_1,\dots, \tau_n$ if and only if 
+\[
+B_{ik}\left(\tau_i\right) \ne 0, \qquad \qquad i=1,\dots,n.
+\]
+This $f$ has a unique expansion of the form
+\[
+f = \sum_{i=1}^n a_i B_{ik}
+\] 
+for coefficients $a_i,\dots, a_n$, which are the solution to the linear system
+\[
+\sum_{j=1}^n a_jB_{jk}\left(\tau_i\right) = g\left(\tau_i\right), \qquad \qquad i=1,\dots,n.
+\]
+This system has a banded matrix of coefficients since $B_{jk}\left(\tau_i\right) \ne 0$ if and only if $\tau_i \in \left[t_j,t_{j+k}\right]$. So if $B_{jk}\left(\tau_i\right) \ne 0$ and thus $\tau_i \in \left(t_j,t_{j+k}\right)$, then there are at most $k$ of the $j$ indices such that $B_{jk}\left(\tau_i\right)$ is nonzero. And further, each of these indices $j$ must be such that 
+\[
+\left(t_i,t_{i+k}\right) \bigcap \left(t_j,t_{j+k}\right) \ne \emptyset,
+\]
+or such that $\vert i-j \vert < k$. At worst, the system corresponds to a banded matrix with $k-1$ lower and $k-1$ upper diagonals. 
+\end{proof}
+The same is true for P-splines if the order of the penalty is $k+1$ or higher, irrespective of the value of $\lambda$. Consider imposing a first-order difference penalty and a fit to data $y$ that is constant - a polynomial of degree 0. Since 
+\[
+\sum_{j=1}^n \hat{\alpha}_j B_j\left( x_i \right) = c, 
+\]
+\noindent
+we have that
+\[
+\sum_{j=1}^n \hat{\alpha}_j B^\prime_j\left( x \right) = 0, 
+\]
+\noindent
+for all $x$. From the relationship between differences and derivatives in \ref{eq:more_BS_properties} \ref{eq:BS_deriv_property}, 
+
+\[
+0 = \sum_{j=1}^n B^\prime_{j,k}\left(x\right) = \sum_{j=1}^n \Delta\alpha_{j+1} B_{j,k-1}\left( x \right), 
+\]
+\noindent
+so that we must have $\Delta \alpha_j = 0$ for all $j$, and 
+\[
+\sum_{j=2}^n \Delta \alpha_j = 0.
+\]
+
+This shows that the penalty has no impact on the basis coefficients, and the resulting fit is identical to that when using unpenalized B-splines. Using induction, one can show that this is also true when the relationship between $x$ and $y$ is linear and a second order difference penalty is used, and for any values of the polynomial order and order of the difference penalty.\end{description}
+\item \begin{description}\item[Null models under difference penalties] \label{eq:PS_property_3}
+The limiting P-spline fit approaches a polynomial under strongly enforced smoothing. As $\lambda \rightarrow \infty$, under a difference penalty of order $d$, the fitted function will approach a polynomial of degree $d-1$ as long as the degree of the B-splines is greater than or equal to $k$. To see this, we again need to use the relationship between the differenced coefficient sequence and the derivative of a B-spline as described in \ref{eq:more_BS_properties} \ref{eq:BS_deriv_property}. Consider using the second-order difference penalty; when $\lambda$ is large, the penalty dominates the P-spline objective function defined in \ref{eq:S_pen_varying_intercept_model}, so that the minimizer $\alpha$ must be such that $\sum_{j=3}^n\left(\Delta^2\alpha_j\right)^2$ is close to zero. Consequently, each of the individual second differences must also be nearly zero, and thus the second derivative of the fitted function must be close to zero over the entire domain.
+\end{description}
+\item \begin{description}\item[The limiting behaviour of $H_\lambda$] The trace of the hat matrix, 
+\[
+H_\lambda = B\left(B^TB + \lambda D_k^TD_k\right)^{-1}B^Ty
+\] 
+(or for $H$ defined for the addition of a varying slope component as in \ref{eq:simplest_VC_model_hat_matrix}) approaches $k$, the order of the differencing operator, as $\lambda$ increases. We index $H$ with the smoothing parameter to indicate that the elements of $H$ are a function of $\lambda$. Let
+\begin{equation}
+Q_B = B^T B \qquad \mbox{and} \qquad Q_\lambda = \lambda D^T D.
+\end{equation}
+Then using properties of the matrix trace, we can write
+\begin{align}
+\begin{split}
+\mbox{tr}\left(H_\lambda \right) &= \mbox{tr}\bigg[ \left(Q_B + Q_\lambda \right)^{-1}Q_B \bigg]\\
+&=\mbox{tr}\bigg[ Q_B^{1/2}\left(Q_B + Q_\lambda \right)^{-1}Q_B^{1/2} \bigg] \\
+&=\mbox{tr}\bigg[\left(I + Q_B^{-{1/2}}Q_\lambda Q_B^{-{1/2}} \right)^{-1} \bigg]
+\end{split}
+\end{align}
+Define $L \equiv Q_B^{-{1/2}}Q_\lambda Q_B^{-{1/2}}$. Then
+\begin{equation}
+\mbox{tr}\left(H_\lambda \right) = \mbox{tr}\bigg[\left(I + \lambda L \right)^{-1} \bigg] = \sum_{j=1}^n \frac{1}{1 + \lambda \gamma_j}
+\end{equation}
+ where $\gamma_j$, $j=1,\dots,n$ are the eigenvalues of $L$. $Q_\lambda$ has exactly $k$ eigenvalues equal to zero, hence $L$ has $k$ zero eigenvalues. For large $\lambda$, only the $k$ terms with $\gamma_j=0$ contribute to the sum which gives the trace of $H$, so that
+ \[
+\lim_{\lambda \rightarrow \infty  } \mbox{tr}\left(H\right) = k.
+ \]
+\end{description}
+\end{enumerate}
+
+The previous derivations hold regardless of whether we are fitting the varying intercept-only model, with $\mu\left( t\right) = \beta_0\left(t\right)$ or accommodating a varying slope for a regressor by specifying $\mu\left( t\right) = \beta_0\left(t\right) + \beta_1\left(t\right)x\left(t\right)$. The inspection of the hat matrix $H$ is a prelude to the following section, where we will discuss how to use the properties of $H$ to tune the smoothing parameter for optimal model selection. We will later show that extension of these results can be extended in a rather straightforward manner to the case that is of our particular interest: when the smooth slope function is a two-dimensional surface rather than a curve.
+
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{PS_penalty_section_figure_6_order_0.png}
+  %\label{fig:pspline_small_lambda}
+\caption{$d=0$ }
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{PS_penalty_section_figure_6_order_1.png}
+ % \label{fig:pspline_small_lambda}
+\caption{$d=1$}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{PS_penalty_section_figure_6_order_2.png}
+  %\label{fig:pspline_small_lambda}
+\caption{$d=2$}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+   \graphicspath{{img/}}
+  \includegraphics[scale=0.5]{PS_penalty_section_figure_6_order_3.png}
+  %\label{fig:pspline_small_lambda}
+\caption{$d=3$}
+\end{subfigure}
+\caption{\textit{Illustration of the impact of the order of the difference penalty. The number of B-splines used is the same in each plot, with the penalty parameter varying from across the same grid of values. The fitted curves in the upper left plot correspond to the difference penalty of order $0$, where $\vert D_0 \alpha \vert^2 = \sum_{i=1}^n \alpha_i^2$, analogous to ridge regression using the B-spline basis as regression covariates. The fitted curves approach polynomials of degree $d-1$ as $\lambda \rightarrow \infty$, as discussed in \ref{eq:PS_properties} \ref{eq:PS_property_3}.}}
+\label{fig:PS_penalty_section_figure_6}
+\end{figure}
+
+
+
+
+\begin{figure}[h]
+\centering
+ \graphicspath{{img/}}
+  \includegraphics[width=4in, height=4in]{PS_penalty_section_figure_5.png}
+ %\caption{Tensor product of two cubic B-splines}
+\end{figure}
+
+
+\end{document}
