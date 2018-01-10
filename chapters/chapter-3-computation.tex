@@ -13,10 +13,13 @@
 \usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{cite}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\Hilbert}{\mathcal{H}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
 \newcommand*\needsproof{\color{blue}}
@@ -27,6 +30,7 @@
 \newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
 \newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
 \newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
 \newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
 \newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
 \newcommand{\bfe}{\mbox{\boldmath $e$}}
@@ -42,10 +46,20 @@
 
 \newcommand{\bfm}{\mbox{\boldmath $m}}
 \newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\tildeY}{\tilde{Y}}
+\newcommand{\tildey}{\tilde{y}}
+\newcommand{\tildeQ}{\tilde{Q}}
+\newcommand{\tildeR}{\tilde{R}}
+\newcommand{\tildeA}{\tilde{A}}
+\newcommand{\tildeepsilon}{\tilde{\epsilon}}
+\newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\bfepsilon}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\tildeS}{\tilde{S}}
 \newcommand{\bfa}{\mbox{\boldmath $a$}}
 \newcommand{\bfb}{\mbox{\boldmath $b$}}
 \newcommand{\bfY}{\mbox{\boldmath $Y$}}
 \newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfv}{\mbox{\boldmath $v$}}
 \newcommand{\bfZ}{\mbox{\boldmath $Z$}}
 \newcommand{\cardT}{\vert \mathcal{T} \vert}
 %\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
@@ -99,7 +113,7 @@
 Let $Y$ hold the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ stacked into a single vector of dimension $n_y=\left(\sum \limits_{i} M_i \right) - N$. Let $M$ denote the total number of distinct observation times across all subjects. For ease of exposition, let $\sigma_{ij} = \sigma\left( t_{ij} \right)$ and $\phi_{ijk} = \phi \left(t_{ijk} \right)$. The loglikelihood \ref{eq:loglik-general-form} becomes
 
 \begin{align}
-\begin{split}
+\begin{split} \label{eq:my-log-lik-phi}
 -2\ell\left(Y, \Sigma \right) &=  \sum_{t = 1}^M \log \sigma_t^2  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ijk}^2}{\sigma_{ij}^2}\\
 &= \sum_{t = 1}^M \log \sigma_t^2  + \sum_{i = 1}^N \frac{\epsilon_{i1}^2}{\sigma_{i1}^2} + \sum_{i = 1}^N \sum_{j = 2}^{m_i} \frac{\epsilon_{ij}^2}{\sigma_{ij}^{2}} \\
 &= \sum_{t = 1}^M \log \sigma_t^2  + \sum_{i = 1}^N \frac{y_{i1}^2}{\sigma_{i1}^2} + \sum_{i = 1}^N \sum_{j = 2}^{m_i} \sigma_{ij}^{-2} \left( y_{ij} - \sum \limits_{k < j}\phi_{ijk} y_{ik}  \right)^2.
@@ -107,24 +121,392 @@ Let $Y$ hold the $N$ observed response vectors $y_1,\dots, y_N$ less their first
 \end{align}
 \noindent
 
+%For ease of exposition, we assume that $\sigma^2\left(t\right)$ is fixed and known.
+An iterative procedure for minimizing \ref{eq:my-log-likelihood-phi} starts by first initializing $\sigma_{ij}$ using, for example, the innovation standard error estimated without the penalty. Then we minimize 
 
-\begin{equation} \label{eq:loglik-sigma-component}
-\sum_{t = 1}^M \log \sigma_t^2  + \sum_{i = 1}^N \frac{y_{i1}^2}{\sigma_{i1}^2} + \sum_{i = 1}^N \sum_{j = 2}^{m_i} \frac{\epsilon_{ij}^2}{\sigma_{ij}^{2}}
+\begin{equation} \label{eq:loglik-phi-component}
+ \sum_{i = 1}^N \sum_{j = 2}^{m_i} \frac{\epsilon_{ij}^2}{\sigma_{ij}^{2}}
 \end{equation}
 \noindent
+to obtain $\tilde{\phi}^*\left(t,s\right)$. We then obtain an estimate for $\sigma\left(t\right)$ by fixing $\phi^* = \tilde{\phi}^*$ and minimizing \ref{eq:my-log-lik-phi}.  We iterate this process until convergence of the estimated coefficient vectors. 
+
+\bigskip
 
 
-\indent
-%For ease of exposition, we assume that $\sigma^2\left(t\right)$ is fixed and known.
-An iterative procedure for minimizing \ref{eq:} starts by first initialising ?t, using for example the innovation standard error estimated without the penalty. We then minimise (10) to obtain ?tj, j = 1,...,t?1, and revise ?t2 as in (9). We iterate the process until convergence for each t, t = 2, · · · , n. For details about minimisation of (10) with fixed ?t see the Appendix.
+
 
 \section{Computation of the smoothing spline estimator}
+
+The minimization of the penalized smoothing spline log likelihood 
+
+\begin{align}
+\begin{split} \label{eq:penalized-likelihood-vectorized} 
+ &\mbox{} -2\ell\left(Y \vert c,d\right) + \lambda J_m\left(\phi^*\right)\\
+&= \left( Y - W \left( Sd + Qc \right) \right)^\prime D^{-1} \left( Y - W \left( Sd + Qc \right) \right) + \lambda c^\prime Q c 
+\end{split}
+\end{align} 
+\bigskip
+\noindent
+lies within a space 
+\[
+\Hilbert \subseteq \left \{ \phi^*: J\left(\phi^*\right) < \infty \right\}
+\]
+\noindent
+in which $J\left(\phi^*\right)$ is a square (semi) norm, or a subspace therein. The evaluation functional $\left[ \bfv \right] \phi^*$, which appears in the first term in \ref{eq:penalized-likelihood-vectorized}, is assumed to be continuous in $\Hilbert$. A space in which the evaluation functional is continuous is called a reproducing kernel Hilbert space (RKHS) endowed with reproducing kernel (RK) $Q\left(\cdot, \cdot\right)$, a non-negative definite function satisfying 
+
+\[
+\langle Q\left(\bfv,\cdot\right), \phi^*\left(\cdot\right) \rangle
+\]
+\bigskip
+\noindent
+$\forall \phi^* \in \Hilbert$, where $\langle \cdot, \cdot \rangle$ is an inner product in $\Hilbert$. The norm and RK determine each other uniquely.
+
+Let $\mathcal{N}_J = \left\{ \phi^*:\; J\left(\phi^*\right) = 0\right\}$ denote the null space of $J$, and consider the tensor sum decomposition
+
+\[
+\Hilbert = \mathcal{N}_J \oplus \Hilbert_J.
+\]
+\noindent
+The space $\Hilbert_J$ is a RKHS having $J\left(\phi^*\right)$ as the squared norm. The minimizer of \ref{eq:penalized-likelihood-vectorized} has form 
+
+\begin{equation} \label{eq:RKHS-functional-form}
+\phi^*\left(\bfv\right) = \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left( \bfv \right) + \sum_{i=1}^n c_i Q\left(\bfv_i, \bfv \right),
+\end{equation} 
+\bigskip
+\noindent
+where $\lbrace \eta_\nu \rbrace$ is a basis for $\mathcal{N}_J$, and $Q_J$ is the RK in $\Hilbert_J$. 
+
+\bigskip
+
+For $\bfv \in \mathcal{X}$ where $\mathcal{X}$ is a product domain, ANOVA decompositions can be characterized by 
+\begin{equation*}
+\Hilbert = \bigoplus\limits_{\beta=0}^{g} \Hilbert_\beta
+\end{equation*}
+\noindent
+and
+\begin{equation*}
+J\left(\phi^*\right) = \sum_{\beta=0}^{g} \theta^{-1}_\beta J_\beta \left( \phi^*_\beta \right),
+\end{equation*}
+\noindent
+where $\phi^*_\beta \in \Hilbert_\beta$, $J_\beta$ is the square norm in $\Hilbert_\beta$, and $0 < \theta_\beta < \infty$. This gives 
+
+\begin{align*}
+\Hilbert_0 &= \mathcal{N}_J \\
+\Hilbert_J &= \bigoplus\limits_{\beta=1}^{g} \Hilbert_\beta, \mbox{ and} \\
+Q &= \sum_{\beta=1}^g \theta_\beta Q_\beta,
+\end{align*}
+\noindent
+where $Q_\beta$ is the RK in $\Hilbert_\beta$. The $\left \{ \theta_\beta \right\}$ are additional smoothing parameters, which may or may not appear explicitly in notation to follow. 
+
+\bigskip
+
+Letting $\tildeY = D^{-1/2} Y$, $\tildeS = D^{-1/2} W S$, and $\tildeQ = D^{-1/2} W Q$, the penalized log likelihood \ref{eq:penalized-likelihood-vectorized} may be written
+
+\begin{equation}\label{eq:penalized-loglik-tilde-vectorized}
+-2\ell_\lambda \left(c, d \right) + \lambda J\left( \phi^* \right) = \bigg[ \tildeY - \tildeS d - \tildeQ c\bigg]'\bigg[ \tildeY - \tildeS d - \tildeQ c\bigg] + \lambda c'Qc.
+\end{equation}
+\noindent
+Taking partial derivatives with respect to $d$ and $c$ and setting equal to zero yields normal equations 
+
+\begin{align}
+\begin{split}
+\tildeS'\tildeS d + \tildeS'\tildeQ c &= \tildeS' \tildeY \\
+\tildeQ'\tildeS d + \tildeQ'\tildeQ c + \lambda Q c &= \tildeQ' \tildeY, 
+\end{split}
+\end{align}
+
+\noindent
+Some algebra yields that this is equivalent to solving the system
+
+\begin{equation} \label{eq:vectorized-normal-equations}
+\begin{bmatrix}
+\tildeS'\tildeS & \tildeS'\tildeQ \\
+\tildeQ'\tildeS & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+\begin{bmatrix}
+d\\
+c\\
+\end{bmatrix}
+= \begin{bmatrix}
+\tildeS'\tildeY \\
+ \tildeQ'\tildeY\\
+\end{bmatrix}
+\end{equation}
+
+Fixing smoothing parameters $\lambda$ and $\theta_\beta$ (hidden in $Q$ and $\tildeQ$ if present), assuming that $\tildeQ$ is full column rank, \ref{eq:vectorized-normal-equations} can be solved by the Cholesky decomposition of the $\left( n + d_0 \right) \times \left( n + d_0 \right)$ matrix followed by forward and backward substitution. See \citet{golub2012matrix}. Singularity of $\tildeQ$ demands special consideration. Write the Cholesky decomposition
+
+\begin{equation} \label{eq:normal-equation-cholesky}
+\begin{bmatrix}
+\tildeS'\tildeS & \tildeS'\tildeQ \\
+\tildeQ'\tildeS & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+= \begin{bmatrix}
+C'_1 & 0 \\
+C'_2  & C'_3 
+\end{bmatrix}
+\begin{bmatrix}
+C_1 & C_2 \\
+0  & C_3 
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\tildeS'\tildeS = C'_1 C_1$, $C_2 = C_1^{-T} \tildeS' \tildeQ$, and $C'_3 C_3 = \lambda Q +  \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ$. Using an exchange of indices known as pivoting, one may write 
+
+\begin{equation*}
+C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
+\end{equation*}
+\noindent
+where $H_1$ is nonsingular. Define
+\begin{equation} \label{eq:cholesky-factor-mod}
+\tilde{C}_3 = \begin{bmatrix}
+H_1 & H_2 \\
+0  & \delta I 
+\end{bmatrix}, \;\;
+\tilde{C} = \begin{bmatrix}
+C_1 & C_2 \\
+0  & \tilde{C}_3 
+\end{bmatrix};
+\end{equation}
+\noindent
+then
+\begin{equation} \label{eq:cholesky-factor-mod-inverse}
+\tilde{C}^{-1} = \begin{bmatrix}
+C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
+0  & \tilde{C}_3^{-1}
+\end{bmatrix}.
+\end{equation}
+
+Premultiplying \ref{eq:normal-equation-cholesky} by $\tilde{C}^{-T}$, straightforward algebra gives 
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky}
+\begin{bmatrix}
+I & 0 \\
+0 & \tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1}\\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}\\
+\end{bmatrix}
+= \begin{bmatrix}
+C_1^{-T} \tildeS'\tildeY \\
+\tilde{C}_3^{-T} \tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right) \tildeY\\
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \right)'$. Partition $\tilde{C}_3 = \begin{bmatrix} K &  L\end{bmatrix}$; then $HK = I$ and $HL = 0$. So
+
+\begin{align*}
+\tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1} &= \begin{bmatrix} K' \\ L' \end{bmatrix} C'_3C_3 \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} K' \\ L' \end{bmatrix} H'H \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
+\end{align*}
+\noindent
+If $L'C_3^{T} C_3 L = 0$, then $L'\tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right)\tildeQ L = 0$, so $L'\tildeQ'\left( I - \tildeS\left( \tildeS' \tildeS \right)^{-1} \tildeS' \right) \tildeY = 0$. Thus, the linear system has form
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky-2}
+\begin{bmatrix}
+I & 0 & 0\\
+0 & I & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}_1\\
+\tilde{c}_2
+\end{bmatrix}
+= \begin{bmatrix}
+* \\
+* \\
+0
+\end{bmatrix},
+\end{equation}
+\noindent
+which can be solved, but with $c_2$ arbitrary. One may perform the Cholesky decomposition of \ref{eq:vectorized-normal-equations} with pivoting, replace the trailing $0$ with $\delta I$ for appropriate value of $\delta$, and proceed as if $\tildeQ$ were of full rank. 
+\bigskip
+
+It follows that
+
+\begin{equation} \label{eq:tildeY-hat-equals-tildeA-tildeY}
+\widehat{\tildeY} = \tildeS d + \tildeQ c = \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda, \bftheta\right) \tildeY.
+\end{equation} 
+\noindent
+where
+\begin{align}
+\begin{split} \label{eq:cholesky-tildeA}
+\tildeA\left(\lambda, \bftheta \right) =& \begin{bmatrix} \tildeS & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ \tildeQ' \end{bmatrix}  \\
+&= B + \left(I - B\right) \tildeQ \left[\tildeQ'\left( I - B \right)\tildeQ + \lambda Q\right]^{-1} \tildeQ'\left(I - B\right),
+\end{split}
+\end{align} 
+\noindent
+for
+\[
+B = \tildeS\left(\tildeS' \tildeS \right)^{-1}\tildeS'.
+\]
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Model selection with multiple smoothing parameters}
+
+By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\phi^*_\lambda$ of \ref{eq:penalized-loglik-tilde-vectorized} defines a family of potential estimates. In practice, we need to choose a specific estimate from the family, which requires effective methods for smoothing parameter selection. We consider three criteria that are commonly used for smoothing parameter selection in the context of smoothing spline models. The first score is an unbiased estimate of a relative loss and assumes a known variances $\sigma_t^2$. The second score, the generalized cross validation (GCV) score of \citet{craven1978smoothing}, provides an estimate of the same loss without assuming a known variance function. These scores have attractive asymptotic properties; see \citet{gu2013smoothing} for a comprehensive examination. The third score is derived from the Bayesian interpretation of smoothing splines which uses restricted maximum likelihood.  To simplify presentation for the initial presentation, we only make explicit the dependence of estimates and their components on $\lambda$ and conceal any dependence on $\theta_\beta$. 
+
+\subsubsection{Unbiased risk estimate}
+
+We can write
+
+\begin{equation} 
+\tildeY = D^{-1/2}W \Phi^* + \tildeepsilon,
+\end{equation}
+\noindent
+where 
+\[
+\Phi^* = \left( \phi^*\left( \bfv_{121} \right), \phi^*\left( \bfv_{131} \right), \dots, \phi^*\left( \bfv_{N,m_N, m_n -1} \right) \right)'
+\]
+\noindent
+denotes the vector holding the values of $\phi^*$ evaluated at the observed within-subject pairs of time points, and $\tildeepsilon = D^{-1/2} \epsilon$ where $\epsilon$ is the vector of $\sum_{i = 1}^Nm_i - N$ associated prediction errors.  We can assess $\hat{\tildeY}_\lambda$, an estimate of the mean of $\tildeY$ based on observed data $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, m_i$, using the loss function
+
+\begin{align}
+\begin{split}
+L\left(\lambda\right) &= \sum_{i = 1}^N \sum_{j = 1}^{m_i} \left(\hat{\tildey}_{ij} - E\left[\tildey_{ij}\right] \right)^2\\
+&= \vert \vert \tildeY - \tilde{\mu} \vert \vert^2
+\end{split}
+\end{align}
+\noindent
+where $\mu = D^{-1/2}W \Phi^*$ denotes the $\left( \sum \limits_{i} m_i - N\right) \times 1$ with $i^{th}$ element equal to the expected value of the  $i^{th}$ element of $\tildeY$.  Then straightforward algebra yields that 
+
+\begin{align} 
+L\left(\lambda\right) = \mu'\left( I - \tildeA \right)^2\mu - 2\mu'\left( I - \tildeA \right)^2 \tildeA \tildeepsilon + \tildeepsilon' \tildeA^2 \tildeepsilon
+\end{align}
+
+Define the unbiased risk estimate
+\begin{equation} 
+U\left(\lambda\right) = \tildeY'\left( I - \tildeA \right)^2\tildeY + 2\mbox{tr}\tildeA
+\end{equation}
+ \noindent
+Adding and substracting $\mu$ to the quadratic terms, one can verify with straightforward algebra that
+
+\begin{align}
+\begin{split}
+U\left(\lambda\right) &= \left( \tildeY - \mu + \mu - \tildeA \tildeY \right)'\left( \tildeY - \mu + \mu - \tildeA \tildeY \right) + 2\mbox{tr}\tildeA \\
+&= \left(\tildeA \tildeY - \mu \right)'\left( \tildeA \tildeY - \mu \right) + \tildeepsilon'\tildeepsilon + 2\tildeepsilon' \left( I- \tildeA\right)\mu- 2\left( \tildeepsilon'\tildeA \tildeepsilon -  \mbox{tr}\tildeA\right)
+\end{split}
+\end{align}
+\noindent
+This gives
+\begin{equation} 
+U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  2\tildeepsilon' \left( I- \tildeA\right)\mu- 2\left( \tildeepsilon'\tildeA \tildeepsilon -  \mbox{tr}\tildeA\right), 
+\end{equation}
+ \noindent
+ which allows one to easily see that $U\left(\lambda\right)$ is unbiased for the relative loss $L\left(\lambda\right) + \tildeepsilon'\tildeepsilon$.  Under mild conditions on the risk function
+ 
+ \[
+ R\left(\lambda\right) = E\left[L\left(\lambda\right)\right],
+ \]
+\noindent
+one can establish that $U$ is also a consistent estimator. See \citet{gu2013smoothing} Chapter 3 for a formal theorem and proof.
+
+\subsubsection{Cross validation and generalized cross validation}
+  
+ \vspace{2in}
+ 
+The expression in \ref{eq:cholesky-tildeA} permits the straightforward evaluation of the GCV score
+
+\begin{equation} \label{eq:general-GCV-score}
+V\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \textup{tr} \left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^2}
+\end{equation}
+\noindent
+and the GML score
+\begin{equation} \label{eq:general-GML-score}
+M\left(\lambda, \bftheta \right) = \frac{\left( 1/n_y \right) \tildeY' \left(I - \tildeA\left(\lambda, \bftheta \right)\right) \tildeY }{\left[ \mbox{det}^+\left(I - \tildeA\left(\lambda, \bftheta \right)\right)  \right]^{1/n_y}}.
+\end{equation}
+\noindent
+where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.
+\bigskip
+To minimize the functions $V\left(\lambda, \bftheta\right)$ and $M\left(\lambda, \bftheta\right)$ with respect to $\bftheta$ and $\lambda$, we iterate as follows:
+
+\begin{enumerate}
+\item Fix $\bftheta$; minimize $V\left(\lambda \vert \bftheta\right)$ or $M\left(\lambda \vert \bftheta\right)$ with respect to $\lambda$.
+\item Update $\bftheta$ using the current estimate of $\lambda$.
+\end{enumerate}
+\noindent
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $V\left( \bftheta \vert \lambda \right)$ or $M\left(\bftheta \vert \lambda\right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $V$ and $M$ and \ref{eq:cholesky-tildeA}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $V\left(\cdot\right)$ and $M\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
+
+\subsection{Algorithms}
+
+The main algorithm and discussion of its key components are presented in the section to follow. The minimization of the model selection criterion is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $V$ (or $M$) with respect to smoothing parameters via quasi-Newton iteration of \citet{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration with step-halving as safeguards. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
+
+
+
+\begin{algorithm}[H]
+\caption{ }
+\begin{algorithmic}
+\STATE \textbf{Initialization:} 
+	\STATE Set $\Delta \bfkappa := 0$; \;$\bfkappa_{-}:=\bfkappa_{0}$; \;$V_- = \infty$; \;( or $M_- = \infty$)
+
+\STATE \textbf{Iteration:} 
+	\WHILE{not converged}
+		\STATE For current value $\bfkappa_* = \bfkappa_- + \Delta \bfkappa$, compute $Q_*^\theta = \sum_{\beta = 1}^g \theta_\beta Q_\beta$. 
+		\STATE Compute $\tildeA\left(\lambda \vert \bftheta_* \right) = \tildeA\left(\lambda, \exp\left({\bfkappa_*} \right)\right)$.
+		\STATE Minimize \begin{equation*} V\left(\lambda \vert \bfkappa_* \right) = \frac{\left( 1/n_y \right)  \left \lVert \left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right) \tildeY \right\rVert^2}{\left[\left( 1/n_y \right) \textup{tr} \left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right)  \right]^2} \end{equation*} or  \begin{equation*} 
+	M\left(\lambda \vert \bfkappa_* \right) = \frac{\left( 1/n_y \right) \tildeY' \left(I - \tildeA \left(\lambda \vert \bftheta_* \right)\right) \tildeY }{\left[ \mbox{det}^+\left(I - \tildeA\left(\lambda \vert \bftheta_* \right)\right)  \right]^{1/n_y}}.\end{equation*} \\
+			Set 
+			\begin{align*}
+			V_* := \min \limits_\lambda V\left( \lambda \vert \bfkappa_* \right) \\
+			\left( M_* := \min \limits_\lambda M\left(\lambda \vert \bfkappa_* \right) \right)
+			\end{align*}
+		\IF{$V_* > V_-$ (or $M_* > M_-$)}
+		 		\STATE Set $\Delta \bfkappa := \Delta \bfkappa/2$
+		 		\STATE Go to (1).
+		\ELSE
+		\STATE Continue
+		\ENDIF
+		\STATE Evaluate gradient $\mathbf{g} = \left(\partial /\partial \bfkappa\right) V\left(\bfkappa \vert \lambda\right)$ $\left(\mbox{or }\left(\partial /\partial \bfkappa\right) M\left(\bfkappa \vert \lambda\right) \right)$
+		\STATE Evaluate Hessian $H = \left(\partial^2 /\partial \bfkappa\partial \bfkappa' \right) V\left(\bfkappa \vert \lambda\right)$ $\left(\mbox{or } \left(\partial^2 /\partial \bfkappa\partial \bfkappa' \right) M\left(\bfkappa \vert \lambda \right) \right)$.
+		\STATE Calculate step $\Delta \bfkappa$:
+			\IF{$H$ positive definite}  
+				\STATE $\Delta \bfkappa := -H^{-1} \mathbf{g}$
+			\ELSE
+				\STATE $\Delta \bfkappa := -\tilde{H}^{-1} \mathbf{g}$, where $\tilde{H} = \textup{diag}\left(\bfepsilon\right)$ is positive definite.
+			\ENDIF
+	\ENDWHILE
+\STATE \textbf{Calculate optimal model:} 
+	\IF{$\Delta \kappa_\beta < -\gamma$, for $\gamma$ large}
+		\STATE Set $\kappa_{*\beta} := -\infty$
+	\ENDIF
+	\STATE Compute $Q_*^\theta = \sum_{\beta = 1}^g \theta_{*\beta} Q_\beta$;
+	\STATE Calculate $\begin{bmatrix} d \\ c \end{bmatrix} = \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeS' \\ {\tildeQ_*^\theta}' \end{bmatrix} \tildeY$
+					
+\end{algorithmic}
+\end{algorithm}
+
+The update direction $\Delta \bfkappa = -\tilde{H}^{-1} \mathbf{g}$ is calculated via the modified Newton method on the modified Cholesky decomposition given in \ref{eq:cholesky-factor-mod}. Detailed discussion can be found in \citet{gill1981practical}.
+\bigskip
+
+The starting values for the $\theta$ quasi-Newton iteration are obtained with two passes of the fixed-$\theta$ outer loop as follows:
+
+\begin{enumerate}
+\item Set $\breve{\theta}_\beta^{-1} \propto \mbox{tr}\left( \tildeQ_\beta \right)$, minimize $V\left(\lambda\right)$ with respect to $\lambda$ to obtain $\breve{\phi}^*$. \label{theta-starting-values-1}
+\item Set $\check{\theta}_\beta^{-1} \propto  J_\beta\left(\breve{\phi}^*_\beta \right)$, minimize $V\left(\lambda\right)$ with respect to $\lambda$ to obtain $\check{\phi}^*$. \label{theta-starting-values-2}
+\end{enumerate}
+\noindent
+The first pass allows equal opportunity for each penalty to contribute to the GCV score, allowing for arbitrary scaling of $J_\beta \left(\phi^*_\beta\right)$. The second pass grants greater allowance to terms exhibiting strength in the first pass. The following $\theta$ iteration fixes $\lambda$ and starts from $\check{\theta}_\beta$. These are the starting values adopted by \citet{gu1991minimizing}; the starting values for the first pass loop are somewhat arbitrary, but are invariant to scalings of the $\theta_\beta$. The starting values in \ref{theta-starting-values-2} for the second pass of the outer are based on more involved assumptions derived from the background formulation of the smoothing problem. See \citet{gu1991minimizing} for a detailed discussion.
+
+\bigskip
+TO DO: Outline the argument for using the starting values $\breve{\theta}_\beta$
+\bigskip
+
 
 
 \section{Computation of the P-spline estimator}
 
-
-\section{Smoothing parameter selection}
+\section{Smoothing parameter selection for tensor product P-splines}
 
 
 \end{document}
