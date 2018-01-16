@@ -407,11 +407,12 @@ one can establish that $U$ is also a consistent estimator. See \citet{gu2013smoo
 
 
 \subsubsection{Leave-one-out and generalized cross validation}
-The use of the unbiased risk estimate $U\left( \lambda \right)$ to select the optimal smoothing parameter requires knowledge of the innovation variance $\sigma\left(t \right)^2$, which is, in practice, unknown and we can at best approximate with an estimate. An alternative for selecting $\lambda$ is cross validation; it and its variants have long been utilized for smoothing parameter selection in spline models, and their properties have been studied extensively. A short list of supplemental references include \citet{craven1978smoothing}, \citet{wahba1985comparison}, \citet{hardle1988far}, \citet{hardle1992applied}, and \citet{wahba1990spline}. There are a number of ways to calculate a measure of cross validated prediction error; we first focus on the leave-one-out method. Let $\hat{\tildey}_{-ij}$ denote the predicted value for the observation $\tildey_{ij}$ when $\tildey_{ij}$ itself is removed from the data we use to fit the model. We can calculate these predictions for each observation in the data set to obtain the leave-one-out (LOO) cross validation score:
+The use of the unbiased risk estimate $U\left( \lambda \right)$ to select the optimal smoothing parameter requires knowledge of the innovation variance $\sigma\left(t \right)^2$, which is, in practice, unknown and we can at best approximate with an estimate. An alternative for selecting $\lambda$ is cross validation; it and its variants have long been utilized for smoothing parameter selection in spline models, and their properties have been studied extensively. A short list of supplemental references include \citet{craven1978smoothing}, \citet{wahba1985comparison}, \citet{hardle1988far}, \citet{hardle1992applied}, and \citet{wahba1990spline}. There are a number of ways to calculate a measure of cross validated prediction error; we first focus on the leave-one-out method. Let $\hat{\tildey}^{\left[-ij\right]}_{ij}$ denote the predicted value for the observation $\tildey_{ij}$ when $\tildey_{ij}$ itself is removed from the data used for fitting the model. We can calculate these predictions for each observation in the data set to obtain the leave-one-out (LOO) cross validation score:
 
 \begin{equation} \label{eq:LOOCV}
-V_0\left(\lambda\right) = \frac{1}{N} \sum_{i=1}^N \sum_{j=2}^{m_i} \frac{1}{m_i} \left(  y_{ij} - \hat{y}_{-ij}\right)^2, 
+V_0\left(\lambda\right) = \frac{1}{N} \sum_{i=1}^N \sum_{j=2}^{m_i} \frac{1}{m_i} \left(  y_{ij} - \hat{y}^{\left[-ij\right]}_{ij}\right)^2, 
 \end{equation}
+
 Brute force calculation of \ref{eq:LOOCV_def} is generally impractical, especially if the number of observations is large. However, this labor can be sidestepped using the following fact: 
 
 \begin{equation*}
@@ -422,7 +423,7 @@ Brute force calculation of \ref{eq:LOOCV_def} is generally impractical, especial
 With some abuse of notation, let $\tildey_{k}$ denote the $k^{th}$ element of the full vector of responses $\tildeY$, for $k = 1, \dots, \sum_i m_i - N$. One can show that 
 
 \begin{equation} \label{eq:LOO_residual}
-y_k - \hat{y}_{-k} = \left(y_k - \hat{y}_{k}\right)/\left(1-\tilde{a}_{kk}\right),
+y_k - \hat{y}^{\left[-k\right]}_{k} = \left(y_k - \hat{y}_{k}\right)/\left(1-\tilde{a}_{kk}\right),
 \end{equation}
 \noindent
 where $\left\{\tilde{a}_{kk}\right\}$ denote the diagonal elements of the smoothing matrix $\tildeA$, which can be calculated quickly. An informal proof of \label{eq:LOO_residual} is as follows: suppose that we change the $i^{th}$ element of $\tildeY$, obtaining a new response vector $\tildeY^*$. Then $\widehat{\tildeY}^* = \tildeA \tildeY^*$.  Since 
@@ -439,24 +440,54 @@ where $\left\{\tilde{a}_{kk}\right\}$ denote the diagonal elements of the smooth
  \[
  \hat{\tildey}_k - \hat{\tildey}_{-k} = \sum_l \tilde{a}_{kl} \left(\tildey_k - \tildey_k^*\right) = \tilde{a}_{kk} \left(\tildey_k - \tildey_k^*\right).  
 \]
-
-Thus, \ref{eq:LOOCV} can be rewritten as 
+\noindent
+With this, \ref{eq:LOOCV} can be rewritten as 
 \begin{align*} 
-V_0\left(\lambda\right) &= \frac{1}{{\sum_{i}m_i - N}} \sum_{k = 1}^{\sum_{i}m_i - N}  y_k - \hat{y}_{-k}\\
- &=  \frac{1}{{\sum_{i}m_i - N}} \sum_{k = 1}^{\sum_{i}m_i - N}  \left(y_k - \hat{y}_{k}\right)^2/\left(1-\tilde{a}_{kk}\right)^2 , 
+V_0\left(\lambda\right) &= \frac{1}{{\sum_{i}m_i - N}} \sum_{k = 1}^{\sum_{i}m_i - N}  y_k - \hat{y}^{\left[-k\right]}_{k}\\
+ &=  \frac{1}{{\sum_{i}m_i - N}} \sum_{k = 1}^{\sum_{i}m_i - N}  \left(\tildey_k - \hat{\tildey}_{k}\right)^2/\left(1-\tilde{a}_{kk}\right)^2 , 
 \end{align*}
-
+\noindent
 The best $\lambda$ is the value that minimizes the cross validation score. The leave-one-out cross validation score weighs all data points equally in the estimate of prediction error. However, one may wish to adjust for any imbalance in the contribution of the $t_{ij}$ to the estimate of $\phi$, which can be done by simply weighting observations when averaging the prediction errors:
    
-\begin{equation*} 
-\bar{V}\left(\lambda\right) = \frac{1}{k = 1}^{\sum_{i}m_i - N}   y_k - \hat{y}_{-k} = \omega_k \left(y_k - \hat{y}_{k}\right)^2/\left(1-\tilde{a}_{kk}\right)^2 . 
-\end{equation*}
+\begin{equation} \label{eq:weighted_LOOCV} 
+\bar{V}\left(\lambda\right) = \frac{1}{\sum_{i}m_i - N} \sum_{k = 1}^{\sum_{i}m_i - N}  \tildey_k - \hat{\tildey}^{\left[-k\right]}_{k} = \omega_k \left(\tildey_k - \hat{\tildey}_{k}\right)^2/\left(1-\tilde{a}_{kk}\right)^2 . 
+\end{equation}
 \noindent
-We obtain Craven and Wahba's generalized cross validation score (GCV) if we take $\omega_i = \left(1 - \tilde{a}_{kk}\right)^2/\left(\left(\sum_{i}m_i - N \right)^{-1}\mbox{tr}\left( I - \tildeA\left(\lambda\right)\right)\right)^2$, which is equivalent to substituting $\tilde{a}_{kk}$ in \ref{eq:} for the average $\left(\sum_{i}m_i - N \right)^{-1} \sum_{k=1}^{\sum_{i}m_i - N} \tilde{a}_{kk}$. Under mild conditions, the GCV score is a consistent estimator of relative loss \ref{eq:}, see \citet{craven1978smoothing} for detailed discussion.
+We obtain Craven and Wahba's generalized cross validation score (GCV) if we take
+\[
+\omega_i = \left(1 - \tilde{a}_{kk}\right)^2/\left[\frac{\mbox{tr}\left( I - \tildeA\left(\lambda\right)\right)}{\sum_{i}m_i - N}\right]^2,
+\]
+which is equivalent to substituting $\tilde{a}_{kk}$ in \ref{eq:weighted_LOOCV} for the average $\left(\sum_{i}m_i - N \right)^{-1} \sum_{k=1}^{\sum_{i}m_i - N} \tilde{a}_{kk}$. Under mild conditions, the GCV score is a consistent estimator of relative loss \ref{eq:}, see \citet{craven1978smoothing} for detailed discussion.
   
 \subsubsection{Leave-one-subject-out cross validation}  
-The conditions under which the the cross validation and GCV scores yield desirable properties generally do not hold when the data are clustered or longitudinal in nature. Instead, the leave-one-subject-out (LOSO) cross validation score has been widely used for smoothing parameter selection for semiparametric and nonparametric models for longitudinal or functional data. Intuitively, the LOSO CV score is appealing because it preserves any within-subject dependence by leaving out all observations from the same subject together in the cross-validation.  However, despite its prevalent use, theoretical justifications for its use have not been established. In their seminal work, \citet{rice1991estimating} were the first to present a heuristic justification of LOSO CV by demonstratingthat it mimics the mean squared prediction error.
- 
+The conditions under which the the cross validation and GCV scores yield desirable properties generally do not hold when the data are clustered or longitudinal in nature. Instead, the leave-one-subject-out (LosoCV) cross validation score has been widely used for smoothing parameter selection for semiparametric and nonparametric models for longitudinal or functional data. The LosoCV criterion is defined as
+
+\begin{equation} \label{eq:LOSOCV}
+V_{loso}\left(\lambda\right) = \frac{1}{N}\sum_{i=1}^N \left( Y_i - \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)'\left( Y_i -  \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)
+\end{equation}
+\noindent
+where $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ is the estimate of $E\left[ \tildeY_i \right]$ based on the data when $\tildeY_i$ is omitted. Intuitively, the LosoCV score is appealing because it preserves any within-subject dependence by leaving out all observations from the same subject together in the cross-validation.  However, despite its prevalent use, theoretical justifications for its use have not been established. In their seminal work, \citet{rice1991estimating} were the first to present a heuristic justification of LosoCV by demonstrating that it mimics the mean squared prediction error.
+\bigskip
+
+Consider new observations $Y^*_i = \left(y_{i1}^*, y_{i1}^*, \dots, y_{i, m_i}^*\right)$  
+\bigskip 
+
+[Present heuristic argument here. See Xu, G.,  Huang, J. Z. (2012). Asymptotic optimality and efficient computation of the leave-subject-out cross-validation. The Annals of Statistics, 40(6), 3003-3030.] 
+
+\begin{align}
+\begin{split}\label{eq:MSPE}
+MSPE &= \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - \widehat{\tilde{\mu}}_{i} \vert \vert^2 \right]\\
+&=  \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - D_i^{-1/2}W_i \Phi^* + D_i^{-1/2}W_i \Phi^* - D_i^{-1/2}W_i \hat{\Phi}^*\vert \vert^2 \right]\\
+&=  \frac{1}{N}\sum_{i=1}^N \left\{m_i + E\left[ \vert \vert \tilde{\mu}_{i} - \widehat{\tilde{\mu}}^{\left[ -i \right]}_{i} \vert \vert^2 \right] \right\}
+\end{split}
+\end{align}
+\noindent
+where $\tilde{\epsilon}_i = \tildeY^*_i - D_i^{-1/2}W_i \Phi^*$. When $\left\{ \sigma^2\left(t\right)\right\}$ is known, $\tilde{\epsilon}_i$ is a mean zero multivariate normal vector with $Cov\left(\tilde{\epsilon}_i\right) = I_{m_i}$, which gives the last equality. Since $\tildeY_i$ and $ \widehat{\tilde{\mu}}_{i} $ are independent, the expected LosoCV score can be written
+\begin{equation} \label{eq:MSPE_LOSOCV}
+E\left[V_{loso}\left(\lambda\right) \right] =  \frac{1}{N}\sum_{i=1}^N\left\{ m_i +  E\left[ \vert \vert \widehat{\tilde{\mu}}_{i} - \tilde{\mu}_{i} \vert \vert^2 \right] \right\}. 
+\end{equation}
+\noindent
+When $N$ is large, we expect that $\widehat{\tilde{\mu}}_{i}$ should be close to $\widehat{\tilde{\mu}}^{\left[ -i \right]}_{i}$, so $E\left[V_{loso}\left(\lambda\right) \right]$ should be a good approximation to the mean-squared prediction error. 
  
 \vspace{0.8in} 
 \subsection{Selection of multiple smoothing parameters}
