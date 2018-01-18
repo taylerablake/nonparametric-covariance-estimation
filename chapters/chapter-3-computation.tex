@@ -346,11 +346,11 @@ B = \tildeS\left(\tildeS' \tildeS \right)^{-1}\tildeS'.
 
 The smoothing matrix $\tildeA$ plays an integral role of calculating all of the model selection criteria we will discuss in the sections to follow;  the diagonal elements of $\tildeA$, $\tilde{a}_{kk}$ are of particular importance in quantifying  model complexity. In classical regression theory, the degrees of freedom are clearly defined as the number of variables included in the model. \citet{eilers1996flexible} and\citet{marx2005multidimensional} refer to this measure of model complexity as the model's \emph{effective dimension} ED; they follow \citet{hastie1990generalized}, who discuss the effective dimensions of linear smoother and propose to use the trace of the smoother matrix as an approximation. 
 
-\subsection{Model selection}
+\section{Model selection criteria}
 
 By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\phi^*_\lambda$ of \ref{eq:penalized-loglik-tilde-vectorized} defines a family of potential estimates. In practice, we need to choose a specific estimate from the family, which requires effective methods for smoothing parameter selection. We consider three criteria that are commonly used for smoothing parameter selection in the context of smoothing spline models. The first score is an unbiased estimate of a relative loss and assumes a known variances $\sigma_t^2$. The second score, the generalized cross validation (GCV) score of \citet{craven1978smoothing}, provides an estimate of the same loss without assuming a known variance function. These scores have attractive asymptotic properties; see \citet{gu2013smoothing} for a comprehensive examination.   To simplify presentation for the initial presentation, we only make explicit the dependence of estimates and their components on $\lambda$ and conceal any dependence on $\theta_\beta$. 
 
-\subsubsection{Unbiased risk estimate}
+\subsection{Unbiased risk estimate}
 
 We can write
 
@@ -406,7 +406,7 @@ U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  
 one can establish that $U$ is also a consistent estimator. See \citet{gu2013smoothing} Chapter 3 for a formal theorem and proof.
 
 
-\subsubsection{Leave-one-out and generalized cross validation}
+\subsection{Leave-one-out and generalized cross validation}
 The use of the unbiased risk estimate $U\left( \lambda \right)$ to select the optimal smoothing parameter requires knowledge of the innovation variance $\sigma\left(t \right)^2$, which is, in practice, unknown and we can at best approximate with an estimate. An alternative for selecting $\lambda$ is cross validation; it and its variants have long been utilized for smoothing parameter selection in spline models, and their properties have been studied extensively. A short list of supplemental references include \citet{craven1978smoothing}, \citet{wahba1985comparison}, \citet{hardle1988far}, \citet{hardle1992applied}, and \citet{wahba1990spline}. There are a number of ways to calculate a measure of cross validated prediction error; we first focus on the leave-one-out method. Let $\hat{\tildey}^{\left[-ij\right]}_{ij}$ denote the predicted value for the observation $\tildey_{ij}$ when $\tildey_{ij}$ itself is removed from the data used for fitting the model. We can calculate these predictions for each observation in the data set to obtain the leave-one-out (LOO) cross validation score:
 
 \begin{equation} \label{eq:LOOCV}
@@ -459,7 +459,7 @@ We obtain Craven and Wahba's generalized cross validation score (GCV) if we take
 \]
 which is equivalent to substituting $\tilde{a}_{kk}$ in \ref{eq:weighted_LOOCV} for the average $\left(\sum_{i}m_i - N \right)^{-1} \sum_{k=1}^{\sum_{i}m_i - N} \tilde{a}_{kk}$. Under mild conditions, the GCV score is a consistent estimator of relative loss \ref{eq:}, see \citet{craven1978smoothing} for detailed discussion.
   
-\subsubsection{Leave-one-subject-out cross validation}  
+\subsection{Leave-one-subject-out cross validation}  
 The conditions under which the the cross validation and GCV scores yield desirable properties generally do not hold when the data are clustered or longitudinal in nature. Instead, the leave-one-subject-out (LosoCV) cross validation score has been widely used for smoothing parameter selection for semiparametric and nonparametric models for longitudinal or functional data. The LosoCV criterion is defined as
 
 \begin{equation} \label{eq:LOSOCV}
@@ -489,7 +489,52 @@ E\left[V_{loso}\left(\lambda\right) \right] =  \frac{1}{N}\sum_{i=1}^N\left\{ m_
 \noindent
 When $N$ is large, we expect that $\widehat{\tilde{\mu}}_{i}$ should be close to $\widehat{\tilde{\mu}}^{\left[ -i \right]}_{i}$, so $E\left[V_{loso}\left(\lambda\right) \right]$ should be a good approximation to the mean-squared prediction error. 
  
+ \subsubsection{Formal justification for LosoCV by showing that it is asymptotically equivalent to loss function when appropriately defined}
+ 
+ 
+ \subsubsection{Regularity conditions necessary for asymptotic properties of LosoCV score to hold} 
+ 
+ \subsubsection{Optimality of LosoCV score}
+ 
+  \subsubsection{Computation of the LosoCV score}
+  
+  \begin{lemma}[Shortcut formula for LosoCV] \label{lemma:losocv-shortcut}
+  The LosoCV score satisfies the following identity:
+  \begin{equation*}
+ V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(I_{ii} - \tildeA_{ii}\right)^{-T}\left(I_{ii} - \tildeA_{ii}\right)^{-1}\left(\tildeY_i - \widehat{\tildeY_i}\right),
+  \end{equation*}
+  \noindent
+  where $\tildeA_{ii}$ is the diagonal block of smoothing matrix $\tildeA$ corresponding to the observations on subject $i$, and $I_{ii}$ is a $m_i \times m_i$ identity matrix.
+\end{lemma}
+
+See \citet{xu2012asymptotic} and supplementary materials \citet{xuasymptotic} for a detailed presentation and proof.  
+
+\begin{proof} \label{proof:losocv-shortcut}
+For fixed $\lambda$, $\bftheta$, $\sigma^2\left(t \right)$, let $\hat{a}^{\left[-i\right]} = \left(\hat{d}^{\left[-i\right]}, \hat{c}^{\left[-i\right]}\right)$ denote the minimizer of the penalized log likelihood 
+\end{proof}  
+
+\subsubsection{Approximation of leave-one-subject-out cross validation}
+  
+\citet{xu2012asymptotic} additionally proposed an approximation to the LosoCV score to further reduce the computational cost of evaluating $V_{loso}$, which can be expensive due to the inversion of the $I_{ii} - \tildeA_{ii}$. Using the Taylor expansion of $\left(I_{ii} - \tildeA_{ii}\right)^{-1} \approx I_{ii} + \tildeA_{ii}$, we can use the following to approximate $V_{loso}$:
+
+\begin{equation} \label{eq:approx-losocv}
+V_{loso}^*\left( \lambda \right) = \frac{1}{N} \vert \vert \left(I - \tildeA\right)\tildeY \vert \vert^2 + \frac{2}{N} \sum_{i = 1}^N \hat{\tilde{e}}'_{i}\tildeA_{ii}\hat{\tilde{e}}_i,
+\end{equation}
+\noindent
+where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA\right)\tildeY$ corresponding to subject $i$.   
+
+\begin{theorem} \label{thm:asymptotic-equiv-of-losocv}
+Under conditions 1-5, for predetermined $\sigma^2\left(t\right)$ and nonrandom $\lambda$, 
+\begin{equation}
+V_{loso}\left(\lambda \right) - L\left(\lambda \right) - \frac{1}{N} \epsilon'\epsilon - o_p\left( L\left(\lambda \right)\right).
+\end{equation}
+\noindent
+as $n \rightarrow \infty$ 
+\end{theorem}
+  
 \vspace{0.8in} 
+
+
 \subsection{Selection of multiple smoothing parameters}
 
 The expression in \ref{eq:cholesky-tildeA} permits the straightforward evaluation of the GCV score
