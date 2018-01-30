@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage{enumitem}
+\usepackage{accents}
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{cite}
+\usepackage{amsthm}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+
+
+\newcommand{\bfm}{\mbox{\boldmath $m}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\begingroup\lccode`~=`_
+\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
+\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
+
+\makeatletter
+\renewcommand{\theenumi}{\Roman{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\Alph{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+\renewcommand{\p@enumii}{\theenumi.}
+\makeatother
+
+\begin{document}
+
+%\nocite{*}
+\def\bL{\mathbf{L}}
+%\usepackage{mathtime}
+
+%%UNCOMMENT following line if you have package
+
+
+\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\bibliographystyle{plainnat}
+\maketitle
+
+\section{Cattle weights}
+
+Fitted models can be found in 
+/Users/taylerblake/GitRepos/cautious-guacamole/cache/kenward-cattle-analysis.RData
+
+Grazing cattle can ingest larvae, which deprives the host animal of nutrients and weakens the immune system, affecting the growth of the animal.
+
+Two treatments A and B were applied randomly to 60 animals (30 each in two groups) to control the disease.
+
+Each animal was weighed 11 times at two-week intervals (one week between the final two measurements).
+
+See \\
+
+Kenward, Michael G. (1987). A Method for Comparing Profiles of Repeated Measurements. Applied Statistics, 36, 296-308. Table 1. http://doi.org/10.2307/2347788
+
+\end{document}

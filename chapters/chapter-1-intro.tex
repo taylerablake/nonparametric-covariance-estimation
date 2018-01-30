@@ -13,10 +13,12 @@
 \usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{cite}
+\usepackage{rotating}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
 \newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
-\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
 \newcommand*\needsproof{\color{blue}}
@@ -38,6 +40,8 @@
 \newcommand{\bfx}{\mbox{\boldmath $x$}}
 \newcommand{\bfX}{\mbox{\boldmath $X$}}
 \newcommand{\bfz}{\mbox{\boldmath $z$}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
 
 
 \newcommand{\bfm}{\mbox{\boldmath $m}}
@@ -141,13 +145,113 @@ The rest of the paper is organized as follows: Section 2 summarizes the general 
 
 \section{Covariance estimation: a review}
 
-Parametric models are frequently used for modeling covariance structure in the longitudinal data setting. Simple models which depend on a small number of parameters  are commonly found in the literature such as those corresponding to compound symmetry and autoregressive models of order $k$, where $k$ is small. However, model misspecification can lead to considerably biased estimates. Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased[REVIEW 2009 WU AND POURAHMADI  METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
+{\needsparaphrased{In this survey, we review the progress made in parsimonious modelling of covariance
+matrices that is compatible with the GLM principles, i.e. reducing the dimension of, and
+the constraint on, the parameter space of covariance matrices. We recall that the Nelder
+and Wedderburn?s (1972) framework of generalized linear models (GLM) has successfully
+unified a vast collection of apparently disparate approaches developed over a span of two
+centuries, to model the mean or mean-like parameters (McCullagh and Nelder, 1989). Nowadays,
+GLM can handle normal, probit, logistic and Poisson regressions, log-linear models for
+contingency tables, variance component estimation from ANOVA mean squares (Searle et
+al. 1992), spectral estimation from periodogram ordinates (Cameron and Turner, 1987) and
+survival data among others. The success of GLM hinges on the concept of link functions
+to induce unconstrained reparameterization for the mean (first moment) of a distribution,
+and hence the ability to reduce the dimension of the parameter space via modelling the
+covariate effect additively by increasing the number of parameters gradually one at a time
+corresponding to inclusion of each covariate. The successful development of GLM has been
+the source of inspiration for a large class of models like nonparametric and generalized additive
+models (Hastie and Tibshirani, 1990), generalized linear mixed models (McCulloch and Searle, 2001), hierarchical generalized linear models (Lee and Nelder, 1996) and other
+extensions reviewed in Nelder (1998) and Bayesian GLM (Dey et al., 2001). We believe,
+in analogy with the above developments, once a bona fide GLM framework for modelling
+covariance matrices is formulated (Chiu et al., 1996, Pourahmadi, 2000), it will definitely
+facilitate further developments from the Bayesian, nonparametric and other perspectives.}}
+
+{\needsparaphrased{ On the other hand, in the literature of applied statistics, particularly for repeated measure data, there is a growing tendency to pick a stationary covariance matrix, such as compound symmetry and autoregression of order one with few parameters from a growing menu provided by the popular software packages (Zimmerman and N?u?nez-Ant?on, 2001). The question of which covariance structure to pick is a challenge even for the experts. Of course, if the selected covariance structure is far from the truth, then the estimated covariance matrix could have considerable bias. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.}}
+
+Parametric models are frequently used for modeling covariance structure in the longitudinal data setting. Simple models which depend on a small number of parameters  are commonly found in the literature such as those corresponding to compound symmetry and autoregressive models of order $k$, where $k$ is small. However, model misspecification can lead to considerably biased estimates. Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
 
 \bigskip
+
+{\needsparaphrased{Modeling a covariance matrix is an important and difficult problem of great interest in the
+statistical science. The sample covariance matrix used in virtually all multivariate techniques
+(Anderson, 2003) is generally positive-definite and unbiased, but neither parsimonious nor
+stable due to its high-dimensionality. More specifically, given Y1, · · · , Yn, a sample of size n
+from a p-variate N(µ, ?), the sample covariance matrix
+S = (n ? 1)?1 Xn
+i=1
+(Yi ? Y¯ )(Yi ? Y¯ )
+0
+,
+serves as an estimator of the p(p+1)
+2
+parameters of the unstructured covariance matrix ?.
+Since the number of parameters of ? = (?ij ) grows quadratically with the dimension and
+the parameters are to satisfy the notorious positive-definiteness condition
+c
+0?c =
+X
+p
+i,j=1
+cicj?ij ? 0, for all cRp
+,
+the problem of parsimonious modeling of a covariance matrix while heeding the above constraint
+is a truly challenging problem in the current state of statistical science and areas of
+applications.
+While systematic and data-based modeling of covariance matrices is hampered by the
+positive-definiteness constraint and high-dimensionality, similar though simpler obstacles in
+modeling the mean vector µ (first moments) of the distribution of a random vector Y =
+(y1, . . . , yp) has been handled quite successfully in the framework of regression analysis,
+leading to the powerful theory of generalized linear models (GLM). The success of GLM in
+handling variety of continuous and discrete data is mainly due to relying on a link function
+g(·) and a linear predictor g(µ) = X? to induce unconstrained parameterization and reduce
+the parameter space dimension simultaneously. Since the covariance matrix of a random
+vector Y , defined by ? = E(Y ? µ)(Y ? µ)
+0
+, is a mean-like parameter, one would like to exploit the idea of GLM along with the experience and progress in fitting the mixed-effects and time series models in developing a systematic, data-based procedure for covariance matrices. 
+We shall focus on the correlated data of continuous type. Table 1 depicts the ideal, rectangular shape of such data where n units (human and/or animal subjects, stocks or financial instruments, firms, households, schools, . . . ) are measured either repeatedly on one variable (repeated measure, longitudinal data, panel data, . . . ) or once on several variables}}
+
+{\needsparaphrased{The areas of time series analysis (Klein, 1997) and variance components (Searle, Casella and McCulloch, 1992, Chap. 2) are among the oldest in dealing with modeling covariance matrices using covariates implicitly and explicitly, respectively. In a sense, they provide the much needed core methods and ideas. In fact, time series techniques based on spectral and Cholesky decompositions provide suitable tools for handling the awkward positivedefiniteness constraint on a stationary covariance matrix (function). However, unlike modeling the mean vector where a link function acts component-wise on the vector µ, link functions for covariance matrices cannot act componentwise since positive-definiteness is a simultaneous constraint on all entries of a matrix. Not surprisingly, because of the complicated structure of a general covariance matrix, the most successful modeling approaches need to rely on decomposing a covariance matrix into its ?variance? and ?dependence? components. The idea of regression and its diagnostic techniques work well for the logarithm of the ?variances?, but their analogues need to be developed for the more complicated ?dependence? component. The three major methods for producing such pairs, i.e. the variance-correlation, spectral (eigenvalue) and the Cholesky decompositions of several covariances are reviewed in Section 2. However, the latter being less familiar is described next for a single covariance matrix}}
 
 To satisfy the positive-definiteness constraint, methods have been developed and applied to certain reparameterizations of the covariance structure. Chiu, Leonard, and Tsui modeled the matrix logarithm of the covariance matrix. Early nonparametric work using the spectral decomposition of the covariance matrix included that of Rice and Silverman (1991) which discussed smoothing and smoothing parameter choice for eigenfunction estimation for regularly-spaced data. Staniswalis and Lee (1998) extended kernel-based smoothing of eigenfunctions to functional data observed on irregular grids. However, when the data are sparse in the sense that there are few repeated within-subject measurements and measurement times are quite different from subject-to-subject, approximation of the functional principal component scores defined by the Karhunen-Loeve expansion of the stochastic process by usual integration is unsatisfactory and requires numerical quadrature. Many have explored regression-based approaches using the Spectral decomposition, framing principal components analysis as a least-squares optimization problem. Among many others, Zou, Hastie and Tibshirani (2006) imposed penalties on regression coefficients to induce sparse loadings. {\needsparaphrased[REVIEW THE METHODS OF HUANG, KAUFMAN, YAO HERE]}
 
 \bigskip
+
+{\needsparaphrased{The Cholesky decomposition is similar to the spectral decomposition in that ? is diagonalized
+by a lower triangular matrix T:
+T?T
+0 = D, (2)
+where the nonredundant entries of T are unconstrained and more meaningful statistically
+than those of the orthogonal matrix of the spectral decomposition. The matrix T is constructed
+from the regression coefficients when yt
+is regressed on its predecessors. 
+
+More precisely, with
+yt =
+X
+t?1
+j=1
+?tjyj + ?t
+, (3)
+the (t, j)
+th entry of T is ??tj , the negatives of the regression coefficients and the (t, t)
+th
+entry of D is ?
+2
+t = var(?t), the innovation variance. A schematic view of the components of a
+covariance matrix obtained through successive regressions (Gram-Schmidt orthogonalization
+procedure) is given in Table 2. Since ?ij ?s are regression coefficients, it is evident that for
+any unstructured covariance matrix these and log ?
+2
+t
+are unconstrained, in the sequel they
+are referred to as the generalized autoregressive parameters (GARP) and innovation
+variances (IV) of Y or ? (Pourahmadi, 1999, 2000). Interestingly, this regression approach
+reveals the equivalence of modeling a covariance matrix to that of dealing with a sequence of
+p ? 1 varying-coefficient and varying-order regression models. Consequently, one can bring
+the entire regression machinery to the service of the unintuitive task of modeling covariance
+matrices. Stated differently, the framework above is similar to that of using increasing order
+autoregressive models in approximating the covariance matrix or the spectrum of a stationary
+time series.}}
 
 We adopt the approach based on the Cholesky decomposition. The modified Cholesky decomposition (MCD) has received much attention in the covariance estimation literature, as it ensures positive-definite covariance estimates, and, unlike the spectral decomposition whose parameters follow an orthogonality constraint, the Cholesky decomposition are unconstrained and have an attractive statistical interpretation as particular regression coefficients and variances.  The covariance matrix $\Sigma$ of a zero-mean random vector $Y = \left(y_1, \dots , y_m\right)'$ has the following unique modified Cholesky decomposition (Newton, 1988)
 
@@ -158,6 +262,29 @@ T \Sigma T' = D,
 where $T$ is a lower triangular matrix with $1$?s as its diagonal entries and $D = \mbox{diag}\left(\sigma_1^2, \dots , \sigma_m^2\right)$ is a diagonal matrix. An attractive feature of this decomposition is that unlike the entries of $\Sigma$, the subdiagonal entries of $T$ and the log of the diagonal elements of $D$, $\log\left( \sigma_m^2 \right)$, $t = 1, \dots , m$, are not constrained. This permits one to impose structures on the unconstrained parameters without worrying about the resulting estimator not satisfying the positive-definiteness constraint. Denote estimators of $T$ and $D$ in \ref{eq:T-Sigma-Ttrans-equals-D} by  $\hat{T}$ and $\hat{D}$, which may be obtained by fitting linear models or some other structural models; then an estimator of $\Sigma$ given by $\Sigma  = \hat{T}^{-T} \hat{D} \hat{T}^{-T}$ is guaranteed to be positive-definite.  From this perspective, covariance modeling can be considered an extension of generalized linear models \citet{McCullagh1989}. Factoring $\Sigma$ as in \ref{eq:T-Sigma-Ttrans-equals-D} provides a link function $g\left(\Sigma\right) = \left(T, \log\left(D\right)\right)$ where $\log\left(D\right) = \mbox{diag}\left( \log\left(\sigma_1^2\right),\dots , \log\left(\sigma_m^2 \right) \right)$. Parametric, nonparametric, or  Bayesian models may then be applied to  the unconstrained entries of $T$ and $\log\left(D\right)$.  Whereas other decompositions are permutation-invariant, the interpretation of  the regression model induced by the MCD assumes a natural (time) ordering among the variables in $Y$.
 
 \bigskip
+
+{\needsparaphrased{immediately leads to the modified Cholesky decomposition (2). It also can be used to clarify
+the close relation between the decomposition (2) and the time series ARMA models in that
+the latter is means to diagonalize a Toeplitz covariance matrix, for details see Pourahmadi
+(2001, Sec. 4.2.5).
+Some notable examples of the implicit use of the Cholesky decomposition in the literature
+of statistics include Szeg?o?s orthogonal polynomials on the unit circle which is closely related
+to fundamental problems in time series analysis and prediction theory of stationary process
+and signal processing such as the Durbin-Levinson algorithm and fast inversion of Toeplitz
+matrices (Szeg?o and Grenander, 1958; Pourahmadi, 2001, Chap. 7); Bartelett?s (1933)
+decomposition of a sample covariance matrix; Wright?s (1934) path analysis; Roy?s (1958)
+step-down procedures and Wold?s (1960) causal chain models which assume the existence of
+an a priori order among the p variables of interest, and relies on the regression coefficients and
+residual variances of one variable regressed on its predecessors. Other more explicit examples
+are the introduction of Kalman filtering of state-space models in the 1960?s (Jones, 1993)
+and the Gaussian graphical models (Wermuth, 1980; Whittaker, 1990; Roverato, 2000). The
+use of Cholesky decomposition in multivariate quality control to find important variables
+(Mason and Young, 2002), the Mahalanobis-Taguchi-Gram-Schmidt (MTGS) method to
+build a multidimensional scaling system to measure the level of unusualness (abnormality)
+of vector of observations (Taguchi and Jugulum, 2002) are among the most recent and
+promising applications. Hawkins (2003) provides an excellent discussion revealing the close
+link between the MTGS method and the more familiar diagnostic techniques of multivariate
+statistics.}}
 
 Several others have considered this approach to covariance estimation; \citet{kaufman2008covariance} assume a stationary process, restricting covariance estimates to a specific class of functions.  They as well as  Huang, Liu, and Liu \citet{huang2007estimation} follow the hueristic argument presented by \citet{pourahmadi1999joint} that $\phi_{t,t-l}$ is monotone decreasing in $l$ and set off-diagonal elements of either the covariance matrix or the Cholesky factor corresponding to large lags to zero.   As in \citet{huang2007estimation}, \citet{kaufman2008covariance}, and \citet{yao2005functional}, we treat covariance estimation as a function estimation problem where the covariance matrix is viewed as the evaluation of a smooth function at particular design points. 
 
@@ -224,6 +351,52 @@ Unlike many of those before who have used the Cholesky decomposition as a means 
 where $\phi_{ijk}$ is the autoregressive coefficient corresponding to the pair of measurements observed at time $t_{ij}$ and $t_{ik}$. A vectorized representation of Model~\ref{eq:discrete-unevenly-spaced-ar-model} can be obtained as before by adding the necessary parameters to $T$ and $D$.
 \bigskip
 
+\begin{table}\centering
+\caption{Ideal shape of repeated measurements.}
+\begin{tabular}{cc|cccccc}
+\multicolumn{8}{c}{Occasion}\\
+& & $1$&$2$ &  $\dots$ & $t$ & $\dots$ & $m$ \\ \midrule
+& 1 & $y_{11}$&$y_{12}$ &$\dots$ & $y_{1t}$ & $\dots$& $y_{1m}$ \\
+& 2 & $y_{21}$&$y_{22}$ &$\dots$ & $y_{2t}$ & $\dots$& $y_{2m}$ \\
+\begin{rotate}{90}%
+\mbox{Unit}\end{rotate} & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+& $i$ & $y_{i1}$&$y_{i2}$ &$\dots$ & $y_{it}$ & $\dots$& $y_{im}$ \\
+ & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+ & $N$ & $y_{N1}$&$y_{N2}$ &$\dots$ & $y_{Nt}$ & $\dots$& $y_{Nm}$ \\
+\end{tabular}
+\end{table}
+
+
+\begin{table}\centering
+\caption{Autoregressive coefficients and prediction error variances of successive regressions.}
+\begin{tabular}{cccccc}
+ $y_{1}$&$y_{2}$ & $y_{3}$ & $\dots$ &$y_{m-1}$& $y_{m}$\\ \midrule
+ $1$& &&&&\\
+$\phi_{21}$& 1 &&&& \\
+$\phi_{31}$& $\phi_{32}$& 1 &&& \\ 
+$\vdots$ & $\vdots$ & & $\ddots$&& \\
+$\vdots$ & $\vdots$ & && $\ddots$& \\
+$\phi_{m1}$& $\phi_{m2}$&$\dots$ &$\dots$ &$\phi_{m,m-1}$ & 1\\ \midrule
+$\sigma_1^2$ & $\sigma_1^2$ & $\dots$&$\dots$ &$\sigma_{m-1}^2$ &$\sigma_m^2$
+\end{tabular}
+\end{table}
+
+\begin{align}
+\begin{bmatrix}
+1&&&&\\
+-\phi_{21}&1&&&\\
+-\phi_{31}&-\phi_{32}&1&&\\
+\vdots &&&\ddots& \\
+-\phi_{m1}&-\phi_{m2}& \dots & -\phi_{m,m-1}&1\\
+\end{bmatrix}
+\begin{bmatrix}
+y_1 \\
+y_2 \\ \ddots \\ y_m
+\end{bmatrix} = \begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\ \ddots \\ \epsilon_m
+\end{bmatrix}
+\end{align}
 Removing the restriction that subjects having common covariance structure also share common, equally-spaced observation times encourages a functional representation of the parameters defining the Cholesky decomposition of $\Sigma$. Rather than a vector of longitudinal data points, we view the random vectors $Y_i$ and $\epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{i, m-i} \right)'$ as discrete renditions of the stochastic processes: $Y\left(t\right)$ and $\epsilon\left(t\right)$. We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
 \bigskip
 If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, where 
