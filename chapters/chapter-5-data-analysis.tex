@@ -13,6 +13,7 @@
 \usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{cite}
+\usepackage{rotate}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \usepackage{booktabs}
@@ -104,27 +105,156 @@ Fitted models can be found in
 
 See Kenward, Michael G. (1987). A Method for Comparing Profiles of Repeated Measurements. Applied Statistics, 36, 296-308. Table 1. http://doi.org/10.2307/2347788
 
+\bigskip
 
 \citet{kenward1987method} reported an experiment designed to investigate the impact of the control of intestinal parasites in cattle. During the grazing season which runs from spring to autumn, cattle can potentially ingest roundworm larvae, developed from eggs deposited around the pasture from feces of previously infected cattle. Immune resistance to disease is suppressed once an animal is infected and deprived of nutrients; consequently, animal growth can be greatly impacted. Monitoring the effect of a treatment for the disease requires repeated weight measurements on animals over the grazing season. 
+
+\bigskip
 
 To compare two methods for controlling the disease, say treatment A and treatment B, each of 60 cattle were assigned randomly to two groups, each of size 30. Animal subjects were put out to pasture at the start of grazing season, with each member of the groups receiving one of the two treatments. Animals were weighed $m = 11$ times over a 133-day period; the first 10 measurements on each animal were made at two-week intervals and the final measurement was made one week later. Weights were recorded to the nearest kilogram. The measurement times were common across animals and were rescaled to $t = 1, 2, \dots, 10, 10.5$. The longitudinal dataset is balanced, as there were no missing observations for any of the experimental units. Observed weights are shown in Figure~\ref{fig:cattle-weights-by-trt}.
   
 \begin{figure}[h] \label{fig:cattle-weights-by-trt}
 \caption{Subject-specific weight curves over time for treatment groups A and B.}
-\centering
-\includegraphics[width=0.5\textwidth]{cattle-weights-vs-time-by-trt.png}
+\begin{center}
+\includegraphics[width = \textwidth]{img/cattle/cattle-weights-vs-time-by-trt}
+\end{center}
 \end{figure} 
 
-\begin{figure}[h] \label{fig:cattleA-weights-fitted-mean-curve}
-\caption{Fitted mean weight curve for cattle in treatment group A. The mean curve was modeled using a cubic smoothing spline; smoothing parameters were selected using the generalized maximum likelihood criterion.}
-\centering
-\includegraphics[width=0.5\textwidth]{cattleA-weights-vs-time-mean-fit.png}
+We see an upward trend in weights over time, with variance in weights increasing over time for both groups. Treatment group B demonstrates a sharp decrease in the final weight measurement. The analysis of the same dataset provided by \citet{zimmerman1997structured} rejected equality of the two covariance matrices corresponding to treatment group using the classical likelihood ratio test, making it reasonable to study each treatment group's covariance matrix separately. Following \citet{pan2017jmcm}, \citet{zhang2015joint}, \citet{pourahmadi1999joint}, and \citet{pan2006regression}, we analyze the data from the $N = 30$ cattle assigned to treatment group A, which we assume share a common $11 \times 11$ covariance matrix $\Sigma$. The profile plot in Figure~\ref{fig:cattleA-weights-vs-time} of the weights for units in treatment group A shows a clear upward trend in weights;  variances appear to increase over time, suggesting that the covariance structure is nonstationary.
+
+\bigskip
+
+Before modeling the covariance structure, it is necessary to construct an adequate estimate of the mean weight trajectories. After centering the data using the fitted mean, the residuals serve as the data reserved for estimating the functions defining the Cholesky factor and innovation variances.  To account for any between-subject variability, we adopt an approach akin to the dynamical conditionally linear mixed model proposed by Pourahmadi and Daniels; see \citet{pourahmadi2002dynamic} for a detailed discussion. We model
+
+\begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-1}
+r\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) r\left(t_{ij}\right) + \epsilon\left(t_{ij}\right)
+\end{equation}
+\noindent
+where
+\begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-2}
+r\left(t_{ij}\right) = y\left(t_{ij}\right) - \left(f\left(t_{ij} \right) + \alpha_{i}\right).
+\end{equation}
+\noindent
+The subject-specific random effects $\left\{ \alpha_i \right\}$ are assumed to be mutually independent and independent of $ \epsilon\left(t_{ij}\right)$ for all $i,\;j$, with
+
+\[
+\alpha_i \sim N\left( 0, \sigma_\alpha^2 \right).
+\]
+
+We assume that the subject trajectories share a common mean function $f$, and that $f$ belong to the second-order Sobolev space:
+
+\[
+W^2_2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}.
+\]
+\noindent
+
+Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight trajectories over time. Figure~\ref{fig:cattleA-smoothed-weights-vs-time} shows the corresponding fitted mean curves.
+
+\begin{figure}[h] \label{fig:cattleA-weights-vs-time}
+\begin{center}
+    \includegraphics[width=\textwidth]{img/cattle/cattleA-weights-vs-time}
+\end{center}
+ \caption{Weight trajectories over the observation period for experimental units in treatment group A.}
+ \end{figure}
+
+\begin{figure}[h] \label{fig:cattleA-smoothed-weights-vs-time}
+\caption{Fitted mean weight curve for cattle in treatment group A. }
+\begin{center}
+\includegraphics[width = \textwidth]{img/cattle/cattleA-weights-vs-time-mean-fit}
+\end{center}
 \end{figure} 
 
-We see an upward trend in weights over time, with variance in weights increasing over time for both groups. Treatment group B demonstrates a sharp decrease in the final weight measurement. The analysis provided by \citet{zimmerman1997structured} rejected equality of the two covariance matrices corresponding to treatment group using the classical likelihood ratio test, making it reasonable to study each treatment group?s covariance matrix separately. Following \citet{pan2017jmcm}, \citet{zhang2015joint}, \citet{pourahmadi1999joint}, and \citet{pan2006regression}, we analyze the data from cattle assigned to treatment group A. 
+The nonstationarity suggested in Figure~\ref{fig:cattle-weights-by-trt} is also supported by the sample correlations given in Table~\ref{table:cattleA-sample-correlations}; correlations within the subdiagonals are not constant and increase over time, a secondary indication that a stationary covariance is not appropriate for the data.  Table~\ref{table:sample-regressogram-garps} gives the sample generalised autoregressive parameters and the innovation variances, which are plotted in Figure~\ref{fig:cattleA-regressogram} and Figure~\ref{fig:cattleA-innovation-variogram} respectively. 
 
-For the treatment group A with $N = 30$ animals, we assume a common mean function, $\mu\left(t\right)$ and an $11 \times 11$ covariance matrix $\Sigma$. A profile plot of the data reveals that the weights have an upward trend and their variances tend to increase over time, which suggests nonstationary covariance structure. This is confirmed by the upper diagonal entries in Table 1, which are the sample correlations. Furthermore, correlations within the subdiagonals are not constant and increase over time, giving a second indication that a stationary covariance is not appropriate for the data. Table 1 gives the sample correlations,  generalised autoregressive parameters and the innovation variances, and the latter two are plotted in Fig. 2(a), (c). These plots reveal that both the sample generalised autoregress
-ive parameters and the logarithms of the innovation variances are cubic functions of the lag. That is, for t = 1, 2,..., 10, 11
+\begin{table}[ht] \label{table:cattleA-sample-correlations}
+\begin{center}
+\begin{tabular}{r|rrrrrrrrrrr}
+& \multicolumn{11}{c}{day}\\
+ & 0 & 14 & 28 & 42 & 56 & 70 & 84 & 98& 112& 126 &133\\ 
+  \hline
+0 & 1.00 & 0.82 & 0.76 & 0.65 & 0.63 & 0.58 & 0.51 & 0.52 & 0.51 & 0.46 & 0.46 \\ 
+  14 & 0.82 & 1.00 & 0.91 & 0.86 & 0.83 & 0.75 & 0.64 & 0.68 & 0.61 & 0.59 & 0.56 \\ 
+  28 & 0.76 & 0.91 & 1.00 & 0.93 & 0.89 & 0.85 & 0.75 & 0.77 & 0.71 & 0.69 & 0.67 \\ 
+  42 & 0.65 & 0.86 & 0.93 & 1.00 & 0.93 & 0.90 & 0.80 & 0.82 & 0.74 & 0.70 & 0.67 \\ 
+  56 & 0.63 & 0.83 & 0.89 & 0.93 & 1.00 & 0.94 & 0.85 & 0.88 & 0.81 & 0.77 & 0.74 \\ 
+  70 & 0.58 & 0.75 & 0.85 & 0.90 & 0.94 & 1.00 & 0.92 & 0.93 & 0.89 & 0.85 & 0.81 \\ 
+  84 & 0.51 & 0.64 & 0.75 & 0.80 & 0.85 & 0.92 & 1.00 & 0.92 & 0.92 & 0.86 & 0.84 \\ 
+  98 & 0.52 & 0.68 & 0.77 & 0.82 & 0.88 & 0.93 & 0.92 & 1.00 & 0.96 & 0.94 & 0.91 \\ 
+  112 & 0.51 & 0.61 & 0.71 & 0.74 & 0.81 & 0.89 & 0.92 & 0.96 & 1.00 & 0.96 & 0.95 \\ 
+  120 & 0.46 & 0.59 & 0.69 & 0.70 & 0.77 & 0.85 & 0.86 & 0.94 & 0.96 & 1.00 & 0.98 \\ 
+  133 & 0.46 & 0.56 & 0.67 & 0.67 & 0.74 & 0.81 & 0.84 & 0.91 & 0.95 & 0.98 & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Cattle data: treatment group A sample correlations.}
+\end{center}
+\end{table}
+
+
+\begin{table}[ht] \label{table:sample-regressogram-garps}
+\begin{center}
+\begin{tabular}{lc|ccccccccccc|cr}
+& \multicolumn{11}{c}{s}\\
+&&&&&&&&&&&&\\
+& & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 10.5 & \\ 
+  \hline
+&1 & 1 & &&&&&&&&& & 4.673& \\ 
+&  2 & 1.00 & $\ddots$&&&&&&&&&& 3.939 &\\ 
+&  3 & 0.04 & 0.90 &  &&&&&&&&& 3.370&\\ 
+&  4 & -0.25 & 0.25 & 0.88 &  &&&&&&&&3.000& \\ 
+&  5 & -0.02 & 0.07 & 0.12 & 0.90 & &&&&&&& 3.299&\\ 
+t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_t\right)$\\ 
+ & 7 & 0.12 & -0.23 & 0.04 & -0.16 & 0.08 & 1.03  &&&&&& 3.610\\ 
+ & 8 & -0.06 & 0.05 & 0.02 & -0.27 & 0.23 & 0.61 & 0.42 &&&&& 3.403&\\ 
+ & 9 & 0.18 & -0.10 & 0.05 & -0.26 & -0.10 & 0.03 & 0.30 & 0.93&&&& 2.780&  \\ 
+ & 10 & -0.26 & 0.15 & 0.45 & -0.33 & -0.19 & 0.01 & -0.18 & 0.37 & 0.94 & $\ddots$&&3.280& \\ 
+ & 10.5 & 0.13 & -0.26 & 0.08 & 0.28 & 0.04 & -0.36 & -0.05 & -0.07 & 0.37 & 0.85 & 1  &2.262&\\ 
+\end{tabular}
+\caption{Cattle data: treatment group A sample generalized autoregressive parameters (below the main diagonal) and log sample innovation variances (rightmost column.)}
+\end{center}
+\end{table}
+
+
+\begin{figure}[h] \label{fig:cattleA-innovation-variogram}
+\begin{center}
+    \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
+\end{center}
+ \caption{Sample estimates of innovation variances $\sigma_t^2$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.}
+ \end{figure}
+
+\begin{figure}[h] \label{fig:cattleA-regressogram}
+\begin{center}
+\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
+\end{center}
+ \caption{Sample estimates of the generalized autoregressive parameters $\phi_{ij}$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.}
+\end{figure} 
+
+
+The analysis of \citet{pourahmadi1999joint} concluded that the regressogram (Figure~\ref{fig:cattleA-regressogram}) and variogram (Figure~\ref{cattleA-innovation-variogram}) suggest that both sample generalised autoregressive parameters and the logarithms of the innovation variances can be characterized in terms of cubic functions of the lag only. They model 
+
+\[
+\phi_{ts} = x'_{ts}\gamma, 
+\]
+\noindent
+and
+\[
+\log\left(\sigma_t^2\right) = z'_{t}\xi, 
+\]
+for $t = 2,\dots, 11$ where 
+
+\begin{align*}
+x'_{ts} = \begin{bmatrix} 1 & t - s& \left(t - s\right)^2 & \left(t - s\right)^3 \end{bmatrix},\; \mbox{and } z'_{t} = \begin{bmatrix} 1 & t& t^2& t^3 \end{bmatrix}.
+\end{align*}
+\noindent
+They estimate of $\gamma$ and $\xi$ via maximum likelihood. The cubic behaviour in the regressogram is not as obvious, however, if we examine the regressogram along each slive of $t$. Figure~\ref{fig:cattleA-smoothed-regressogram-smoothed-by-t} shows the regressogram faceted along each value of $t = 1,\dots, 10.5$. 
+
+
+\begin{figure}[h] \label{fig:cattleA-smoothed-regressogram-smoothed-by-t}
+\begin{center}
+\includegraphics[width = \textwidth]{img/cattle/cattleA-smoothed-regressogram-smoothed-by-t}
+\end{center}
+ \caption{The cattle data regressogram sliced along the $t$ axis.}
+\end{figure} 
+
 
 
 \end{document}
