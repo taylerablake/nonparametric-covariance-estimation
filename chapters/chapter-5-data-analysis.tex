@@ -10,10 +10,11 @@
 \usepackage{subcaption}
 \usepackage{natbib}
 \usepackage{mathtools}
-\usepackage{IEEEtrantools}
+%\usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{cite}
 \usepackage{rotate}
+\usepackage{subcaption}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \usepackage{booktabs}
@@ -25,6 +26,14 @@
 \newcommand*\needsproof{\color{blue}}
 \newcommand*\outlineskeleton{\color{green}}
 \newcommand{\PP}{\mathcal{P}}
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\hilbertl}{\mathcal{H}_{\langle l \rangle}}
+\newcommand{\hilbertm}{\mathcal{H}_{\langle m \rangle}}
+\newcommand{\hilbertlnull}{\mathcal{H}_{0\langle l \rangle}}
+\newcommand{\hilbertmnull}{\mathcal{H}_{0\langle m \rangle}}
+\newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
+\newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
+
 \newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
 \newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
 \newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
@@ -150,14 +159,14 @@ W^2_2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x
 
 Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight trajectories over time. Figure~\ref{fig:cattleA-smoothed-weights-vs-time} shows the corresponding fitted mean curves.
 
-\begin{figure}[h] \label{fig:cattleA-weights-vs-time}
+\begin{figure}[H] \label{fig:cattleA-weights-vs-time}
 \begin{center}
     \includegraphics[width=\textwidth]{img/cattle/cattleA-weights-vs-time}
 \end{center}
  \caption{Weight trajectories over the observation period for experimental units in treatment group A.}
  \end{figure}
 
-\begin{figure}[h] \label{fig:cattleA-smoothed-weights-vs-time}
+\begin{figure}[H] \label{fig:cattleA-smoothed-weights-vs-time}
 \caption{Fitted mean weight curve for cattle in treatment group A. }
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattleA-weights-vs-time-mean-fit}
@@ -214,14 +223,14 @@ t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_
 \end{table}
 
 
-\begin{figure}[h] \label{fig:cattleA-innovation-variogram}
+\begin{figure}[H] \label{fig:cattleA-innovation-variogram}
 \begin{center}
     \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
 \end{center}
  \caption{Sample estimates of innovation variances $\sigma_t^2$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.}
  \end{figure}
 
-\begin{figure}[h] \label{fig:cattleA-regressogram}
+\begin{figure}[H] \label{fig:cattleA-regressogram}
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
 \end{center}
@@ -231,30 +240,111 @@ t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_
 
 The analysis of \citet{pourahmadi1999joint} concluded that the regressogram (Figure~\ref{fig:cattleA-regressogram}) and variogram (Figure~\ref{cattleA-innovation-variogram}) suggest that both sample generalised autoregressive parameters and the logarithms of the innovation variances can be characterized in terms of cubic functions of the lag only. They model 
 
-\[
-\phi_{ts} = x'_{ts}\gamma, 
-\]
-\noindent
-and
-\[
+\begin{align}
+\begin{split} \label{eq:pourahmadi-cubic-model}
+\phi_{ts} = x'_{ts}\gamma, \\
 \log\left(\sigma_t^2\right) = z'_{t}\xi, 
-\]
+\end{split}
+\end{align}
+\noindent
 for $t = 2,\dots, 11$ where 
 
 \begin{align*}
 x'_{ts} = \begin{bmatrix} 1 & t - s& \left(t - s\right)^2 & \left(t - s\right)^3 \end{bmatrix},\; \mbox{and } z'_{t} = \begin{bmatrix} 1 & t& t^2& t^3 \end{bmatrix}.
 \end{align*}
 \noindent
-They estimate of $\gamma$ and $\xi$ via maximum likelihood. The cubic behaviour in the regressogram is not as obvious, however, if we examine the regressogram along each slive of $t$. Figure~\ref{fig:cattleA-smoothed-regressogram-smoothed-by-t} shows the regressogram faceted along each value of $t = 1,\dots, 10.5$. 
+They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-smoothed-by-t} shows the estimated cubic polynomials corresponding to Model~\ref{eq:pourahmadi-cubic-model}. 
 
 
-\begin{figure}[h] \label{fig:cattleA-smoothed-regressogram-smoothed-by-t}
+\begin{figure}[H]
+  \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
+\label{fig:cattleA-regressogram-cubic-smooth}
+\caption{The sample regressogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.}
+\end{subfigure}
+\hfill
+ \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
+\label{fig:cattleA-innovariogram-cubic-smooth}
+\caption{The sample innovariogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.}
+\end{subfigure} 
+\end{figure}
+
+Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma_2 \right)$. Examination of $\phi_{t,t-l}$ sliced across  inidividual values of $t = 2,\dots, 10, 10.5$ shows consistent behaviour over $l$ for each value of $t$, indicating a lack of a strong functional component of $m$, interaction or main effect, so it is pragmatic to let $\phi \in \hilbert = \hilbertl \otimes \hilbertm$, where 
+
+\begin{align*} 
+\hilbertl &= \bigg\{ f: \ddot{f} = 0 \bigg\} \oplus \left\{f: f\left(0\right) = \dot{f}\left(0\right) = 0; \;\; \int\limits_0^1 \ddot{f}^2 \;dx < \infty \right\} \\
+%               &= \hilbertlnull \olpus \hilbertlpen
+\end{align*} 
+
+\noindent
+and
+\begin{align*} 
+\hilbertm &= \bigg\{ f: f \propto 1 \bigg\} \oplus \left\{ f: \int\limits_0^1 f \;dx = 0, \;\; \dot{f} \in \mathcal{L}_2\left[0,1\right]  \right\} \\
+              % &= \hilbertmnull \olpus \hilbertmpen
+\end{align*} 
+
+
+\begin{figure}[H]
 \begin{center}
-\includegraphics[width = \textwidth]{img/cattle/cattleA-smoothed-regressogram-smoothed-by-t}
+\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-3d}
 \end{center}
- \caption{The cattle data regressogram sliced along the $t$ axis.}
-\end{figure} 
+\label{fig:cattleA-phi-3d}
+\caption{Cattle data: treatment group A estimated Cholesky surface.}
+\end{figure}
 
+\begin{figure}[H] \label{fig:cattle-cholesky-components}
+  \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-intercept-3d}
+\label{fig:cattleA-phi-intercept}
+\caption{Estimated intercept of the Cholesky surface.}
+\end{subfigure}
+\hfill
+ \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-l-me-3d}
+\label{fig:cattleA-l-me}
+\caption{The estimated  functional main effect of $l$.}
+\end{subfigure} 
+
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-m-me-3d}
+\label{fig:cattleA-m-me}
+\caption{The estimated functional main effect of $m$.}
+\end{subfigure}
+\hfill
+ \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-lm-interaction-3d}
+\label{fig:cattleA-lm-interaction}
+\caption{The estimated functional $l \times m$ interaction.}
+\end{subfigure} 
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H] \label{fig:cattle-cholesky-components}
+  \begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/fitted-innovation-variance-function-cattleA}
+\label{fig:cattleA-sig2-fit}
+\caption{Cattle data: treatment group A prediction residuals and estimated innovation variance function.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.45\textwidth}
+\centering
+\includegraphics[width = \textwidth]{img/cattle/fitted-log-innovation-variance-function-cattleA}
+\label{fig:cattleA-log-sig2-fit}
+\caption{Cattle data: estimated log innovation variance function.}
+\end{subfigure} 
+\end{figure}
+
+Evaluating the normal likelihood at the fitted model gives $\hat{\ell} = -818.5323$.
 
 
 \end{document}
