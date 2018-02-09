@@ -115,22 +115,22 @@ For the case of common observation times across all subjects, we also consider t
 \noindent 
 where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. The tapering estimator presented in \citet{cai2010optimal} is defined
 \[
-\hat{\Sigma}^{taper}\left(\lambda\right) =  \begin{bmatrix} \omega_{ij}^\lambda \sigma^*_{ij} \end{bmatrix}.
+\hat{\Sigma}^{taper}\left(\lambda\right) =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix}.
 \]
 \noindent
 The weights $\omega_{ij}^\lambda$ are given by 
 \begin{equation*}
-\omega_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
+\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
 \end{equation*}
 \noindent
-where $k_h = k/2$ is assumed to be even without loss of generality. These may be rewritten as
+The superscript on the weights $\omega^k_{ij}$ serves to indicate that these are controlled by a tuning parameter, k, which controls the amount of shrinkage applied to the elements of the sample covariance matrix. Without loss of generality,  we assume that $k_h = k/2$ is even. The weights may be rewritten as
 \begin{align*}
 \omega_{ij} = \left\{\begin{array}{ll} 1, & \vert \vert i -j \vert \vert \le k_h \\
                              2 - \frac{i - j}{k_h} & k_h < \vert \vert i -j \vert \vert \le k, \\
                              0 & \mbox{otherwise}  \end{array} \right.
 \end{align*}
 \noindent
-The subscript on the weights $\omega_{ij}$ serves to indicate that these are controlled by a tuning parameter which controls the amount of shrinkage applied to the elements of the sample covariance matrix.
+
 
 [discuss the MCRE and CVTuningCov package]
 
@@ -138,30 +138,53 @@ The subscript on the weights $\omega_{ij}$ serves to indicate that these are con
 
 [discuss the implementation and R package here]
 
-To assess performance of estimator $G$, we consider two commonly used loss functions:
+\subsection{Assessing estimator performance}
+
+To assess performance of estimator $\hat{\Sigma}$, we consider two commonly used loss functions:
 \begin{equation} \label{eq:quad-loss}
-\Delta_1\left(\Sigma,G \right) = tr\left( \Sigma^{-1} G \right) - log \vert \Sigma^{-1} G \vert - M,
+\Delta_1\left(\Sigma,\hat{\Sigma} \right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - M,
 \end{equation}
 \noindent
 \begin{equation} \label{eq:entropy-loss}
-\Delta_2\left(\Sigma,G\right) = tr\left(\left( \Sigma^{-1} G - \mathrm{I}\right)^2 \right)
+\Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left(\left( \Sigma^{-1} \hat{\Sigma} - \mathrm{I}\right)^2 \right)
 \end{equation}
 \noindent
-where $\Sigma$ is the true covariance matrix and $G$ is an $M \times M$ positive definite matrix. Each of these loss functions are $0$ when $G = \Sigma$ and is positive when $G != \Sigma$. Both are invariant with respect to transformations
+where $\Sigma$ is the true covariance matrix and $\hat{\Sigma}$ is an $M \times M$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are invariant with respect to linear transformations of the data, $Y$,
+
 \[
-G^* = C G C', \quad \Sigma^* = C \Sigma C',
+CY, 
+\]
+which corresponds to transformations 
+\[
+\hat{\Sigma}^* = C \hat{\Sigma} C', \quad \Sigma^* = C \Sigma C',
 \]
 \noindent
-for a nonsingular matrix $C$. The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities corresponding to the two covariance matrices. The second loss $\Delta_2$, or the quadratic loss, measures the Euclidean or Frobenius norm of its matrix argument, and consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. We obtain the corresponding risk functions by taking expectations,
+for a nonsingular matrix $C$. The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities with the same mean corresponding to the two covariance matrices. The second loss $\Delta_2$, or the quadratic loss, measures the difference between $\Sigma^{-1} \hat{\Sigma}$ and the identity matrix with the squared Frobenius norm which is given by  
+
+\[
+\vert \vert A \vert \vert^2 = \mbox{tr}\left(A A'\right) \vert \vert.
+\]
+\noindent
+The quadratic loss consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. 
+ 
+\bigskip
+TO DO: define more clearly the notion of an overestimate versus an underestimate - i.e. for matrices $A$, $B$, we define $A >> B$ if $A - B$ is non-negative definite.
+\bigskip
+
+We obtain the corresponding risk functions by taking expectations,
 
 \begin{equation*}
-R_i \left(\Sigma, G\right) = E_\Sigma\left[\Delta_i\left(\Sigma,G\right)\right], \quad i = 1,2.
+R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\Sigma}\right)\right], \quad i = 1,2.
 \end{equation*}
 \noindent
-We prefer estimator $\hat{\Sigma}_1$ over another estimator $\hat{\Sigma}_2$ if $R_i \left(\Sigma, \hat{\Sigma}_2\right) < R_i \left(\Sigma, \hat{\Sigma}_2\right)$. We estimate the risk functions by Monte Carlo approximation, using $N_{sim} = 100$ simulation runs for each scenario outlined above.  Estimation is performed on data generated according to an $M$-dimensional multivariate Normal distribution with mean zero; we consider four Cholesky covariance structures for the underlying generating distribution:
+We prefer estimator $\hat{\Sigma}_1$ over another estimator $\hat{\Sigma}_2$ if it has smaller risk.  Given $\Sigma$, we estimate the risk of an estimator via Monte Carlo approximation. 
+
+\subsection{Simulation Settings}
+TO DO: new leading sentence to introduce the 5 simulation settings.
+we consider four Cholesky covariance structures for the underlying generating distribution:
 
 \begin{enumerate} 
-\item Mutual independence: $\Sigma_1 = T^{-T} D^2 T^{-1} = \mathrm{I}$ where 
+\item Mutual independence: $\Sigma = T^{-T} D^2 T^{-1} = \mathrm{I}$ where 
 \begin{align*}
 \phi\left(t,s\right) &= 0, \quad 1 \le t < s \le M;\\ 
 \sigma^2\left(t\right) &= 1, \quad t = 1,\dots, M.
@@ -188,11 +211,16 @@ We prefer estimator $\hat{\Sigma}_1$ over another estimator $\hat{\Sigma}_2$ if 
 \sigma_t^2 &= 1 -\frac{\left(t-1\right)\rho^2}{1 + \left(t-1\right)\rho}, \;\; t = 2, \dots, M.
 \end{align*}
 \end{enumerate}
+TO DO - this was moved from the introductory sentence for this subsection: 
+using $N_{sim} = 100$ simulation runs for each scenario outlined above.  Estimation is performed on data generated according to an $M$-dimensional multivariate Normal distribution with mean zero. 
+
+\bigskip
 
 In some cases, tapering or applying soft thresholding to the sample covariance matrix yielded an estimator that was not positive definite. Evaluation of the entropy loss \ref{eq:entropy-loss} is undefined at an estimator with at least one non-positive eigenvalue, so to coerce the estimate to a positive definite one that is, in some sense, close to the original estimate, the algorithm of \\
 
 Cheng, Sheung Hun and Higham, Nick (1998) A Modified Cholesky Algorithm Based on a Symmetric Indefinite Factorization; SIAM J. Matrix Anal.\ Appl., 19, 1097?1110. \\
 \bigskip
+
 was applied to the tapered or soft thresholding estimator before evaluating the loss. For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
 
@@ -389,9 +417,6 @@ $N = 50$&    20 & 0.7551& 0.7657& 5.0283& 35.4067 & 5.1671 \\
 \end{table}
 
 %-------------------------------------------------------------------------------------------------------------------------------------------
-
-
-\section{Discussion}
 
 See \citet{pourahmadi2011covariance} section 3.1 for further discussion of loss functions
 
