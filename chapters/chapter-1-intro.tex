@@ -159,7 +159,25 @@ facilitate further developments from the Bayesian, nonparametric and other persp
 
 {\needsparaphrased{On the other hand, in the literature of applied statistics, particularly for repeated measure data, there is a growing tendency to pick a stationary covariance matrix, such as compound symmetry and autoregression of order one with few parameters from a growing menu provided by the popular software packages (Zimmerman and N?u?nez-Ant?on, 2001).  Of course, if the selected covariance structure is far from the truth, then the estimated covariance matrix could have considerable bias. }}
 
+The sample covariance matrix $S$ used in virtually all multivariate techniques is unbiased and positive-definite. While it is also computationally convenient, is not parsimonious, and in high dimensions, is unstable. Given a sample of size $N$ $Y_1,\dots , Y_N$, from an $M$-dimensional Normal distribution with mean $\mu$ and covariance matrix $\Sigma$, the sample covariance matrix
+
+\begin{equation} \label{eq:sample-covariance-matrix}
+S = \left(N-1\right)^{-1} \sum_{i = 1}^N \left(Y_i - \bar{Y}\right)\left(Y_i - \bar{Y}\right)'
+\end{equation}
+
+is a straightforward estimator of the $\frac{M\left(M+1\right)}{2}$ parameters of the unstructured covariance matrix $\Sigma$. The number of parameters of $\Sigma = \left[ \sigma_{ij} \right]$ grows quadratically in the dimension $M$, and the parameters must satisfy the positive-definiteness constraint
+
+\begin{equation} \label{eq:positive-definite-constraint} 
+v'\Sigma v = \sum_{i,j = 1}^M v_i v_j \sigma_{ij} \ge 0 
+\end{equation}
+\noindent
+for all $v \in \Re^M$. Together, these hurdles make parsimoniously modeling covariance matrices a great challenge in Statistics and its areas of application.
+
+\bigskip
+
 in the literature of applied statistics for longitudinal data,  there is a strong tendency to pick a stationary covariance matrix for characterizing the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small. While they are very easy to handle computationally, selection of the parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
+
+\bigskip
 
 Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
 
@@ -176,9 +194,11 @@ Alternately, several have proposed applying nonparametric methods directly to el
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsubsection{Elementwise shrinkage} \label{subsubsection:chapter-1-sss-1-3-4}
 Another way to induce parsimony is by applying a shrinkage operator elementwise to the sample covariance matrix. 
-\begin{itemize}
-\item banding and tapering the sample covariance matrix
-\item thresholding the sample covariance matrix
+
+\subsubsection{tapering/banding estimators}
+ 
+
+\subsubsection{thresholding the sample covariance matrix}
 
 For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
 \begin{itemize}
@@ -187,7 +207,6 @@ For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right):
 \item $\vert \mathpzc{s}_\lambda\left( z \right) - z \vert \le \lambda$
 \end{itemize}
 
-\end{itemize}
 
 Shrinkage and thresholding estimators can be viewed as the solution to the problem of minimizing a penalized quadratic loss function, and since the thresholding operator is applied elementwise to the sample covariance $S$,  these optimization problems are univariate. A generalized thresholding estimator $\mathpzc{s}_\lambda\left( z \right)$ is the solution to
 \begin{equation} \label{eq:general-thresholding-objective-function}
@@ -200,25 +219,37 @@ For detailed discussion of the connection between penalty functions and the resu
 \mathpzc{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
 \end{equation}
 
+The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
+
+\begin{equation} \label{eq:forbenius-norm}
+\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
+\end{equation}
+\noindent
+If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
+\[
+E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
+\]
+\noindent
+and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation. $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. The value of the tuning parameter is selected to minimize
+
+\begin{equation} \label{eq:K-fold-matrix--cv}
+\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on based on $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(-k\right)}$ is the regularized estimator under consideration based on the data after holding $\mathcal{D}_k$ out.  Using this approach, the size of the training data set is approximately $\left(K - 1 \right)N/K$, and the size of the validation set is approximately $N/K$ (though these quantities are only relevant when subjects have equal numbers of observations). For linear models, it has been shown that cross validation is asymptotically consistent is the ratio of the validation data set size over the training set size goes to 1. See \citet{shao1993linear}. This result motivates the reverse cross validation criterion, which is defined as follows:
+
+\begin{equation} \label{eq:K-fold-matrix-reverse-cv}
+\mbox{rCV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(k\right)} - \tilde{\Sigma}^{\left(-k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
+
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{(Generalized) linear models for covariance estimation}
 
 
 \subsubsection{A review of linear models and generalized linear models for covariance matrices}
-{\needsparaphrased{The sample covariance matrix $S$ used in virtually all multivariate techniques is unbiased and positive-definite. While it is also computationally convenient, is not parsimonious, and in high dimensions, is unstable. Given a sample of size $N$ $Y_1,\dots , Y_N$, from an $M$-variate Normal distribution with mean $\mu$ and covariance matrix $\Sigma$, the sample covariance matrix
-
-\begin{equation} \label{eq:sample-covariance-matrix}
-S = \left(N-1\right)^{-1} \sum_{i = 1}^N \left(Y_i - \bar{Y}\right)\left(Y_i - \bar{Y}\right)'
-\end{equation}
-
-is a straightforward estimator of the $\frac{M\left(M+1\right)}{2}$ parameters of the unstructured covariance matrix $\Sigma$. The number of parameters of $\Sigma = \left[ \sigma_{ij} \right]$ grows quadratically in the dimension $M$, and the parameters must satisfy the positive-definiteness constraint
-
-\begin{equation*} 
-v'\Sigma v = \sum_{i,j = 1}^M v_i v_j \sigma_{ij} \ge 0 
-\end{equation*}
-\noindent
-for all $v \in \Re^M$. Together, these hurdles make parsimoniously modeling covariance matrices a great challenge in Statistics and its areas of application.
-
+{\needsparaphrased{
 While systematic and data-based modeling of covariance matrices is hampered by the positive-definiteness constraint and high-dimensionality, similar though simpler obstacles in modeling the mean vector $\mu$ (first moments) of the distribution of a random vector $Y = \left(y_1, \dots , y_M\right)'$ has been handled quite successfully in the framework of regression analysis, leading to the powerful theory of generalized linear models (GLM). The success of GLM in handling variety of continuous and discrete data is mainly due to relying on a link function $g\left(\cdot\right)$ and a linear predictor $g\left(\cdot\right) = X\beta$ to induce unconstrained parameterization and reduce the parameter space dimension simultaneously. Since the covariance matrix of a random vector $Y$ , defined by $\Sigma = E\left(Y - \mu\right)\left(Y - \mu\right)$, is a mean-like parameter, one would like to exploit the idea of GLM along with the experience and progress in fitting the mixed-effects and time series models in developing a systematic, data-based procedure for covariance matrices. 
 
 \bigskip
@@ -230,7 +261,7 @@ Gabriel (1962) was among the first toimplicitly parameterize a multivariate norm
 in terms of entries of the precision matrix $\Omega^{-1}$.  Dempster (1972) who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
 
 \[
-\log f\left(Y, \Sigma^{-1}\right) = -\frac{1}{2}\mbox{tr}\Sigma^{-1} \left(Y'Y\right) + \log\vert \Sigma \vert^{-1/2} - M \log\sqrt{pi}
+\log f\left(Y, \Sigma^{-1}\right) = -\frac{1}{2}\mbox{tr}\Sigma^{-1} \left(Y'Y\right) + \log\vert \Sigma \vert^{-1/2} - M \log\sqrt{\pi}
 \]
 
 Soon thereafter, the simple structures of time series and variance components models motivated \citet{anderson1973asymptotically} to define the class of linear covariance models:
@@ -238,13 +269,47 @@ Soon thereafter, the simple structures of time series and variance components mo
 \Sigma = \sum_{i = 1}^q \alpha_qU_q
 \end{equation}
 \noindent
-where the $U_i$s are known symmetric matrices and the $\alpha_i$s are unknown parameters, restricted to ensure that $\Sigma$ is positive definite.	
+where the $U_i$s are known symmetric matrices and the $\alpha_i$s are unknown parameters, restricted to ensure that $\Sigma$ is positive definite. This class of models is general enough to include all linear mixed effects models as well as certain time series and graphical models. In, for $q$ large enough, any covariance matrix admits representation of the form \ref{eq:linear-covariance-model.}, since one can decompose every covariance matrix as 
+
+\begin{equation} \label{eq:linear-covariance-model-2}
+\Sigma = \sum_{i = 1}^M \sum_{j = 1}^M \sigma_{ij} U_{ij},
+\end{equation}
+\noindent
+where $U_{ij}$ is an $M \times M$ matrix with a 1 in the $\left(i,j\right)$ position, and zeros everywhere else. Despite the convenience of parameterization, the positive definite constraint \ref{eq:positive-definite-constraint} makes estimation an arduous task.
+
+\bigskip
+
+Inducing sparsity by setting certain elements of the covariance matrix or its inverse to zero is a common approach to reducing the dimensionality of a covariance structure. Inspection of model~\ref{eq:linear-covariance-model} and the covariance parameterization given in \ref{eq:linear-covariance-model-2} makes it easy to see that this can be achieved by eliminating certain $U_{ij}$ from the covariates in the linear covariance model. On the extreme end of the sparsity spectrum is the case of independent observations and $\Sigma$ is diagonal, eliminating all $U_{ij}$ from the linear model covariates for $i \ne j$. Connection between the linear covariance model and other models for covariance discussed in previous sections can be established if we consider intermediary cases, such as classes of stationary moving average (MA) and autoregressive (AR) models introduced in the early times series literature. The $MA(q)$ model corresponds to a banded covariance matrix, setting 
+
+\begin{equation}  \label{eq:ar-p-elementwise-shrinkage}
+\sigma_{ij} = 0 \quad \mbox{for }\vert i - j \vert > q, 
+\end{equation}
+\noindent
+while the $AR(p)$ model corresponds to a banded inverse:
+\begin{equation} \label{eq:ar-p-elementwise-shrinkage}
+\sigma^{ij} = 0 \quad \mbox{for }\vert i - j \vert > p. 
+\end{equation}
+Of course, there are the nonstationary analogues to these classes of models, some of which were discussed in Section~\ref{section:}. We will review others which are related to antedependence models and Gaussian graphical models in the section immediately to follow.
 
 \subsubsection{Antedependence models}
 
-\subsubsection{Covariance selection models}
+Random variables $y_1, \dots, y_M$, which correspond to observation times $t_1,\dots, t_M$, with multivariate normal joint distribution said to be $p^{th}$-order antedependent or $AD(p)$ \citet{gabriel1962ante} if $y_t$ and $y_{t+s+1}$ are independent given the intervening values $y_{t+1}, \dots , y_{t+s}$ for $t = 1, \dots , p?s?1$ and all $s \ge p$. A random vector $Y = \left(y_1, \dots , y_p\right)$ is $AD(p)$ if and only if its covariance matrix satisfies \ref{eq:ar-p-elementwise-shrinkage}. Closely connected are the classes of variable order $AD$ models and varying order, varying coefficient autoregressive models in which the coefficients and order of antedependence depend on time.
+
 
 \subsubsection{Log-linear covariance models}
+
+The constraint on the $\alpha_i$s in \ref{eq:linear-covariance-model} was eliminated with the introduction of log-linear covariance models; see \citet{chiu1996matrix}. For a general covariance matrix having spectral decomposition
+\begin{equation}
+\Sigma = P \Lambda P',
+\end{equation}
+\noindent
+its matrix logarithm, denoted $\log\Sigma$, and defined by $log \Sigma = P \log\Lambda P'$ is a symmetric matrix with unconstrained entries taking values on $\Re$. A log-linear model for $\Sigma$ may be written as
+\begin{equation} \label{eq:log-linear-covariance-model}
+\log\Sigma  = \sum_{i = 1}^q \alpha_i U_i, 
+\end{equation}
+\noindent
+where the $U_i$s are as before in \ref{eq:linear-covariance-model} and the $\alpha_i$s are now unconstrained. The $\alpha_i$s, however, now lack statistical interpretation since $\log \Sigma$ is a
+highly nonlinear operation. But for diagonal $\Sigma$, $\log \Sigma = \mbox{diag}\left(\sigma_{11},\dots, \sigma_MM\right)$, and model \ref{eq:log-linear-covariance-model} reduces to modeling of heterogeneous variances, which has been extensively studied. See Carroll and Ruppert (1988), Verbyla (1993) and references therein.
 
 \subsubsection{GLMs }
 
@@ -281,24 +346,24 @@ where $T$ is a lower triangular matrix with $1$?s as its diagonal entries and $D
 
 
 \needsparaphrased{In sharp contrast, the fact that the lower triangular matrix $T$ in the Cholesky decomposition of a covariance matrix $\Sigma$ is unconstrained makes it ideal for nonparametric estimation.
-Wu and Pourahmadi (2003) have used local polynomial estimators to smooth the subdiagonals of $T$. For the moment, denoting such estimators of $T$ and $D$ in (2) by T? and D?, an
-estimator of $\Sigma$ given by $\Sigma = \hat{T}^{-1}D{\hat{T}^{-1}}^{\prime}$ is guaranteed to be positive-definite. Although one could smooth rows and columns of T,  the idea of smoothing along its subdiagonals is motivated by the similarity of the regressions in (3) to the varying-coefficients autoregressions (Kitagawa and Gersch, 1985, 1996; Dahlhaus, 1997): Xm
+Wu and Pourahmadi (2003) have used local polynomial estimators to smooth the subdiagonals of $T$. For the moment, denoting such estimators of $T$ and $D$ in (2) by $T$ and $D$, an
+estimator of $\Sigma$ given by $\Sigma = \hat{T}^{-1}D{\hat{T}^{-1}}^{\prime}$ is guaranteed to be positive-definite. Although one could smooth rows and columns of $T$,  the idea of smoothing along its subdiagonals is motivated by the similarity of the regressions in (3) to the varying-coefficients autoregressions (Kitagawa and Gersch, 1985, 1996; Dahlhaus, 1997): Xm
 
 Xm
 j=0
 \begin{equation}
-f_{j,p}\left(t/p\right)y_{t?j} = \sigma_p\left(t/p\right)\epsilon_t, \quad t = 0, 1, 2, \dots,
+f_{j,p}\left(t/p\right)y_{t_j} = \sigma_p\left(t/p\right)\epsilon_t, \quad t = 0, 1, 2, \dots, M,
 \end{equation}
-where f0,p(·) = 1, fj,p(·), 1 ? j ? m, and ?p(·) are continuous functions on [0, 1] and {?t}
+\noindent
+where $f_{0,p}\left(·\right) = 1$, $f_{j,p}\left(·\right)$, 1 ? j ? m, and ?p(·) are continuous functions on $\left[0, 1\right]$ and {?t}
 30 is a sequence of independent random variables each with mean zero and variance one. This analogy and comparison with the matrix $T$ for stationary autoregressions having constant
 entries along subdiagonals suggest taking the subdiagonals of $T$ to be realizations of some smooth univariate functions:
 
 \begin{equation*}
-\phi_{t,t?j} = f_{j,p}\left(t/p\right),\quad \sigma_t = \sigma_p\left(t/p\right). 
+\phi_{t,t-j} = f_{j,p}\left(t/p\right),\quad \sigma_t = \sigma_p\left(t/p\right). 
 \end{equation*}
 
-The details of smoothing and selection of the order m of the autoregression and a simulation study comparing performance of the sample covariance matrix to smoothed estimators are given in Wu and Pourahmadi (2003). Due to the closer connection between entries of T and the family of regression (3), it is conceivable that some of the entries of T could be zero or close to it. Smith and Kohn (2002)
-have used a prior that allows for zero entries in T and have obtained a parsimonious model for $\Sigma$ without assuming a parametric structure. Similar results are reported in Huang, Liu and Pourahmadi (2004) using penalized likelihood with $L_1$-penalty to estimate $T$ for Gaussian data.}
+The details of smoothing and selection of the order $m$ of the autoregression and a simulation study comparing performance of the sample covariance matrix to smoothed estimators are given in Wu and Pourahmadi (2003). Due to the closer connection between entries of $T$ and the family of regression (3), it is conceivable that some of the entries of $T$ could be zero or close to it. Smith and Kohn (2002) have used a prior that allows for zero entries in $T$ and have obtained a parsimonious model for $\Sigma$ without assuming a parametric structure. Similar results are reported in Huang, Liu and Pourahmadi (2004) using penalized likelihood with $L_1$-penalty to estimate $T$ for Gaussian data.}
 
 Alternatively, one can view $T$ as a bivariate function,
 

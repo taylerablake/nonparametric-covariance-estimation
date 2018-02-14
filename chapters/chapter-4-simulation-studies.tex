@@ -109,7 +109,7 @@
 
 To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$. In the first portion of the study, we simulate data so that all subjects share a common set of $M$ regularly-spaced observation times so as to permit performance comparison with three alternative estimators based on the sample covariance matrix, which cannot accommodate irregularly spaced observations.  In the second portion of the study, our primary concern is studying the stability of our estimator as the irregularity in the observed time points across subjects increases. For fixed $N$, we observe performance when the data are generated from the same underlying covariance structures for varying within-subject sample sizes $M$ and varying levels of data sparsity by subsampling observations from the complete dataset. 
 
-We study estimator performance for five covariance structures, each exhibiting varying degrees of structural complexity. We first consider the covariance structure corresponding to mutual independence, which is both the simplest and sparsest structure, corresponding to $\phi\left(t, s\right) = 0$ for all $t, s$ and constant $\log \sigma^2\left(t\right)$. We then consider a class of covariance structures which we define explicitly in terms of the GARPs and IVs, having varying coefficient function which is linear in $t$: $\phi\left(t,s\right) \propto bt$ and constant innovation variance function.  We then define three different covariance structures by banding the corresponding Cholesky factor at varying distances $k_l \in \left[0,1\right]$ from the diagonal, which results in a set of inverse covariance matrices which are also banded at the same distances; see \citet{bickel2008regularized}. Equivalently,  we take $\phi\left(t,s\right) \propto bt$ for $t$, $s$ such that $t - s \le k_l$ and $\phi\left(t,s\right) = 0$ for $t$, $s$ such that $t - s > k_l$.  Lastly, we consider the compound symmetry model, a commonly utilized parametric model for longitudinal data; while the structure is of the overall covariance matrix is parsimonious, the varying coefficient function and innovation variance function of the corresponding Cholesky decomposition are nonlinear in $t$.  Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. The results of the simulations for complete data under entropy loss are presented in tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}; the results for quadratic loss are similar and can be found in the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. The results for the second simulation study of performance with sparsely sampled data are given in tables \ref{table:simulation-2-sigma-1} - \ref{table:simulation-2-sigma-5}. 
+We study estimator performance for five covariance structures, each exhibiting varying degrees of structural complexity. We first consider the covariance structure corresponding to mutual independence, which is both the simplest and sparsest structure, corresponding to $\phi\left(t, s\right) = 0$ for all $t, s$ and constant $\log \sigma^2\left(t\right)$. We then consider a class of covariance structures which we define explicitly in terms of the GARPs and IVs, having varying coefficient function which is linear in $t$: $\phi\left(t,s\right) \propto bt$ and constant innovation variance function.  We then define three different covariance structures by banding the corresponding Cholesky factor at varying distances $k_l \in \left[0,1\right]$ from the diagonal, which results in a set of inverse covariance matrices which are also banded at the same distances; see \citet{bickel2008regularized}. Equivalently,  we take $\phi\left(t,s\right) \propto bt$ for $t$, $s$ such that $t - s \le k_l$ and $\phi\left(t,s\right) = 0$ for $t$, $s$ such that $t - s > k_l$.  Lastly, we consider the compound symmetry model, a commonly utilized parametric model for longitudinal data; while the structure is of the overall covariance matrix is parsimonious, the varying coefficient function and innovation variance function of the corresponding Cholesky decomposition are nonlinear in $t$.  Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. 
 
 \subsection{Alternative estimators for benchmarking}
 
@@ -212,9 +212,10 @@ For each of the general covariance structures outlined in the previous simulatio
 \end{enumerate}
 
 
+\bigskip
 
-Standard errors of the risk estimates are given in Table~\ref{table:}
-[TODO: discuss the results here]
+
+The results of the simulations for complete data under entropy loss are presented in tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}; the results for quadratic loss are similar and can be found in the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. The results for the second simulation study of performance with sparsely sampled data are given in tables \ref{table:simulation-2-sigma-1} - \ref{table:simulation-2-sigma-5}.  Standard errors of the risk estimates are left to the appendix; see Table~\ref{table:ssanova-estimator-performance-with-se-ure} and Table~\ref{table:ssanova-estimator-performance-with-se-loso}.
 
 \bigskip
 
@@ -251,7 +252,6 @@ where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on 
 where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. Per the suggested approach of \citet{fang2016tuning} based on an extensive simulation study, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \citet{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
 
 \bigskip
-
 
 %\subsubsection{Adjustments made for non-positive definite shrinkage estimators}
 
@@ -582,7 +582,7 @@ $N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\
 \setlength{\arrayrulewidth}{0.2pt}
 
 
-\begin{table}[H] 
+\begin{table}[H] \label{table:ssanova-estimator-performance-with-se-ure}
 \centering
 \begin{tabular}{lrrrrrrrrrr}
   \hline
@@ -637,7 +637,7 @@ Model & N & M & $\hat{\Delta}_1(\hat{\Sigma}_{SS})$ & $se( \hat{\Delta}_1(\hat{\
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}[H] \label{table:ssanova-estimator-performance-with-se-loso}
 \centering
 \begin{tabular}{lrrrrrrrrrr}
   \hline
