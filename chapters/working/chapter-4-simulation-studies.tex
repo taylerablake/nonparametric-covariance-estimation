@@ -1,0 +1,398 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage{enumitem}
+\usepackage{accents}
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{cite}
+\usepackage{rotating}
+\usepackage{arydshln}
+\usepackage{amsthm}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+
+
+\newcommand{\bfm}{\mbox{\boldmath $m}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\begingroup\lccode`~=`_
+\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
+\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
+
+\makeatletter
+\renewcommand{\theenumi}{\Roman{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\Alph{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+\renewcommand{\p@enumii}{\theenumi.}
+\makeatother
+
+\begin{document}
+
+%\nocite{*}
+\def\bL{\mathbf{L}}
+%\usepackage{mathtime}
+
+%%UNCOMMENT following line if you have package
+
+
+\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\bibliographystyle{plainnat}
+\maketitle
+
+\section{Performance}
+In this section, we evaluate the performance of the spline estimator under different simulation settings when the tuning parameters are chosen by the unbiased risk estimate and leave-one-subject-out cross validation. We compare the performance of the maximum penalised likelihood estimator using the classical smoothness penalty under the smoothing spline representation to the performance of the tensor product P-spline estimator for varying orders of the penalty. We also compare performance under complete data to the performance under irregularly sampled data:
+
+\begin{itemize}
+\item All subjects share a common set of observation times $t_1, \dots, t_M$.
+\item Observation times vary across subjects, with subject-specific deviation defined as follows: 
+\end{itemize}
+
+For the case of common observation times across all subjects, we also consider three other methods of estimating a covariance matrix for comparison: the sample covariance matrix $\Sigma^*$, the soft thresholding estimator of \citet{rothman2009generalized}, and the tapering estimator of \citet{cai2010optimal}. The soft-thresholding estimator proposed in \citet{rothman2009generalized} is given by
+
+\[
+\hat{\Sigma}^{sthresh}\left(\lambda\right) =   \begin{bmatrix} \mbox{sign}\left(\sigma^*_{ij}\right) \left(\sigma^*_{ij} - \lambda\right)_+ \end{bmatrix},
+\]
+\noindent 
+where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. The tapering estimator presented in \citet{cai2010optimal} is defined
+\[
+\hat{\Sigma}^{taper}\left(\lambda\right) =  \begin{bmatrix} \omega_{ij}^\lambda \sigma^*_{ij} \end{bmatrix}.
+\]
+\noindent
+The weights $\omega_{ij}^\lambda$ are given by 
+\begin{equation*}
+\omega_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
+\end{equation*}
+\noindent
+where $k_h = k/2$ is assumed to be even without loss of generality. These may be rewritten as
+\begin{align*}
+\omega_{ij} = \left\{\begin{array}{ll} 1, & \vert \vert i -j \vert \vert \le k_h \\
+                             2 - \frac{i - j}{k_h} & k_h < \vert \vert i -j \vert \vert \le k, \\
+                             0 & \mbox{otherwise}  \end{array} \right.
+\end{align*}
+\noindent
+The subscript on the weights $\omega_{ij}$ serves to indicate that these are controlled by a tuning parameter which controls the amount of shrinkage applied to the elements of the sample covariance matrix.
+
+[discuss the MCRE and CVTuningCov package]
+
+\bigskip
+
+[discuss the implementation and R package here]
+
+To assess performance of estimator $G$, we consider two commonly used loss functions:
+\begin{equation} \label{eq:quad-loss}
+\Delta_1\left(\Sigma,G \right) = tr\left( \Sigma^{-1} G \right) - log \vert \Sigma^{-1} G \vert - M,
+\end{equation}
+\noindent
+\begin{equation} \label{eq:entropy-loss}
+\Delta_2\left(\Sigma,G\right) = tr\left(\left( \Sigma^{-1} G - \mathrm{I}\right)^2 \right)
+\end{equation}
+\noindent
+where $\Sigma$ is the true covariance matrix and $G$ is an $M \times M$ positive definite matrix. Each of these loss functions are $0$ when $G = \Sigma$ and is positive when $G != \Sigma$. Both are invariant with respect to transformations
+\[
+G^* = C G C', \quad \Sigma^* = C \Sigma C',
+\]
+\noindent
+for a nonsingular matrix $C$. The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities corresponding to the two covariance matrices. The second loss $\Delta_2$, or the quadratic loss, measures the Euclidean or Frobenius norm of its matrix argument, and consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. We obtain the corresponding risk functions by taking expectations,
+
+\begin{equation*}
+R_i \left(\Sigma, G\right) = E_\Sigma\left[\Delta_i\left(\Sigma,G\right)\right], \quad i = 1,2.
+\end{equation*}
+\noindent
+We prefer estimator $\hat{\Sigma}_1$ over another estimator $\hat{\Sigma}_2$ if $R_i \left(\Sigma, \hat{\Sigma}_2\right) < R_i \left(\Sigma, \hat{\Sigma}_2\right)$. We estimate the risk functions by Monte Carlo approximation, using $N_{sim} = 100$ simulation runs for each scenario outlined above.  Estimation is performed on data generated according to an $M$-dimensional multivariate Normal distribution with mean zero; we consider four Cholesky covariance structures for the underlying generating distribution:
+
+\begin{enumerate} 
+\item Mutual independence: $\Sigma_1 = T^{-T} D^2 T^{-1} = \mathrm{I}$ where 
+\begin{align*}
+\phi\left(t,s\right) &= 0, \quad 1 \le t < s \le M;\\ 
+\sigma^2\left(t\right) &= 1, \quad t = 1,\dots, M.
+\end{align*}
+\item Linear varying coefficient model with constant innovation variance: $\Sigma_2 = T^{-T} D^2 T^{-1}$ where 
+\begin{align*}
+\phi\left(t,s\right) &= t - \frac{1}{2M}, \quad 1 \le s < t \le M \\
+\sigma\left(t\right) &= 0.1, \quad t = 1,\dots, M.
+\end{align*}
+\item $\mbox{AR}\left(k\right)$ model with linear varying coefficient: $\Sigma_3 = T^{-T} D^2 T^{-1}$ where $k = \lfloor M/2\rfloor + 1$ and 
+\begin{align*}
+\phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2M}, & t - s \le \lfloor M/2\rfloor + 1\\ 
+0, & t - s > 1\end{array}\right.,\\
+\sigma\left(t\right) &= 0.1, \quad t = 1,\dots, M.
+\end{align*}
+\item $\mbox{AR}\left(1\right)$ model with linear varying coefficient: $\Sigma_3 = T^{-T} D^2 T^{-1}$ where 
+\begin{align*}
+\phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2M}, & t - s = 1\\ 0, & t - s > 1\end{array}\right.,\\
+\sigma\left(t\right) &= 0.1, \quad t = 1,\dots, M.
+\end{align*}
+\item The compound symmetry model: $\Sigma_4 = \sigma^2\left(\rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}\right),\; \rho=0.7,\;\sigma^2=1$. 
+\begin{align*}
+\phi_{ts} &= -\frac{\rho}{1 + \left(t-1\right)\rho}, \quad t = 2, \dots, M,\;\; s = 1, \dots, t-1\\
+\sigma_t^2 &= 1 -\frac{\left(t-1\right)\rho^2}{1 + \left(t-1\right)\rho}, \;\; t = 2, \dots, M.
+\end{align*}
+\end{enumerate}
+
+In some cases, tapering or applying soft thresholding to the sample covariance matrix yielded an estimator that was not positive definite. Evaluation of the entropy loss \ref{eq:entropy-loss} is undefined at an estimator with at least one non-positive eigenvalue, so to coerce the estimate to a positive definite one that is, in some sense, close to the original estimate, the algorithm of \\
+
+Cheng, Sheung Hun and Higham, Nick (1998) A Modified Cholesky Algorithm Based on a Symmetric Indefinite Factorization; SIAM J. Matrix Anal.\ Appl., 19, 1097?1110. \\
+\bigskip
+was applied to the tapered or soft thresholding estimator before evaluating the loss. For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\dashlinedash}{0.5pt}
+\setlength{\dashlinegap}{1pt}
+\setlength{\arrayrulewidth}{0.2pt}
+
+\begin{table}[ht]
+\caption{Simulation results for $\Sigma_1 = \mathrm{I}$ under quadratic loss, $\Delta_1$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\centering
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+\hline
+		&    10 & 0.0010 & 0.0013 & 0.4702  & 0.3926 & 0.3871 \\ 
+$N = 50$  &    20 & 0.0007 &  0.0006	& 0.8495 & 0.8301 & 0.8287 \\ 
+  		&    30 & 0.0003 &  0.0004	& 1.1449 & 1.1926 & 1.1924  \\ \hdashline
+		 &    10 & 0.0004 &  0.0004	& 0.2072 &  0.1802 & 0.1777\\ 
+$N = 100$ &    20 & 0.0002 & 0.0002	& 0.3920  & 0.3858 & 0.3817 \\ 
+   &    30 & 0.0001 & 0.0001 &0.5712 & 0.6191 & 0.6109 \\ 
+\end{tabular}
+\end{table}
+
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_2$, the  linear varying coefficient AR model, under quadratic loss, $\Delta_1$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+&    10 & 0.0314 &  0.0411	&0.5726  & 0.5810 & 0.7758\\ 
+$N = 50 $ &    20 & 0.3266 & 0.7265	& 2.3130   & 5.5964 & 2.7545  \\ 
+ &    30 & 5.0696 &  4.9073	 &15.1096 & 765.7206 & 28.6820  \\ \hdashline
+ &    10 & 0.0156 &  0.0147	& 0.2479  & 0.2501 & 0.3544 \\ 
+$N = 100$ &    20 & 0.1894 &  0.2017	 &1.3177 & 5.1945 & 4.7634 \\ 
+  &    30 & 2.3876 &	1.6465  & 9.8175 & 488.6801 & 85.9508\\ 
+\end{tabular}
+\end{table}
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_3$, the k-banded linear varying coefficient AR model with $k = \lfloor M/2\rfloor + 1$, under quadratic loss, $\Delta_1$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+ 	          &    10 & 0.0562 &	0.0547 & 0.5237 & 0.5810 & 0.5313 \\ 
+ $N = 50$ 	 &     20 & 0.7832 & 0.8934   & 2.1419 & 9.5721 & 9.1421\\ 
+  		  &    30 & 8.2650 & 10.6855  & 15.2842 & 407.3659 & 129.7459\\ \hdashline
+		  &    10 & 0.0376 &0.0449	 & 0.2546  & 0.2556 & 0.2661\\ 
+ $N = 100$  &    20 & 0.6260 & 0.5967	 & 1.3751 & 3.3281 & 1.2759\\ 
+   &    30 & 5.7635 &	6.2824 & 7.4750& 203.6710 & 10.0634 \\ 
+\end{tabular}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_4$, the 2-banded linear varying coefficient AR model, under quadratic loss, $\Delta_1$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+ &    10 & 0.0134 &  0.0145	& 0.4169 & 0.3987 & 0.3985 \\ 
+$N = 50$ &    20 & 0.0590 & 0.0574 & 0.8810& 0.9078 & 0.9073 \\ 
+ &    30 & 0.1351 &  0.1362	& 1.2571  & 1.2570 & 1.2575\\ \hdashline
+     &    10 & 0.0077 &  0.0078 & 0.2263  & 0.2111 & 0.2104 \\ 
+  $N = 100$ &    20 & 0.0549 & 0.0534  & 0.4309 & 0.4127 & 0.4120 \\ 
+   &    30 & 0.1331 & 0.1320 & 0.6819  & 0.6579 & 0.6565 \\\
+\end{tabular}
+\end{table}
+
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_5$, the compound symmetry model, under quadratic loss, $\Delta_1$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+ &    10 & 0.3688 & 0.3599	& 0.7872& 0.8058 & 1.4774 \\ 
+$N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\ 
+  &    30 & 1.6067 &	1.6151   &  2.5548 & 2.4837 & 4.9027 \\ \hdashline
+  &    10 & 0.3210 & 0.3168 & 0.3913 & 0.3819 & 0.8958\\ 
+  $N = 100$ &    20 & 0.9793 & 0.9774 &  0.8714 & 0.8479 & 2.2110\\ 
+   &    30 & 1.6177 &  1.6032  & 1.2967  & 1.2293 & 3.4968\\ 
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% entropy risk
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_1 = \mathrm{I}$ under entropy loss, $\Delta_2$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+&    10 & 0.0684 & 	0.0678	&1.2339 & 0.4451 & 1.1760\\ 
+$N = 50$ &    20 & 0.0799 & 	0.0720	&5.0827 & 1.6504 & 4.7847 \\ 
+  &    30 & 0.0668 &	0.0740	 &12.5162  & 1.9975 & 11.0434 \\ 
+   \hdashline
+ &    10 & 0.0405 & 0.0379 & 0.5854  & 0.1783 & 0.5201 \\ 
+$N = 100$ &    20 & 0.0356 &  0.0378 & 2.3038 & 0.4394 & 1.9637 \\ 
+  &    30 & 0.0396 & 0.0322  &5.2641 & 0.6717 & 4.5410 \\ 
+\end{tabular}
+\end{table}
+
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_2$, the linear varying coefficient AR model, under entropy loss, $\Delta_2$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+ &    10 & 0.0647 & 0.0696	 & 1.2431 & 1.4242 & 1.1195\\ 
+$N = 50$ &    20 & 0.0884 & 0.0969 & 5.0437 & 17.0220 & 13.5290\\ 
+&    30 & 0.0702 & 0.0894 & 12.4559 & 39.9769 & 159.0521 \\ 
+   \hdashline
+&    10 & 0.0307 & 0.0302 & 0.5403& 0.7659 & 0.5609 \\ 
+$N = 100 $ &    20 & 0.0357 & 0.0350  & 2.3195 & 10.0140 & 12.1431 \\ 
+   &    30 & 0.0372 & 0.0334 & 5.2817& 35.0353 & 108.1015  \\ 
+\end{tabular}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_3$, the k-banded linear varying coefficient AR model with $k = \lfloor M/2\rfloor + 1$, under entropy loss, $\Delta_2$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\  
+&    10 & 0.3354 &	0.3174	&  1.1947  & 1.1073 & 1.1649\\ 
+$N = 50$ &    20 & 1.1144 &	1.1143	&  5.0966&17.0220 & 12.6171 \\ 
+  &    30 & 2.3247 & 	2.3168	&  12.4905 & 50.3684 & 101.8245\\ 
+   \hdashline
+    &    10 & 0.2826 & 0.2955  & 0.5446& 0.5410 & 0.5531  \\ 
+  $N = 100$ &    20 & 1.0690 &  1.0627 & 2.3514 & 12.8490 & 11.4934\\ 
+   &    30 & 2.2737 & 2.2767 & 5.4204& 27.2736 & 30.5818  \\ 
+\end{tabular}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_4$, the 2-banded linear varying coefficient AR model, under entropy loss, $\Delta_2$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+&    10 & 0.2605 & .2743&  1.1692 & 0.5899 & 1.1126 \\ 
+$N = 50$ &    20 & 0.8836 & .8764 & 5.0899 & 1.8834 & 4.6363 \\ 
+   &    30 & 1.6087 & 1.6195 &12.5844&3.1902 & 11.4818 \\ \hdashline
+ &    10 & 0.2193 & 0.2183 & 0.5642 & 0.2902 & 0.5456 \\ 
+  $N = 100$ &    20 & 0.8468 & 0.8491 & 2.2607 & 0.7869 & 2.2028\\ 
+   &    30 & 1.5743 & 1.5802 & 5.2437 & 1.1974 & 4.8555 \\
+  \end{tabular}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{table}[ht]
+\centering
+\caption{Simulation results for $\Sigma_5$, the compound symmetry model, under entropy loss, $\Delta_2$. The risk functions for the sample covariance matrix, the tapered estimator, the soft thresholding estimator, the SSANOVA Cholesky estimator, and the tensor product P-spline Cholesky estimator. The tuning parameters for the tapering estimator and the soft thresholding estimator were chosen using $K = 10$-fold cross validation. The performance of the spline estimators is evaluated when both the unbiased risk estimate and leave-one-subject-out cross validation are used to select the smoothing parameters.}
+\begin{tabular}{l|r|rrrrrr}
+&  & \multicolumn{2}{c}{$\hat{\Sigma}_{ssanova}$} & $S$ & $S_{st}$ & $S_{taper}$ \\ 
+&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+  \hline
+ &    10 & 0.2837 & 	  0.2766	& 1.1943 &  17.3871 & 1.2122 \\ 
+$N = 50$&    20 & 0.7551& 0.7657& 5.0283& 35.4067 & 5.1671 \\ 
+  &    30 & 1.1936 & 1.1927& 12.5871& 46.5337 & 12.4110  \\ \hdashline
+ &    10 & 0.2449 &  0.2390 & 0.5734 & 16.2705 & 0.5796\\ 
+  $N = 100$ &    20 & 0.7231 & 0.7299 & 2.2678& 31.3226 & 2.2988 \\ 
+   &    30 & 1.1780 & 1.1813 & 5.2562 & 39.2108 & 5.2592 \\
+  \end{tabular}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\section{Discussion}
+
+See \citet{pourahmadi2011covariance} section 3.1 for further discussion of loss functions
+
+\end{document}
