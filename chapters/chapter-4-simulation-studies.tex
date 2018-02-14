@@ -180,11 +180,11 @@ R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\
 \noindent
 We prefer one estimator $\hat{\Sigma}_1$ to another $\hat{\Sigma}_2$ if it has smaller risk.  Given $\Sigma$, we estimate the risk of an estimator via Monte Carlo approximation. 
 
-\section{Simulation settings}
+\section{Discussion}
 
 For each of the general covariance structures outlined in the previous simulation study description, data were simulated according to multivariate normal distributions with the following covariance matrices: 
 \begin{enumerate} 
-\item\label{item:cov-type-2} Mutual independence: $\Sigma = \mathrm{I}$, where 
+\item\label{item:cov-type-1} Mutual independence: $\Sigma = \mathrm{I}$, where 
 \begin{align*}
 \phi\left(t,s\right) &= 0, \quad 0 \le s < t \le 1,\\ 
 \sigma^2\left(t\right) &= 1, \quad 0 \le t \le 1.
@@ -218,8 +218,13 @@ The results of the simulations for complete data under entropy loss are presente
 
 \bigskip
 
-%\subsubsection{Tuning parameter selection for elementwise shrinkage estimators}
-\section{Discussion}
+TODO: discuss the performance in real words and sentences here. 
+
+\bigskip
+
+Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case. Making the same comparison for the banded Cholesky factor having linear varying coefficient function truncated at $t = 0.5$, we see only slight decreases in performance for $M = 10$: an estimated entropy risk of 0.3174  with no missing data versus 0.3451 (0.3498, 0.3437) with $5\%$ ($5\%$, $5\%$) missing data. The degredation is more pointed for the moderate sample size of $M = 20$. The rate of missing observations has the greatest impact for the simulation conducted using the compound symmetric model. This is not surprising, since it corresponds to the most comlexly structured Cholesky factor. While the functions defining the Cholesky factors of Models III and IV do not belong to the null space defined by the cubic smoothing spline penalty, they are both piecewise functions with each piece itself belonging to $\mathcal{H}_0$.
+
+\bigskip
 
 As discussed in \ref{subsubsection:chapter-1-sss-1-3-4}, the soft thresholding estimator can be written as the solution to the optimization problem
 
