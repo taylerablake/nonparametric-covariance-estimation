@@ -194,6 +194,7 @@ For each of the general covariance structures outlined in the previous simulatio
 \phi\left(t,s\right) &= t - \frac{1}{2},  \quad 0 \le t \le 1, \\
 \sigma^2\left(t\right) &= 0.1^2,  \quad 0 \le t \le 1.
 \end{align*}
+{\needsparaphrased{TODO: How do we describe the structures for models II-V in terms of continuous $t\in\left[0,1\right]$? }}
 \item \label{item:cov-type-3} $k_{1/2}$-banded linear varying coefficient model with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$, where
 \begin{align*}
 \phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le 0.5\\ 
@@ -212,17 +213,32 @@ For each of the general covariance structures outlined in the previous simulatio
 \end{align*}
 \end{enumerate}
 
+{\needsparaphrased{TODO: Include figures of the true Cholesky surfaces for models 2-5.}}
+
 \bigskip
 
 The results of the simulations for complete data under entropy loss are presented in tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}; the results for quadratic loss are similar and can be found in the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. The results for the second simulation study of performance with sparsely sampled data are given in tables \ref{table:simulation-2-sigma-1} - \ref{table:simulation-2-sigma-5}.  Standard errors of the risk estimates are left to the appendix; see Table~\ref{table:ssanova-estimator-performance-with-se-ure} and Table~\ref{table:ssanova-estimator-performance-with-se-loso}.
 
 \bigskip
 
-TODO: discuss the performance in real words and sentences here. 
+
+Our estimator is stable across all of the underlying covariance  structures for the differing number of sampled trajectories $N = 50, 100$, while the performance of the alternative estimators markedly improves when the subject sample size is doubled for each of the generating structures, particularly for the case of $M = 30$. Irrespective of tuning parameter selection method, our estimator is preferable to all three of the alternative estimators, except under Model IV when $N$ is large and within-subject sampling rates are moderate. Under this model, both the inverse covariance as well as the covariance matrix itself are sparse. Specifically, the inverse is banded so that $\sigma^{ij} = 0$ for $\vert i - j \vert > 1$, but the non-zero elements are quite large. Inversion results in a covariance matrix which decays quickly as distance from the main diagonal increases, which is in concordance with the assumed structure of the softthresholding estimator. 
 
 \bigskip
 
-Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case. Making the same comparison for the banded Cholesky factor having linear varying coefficient function truncated at $t = 0.5$, we see only slight decreases in performance for $M = 10$: an estimated entropy risk of 0.3174  with no missing data versus 0.3451 (0.3498, 0.3437) with $5\%$ ($5\%$, $5\%$) missing data. The degredation is more pointed for the moderate sample size of $M = 20$. The rate of missing observations has the greatest impact for the simulation conducted using the compound symmetric model. This is not surprising, since it corresponds to the most comlexly structured Cholesky factor. While the functions defining the Cholesky factors of Models III and IV do not belong to the null space defined by the cubic smoothing spline penalty, they are both piecewise functions with each piece itself belonging to $\mathcal{H}_0$.
+The covariance matrix corresponding to Model II is highly nonstationary. It is neither sparse, nor has entries which decrease in absolute value as the time between observations increases, which is in discordance with the assumed structure of both element-wise shrinkage estimators. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The covariance matrix under Model III has similar structure, presenting similar difficulties for both estimators. The sample covariance matrix far outperforms both of its regularized renditions almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
+ 
+\bigskip
+
+Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case. Making the same comparison for the banded Cholesky factor having linear varying coefficient function truncated at $t = 0.5$, we see only slight decreases in performance for $M = 10$: an estimated entropy risk of 0.3174  with no missing data versus 0.3451 (0.3498, 0.3437) with $5\%$ ($5\%$, $5\%$) missing data. The degredation is more pointed for the moderate sample size of $M = 20$. The rate of missing observations has the greatest impact for the simulation conducted using the compound symmetric model. This is not surprising, since it corresponds to the Cholesky factor having the most complex structure. While the functions defining the Cholesky factors of Models III and IV do not belong to the null space defined by the cubic smoothing spline penalty, they are both piecewise functions with each piece itself belonging to $\mathcal{H}_0$.
+
+\bigskip
+
+{\needsparaphrased{Should the discussion that immediately follows be moved to after the tables containing non-appendix numerical results?}}
+
+\bigskip
+
+{\needsparaphrased{Should the discussion of study \# 1 be with the tablse for study 1, separate from the discussion + tables for study 2?}}
 
 \bigskip
 
@@ -265,10 +281,14 @@ There is little established about the optimal method for tuning parameter select
 
 \bigskip
 
-%\subsubsection{Adjustments made for non-positive definite shrinkage estimators}
 
 Element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite, though \citet{rothman2009generalized} established that in the limit, soft thresholding produces a positive definite estimator with probability tending to 1.  We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.   In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
+\bigskip
+
+{\needsparaphrased{We need to decide which tables will be included in the non-appendix numerical results. In the actual dissertation, section 6 will not immediate follow section 5.}}
+
+\bigskip
 
 \section{Numerical results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -586,73 +606,79 @@ $N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Risk estimates and corresponding standard errors for simulation study 2.}
+\subsection{Simulation study 1: risk estimates (standard errors)}
 
 \setlength{\dashlinedash}{0.5pt}
 \setlength{\dashlinegap}{1pt}
 \setlength{\arrayrulewidth}{0.2pt}
 
 
+
+{\needsparaphrased{Should we decide to keep the following tables in the chapter, the analogous tables for $S^\lambda$ and $S^\omega$ will also be included here as well.}}
+
+
 \begin{table}[H] \label{table:ssanova-estimator-performance-with-se-ure}
 \centering
 \begin{tabular}{lrrrrrrrrrr}
   \hline
-Model & N & M & $\hat{\Delta}_1(\hat{\Sigma}_{SS})$ & $se( \hat{\Delta}_1(\hat{\Sigma}_{SS}))$ & $\hat{\Delta}_2(\hat{\Sigma}_{SS})$  & $se( \hat{\Delta}_2(\hat{\Sigma}_{SS}))$ &$\hat{\Delta}_1(S)$ & $se(\hat{\Delta}_1(S))$ &$\hat{\Delta}_2(S)$  & $se(\hat{\Delta}_1(S))$\\ 
+Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} \\ 
   \hline
-1 & 50 & 10 & 0.0023 & 0.0006 & 0.0843 & 0.0099 & 0.3915 & 0.0262 & 1.1924 & 0.0348 \\ 
-  1 & 50 & 20 & 0.0009 & 0.0002 & 0.0804 & 0.0062 & 0.7953 & 0.0365 & 5.0792 & 0.0676 \\ 
-  1 & 50 & 30 & 0.0006 & 0.0001 & 0.0822 & 0.0064 & 1.2408 & 0.0460 & 12.2989 & 0.1174 \\ 
+1 & 50 & 10 & 0.0023 & (0.0006) & 0.0843 & (0.0099) & 0.3915 & (0.0262) & 1.1924 & (0.0348) \\ 
+  1 & 50 & 20 & 0.0009 & (0.0002) & 0.0804 & (0.0062) & 0.7953 & (0.0365) & 5.0792 & (0.0676) \\ 
+  1 & 50 & 30 & 0.0006 & (0.0001) & 0.0822 & (0.0064) & 1.2408 & (0.0460) & 12.2989 & (0.1174) \\ 
   \hdashline
-  1 & 100 & 10 & 0.0007 & 0.0001 & 0.0453 & 0.0042 & 0.1901 & 0.0107 & 0.5800 & 0.0133 \\ 
-  1 & 100 & 20 & 0.0003 & 0.0000 & 0.0421 & 0.0034 & 0.4025 & 0.0199 & 2.3150 & 0.0273 \\ 
-  1 & 100 & 30 & 0.0002 & 0.0000 & 0.0407 & 0.0040 & 0.5914 & 0.0224 & 5.2940 & 0.0476 \\ 
+  1 & 100 & 10 & 0.0007 &(0.0001) & 0.0453 & (0.0042) & 0.1901 & (0.0107) & 0.5800 & (0.0133) \\ 
+  1 & 100 & 20 & 0.0003 & (0.0001) & 0.0421 &(0.0034) & 0.4025 & (0.0199) & 2.3150 & (0.0273) \\ 
+  1 & 100 & 30 & 0.0002 & (0.0001) & 0.0407 & (0.0040) & 0.5914 & (0.0224) & 5.2940 & (0.0476) \\ 
     \hdashline \\
       \hdashline
-  2 & 50 & 10 & 0.0709 & 0.0063 & 0.3298 & 0.0082 & 0.5168 & 0.0359 & 1.2156 & 0.0318 \\ 
-  2 & 50 & 20 & 1.0948 & 0.1234 & 1.1179 & 0.0108 & 2.3802 & 0.1604 & 5.0130 & 0.0664 \\ 
-  2 & 50 & 30 & 13.9982 & 1.9602 & 2.3284 & 0.0161 & 22.5542 & 2.8650 & 12.3822 & 0.1101 \\ 
+  2 & 50 & 10 & 0.0709 & (0.0063) & 0.3298 & (0.0082) & 0.5168 & (0.0359) & 1.2156 & (0.0318) \\ 
+  2 & 50 & 20 & 1.0948 & (0.1234) & 1.1179 & (0.0108) & 2.3802 & (0.1604) & 5.0130 & (0.0664) \\ 
+  2 & 50 & 30 & 13.9982 & (1.9602) & 2.3284 & (0.0161) & 22.5542 & (2.8650) & 12.3822 & (0.1101) \\ 
     \hdashline
-  2 & 100 & 10 & 0.0449 & 0.0022 & 0.2955 & 0.0047 & 0.2515 & 0.0145 & 0.5566 & 0.0127 \\ 
-  2 & 100 & 20 & 0.6322 & 0.0421 & 1.0638 & 0.0064 & 1.1628 & 0.0925 & 2.3893 & 0.0252 \\ 
-  2 & 100 & 30 & 7.1979 & 0.6928 & 2.2805 & 0.0091 & 10.7818 & 1.4529 & 5.2753 & 0.0418 \\ 
+  2 & 100 & 10 & 0.0449 & (0.0022) & 0.2955 & (0.0047) & 0.2515 & (0.0145) & 0.5566 & (0.0127) \\ 
+  2 & 100 & 20 & 0.6322 & (0.0421) & 1.0638 & (0.0064) & 1.1628 & (0.0925) & 2.3893 & (0.0252) \\ 
+  2 & 100 & 30 & 7.1979 & (0.6928) & 2.2805 & (0.0091) & 10.7818 & (1.4529) & 5.2753 & (0.0418) \\ 
     \hdashline \\
       \hdashline
-  3 & 50 & 10 & 0.0573 & 0.0086 & 0.0753 & 0.0061 & 0.5234 & 0.0369 & 1.2228 & 0.0308 \\ 
-  3 & 50 & 20 & 0.8747 & 0.1197 & 0.1025 & 0.0085 & 2.8719 & 0.2644 & 5.0775 & 0.0733 \\ 
-  3 & 50 & 30 & 8.1496 & 1.5069 & 0.0958 & 0.0077 & 24.8586 & 3.9217 & 12.5350 & 0.1127 \\ 
+  3 & 50 & 10 & 0.0573 & (0.0086) & 0.0753 & (0.0061) & 0.5234 & (0.0369) & 1.2228 & (0.0308) \\ 
+  3 & 50 & 20 & 0.8747 & (0.1197) & 0.1025 & (0.0085) & 2.8719 & (0.2644) & 5.0775 & (0.0733) \\ 
+  3 & 50 & 30 & 8.1496 & (1.5069) & 0.0958 & (0.0077) & 24.8586 & (3.9217) & 12.5350 & (0.1127) \\ 
       \hdashline
-  3 & 100 & 10 & 0.0200 & 0.0028 & 0.0329 & 0.0028 & 0.2642 & 0.0217 & 0.5750 & 0.0165 \\ 
-  3 & 100 & 20 & 0.3360 & 0.0624 & 0.0387 & 0.0038 & 1.4008 & 0.1128 & 2.3517 & 0.0290 \\ 
-  3 & 100 & 30 & 3.6555 & 1.0573 & 0.0382 & 0.0043 & 9.6946 & 1.1953 & 5.2919 & 0.0413 \\ 
+  3 & 100 & 10 & 0.0200 &(0.0028) & 0.0329 & (0.0028) & 0.2642 & (0.0217) & 0.5750 & (0.0165) \\ 
+  3 & 100 & 20 & 0.3360 & (0.0624) & 0.0387 & (0.0038) & 1.4008 & (0.1128) & 2.3517 & (0.0290) \\ 
+  3 & 100 & 30 & 3.6555 & (1.0573) & 0.0382 & (0.0043) & 9.6946 & (1.1953) & 5.2919 & (0.0413) \\ 
       \hdashline \\
       \hdashline
-  4 & 50 & 10 & 0.0170 & 0.0015 & 0.2812 & 0.0067 & 0.4254 & 0.0273 & 1.2228 & 0.0338 \\ 
-  4 & 50 & 20 & 0.0600 & 0.0012 & 0.8899 & 0.0082 & 0.9665 & 0.0423 & 5.1032 & 0.0639 \\ 
-  4 & 50 & 30 & 0.1378 & 0.0015 & 1.6220 & 0.0074 & 1.1690 & 0.0417 & 12.3825 & 0.1139 \\ 
+  4 & 50 & 10 & 0.0170 & (0.0015) & 0.2812 & (0.0067) & 0.4254 & (0.0273) & 1.2228 & (0.0338) \\ 
+  4 & 50 & 20 & 0.0600 & (0.0012) & 0.8899 & (0.0082) & 0.9665 & (0.0423) & 5.1032 & (0.0639) \\ 
+  4 & 50 & 30 & 0.1378 & (0.0015) & 1.6220 & (0.0074) & 1.1690 & (0.0417) & 12.3825 & (0.1139) \\ 
       \hdashline
-  4 & 100 & 10 & 0.0088 & 0.0005 & 0.2252 & 0.0046 & 0.1941 & 0.0102 & 0.5676 & 0.0187 \\ 
-  4 & 100 & 20 & 0.0543 & 0.0007 & 0.8514 & 0.0043 & 0.4281 & 0.0221 & 2.2750 & 0.0250 \\ 
-  4 & 100 & 30 & 0.1333 & 0.0009 & 1.5826 & 0.0037 & 0.6650 & 0.0219 & 5.2777 & 0.0408 \\ 
+  4 & 100 & 10 & 0.0088 & (0.0005) & 0.2252 & (0.0046) & 0.1941 & (0.0102) & 0.5676 & (0.0187) \\ 
+  4 & 100 & 20 & 0.0543 & (0.0007) & 0.8514 & (0.0043) & 0.4281 & (0.0221) & 2.2750 & (0.0250) \\ 
+  4 & 100 & 30 & 0.1333 & (0.0009) & 1.5826 & (0.0037) & 0.6650 & (0.0219) & 5.2777 & (0.0408) \\ 
       \hdashline \\
       \hdashline
-  5 & 50 & 10 & 0.3956 & 0.0207 & 0.2900 & 0.0078 & 0.8750 & 0.0619 & 1.2395 & 0.0400 \\ 
-  5 & 50 & 20 & 0.9995 & 0.0110 & 0.7660 & 0.0063 & 1.8312 & 0.0745 & 5.0307 & 0.0719 \\ 
-  5 & 50 & 30 & 1.6198 & 0.0134 & 1.1976 & 0.0090 & 2.5880 & 0.1102 & 12.4199 & 0.0979 \\ 
+  5 & 50 & 10 & 0.3956 & (0.0207) & 0.2900 & (0.0078) & 0.8750 & (0.0619) & 1.2395 & (0.0400) \\ 
+  5 & 50 & 20 & 0.9995 & (0.0110) & 0.7660 & (0.0063) & 1.8312 & (0.0745) & 5.0307 & (0.0719) \\ 
+  5 & 50 & 30 & 1.6198 & (0.0134) & 1.1976 & (0.0090) & 2.5880 & (0.1102) & 12.4199 & (0.0979) \\ 
       \hdashline
-  5 & 100 & 10 & 0.3194 & 0.0065 & 0.2407 & 0.0037 & 0.4209 & 0.0284 & 0.5530 & 0.0115 \\ 
-  5 & 100 & 20 & 0.9774 & 0.0060 & 0.7299 & 0.0041 & 0.8714 & 0.0339 & 2.2297 & 0.0283 \\ 
-  5 & 100 & 30 & 1.6032 & 0.0088 & 1.1813 & 0.0051 & 1.2967 & 0.0474 & 5.3014 & 0.0526 \\ 
+  5 & 100 & 10 & 0.3194 & (0.0065) & 0.2407 & (0.0037) & 0.4209 & (0.0284) & 0.5530 & (0.0115) \\ 
+  5 & 100 & 20 & 0.9774 & (0.0060) & 0.7299 & (0.0041) & 0.8714 & (0.0339) & 2.2297 & (0.0283) \\ 
+  5 & 100 & 30 & 1.6032 & (0.0088) & 1.1813 & (0.0051) & 1.2967 & (0.0474) & 5.3014 & (0.0526) \\ 
    \hline
 \end{tabular}
 \caption{Risk estimates and corresponding standard errors for our proposed estimator and the sample covariance matrix under models I - IV where smoothing parameters are selected using the unbiased risk estimate.} 
 \end{table}
 
 
+{\needsparaphrased{The following table will be formatted just as the one immediately before it if we decide to include it in the chapter.}}
+
 \begin{table}[H] \label{table:ssanova-estimator-performance-with-se-loso}
 \centering
-\begin{tabular}{lrrrrrrrrrr}
+\begin{tabular}{lllrrrrrrrr}
   \hline
-Model & N & M & $\hat{\Delta}_1(\hat{\Sigma}_{SS})$ & $se( \hat{\Delta}_1(\hat{\Sigma}_{SS}))$ & $\hat{\Delta}_2(\hat{\Sigma}_{SS})$  & $se( \hat{\Delta}_2(\hat{\Sigma}_{SS}))$ &$\hat{\Delta}_1(S)$ & $se(\hat{\Delta}_1(S))$ &$\hat{\Delta}_2(S)$  & $se(\hat{\Delta}_1(S))$\\ 
+Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(S)$} \\ 
   \hline
 1 & 50 & 10 & 0.0031 & 0.0009 & 0.0941 & 0.0115 & 0.4624 & 0.0249 & 1.2584 & 0.0316 \\ 
   1 & 50 & 20 & 0.0015 & 0.0003 & 0.1065 & 0.0105 & 0.8609 & 0.0543 & 5.0851 & 0.0660 \\ 
