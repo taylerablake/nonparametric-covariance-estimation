@@ -151,7 +151,7 @@ covariate effect additively by increasing the number of parameters gradually one
 
 \bigskip
 
-{\needsparaphrased{Estimation of the covariance matrix is fundamental to the analysis of multivariate data, and the most commonly used estimator is the sample covariance matrix, $S$. While it is both positive-definite and an unbiased estimator of $\Sigma$, it is unstable large dimension $M$. Approaches rooted in decision theory yield stable estimators which are scalar multiples of the sample covariance matrix and known (Dempster, 1969) to distort the eigenstructure of Σ, unless p/n is small. A vast and growing literature on the problem of efficient estimation of the covariance matrix Σ of a normal distribution has focused on either ’correcting’ this distortion in the eigenstructure and/or reducing the number of parameters to be estimated (Stein, 1975; Lin and Perlman, 1985; Yang and Berger, 1994; Daniels and Kass, 1999; Champion, 2003; Wong, Carter and}} {\needsparaphrased{On the other hand, in the literature of applied statistics, particularly for repeated measure data, there is a growing tendency to pick a stationary covariance matrix, such as compound symmetry and autoregression of order one with few parameters from a growing menu provided by the popular software packages (Zimmerman and N?u?nez-Ant?on, 2001).  Of course, if the selected covariance structure is far from the truth, then the estimated covariance matrix could have considerable bias. }}
+Estimation of the covariance matrix is fundamental to the analysis of multivariate data, and the most commonly used estimator is the sample covariance matrix, $S$. While it is both positive-definite and an unbiased estimator of $\Sigma$, it is unstable large dimension $M$. Approaches rooted in decision theory yield stable estimators which are scalar multiples of the sample covariance matrix and known (Dempster, 1969) to distort the eigenstructure of $\Sigma$, unless $M/N$ is small. {\needsparaphrased{A vast and growing literature on the problem of efficient estimation of the covariance matrix Σ of a normal distribution has focused on either ’correcting’ this distortion in the eigenstructure and/or reducing the number of parameters to be estimated (Stein, 1975; Lin and Perlman, 1985; Yang and Berger, 1994; Daniels and Kass, 1999; Champion, 2003; Wong, Carter and}} 
 
 \bigskip
 
@@ -172,16 +172,31 @@ for all $v \in \Re^M$. Together, these hurdles make parsimoniously modeling cova
 
 \bigskip
 
-in the literature of applied statistics for longitudinal data,  there is a strong tendency to pick a stationary covariance matrix for characterizing the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small. While they are very easy to handle computationally, selection of the parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
+On the other hand, in the literature of applied statistics, particularly for repeated measure data, it is quite common to pick a stationary covariance matrix for the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small.We will review a selection of modeled frequently encountered in the applied statistics literature in sections to follow. This approach is attractive because it is computationally inexpensive, and software packages implementing fitting procedures for a growing number of simple models are readily accessible. However, choosing the appropriate parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
+
 
 \bigskip
 
-Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
-
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Estimated structured (parametric) covariances}
+
+\begin{itemize}
+\item compound symmetry
+\item stationary autoregressive
+\item moving average models and banded structures - will be mentioned in linear model section
+\item heterogeneous extensions of the CS, AR, and MA models
+\item ARIMA models
+\item random coefficient models
+\item antedependence models - will be reviewed in linear model section
+\end{itemize}
+
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Shrinkage estimators based on the sample covariance matrix}
+
+
+Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased{[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} }The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
+
+
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsubsection{Shrinking the spectrum and the correlation matrix}
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -248,7 +263,6 @@ where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{(Generalized) linear models for covariance estimation}
 
-
 \subsubsection{A review of linear models and generalized linear models for covariance matrices}
 {\needsparaphrased{
 While systematic and data-based modeling of covariance matrices is hampered by the positive-definiteness constraint and high-dimensionality, similar though simpler obstacles in modeling the mean vector $\mu$ (first moments) of the distribution of a random vector $Y = \left(y_1, \dots , y_M\right)'$ has been handled quite successfully in the framework of regression analysis, leading to the powerful theory of generalized linear models (GLM). The success of GLM in handling variety of continuous and discrete data is mainly due to relying on a link function $g\left(\cdot\right)$ and a linear predictor $g\left(\cdot\right) = X\beta$ to induce unconstrained parameterization and reduce the parameter space dimension simultaneously. Since the covariance matrix of a random vector $Y$ , defined by $\Sigma = E\left(Y - \mu\right)\left(Y - \mu\right)$, is a mean-like parameter, one would like to exploit the idea of GLM along with the experience and progress in fitting the mixed-effects and time series models in developing a systematic, data-based procedure for covariance matrices. 
@@ -257,9 +271,10 @@ While systematic and data-based modeling of covariance matrices is hampered by t
 
 {\needsparaphrased{The areas of time series analysis (Klein, 1997) and variance components (Searle, Casella and McCulloch, 1992, Chap. 2) are among the oldest in dealing with modeling covariance matrices using covariates implicitly and explicitly, respectively. In a sense, they provide the much needed core methods and ideas. In fact, time series techniques based on spectral and Cholesky decompositions provide suitable tools for handling the awkward positivedefiniteness constraint on a stationary covariance matrix (function). However, unlike modeling the mean vector where a link function acts component-wise on the vector $\mu$, link functions for covariance matrices cannot act componentwise since positive-definiteness is a simultaneous constraint on all entries of a matrix. Not surprisingly, because of the complicated structure of a general covariance matrix, the most successful modeling approaches need to rely on decomposing a covariance matrix into its ``variance'' and ``dependence'' components. The idea of regression and its diagnostic techniques work well for the logarithm of the variances, but their analogues need to be developed for the more complicated dependence components. The three major methods for producing such pairs, i.e. the variance-correlation, spectral (eigenvalue) and the Cholesky decompositions of several covariances are reviewed in Section 2. However, the latter being less familiar is described next for a single covariance matrix}}
 
+
+
 \subsubsection{Linear models for covariance}
-Gabriel (1962) was among the first toimplicitly parameterize a multivariate normal distribution
-in terms of entries of the precision matrix $\Omega^{-1}$.  Dempster (1972) who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
+Gabriel (1962) was among the first to implicitly parameterize a multivariate normal distribution in terms of entries of the precision matrix $\Omega^{-1}$.  Dempster (1972) who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
 
 \[
 \log f\left(Y, \Sigma^{-1}\right) = -\frac{1}{2}\mbox{tr}\Sigma^{-1} \left(Y'Y\right) + \log\vert \Sigma \vert^{-1/2} - M \log\sqrt{\pi}
@@ -360,6 +375,36 @@ entries along subdiagonals suggest taking the subdiagonals of $T$ to be realizat
 \end{equation*}
 
 The details of smoothing and selection of the order $m$ of the autoregression and a simulation study comparing performance of the sample covariance matrix to smoothed estimators are given in Wu and Pourahmadi (2003). Due to the closer connection between entries of $T$ and the family of regression (3), it is conceivable that some of the entries of $T$ could be zero or close to it. Smith and Kohn (2002) have used a prior that allows for zero entries in $T$ and have obtained a parsimonious model for $\Sigma$ without assuming a parametric structure. Similar results are reported in Huang, Liu and Pourahmadi (2004) using penalized likelihood with $L_1$-penalty to estimate $T$ for Gaussian data.}
+ A commonly utilized approach in previous work is to model $\phi_{ijk} = z_{ijk}^T \gamma$ where $z_{ijk}$ is a vector of powers of time differences and $\gamma$ is a vector of unknown ``dependence'' parameters to be estimated from the data. \citet{chen2011efficient}, \citet{lin2009robust}, \citet{pan2003modelling},  and \citet{pourahmadi1999joint} define
+
+\begin{equation}
+z_{ijk}^T = \left(1, t_{ij} - t_{ik},\left( t_{ij} - t_{ik} \right)^2, \dots, \left(t_{ij} - t_{ik}\right)^{q-1} \right) \label{covmodel}
+\end{equation}
+
+Modeling the covariance in such a way is reduces a potentially high dimensional problem to something much more computationally feasible; if one models the innovation variances $\sigma^2\left(t\right)$ similarly using a $d$-dimensional vector of covariates, the problem reduces to estimating $q+d$ unconstrained parameters, where much of the dimensionality reduction is a result of characterizing the GARPs in terms of only the difference between pairs of observed time points, and not the time points themselves.  Modeling $\phi$ in such a way is equivalent to specifying a Toeplitz structure for $\Sigma$. A $p \times p$ Toeplitz matrix $M$ is a matrix with elements $m_{ij}$ such that $m_{ij} = m_{\vert i-j \vert}$ i.e. a matrix of the form
+
+\begin{equation}
+M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix} \label{toeplitz}
+\end{equation}
+
+\bigskip
+
+The estimated covariance matrix may be considerably biased when the specified parametric model is far from the truth.  To avoid model misspecification that potentially accompanies parametric analysis, many have alternatively  proposed nonparametric and semiparametric techniques approaches to estimation.  While these estimators can be very flexible and thus exhibit low bias, this advantage can be offset with high variance.  To balance the tradeoff between bias and variance, shrinkage or regularization may be applied to estimates to improve stability of estimators. \citet{diggle1998nonparametric} proposed nonparametric estimation of the covariance matrix of longitudinal data by smoothing raw sample variogram ordinates and squared residuals.  [DISCUSS THE NONPARAMETRIC SMOOTHER OF HANS GEORG MULLER HERE]  However, neither of these methods ensure that the resulting estimates are positive-definite.  
+
+\bigskip
+Several others have proposed methods for covariance estimation within the same paradigm of a smooth, continuous function underlying a discretized covariance matrix associated with the observed data.   \citet{pourahmadi1999joint} employ the Cholesky decomposition to guarantee positive-definiteness and imposed structure on the elements of the Cholesky decomposition and heuristically argue that $\phi_{t,t-l}$ should be monotonically decreasing in $l$. That is, the effect of $y_{t-l}$ on $y_t$ through the autoregressive parameterization should decrease as the distance in time between the two measurements increases. In similar spirit, others including \citet{bickel2008regularized} and \citet{levina2008sparse} enforce such structure by setting $\phi_{t,t-l}$ equal to zero for $l$ large enough, or equivalently, setting all subdiagonals of $T$ to zero beyond the $K^{th}$ off-diagonal. The tuning parameter $K$ is chosen using a model selection criterion such as Akaike information criterion, Bayesian information criterion, or cross validation or a variant thereof.  In terms of the autoregressive model corresponding to the Cholesky decomposition, this form of regularization, known as ``banding'' the Cholesky factor $T$, is equivalent to regressing $y_t$ on only its $K$ immediate predecessors, setting $\phi_{tj} = 0$ for $t-j>K$. 
+
+\bigskip
+
+From this perspective, it is apparent that the presentation of covariance estimation as a least squares regression problem suggests that the familiar ideas of model regularization for least-squares regression can be used for estimating covariances.  Wu and Pourahmadi \citet{wu2003nonparametric} proposed a two-step estimation procedure using nonparametric smoothing for regularized estimation of large covariance matrices.  In the first step, they derive a raw estimate of the covariance matrix and the estimated covariance matrix is subject to the modified Cholesky decomposition. In the second step, they apply local polynomial smoothing to the diagonal elements of $D$ and the subdiagonals of $T$. The use of the Cholesky parameterization guarantees that their estimate is guaranteed to be positive-definite, however, their procedure is not capable of handling missing data. \citet{huang2007estimation} 
+
+however, their two-step method did not utilize the information that many of the subdiagonals of T are essentially zeros at the first step. Inefficient estimation may result because of ignoring regularization structure in constructing the raw estimator. 
+
+\bigskip
+
+Several have applied these approaches to covariance estimation; \citet{huang2007estimation} jointly model the mean and covariance matrix of longitudinal data using basis function expansions. They employ the Cholesky decomposition of the covariance matrix and treat the subdiagonals of $T$ as smooth functions, approximated by B-splines. Estimation is carried out by maximizing the normal likelihood. Their method permits subject-specific observations times, but assumes that observation times lie on some notion of a regular grid. They treat within-subject gaps in measurements as missing data and which they handle using the E-M algorithm. 
+
+\bigskip
 
 Alternatively, one can view $T$ as a bivariate function,
 
