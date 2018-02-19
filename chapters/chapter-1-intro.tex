@@ -5,9 +5,11 @@
 \usepackage{tikz}
 \usepackage[mathscr]{euscript}
 \usepackage{enumitem}
+\usepackage{subfiles}
 \usepackage{accents}
 \usepackage{framed}
 \usepackage{subcaption}
+\usepackage{subfiles}
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
@@ -18,7 +20,6 @@
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \usepackage{booktabs}
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
-\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
 \newcommand*\needsproof{\color{blue}}
@@ -145,15 +146,14 @@ The remainder of the chapter serves as a brief survey of developments in covaria
 
 \section{Covariance estimation: a review}
 
-The following chapter presents a review of approaches to parsimoniously modeling covariance matrices. We focus on methods based on regularization and generalized linear modeling perspectives, which are concerned with constraining the parameter space of covariance matrices so as to reduce its dimension, making estimation a non-Sisyphian endeavor. The generalized linear model (GLM) framework \citet{McCullagh1989} merges numerous seemingly disconnected approaches to model the mean of a distribution, and can accommodate many types of including normal, probit, logistic and Poisson regressions, survival data, and log-linear models for contingency tables. The key to the power of the GLM paradigm is the use of a link function to induce unconstrained reparameterization for the mean of a distribution, and hence the ability to reduce the dimension of the parameter space via modelling the
-covariate effect additively by increasing the number of parameters gradually one at a time corresponding to inclusion of each covariate. The extension of the GLM has lead to large class of models including nonparametric and generalized additive models, Bayesian GLM, and generalized linear mixed models. See \citet{hastie1990generalized},  \citet{dey2000generalized},  \citet{mcculloch2001generalized}. An analogous framework for modelling covariance matrices facilitates further developments in covariance estimation from the Bayesian, nonparametric and other paradigms.
+The following chapter presents a review of approaches to parsimoniously modeling covariance matrices. We focus on methods based on regularization and generalized linear modeling perspectives, which are concerned with constraining the parameter space of covariance matrices so as to reduce its dimension, making estimation a non-Sisyphian endeavor. The generalized linear model (GLM) framework \citet{McCullagh1989} merges numerous seemingly disconnected approaches to model the mean of a distribution, and can accommodate many types of including normal, probit, logistic and Poisson regressions, survival data, and log-linear models for contingency tables. The key to the power of the GLM paradigm is the use of a link function to induce unconstrained reparameterization for the mean of a distribution, and hence the ability to reduce the dimension of the parameter space via modeling the
+covariate effect additively by increasing the number of parameters gradually one at a time corresponding to inclusion of each covariate. The extension of the GLM has lead to large class of models including nonparametric and generalized additive models, Bayesian GLM, and generalized linear mixed models. See \citet{hastie1990generalized},  \citet{dey2000generalized},  \citet{mcculloch2001generalized}. An analogous framework for modeling covariance matrices facilitates further developments in covariance estimation from the Bayesian, nonparametric and other paradigms.
 
 \bigskip
 
-Estimation of the covariance matrix is fundamental to the analysis of multivariate data, and the most commonly used estimator is the sample covariance matrix, $S$. While it is both positive-definite and an unbiased estimator of $\Sigma$, it is unstable large dimension $M$. Approaches rooted in decision theory yield stable estimators which are scalar multiples of the sample covariance matrix; these estimators distort the eigenstructure of $\Sigma$ unless the sample size is greater than the dimension, $N >> M$ (\citet{dempster1972covariance}.)  There is a vast body of work which addresses the efficient estimation of the covariance matrix of a normal distribution by correcting€™ the eigenstructure distortion or reducing the number of parameters to be estimated. See \citet{stein1975estimation}{\needsparaphrased{ Lin and Perlman, 1985; Yang and Berger, 1994; Daniels and Kass, 1999; Champion, 2003; Wong, Carter and}} 
+Estimation of the covariance matrix is fundamental to the analysis of multivariate data, and the most commonly used estimator is the sample covariance matrix, $S$. While it is both positive-definite and an unbiased estimator of $\Sigma$, it is unstable large dimension $M$. Approaches rooted in decision theory yield stable estimators which are scalar multiples of the sample covariance matrix; these estimators distort the eigenstructure of $\Sigma$ unless the sample size is greater than the dimension, $N >> M$ (\citet{dempster1972covariance}.)  There is a vast body of work which addresses the efficient estimation of the covariance matrix of a normal distribution by correcting the eigenstructure distortion or reducing the number of parameters to be estimated. See \citet{stein1975estimation}{\needsparaphrased{ Lin and Perlman, 1985; Yang and Berger, 1994; Daniels and Kass, 1999; Champion, 2003; Wong, Carter and}} 
 
 \bigskip
-
 
 The sample covariance matrix $S$, which is used in virtually all multivariate techniques, is both unbiased and positive-definite. The flexible estimator is also computationally convenient, however it is neither parsimonious nor, in high dimensions, a stable estimator. Given a sample of size $N$ $Y_1,\dots , Y_N$, from an $M$-dimensional Normal distribution with mean $\mu$ and covariance matrix $\Sigma$, the sample covariance matrix
 
@@ -171,152 +171,163 @@ for all $v \in \Re^M$. Together, these hurdles make parsimoniously modeling cova
 
 \bigskip
 
-On the other hand, in the literature of applied statistics, particularly for repeated measure data, it is quite common to pick a stationary covariance matrix for the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small.We will review a selection of modeled frequently encountered in the applied statistics literature in sections to follow. This approach is attractive because it is computationally inexpensive, and software packages implementing fitting procedures for a growing number of simple models are readily accessible. However, choosing the appropriate parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
-
-
-\bigskip
-
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Estimated structured (parametric) covariances}
 
-The compound symmetric model was at one time a very popular choice for parametric covariance structure, specifying
-
-\begin{equation}\label{eq:compound-symmetric-model}
-\sigma_{ij} = \left\{ \begin{array}{lr}
-\rho, & i \ne j,\\
-\sigma^2, & i = j, 
-\end{array}\right.
-\end{equation}
-\noindent
-where $\sigma_{ij}$ denotes the $\left(i,j\right)$ element of $\Sigma$. With only two parameters to be estimated, this model is highly parsimonious, but has received less attention with the development of models that allow for heterogeneous variances and non-constant correlation. 
-
-\bigskip
-
-The first order autoregressive model for response variable $y_t$ associated with measurement time $t$ specifies
-\begin{equation}\label{eq:ar-1-model}
-y_{t} = \left\{ \begin{array}{lr}
-\mu_t + \epsilon_t, & t = 1,\\
-& \\
-\mu_t + \rho\left(y_{t-1} - \mu_{t-1}\right) + \epsilon_t, & t > 1,
-\end{array}\right.
-\end{equation}
-\bigskip
-\noindent 
-where $\vert \rho \vert < 1$, and the innovations $\left\{\epsilon_t\right\}$ are independently distributed according to $N\left(0,\sigma_t^2\right)$ with $\sigma_1^2 = \sigma^2/\left(1-\rho^2\right)$, and $\sigma_t^2 = \sigma^2$ for $t = 2, \dots, M$. The corresponding dependence components of the covariance structure are monotonically decreasing in $l = \vert i-j \vert$; specifically,
-
-\begin{equation}\label{eq:compound-symmetric-model}
-\sigma_{ij} = \left\{ \begin{array}{lr}
-\rho^{\vert i - j \vert}, & i \ne j,\\
-& \\
-\sigma^2, & i = j, 
-\end{array}\right.
-\end{equation}
-\bigskip
-\noindent
-The AR(1) model generalizes to any arbitrary order $p$ by simply adding additional predecessors to the covariates in the linear model for $y_t$:
-\begin{equation*}
-y_{t} = \left\{ \begin{array}{lr}
-\mu_t + \epsilon_t, & t = 1,\\
-& \\
-\mu_t + \sum\limits_{j = 1}^{p^*} \phi_j\left(y_{t-j} - \mu_{t-j}\right) + \epsilon_t, & t > 1,
-\end{array}\right.
-\end{equation*}
-\noindent
-where $p^* = \min\left(p,t-1\right)$, and the $\left\{\epsilon_t\right\}$ are independent mean zero Normal random variables. The variance of $\left\{\epsilon_t\right\}$ is constant for $t > p$, and for $t \le p$, the variance is specified so as to ensure that the variance is constant across all responses $y_t$ and the covariance between $y_i$ and $y_j$ depends only on $\vert i - j\vert$. 
-
-\bigskip
-
-The response specification for $q^{th}$ order moving average model  is given by 
-
-\begin{equation}\label{eq:ma-q-model}
-y_{t} = \sum_{j = 0}^{q} \theta_j \epsilon_{t-j},
-\end{equation}
-\bigskip
-\noindent
-where the $\left\{\epsilon_t\right\}$ are independently and identically distributed mean zero Normal random variables with variance $\sigma^2$. This model corresponds to covariance structures with elements given by
-\begin{equation*}
-\sigma_{ij} = \left\{ \begin{array}{ll}
-\left(\theta_{i-j} + \theta_{1}\theta_{i-j +1} + \dots + \theta_{q-i+j}\theta_{q}\right)/\left(1 + \sum_{j = 1}^q \theta_j^2\right), & \vert i-j\vert \le q,\\ 
-& \\
-& \\
-0, &  \vert i-j\vert > q, \\
-& \\
-\sigma^2 \sum\limits_{j = 0}^q \theta_j^2, & i = j,\\
-\end{array}\right.
-\end{equation*}
-\bigskip
-\noindent
-Thus, variances are constant and correlations between $y_t$ and $y_{t-l}$ vanish beyond a finite, constant lag $l$. Here $\rho_1,\dots, \rho_q$are arbitrary parameters subject only to positive definiteness constraints. This model generalizes to a $q^{th}$-order Toeplitz model, which specifies
-\begin{equation*}
-\sigma_{ij} = \left\{ \begin{array}{ll}
-\rho_{i-j} & \vert i - j \vert\le q, \\ 
-&\\
-0 & \vert i - j \vert >  q, \\ 
-& \\
-\sigma^2  & i = j,\\
-\end{array}\right.
-\end{equation*}
-\noindent
-In turn, one can further generalize to a $q^{th}$-order banded model by specifying that the covariances on off-diagonals of the correlation matrix beyond the $q^{th}$ off-diagonal are zero, and otherwise  not imposing any structural restrictions on the remaining elements of the covariance matrix beyond those required for positive definiteness. The tradeoff of the additional flexibility of the general banded model over the MA and Toeplitz models is that the number of parameters in a general $q$-banded covariance structure is $O\left(n\right)$ rather than $O\left(1\right)$.
-
-\bigskip
-
-The aforementioned models are stationary, specifying constant variance and with equal same-lag correlations among responses when the data are observed on a regular grid. Heterogeneous extensions of these models specify the same form of the correlation but allow time-dependent response variances. Completely general time dependence (subject to positive definiteness constraints) requires the covariance structure to be characterized by $O\left(n\right)$ parameters, while specifying linear or quadratic dependence on time leads to more parsimonious heterogeneous models. 
-
-\bigskip
-
-An ARIMA($p,d,q$) model generalizes a stationary autoregressive moving average (ARMA) model by postulating that not the observations themselves, but rather the $d^{th}$-order differences among consecutive measurements follow a stationary ARMA($p,q$) model. A special case is the ARIMA($0,1,0$) model - the random walk:
-
-\begin{equation}
-y_t = \mu_t + \sum_{j = 1}^t \epsilon_j, \quad t = 1, \dots, M,
-\end{equation}
-\noindent
-where the $\epsilon_t$ are independent mean zero Normal random variables with variance $\sigma_\epsilon^2$. The variance of the process increases linearly in time, and the correlation between $y_t$ and $y_{t-l}$
- also increases, but nonlinearly, in time:
- 
-\begin{equation}
-\sigma_{ij} = \left\{ \begin{array}{ll}
-\sqrt{i/j} &i \ne j \\ 
-& \\
-j\sigma_\epsilon^2 & i\ne j, \\
-\end{array}\right.
-\end{equation}
-\noindent
-This model is applicable to longitudinal data only when data are observed on a regular grid, however, its continuous time analogue permits this restriction to be relaxed. An important special case is the continuous time analogue to the random walk, the Weiner process, which has covariance function $Cov\left(\right) = \sigma^2 \min\left(t_i, t_j\right)$.
-
-\bigskip
-
-The formulation of the covariance structure in a random coefficient model is most usually a consideration of regressions that vary across subjects rather than a consideration of within-subject similarity, so this class of models are most often considered distinct from parametric covariance models. Still, they yield parametric covariance structures that generally have non-constant variances and non-stationary correlations.  A general form of the random coefficient model is given by 
-
-\begin{equation}
-y_i = X_i\beta + Z_i \gamma_i + \epsilon_i, \quad i = 1, \dots, M,
-\end{equation}
-\noindent
-where the $Z_i$ are specified matrices, the $\gamma_i$ are vectors of random coefficients distributed independently as $N \left(0, G_i\right)$, the $G_i$ are positive definite but otherwise unstructured matrices, and the $\epsilon_i$ are distributed independently (of the $\gamma_i$ and of each other) as $N \left(0, \sigma^2 \mathrm{I}_{n_i}\right)$. The $G_i$ are usually assumed to be equal, so the covariance matrix of $y_i$ is taken to be $\Sigma_i = Z_i GZ'_i + \sigma^2 \mathrm{I}_{n_i}$. Special cases include the linear random coefficients (RCL) and quadratic random coefficients (RCQ) models. In the linear case, $Z_i = \left[1_{n_i} , t_i\right]$ and 
-
-\begin{equation*}
-G = \begin{bmatrix}
-\sigma_{00} & \sigma_{01} \\
-\sigma_{10} & \sigma_{11} 
-\end{bmatrix}
-\end{equation*}
-
-In the quadratic case, Zi = [1ni , ti, (t2i1, t2i2, . . . , t2ini )?]. Note also that the
-CS structure is equivalent to the case Z i = 1ni .
-Two convenient features of RC models are their parsimony (note that the number of parameters is unrelated to the number of measurement times) and their applicability to situations in which the measurement times are unequally spaced or non-rectangular.
-
-This structure is flexible enough to permit several kinds of variance and correlational behavior, including increasing or decreasing variances, and correlations of which some are negative while others are positive. Observe, however, that it precludes the variance from being a concave-down function of time, and it precludes the variances from being constant if the same-lag correlations are not.
+%\subsection{Structured parametric covariances}
 
 
-\begin{itemize}
-\item compound symmetry
-\item stationary autoregressive
-\item moving average models and banded structures - will be mentioned in linear model section
-\item heterogeneous extensions of the CS, AR, and MA models
-\item ARIMA models
-\item random coefficient models
-\item antedependence models - will be reviewed in linear model section
-\end{itemize}
+\subfile{chapter-1-subfiles/chapter-1-parametric-covariance-models}
+
+%
+%In the applied statistics literature, particularly for repeated measure data, it is quite common to pick a stationary covariance matrix for the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small.We will review a selection of modeled frequently encountered in the applied statistics literature in sections to follow. This approach is attractive because it is computationally inexpensive, and software packages implementing fitting procedures for a growing number of simple models are readily accessible. The compound symmetric model was at one time a very popular choice for parametric covariance structure, specifying
+%
+%\begin{equation}\label{eq:compound-symmetric-model}
+%\sigma_{ij} = \left\{ \begin{array}{lr}
+%\rho, & i \ne j,\\
+%\sigma^2, & i = j, 
+%\end{array}\right.
+%\end{equation}
+%\noindent
+%where $\sigma_{ij}$ denotes the $\left(i,j\right)$ element of $\Sigma$. With only two parameters to be estimated, this model is highly parsimonious, but has received less attention with the development of models that allow for heterogeneous variances and non-constant correlation. 
+%
+%\bigskip
+%
+%The first order autoregressive model for response variable $y_t$ associated with measurement time $t$ specifies
+%\begin{equation}\label{eq:ar-1-model}
+%y_{t} = \left\{ \begin{array}{lr}
+%\mu_t + \epsilon_t, & t = 1,\\
+%& \\
+%\mu_t + \rho\left(y_{t-1} - \mu_{t-1}\right) + \epsilon_t, & t > 1,
+%\end{array}\right.
+%\end{equation}
+%\bigskip
+%\noindent 
+%where $\vert \rho \vert < 1$, and the innovations $\left\{\epsilon_t\right\}$ are independently distributed according to $N\left(0,\sigma_t^2\right)$ with $\sigma_1^2 = \sigma^2/\left(1-\rho^2\right)$, and $\sigma_t^2 = \sigma^2$ for $t = 2, \dots, M$. The corresponding dependence components of the covariance structure are monotonically decreasing in $l = \vert i-j \vert$; specifically,
+%
+%\begin{equation}\label{eq:compound-symmetric-model}
+%\sigma_{ij} = \left\{ \begin{array}{lr}
+%\rho^{\vert i - j \vert}, & i \ne j,\\
+%& \\
+%\sigma^2, & i = j, 
+%\end{array}\right.
+%\end{equation}
+%\bigskip
+%\noindent
+%The AR(1) model generalizes to any arbitrary order $p$ by simply adding additional predecessors to the covariates in the linear model for $y_t$:
+%\begin{equation*}
+%y_{t} = \left\{ \begin{array}{lr}
+%\mu_t + \epsilon_t, & t = 1,\\
+%& \\
+%\mu_t + \sum\limits_{j = 1}^{p^*} \phi_j\left(y_{t-j} - \mu_{t-j}\right) + \epsilon_t, & t > 1,
+%\end{array}\right.
+%\end{equation*}
+%\noindent
+%where $p^* = \min\left(p,t-1\right)$, and the $\left\{\epsilon_t\right\}$ are independent mean zero Normal random variables. The variance of $\left\{\epsilon_t\right\}$ is constant for $t > p$, and for $t \le p$, the variance is specified so as to ensure that the variance is constant across all responses $y_t$ and the covariance between $y_i$ and $y_j$ depends only on $\vert i - j\vert$. 
+%
+%\bigskip
+%
+%The response specification for $q^{th}$ order moving average model  is given by 
+%
+%\begin{equation}\label{eq:ma-q-model}
+%y_{t} = \sum_{j = 0}^{q} \theta_j \epsilon_{t-j},
+%\end{equation}
+%\bigskip
+%\noindent
+%where the $\left\{\epsilon_t\right\}$ are independently and identically distributed mean zero Normal random variables with variance $\sigma^2$. This model corresponds to covariance structures with elements given by
+%\begin{equation*}
+%\sigma_{ij} = \left\{ \begin{array}{ll}
+%\left(\theta_{i-j} + \theta_{1}\theta_{i-j +1} + \dots + \theta_{q-i+j}\theta_{q}\right)/\left(1 + \sum_{j = 1}^q \theta_j^2\right), & \vert i-j\vert \le q,\\ 
+%& \\
+%& \\
+%0, &  \vert i-j\vert > q, \\
+%& \\
+%\sigma^2 \sum\limits_{j = 0}^q \theta_j^2, & i = j,\\
+%\end{array}\right.
+%\end{equation*}
+%\bigskip
+%\noindent
+%Thus, variances are constant and correlations between $y_t$ and $y_{t-l}$ vanish beyond a finite, constant lag $l$. Here $\rho_1,\dots, \rho_q$are arbitrary parameters subject only to positive definiteness constraints. This model generalizes to a $q^{th}$-order Toeplitz model, which specifies
+%\begin{equation*}
+%\sigma_{ij} = \left\{ \begin{array}{ll}
+%\rho_{i-j} & \vert i - j \vert\le q, \\ 
+%&\\
+%0 & \vert i - j \vert >  q, \\ 
+%& \\
+%\sigma^2  & i = j,\\
+%\end{array}\right.
+%\end{equation*}
+%or covariance matrix of the form
+%\begin{equation}
+%M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix}, \label{toeplitz}
+%\end{equation}
+%\noindent
+%where $m_j = 0$ for all $j > q$.
+%
+%\noindent
+%In turn, one can further generalize to a $q^{th}$-order banded model by specifying that the covariances on off-diagonals of the correlation matrix beyond the $q^{th}$ off-diagonal are zero, and otherwise  not imposing any structural restrictions on the remaining elements of the covariance matrix beyond those required for positive definiteness. The tradeoff of the additional flexibility of the general banded model over the MA and Toeplitz models is that the number of parameters in a general $q$-banded covariance structure is $O\left(n\right)$ rather than $O\left(1\right)$.
+%
+%\bigskip
+%
+%The aforementioned models are stationary, specifying constant variance and with equal same-lag correlations among responses when the data are observed on a regular grid. Heterogeneous extensions of these models specify the same form of the correlation but allow time-dependent response variances. Completely general time dependence (subject to positive definiteness constraints) requires the covariance structure to be characterized by $O\left(n\right)$ parameters, while specifying linear or quadratic dependence on time leads to more parsimonious heterogeneous models. 
+%
+%\bigskip
+%
+%An ARIMA($p,d,q$) model generalizes a stationary autoregressive moving average (ARMA) model by postulating that not the observations themselves, but rather the $d^{th}$-order differences among consecutive measurements follow a stationary ARMA($p,q$) model. A special case is the ARIMA($0,1,0$) model - the random walk:
+%
+%\begin{equation}
+%y_t = \mu_t + \sum_{j = 1}^t \epsilon_j, \quad t = 1, \dots, M,
+%\end{equation}
+%\noindent
+%where the $\epsilon_t$ are independent mean zero Normal random variables with variance $\sigma_\epsilon^2$. The variance of the process increases linearly in time, and the correlation between $y_t$ and $y_{t-l}$
+% also increases, but nonlinearly, in time:
+% 
+%\begin{equation}
+%\sigma_{ij} = \left\{ \begin{array}{ll}
+%\sqrt{i/j} &i \ne j \\ 
+%& \\
+%j\sigma_\epsilon^2 & i\ne j, \\
+%\end{array}\right.
+%\end{equation}
+%\noindent
+%This model is applicable to longitudinal data only when data are observed on a regular grid, however, its continuous time analogue permits this restriction to be relaxed. An important special case is the continuous time analogue to the random walk, the Weiner process, which has covariance function $Cov\left(\right) = \sigma^2 \min\left(t_i, t_j\right)$.
+%
+%\bigskip
+%
+%The formulation of the covariance structure in a random coefficient model is most usually a consideration of regressions that vary across subjects rather than a consideration of within-subject similarity, so this class of models are most often considered distinct from parametric covariance models. Still, they yield parametric covariance structures that generally have non-constant variances and non-stationary correlations.  A general form of the random coefficient model is given by 
+%
+%\begin{equation}
+%y_i = X_i\beta + Z_i \gamma_i + \epsilon_i, \quad i = 1, \dots, M,
+%\end{equation}
+%\noindent
+%where the $Z_i$ are specified matrices, the $\gamma_i$ are vectors of random coefficients distributed independently as $N \left(0, G_i\right)$, the $G_i$ are positive definite but otherwise unstructured matrices, and the $\epsilon_i$ are distributed independently (of the $\gamma_i$ and of each other) as $N \left(0, \sigma^2 \mathrm{I}_{n_i}\right)$. The $G_i$ are usually assumed to be equal, so the covariance matrix of $y_i$ is taken to be $\Sigma_i = Z_i GZ'_i + \sigma^2 \mathrm{I}_{n_i}$. Special cases include the linear random coefficients (RCL) and quadratic random coefficients (RCQ) models. In the linear case, $Z_i = \left[1_{n_i} , t_i\right]$ and 
+%
+%\begin{equation*}
+%G = \begin{bmatrix}
+%\sigma_{00} & \sigma_{01} \\
+%\sigma_{10} & \sigma_{11} 
+%\end{bmatrix}
+%\end{equation*}
+%
+%In the quadratic case, Zi = [1ni , ti, (t2i1, t2i2, . . . , t2ini )?]. Note also that the
+%CS structure is equivalent to the case Z i = 1ni .
+%Two convenient features of RC models are their parsimony (note that the number of parameters is unrelated to the number of measurement times) and their applicability to situations in which the measurement times are unequally spaced or non-rectangular.
+%
+%This structure is flexible enough to permit several kinds of variance and correlational behavior, including increasing or decreasing variances, and correlations of which some are negative while others are positive. Observe, however, that it precludes the variance from being a concave-down function of time, and it precludes the variances from being constant if the same-lag correlations are not.
+%
+%\bigskip
+%
+%While these models can be fit with minimal computational effort, choosing the appropriate parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
+%
+%
+%\begin{itemize}
+%\item compound symmetry
+%\item stationary autoregressive
+%\item moving average models and banded structures - will be mentioned in linear model section
+%\item heterogeneous extensions of the CS, AR, and MA models
+%\item ARIMA models
+%\item random coefficient models
+%\item antedependence models - will be reviewed in linear model section
+%\end{itemize}
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Shrinkage estimators based on the sample covariance matrix}
@@ -477,11 +488,12 @@ The covariance matrix $\Sigma$ of a zero-mean random vector $Y = \left(y_1, \dot
 T \Sigma T' = D, 
 \end{equation}
 
-where $T$ is a lower triangular matrix with $1$?s as its diagonal entries and $D = \mbox{diag}\left(\sigma_1^2, \dots , \sigma_m^2\right)$ is a diagonal matrix. An attractive feature of this decomposition is that unlike the entries of $\Sigma$, the subdiagonal entries of $T$ and the log of the diagonal elements of $D$, $\log\left( \sigma_m^2 \right)$, $t = 1, \dots , m$, are not constrained. This permits one to impose structures on the unconstrained parameters without worrying about the resulting estimator not satisfying the positive-definiteness constraint. Denote estimators of $T$ and $D$ in \ref{eq:T-Sigma-Ttrans-equals-D} by  $\hat{T}$ and $\hat{D}$, which may be obtained by fitting linear models or some other structural models; then an estimator of $\Sigma$ given by $\Sigma  = \hat{T}^{-T} \hat{D} \hat{T}^{-T}$ is guaranteed to be positive-definite.  From this perspective, covariance modeling can be considered an extension of generalized linear models \citet{McCullagh1989}. Factoring $\Sigma$ as in \ref{eq:T-Sigma-Ttrans-equals-D} provides a link function $g\left(\Sigma\right) = \left(T, \log\left(D\right)\right)$ where $\log\left(D\right) = \mbox{diag}\left( \log\left(\sigma_1^2\right),\dots , \log\left(\sigma_m^2 \right) \right)$. Parametric, nonparametric, or  Bayesian models may then be applied to  the unconstrained entries of $T$ and $\log\left(D\right)$.  Whereas other decompositions are permutation-invariant, the interpretation of  the regression model induced by the MCD assumes a natural (time) ordering among the variables in $Y$.
+where $T$ is a lower triangular matrix with $1$?s as its diagonal entries and $D = \mbox{diag}\left(\sigma_1^2, \dots , \sigma_m^2\right)$ is a diagonal matrix. An attractive feature of this decomposition is that unlike the entries of $\Sigma$, the subdiagonal entries of $T$ and the log of the diagonal elements of $D$, $\log\left( \sigma_m^2 \right)$, $t = 1, \dots , m$, are not constrained. This permits one to impose structures on the unconstrained parameters without worrying about the resulting estimator not satisfying the positive-definiteness constraint. Denote estimators of $T$ and $D$ in \ref{eq:T-Sigma-Ttrans-equals-D} by  $\hat{T}$ and $\hat{D}$, which may be obtained by fitting linear models or some other structural models; then an estimator of $\Sigma$ given by $\Sigma  = \hat{T}^{-T} \hat{D} \hat{T}^{-T}$ is guaranteed to be positive-definite.  From this perspective, covariance modeling can be considered an extension of generalized linear models \citet{McCullagh1989}. Factoring $\Sigma$ as in \ref{eq:cholesky-matrix-decomposition} provides a link function $g\left(\Sigma\right) = \left(T, \log\left(D\right)\right)$ where $\log\left(D\right) = \mbox{diag}\left( \log\left(\sigma_1^2\right),\dots , \log\left(\sigma_m^2 \right) \right)$. Parametric, nonparametric, or  Bayesian models may then be applied to  the unconstrained entries of $T$ and $\log\left(D\right)$.  Whereas other decompositions are permutation-invariant, the interpretation of  the regression model induced by the MCD assumes a natural (time) ordering among the variables in $Y$.
 
 \bigskip
 
 {\needsparaphrased{immediately leads to the modified Cholesky decomposition \ref{eq:cholesky-matrix-decomposition}. It also can be used to clarify the close relation between the decomposition (2) and the time series ARMA models in that the latter is means to diagonalize a Toeplitz covariance matrix, for details see Pourahmadi (2001, Sec. 4.2.5).
+
 
 
 \needsparaphrased{In sharp contrast, the fact that the lower triangular matrix $T$ in the Cholesky decomposition of a covariance matrix $\Sigma$ is unconstrained makes it ideal for nonparametric estimation.
@@ -511,9 +523,6 @@ z_{ijk}^T = \left(1, t_{ij} - t_{ik},\left( t_{ij} - t_{ik} \right)^2, \dots, \l
 
 Modeling the covariance in such a way is reduces a potentially high dimensional problem to something much more computationally feasible; if one models the innovation variances $\sigma^2\left(t\right)$ similarly using a $d$-dimensional vector of covariates, the problem reduces to estimating $q+d$ unconstrained parameters, where much of the dimensionality reduction is a result of characterizing the GARPs in terms of only the difference between pairs of observed time points, and not the time points themselves.  Modeling $\phi$ in such a way is equivalent to specifying a Toeplitz structure for $\Sigma$. A $p \times p$ Toeplitz matrix $M$ is a matrix with elements $m_{ij}$ such that $m_{ij} = m_{\vert i-j \vert}$ i.e. a matrix of the form
 
-\begin{equation}
-M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix} \label{toeplitz}
-\end{equation}
 
 \bigskip
 
