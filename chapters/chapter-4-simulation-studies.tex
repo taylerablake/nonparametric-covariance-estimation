@@ -6,12 +6,15 @@
 \usepackage[mathscr]{euscript}
 \usepackage{enumitem}
 \usepackage{accents}
+\usepackage{lscape}
 \usepackage{framed}
 \usepackage{subcaption}
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
 \usepackage{times}
+\usepackage{filecontents}
+\usepackage{subfiles}
 \usepackage{cite}
 \usepackage{rotating}
 \usepackage{arydshln}
@@ -19,7 +22,6 @@
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \usepackage{booktabs}
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
-\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
@@ -620,7 +622,6 @@ $N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\
 \begin{table}[H] \label{table:ssanova-estimator-performance-with-se-ure}
 \centering
 \begin{tabular}{lrrrrrrrrrr}
-  \hline
 Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} \\ 
   \hline
 1 & 50 & 10 & 0.0023 & (0.0006) & 0.0843 & (0.0099) & 0.3915 & (0.0262) & 1.1924 & (0.0348) \\ 
@@ -677,7 +678,6 @@ Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multi
 \begin{table}[H] \label{table:ssanova-estimator-performance-with-se-loso}
 \centering
 \begin{tabular}{lllrrrrrrrr}
-  \hline
 Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(S)$} \\ 
   \hline
 1 & 50 & 10 & 0.0031 & 0.0009 & 0.0941 & 0.0115 & 0.4624 & 0.0249 & 1.2584 & 0.0316 \\ 
@@ -728,7 +728,16 @@ Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multi
 \caption{Risk estimates and corresponding standard errors for our proposed estimator and the sample covariance matrix under models I - IV where smoothing parameters are selected using losoCV.} 
 \end{table}
 
+%%-----------------------------------------------------------------------------------------------------------------------------
 
+\begin{landscape}
+\subfile{table-files/simulation-study-1-results-master-quad-loss-table}
+\end{landscape}
+
+%%-----------------------------------------------------------------------------------------------------------------------------
+\begin{landscape}
+\subfile{table-files/simulation-study-1-results-master-entropy-loss-table}
+\end{landscape}
 
 
 \bibliography{Master}
