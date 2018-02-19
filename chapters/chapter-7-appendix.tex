@@ -1,0 +1,147 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage{enumitem}
+\usepackage{accents}
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{cite}
+\usepackage{amsthm}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\ms}{\scriptscriptstyle}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\vphistar}{\mbox{\boldmath $\phi^*$}}
+\newcommand{\vsigmasq}{\mbox{\boldmath $\sigma^2$}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+
+
+\newcommand{\bfm}{\mbox{\boldmath $m}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfS}{\mbox{\boldmath $S$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\begingroup\lccode`~=`_
+\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
+\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
+
+\makeatletter
+\renewcommand{\theenumi}{\Roman{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\Alph{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+\renewcommand{\p@enumii}{\theenumi.}
+\makeatother
+
+\begin{document}
+
+%\nocite{*}
+\def\bL{\mathbf{L}}
+%\usepackage{mathtime}
+
+%%UNCOMMENT following line if you have package
+
+
+\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\bibliographystyle{plainnat}
+\maketitle
+
+\section{Appendix}
+
+\subsection{Proof of the smoothing spline expansion representation}
+\begin{proof} \label{proof:ss-representer-expansion-thm}
+
+Using the properties of reproducing kernels, we can rewrite $\phi^*$ as an inner product of itself with $R$:
+ 
+\begin{eqnarray*}
+\phi^*\left(l_j,m_j \right)  &=& \left< R\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),d_0 + d_1k_1\left(\cdot \right)\right. \\ 
+&\mbox{ }&\left. \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;+ \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) + \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left< R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right)\right> \\
+&\mbox{ }& + \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), d_0 + d_1k_1\left(\cdot \right)\right> \\
+&\mbox{ }& + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
+&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> \\
+&\mbox{ }& + \underbrace{\left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0} + \underbrace{\left<R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0}\\
+&=& d_0 + d_1k_1\left(\cdot \right) + \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(l_j,m_j\right) \right)
+\end{eqnarray*}
+\noindent
+
+
+Rewriting the data fit functional, we have that  
+ \begin{eqnarray*}
+&\mbox{ }&\sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \phi^*\left(t_{ij}, t_{ik}  \right) y\left(t_{ik}\right)  \right)^2  \\ 
+&=& \sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \left< R\left(\left(l^i_{jk},m^i_{jk}\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right> y\left(t_{ik}\right)  \right)^2  \\
+ \end{eqnarray*}
+\noindent
+which is free of $\rho$. Consider the contribution of any nonzero $\rho$ to $J\left(\phi^*\right)$: 
+  
+ \begin{eqnarray*}
+ J\left(\phi^*\right) &=& \vert \vert  P_1\phi^* \vert \vert^2\\
+ &=& \left< \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot \right), \sum_{j=1}^{N_{\phi^*}} c_j R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot\right)\right> \\
+ &=& \vert \vert \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left(\left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) \vert \vert^2 + \vert \vert  \rho \vert \vert^2 
+ \end{eqnarray*}
+\noindent
+Thus, including $\rho$ in $\phi^*$ only increases the penalty without improving (decreasing) the data fit functional, so we indeed have that the minimizer of \eqref{eq:objectivefun} has the form
+\begin{equation}
+ \phi^*\left(l,m\right) =  d_0 + d_1k_1\left(l\right) + \sum_{i=1}^{N_{\phi^*}} c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right)
+ \label{eq:finite-dim-solution}
+ \end{equation}
+\end{proof}
+
+
+
+\bibliography{Master}
+\end{document}
+

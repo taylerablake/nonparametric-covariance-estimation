@@ -301,7 +301,9 @@ G = \begin{bmatrix}
 \end{bmatrix}
 \end{equation*}
 
-In the quadratic case, Zi = [1ni , ti, (t2i1, t2i2, . . . , t2ini )?]. Note also that theCS structure is equivalent to the case Z i = 1ni .Two convenient features of RC models are their parsimony (note that the number of parameters is unrelated to the number of measurement times) and their applicability to situations in which the measurement times are unequally spaced or non-rectangular.
+In the quadratic case, Zi = [1ni , ti, (t2i1, t2i2, . . . , t2ini )?]. Note also that the
+CS structure is equivalent to the case Z i = 1ni .
+Two convenient features of RC models are their parsimony (note that the number of parameters is unrelated to the number of measurement times) and their applicability to situations in which the measurement times are unequally spaced or non-rectangular.
 
 This structure is flexible enough to permit several kinds of variance and correlational behavior, including increasing or decreasing variances, and correlations of which some are negative while others are positive. Observe, however, that it precludes the variance from being a concave-down function of time, and it precludes the variances from being constant if the same-lag correlations are not.
 
@@ -649,54 +651,14 @@ y_2 \\ \ddots \\ y_m
 \bigskip
 TODO: here, conclude with our view of the GARPs and IVs as functions, but allude to how this differs from the stationary approach of Pourahmadi and successive regressions by relaxing the stationarity assumption and viewing T as a continuous bivariate function. Move all the remaining details after this to Chapter 2.
 \bigskip
-Removing the restriction that subjects having common covariance structure also share common, equally-spaced observation times encourages a functional representation of the parameters defining the Cholesky decomposition of $\Sigma$. Rather than a vector of longitudinal data points, we view the random vectors $Y_i$ and $\epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{i, m-i} \right)'$ as discrete renditions of the stochastic processes: $Y\left(t\right)$ and $\epsilon\left(t\right)$. We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
-\bigskip
-If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, where 
-\[
-\phi_{ijk} = \phi\left(t_{ij},t_{ik}\right), \quad t_{ik} < t_{ij}
-\]
-and
-\[
-\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right).
-\]
 
-With this definition of $\phi$ and $\sigma^2$, Model~\ref{eq:discrete-unevenly-spaced-ar-model} becomes
-\begin{equation}   
-y\left(t_{ij} \right)  = \sum_{k=1}^{j-1} \phi\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left({t_i}\right) \;\;\;\; i=1,\dots, N, 
-\label{eq:MyModel} 
-\end{equation}
 
-Our formulation transforms the task of estimating a covariance matrix is to estimating the function $\phi\left(t,s\right)$ (and $\sigma\left(t \right)$) using bivariate (univariate) smoothing. Like other nonparametric situations, we make no assumption about the functional form of $\phi$ other than that $\phi$ is smooth, with smoothness defined in terms of square integrability of certain derivatives. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+
+{\needsparaphrased{In many experiments, for example, most longitudinal studies, the functional trajectories of the involved smooth random processes are not directly observable. In these cases, the observed data are noisy, sparse and irregularly spaced measurements of these trajectories.  Removing the restriction that subjects having common covariance structure also share common, equally-spaced observation times encourages the interpretation of vectors $Y_i$ and $\epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{i, m_i} \right)'$ as continuous time processes $Y\left(t\right)$, $\epsilon\left(t\right)$ observed at discrete measurement times $t_1,\dots, t_{m_i}$. Using a likelihood-based estimation approach alongside a functional interpretation of the GARPs permits a natural way to regularize the estimator while making minimal assumption about the form of the dependency structure itself. Other approaches have proposed using functional representation of the $\phi_{ij}$ and $\sigma_j$, but use multiple one-dimensional functions $\phi_l\left(t\right)$ to approximate the subdiagonals of $T$. {\needsparaphrased{See Huang et al, Pourahmadi?}} When IVs are modeled as constant in $T$, this equates to modeling $y_t$ as a stationary process. 
 
 \bigskip
 
-To add to the interpretability of our proposed models, we propose a rotation of the $\left( t,s \right)$ axes: 
-
-\begin{align*}
-l &= t - s \\
-m &= \frac{t + s}{2} \\
-\end{align*}
-
-The $l$ axis, the ``lag'' between time points $t$ and $s$ is of special interest within the context of covariance modeling. The class of isotropic covariance functions M is isotropic are defined as those functions $G\left(t,s\right) = G\left(\vert \vert t-s \vert \vert \right)$ that depend on time points $t$ and $s$ only through the Euclidean distance $\vert \vert t-s \vert \vert$ between them. Isotropic covariance functions obey some notion of parsimony, so it is convenient to apply regularized estimation to $\phi$ in terms of the transformed points $\left(l, m\right)$. Along with this class of functions, others have proposed parsimonious models for the elements of the Cholesky decomposition in terms of the difference between Re-expressing $\phi$ in terms of these new arguments, our goal is to estimate
-
-\begin{equation}
-\phi^*\left(l,m\right) = \phi^*\left(s-t, \frac{1}{2}\left(s+t\right)\right) = \phi\left(s,t\right)
-\end{equation}
-
-Rather than imposing structure on the unconstrained values of $\phi\left(s,t \right)$, we instead consider a rotation of the axes of the input space and re-express $\phi$ in terms of the transformed coordinates $\begin{bmatrix} l\\ m	
-\end{bmatrix} = \begin{bmatrix} s - t\\	 \frac{\left(s + t\right)}{2}\end{bmatrix}$
-
-\begin{eqnarray*}
-\phi\left(s,t\right) &=& \phi^*\left(s-t,\frac{s+t}{2}\right) \\
- &=& \phi^*\left(l,m\right)\\
-\end{eqnarray*}
-
-\bigskip
-
-While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu (see \citet{gu2013smoothing}), and estimation is achieved through similar computational strategies.
-
-
-
+We prefer to take a full data-driven approach to the parameterization of the regression parameters in \ref{eq:discrete-unevenly-spaced-ar-model}, modeling $\phi_{ij} = \phi\left(t_i, t_j\right)$ as a smooth bivariate function. We make only mild assumptions about the GARPs in terms of the direction perpendicular to the subdiagonals of $T$, but instead utilize penalties that shrink the coefficient function toward forms in concordance with previously proposed stationary parameterizations. In Chapter 2, we present a two functional representations of Model~\ref{eq:discrete-unevenly-spaced-ar-model}. One such representation elicits a reproducing kernel Hilbert space framework for estimation of the varying coefficient function, blah blah blah}}
 
 
 

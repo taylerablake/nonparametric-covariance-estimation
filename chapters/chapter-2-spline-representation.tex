@@ -106,6 +106,69 @@ A predominant difficulty in the estimation of covariance matrices is the potenti
 
 We naturally accommodate irregularly spaced data and unequal sample sizes between subjects by defining the autoregressive parameters as the values of a smooth function evaluated at within-subject pairs of observed time points.  Furthermore, by viewing $\phi\left(t,s\right)$ as a smooth \emph{bivariate} function, we can utilize the information across the subdiagonals of $T$ to inform the fit, rather than treating each subdiagonal separately.  As in the classical nonparametric function estimation setting, we assume $\phi$ to vary in a high-dimensional (possibly infinite) function space. We propose two representations of $\phi\left(\cdot, \cdot\right)$ and $\sigma\left(\cdot, \cdot\right)$: approximation by smoothing splines and approximation by B-spline basis expansion. 
 
+We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
+\bigskip
+If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, where 
+\[
+\phi_{ijk} = \phi\left(t_{ij},t_{ik}\right), \quad t_{ik} < t_{ij}
+\]
+and
+\[
+\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right).
+\]
+
+
+Following the notation in Yao et al. (2005a), let Ui j and Vi j the jth observations of the random trajectories Xi(·) and Yi(·) at a random time points Ti j , respectively, where Ti j are independently drawn from a distribution on compact
+domain T ? R. 
+
+With this definition of $\phi$ and $\sigma^2$, Model~\ref{eq:discrete-unevenly-spaced-ar-model} becomes
+\begin{equation}   
+y\left(t_{ij} \right)  = \sum_{k=1}^{j-1} \phi\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left({t_i}\right) \;\;\;\; i=1,\dots, N, 
+\label{eq:MyModel} 
+\end{equation}
+
+Our formulation transforms the task of estimating a covariance matrix is to estimating the function $\phi\left(t,s\right)$ (and $\sigma\left(t \right)$) using bivariate (univariate) smoothing. Like other nonparametric situations, we make no assumption about the functional form of $\phi$ other than that $\phi$ is smooth, with smoothness defined in terms of square integrability of certain derivatives. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+
+\bigskip
+
+To add to the interpretability of our proposed models, we propose a rotation of the $\left( t,s \right)$ axes: 
+
+\begin{align*}
+l &= t - s \\
+m &= \frac{t + s}{2} \\
+\end{align*}
+
+The $l$ axis, the ``lag'' between time points $t$ and $s$ is of special interest within the context of covariance modeling. The class of isotropic covariance functions M is isotropic are defined as those functions $G\left(t,s\right) = G\left(\vert \vert t-s \vert \vert \right)$ that depend on time points $t$ and $s$ only through the Euclidean distance $\vert \vert t-s \vert \vert$ between them. Isotropic covariance functions obey some notion of parsimony, so it is convenient to apply regularized estimation to $\phi$ in terms of the transformed points $\left(l, m\right)$. Along with this class of functions, others have proposed parsimonious models for the elements of the Cholesky decomposition in terms of the difference between Re-expressing $\phi$ in terms of these new arguments, our goal is to estimate
+
+\begin{equation}
+\phi^*\left(l,m\right) = \phi^*\left(s-t, \frac{1}{2}\left(s+t\right)\right) = \phi\left(s,t\right)
+\end{equation}
+
+Rather than imposing structure on the unconstrained values of $\phi\left(s,t \right)$, we instead consider a rotation of the axes of the input space and re-express $\phi$ in terms of the transformed coordinates $\begin{bmatrix} l\\ m	
+\end{bmatrix} = \begin{bmatrix} s - t\\	 \frac{\left(s + t\right)}{2}\end{bmatrix}$
+
+\begin{eqnarray*}
+\phi\left(s,t\right) &=& \phi^*\left(s-t,\frac{s+t}{2}\right) \\
+ &=& \phi^*\left(l,m\right)\\
+\end{eqnarray*}
+
+\bigskip
+
+While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu (see \citet{gu2013smoothing}), and estimation is achieved through similar computational strategies.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Due to rapid development of science and technology, it is possible to collect data that are naturally functions. This type of data , that are referred as functional data, has many applications in various fields of science, including, for example, environmental science, chemometrics, engineering, biomedical studies, public health, and econometrics. Functional data analysis deals with situations in which the individual observed data are infinite-dimensional, such as curves. See Ramsay and Silverman (2002, 2005) and Ferraty and Vieu (2006) for comprehensive discussions on methods and applications for functional data.  The functional linear model has been studied extensively in the literature. While flexible enough to closely approximate nearly any functional relationship between a set of predictors and a response, they can also be incredibly interpretable, making them a pragmatic modeling choice when understanding the underlying data generating mechanism is of as much importance as strong predictive capability. By leveraging a likelihood-based estimation procedure, we can naturally relax the restriction that the data on individual curves $Y_1,\dots, Y_N$ be observed on a grid of time points which are equally spaced and common to all subjects. Simultaneously, by employing a functional view of the autoregressive coefficients $\phi_{t,j}$, we can seamlessly incorporate regularization framework that accompanies the usual nonparametric function estimation problem.
+
+\bigskip
+
+In \ref{chapter-1}, we reviewed a number of parsimonious covariance structures which parameterize the dependence between two measurements $y_t$ and $y_{t-l}$ in terms of the time lapse between measurements only, and omit dependence on $t$ itself. This motivates characterizing the GARPs as a function of not $\left(t,s\right)$, but of the continuous analogue of lag, $l = t - s$, and its orthogonal direction $m = \left(t + s\right)/2$.
+
+{(Xi
+, Yi) : i = 1, 2, ..., n} corresponds to functional varying coefficient model, i.e
+
 \subsection{Smoothing spline representation of $\phi$, $\sigma$}
 
 Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the reproducing kernel Hilbert space (r.k.h.s) corresponding to the tensor product of the first-order and second-order Sobolev spaces:
@@ -185,7 +248,6 @@ R\left( \left(l,m\right),\left(l^\prime,m^\prime\right)\right) &=&  R_l\left(l,l
 &=& R^0\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right) + R^1\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right)
 \end{eqnarray}
 
-
 We must introduce some notation to simplify the following expression of the form of the elements in $\mathcal{H}$. Denote the set of unique pairs of observed within-subject time points and the corresponding set of unique transformed coordinates by $\mathcal{W}$ and $\mathcal{W}^*$, respectively:
 
 \begin{eqnarray*}
@@ -198,47 +260,19 @@ with $\vert \mathcal{W}\vert = \vert \mathcal{W}^* \vert = N_{\phi^*}$. For simp
 \mathcal{W}^* = \lbrace \left( l_1,m_1 \right), \left( l_2,m_2 \right), \dots, \left( l_{N_{\phi^*}},m_{N_{\phi^*}} \right)  \rbrace
 \]
 \noindent
-Then we may verify that any $\phi^* \in \mathcal{H}$ can be written 
-\[
+One may verify that any $\phi^* \in \mathcal{H}$ can be written 
+\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
 \phi^*\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) + \rho\left(l,m\right)
-\]
+\end{equation}
 \noindent
-where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; span\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$. We do so by demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi^*\right)$. Consequently, if $\hat{\phi^*}$ is the minimizer of \eqref{eq:objectivefun}, then $\rho = 0$. Using the properties of reproducing kernels, we can rewrite $\phi^*$ as an inner product of itself with $R$:
- 
-\begin{eqnarray*}
-\phi^*\left(l_j,m_j \right)  &=& \left< R\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right>\\
-&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),d_0 + d_1k_1\left(\cdot \right)\right. \\ 
-&\mbox{ }&\left. \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;+ \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) + \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
-&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left< R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right)\right> \\
-&\mbox{ }& + \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), d_0 + d_1k_1\left(\cdot \right)\right> \\
-&\mbox{ }& + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right), \rho\left(\left(\cdot,\cdot \right)\right)\right>\\
-&=& \left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) , d_0 + d_1k_1\left(\cdot\right)\right> + \left<R_1\left(\left(l_j,m_j\right),\left(\cdot,\cdot\right) \right),\sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(\cdot,\cdot\right) \right) \right> \\
-&\mbox{ }& + \underbrace{\left<R_0\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0} + \underbrace{\left<R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right)  , \rho\left(\cdot,\cdot\right) \right>}_{0}\\
-&=& d_0 + d_1k_1\left(\cdot \right) + \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i \right),\left(l_j,m_j\right) \right)
-\end{eqnarray*}
+where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; \textup{span}\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$.  It can be shown that the minimizer of \ref{eq:objectivefun} has $\rho = 0$, so that the $\phi^* \in \mathcal{H}$ minimizing \ref{eq:objectivefun} can be written as a (finite) linear combination of inner products:
+
+\begin{equation}\label{eq:ss-finite-dim-solution}
+\phi^*\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) 
+\end{equation}
 \noindent
 
-
-Rewriting the data fit functional, we have that  
- \begin{eqnarray*}
-&\mbox{ }&\sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \phi^*\left(t_{ij}, t_{ik}  \right) y\left(t_{ik}\right)  \right)^2  \\ 
-&=& \sum_{i=1}^N \sum_{j=1}^{n_i} \sigma_{ij}^{-2} \left(y\left(t_{ij}\right) - \sum_{k=1}^{j-1} \left< R\left(\left(l^i_{jk},m^i_{jk}\right),\left(\cdot,\cdot\right) \right),\phi^*\left(\cdot,\cdot\right)\right> y\left(t_{ik}\right)  \right)^2  \\
- \end{eqnarray*}
-\noindent
-which is free of $\rho$. Consider the contribution of any nonzero $\rho$ to $J\left(\phi^*\right)$: 
-  
- \begin{eqnarray*}
- J\left(\phi^*\right) &=& \vert \vert  P_1\phi^* \vert \vert^2\\
- &=& \left< \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left( \left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot \right), \sum_{j=1}^{N_{\phi^*}} c_j R_1\left( \left(l_j,m_j\right),\left(\cdot,\cdot\right) \right) + \rho\left(\cdot,\cdot\right)\right> \\
- &=& \vert \vert \sum_{i=1}^{N_{\phi^*}}  c_i R_1\left(\left(l_i,m_i\right),\left(\cdot,\cdot\right) \right) \vert \vert^2 + \vert \vert  \rho \vert \vert^2 
- \end{eqnarray*}
-\noindent
-Thus, including $\rho$ in $\phi^*$ only increases the penalty without improving (decreasing) the data fit functional, so we indeed have that the minimizer of \eqref{eq:objectivefun} has the form
-\begin{equation}
- \phi^*\left(l,m\right) =  d_0 + d_1k_1\left(l\right) + \sum_{i=1}^{N_{\phi^*}} c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right)
- \label{eq:finitedimsolution}
- \end{equation}
-
+The proof entails demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi^*\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
 Let $\Phi^*$ be the $N_{\phi^*} \times 1$ vector of regression coefficients given by \eqref{eq:MyTransformedModel} corresponding to $\phi^*$ evaluated at the elements of $\mathcal{W}^*$, $\Phi^* = \left(\phi^*_1,\phi^*_2, \dots, \phi^*_{N_{\phi^*}}  \right)^T$. Let $d = \left(d_0, d_1\right)^T$, $c = \left(c_1, \dots, c_{N_{\phi^*}}  \right)^T$, and $b = \left(b_1, \dots, b_{N_m}  \right)^T$.   Define $K_{11}$, $K_{12}$, $K_{22}$, $B_{1}$, and $B_2$ as follows: 
 
 \[
