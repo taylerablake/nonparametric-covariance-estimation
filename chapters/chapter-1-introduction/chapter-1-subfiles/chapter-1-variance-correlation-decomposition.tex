@@ -1,0 +1,22 @@
+The variance-correlation decomposition of $\Sigma$ is perhaps the most familiar of the following three parameterizations, which parameterizes the covariance matrix according to
+
+\begin{equation}\label{eq:}
+\Sigma = DRD,
+\end{equation}
+\noindent
+where $D = \mbox{diag}\left(\sqrt{\sigma_{11}},\dots , \sqrt{\sigma_{MM}}\right)$ denotes the diagonal matrix with diagonal entries equal to tje square-roots of those of $\Sigma$, and $R$ is the corresponding correlation matrix. This parameterization enjoys attractive practicality because the standard deviations are on the same scale as the responses, and because the estimation of $D$ and $R$ can be separated by eithering iteratively fixing one sequence of parameters to estimate the other. Moreover, one set of parameters may be more important than the others in some applications; the dynamic correlation model presented in  Engle’s (2002) is actually motivated by the fact that variances (volatilities) of individual assets are more important than their time-varying correlations.
+\bigskip
+
+While the diagonal entries of $D$ are constrained to be nonnegative, their logarithms are unconstrained. However, the correlation matrix $R$ is positive-definite constrained to have unit diagonal entires and off-diagonal entries to be less than or equal to 1 in absolute value. Because of these constraints, the variance-correlation decomposition does not lend to modeling its
+
+\bigskip
+The MLE of the parameters under (M3) is reviewed in Section 4, (M2)-(M3) are of particular interest in the recent literature of finance. In fact, starting with the variance - correlation
+decomposition (13), Bollerslev’s (1990) constant-correlation models assume that the correlation matrices {Rt} are constant, that is Rt ≡ R with p(p − 1)/2 parameters. The MLE
+of R turns out to be the sample correlation matrix of the suitably standardized vector of returns. Recognizing that constancy of correlations over time is not often satisfied, Engle
+(2002) and Tse and Tsui (2002) have recently introduced a dynamic model for {Rt} with scalar coefficients. In the first-order case it takes the form
+
+\begin{equation}
+R_t = \left(1 - \alpha - \beta\right)\bar{R} + \alpha R_{t-1}+ \beta\Psi_{t-1}, \quad t = 1,\dots, M
+\end{equation}
+\noindent
+where $\bar{R}$ is the sample correlation matrix of $y_1, \dots ,y_M$, $\Psi_{t-1}$ is a positive-definite correlation matrix having elements which are functions of the lagged observations, and $\alpha$ and $\beta$ are nonnegative with $\alpha+\beta \le 1$ so that $R_t$ is a weighted average of positive-definite matrices with nonnegative coefficients, which is guaranteed to be positive-definite. Though such models are highly parsimonious relative to the full multivariate GARCH models, they specify that all pairwise correlations satisfy the same simple dynamic, lacking flexibility and practical applicability.

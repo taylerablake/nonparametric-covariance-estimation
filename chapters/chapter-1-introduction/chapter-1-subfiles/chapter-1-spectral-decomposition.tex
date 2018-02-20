@@ -1,0 +1,55 @@
+This widely used decomposition has been central to the development of principal component
+analysis (Hotelling, 1933), factor analysis and variety of other applied techniques in multivariate
+statistics (Anderson, 2003). The spectral decomposition of the covariance matrices
+18
+{Σi} is given by
+Σi = PiΛiP
+0
+i
+, i = 1, · · · , c, (15)
+where Pi
+’s are orthogonal matrices and Λi = diag (λi1, · · · , λip) with λij standing for the
+jth eigenvalue of Σi
+. Flury’s (1984, 1988, Chap. 7) hierarchy replaces (M3) above by the
+following three variants of the common principal components (CPC):
+(M03) CPC, Pi ≡ P for all i, with d
+0
+3 = pc + p(p − 1)/2 parameters;
+(M04) CPC (q), partial CPC of order q(1 ≤ q ≤ p − 2) where the first q columns of Pi
+’s
+are the same, with d
+0
+3 + d
+0
+4 parameters and d
+0
+4 =
+1
+2
+(c − 1)(p − q)(p − q − 1);
+(M05) CS(q), common space of order q where the first q eigenvectors of Σi span the same
+subspace as those of Σ1 with d
+0
+3 + d
+0
+4 +
+1
+2
+(c − 1)q(q − 1) parameters.
+The MLE of the parameters under (M03) is reviewed in Section 4, it is of interest in the current literature of finance. Since correlations among the asset returns are the main reason
+for complexity of multivariate GARCH models (Alexander, 2001), they can be removed using the spectral decompositions (15) of their volatility matrices. Indeed, the orthogonal
+matrices Pt is known to transform the vector of returns Yt to their uncorrelated principal components, standard univariate GARCH(1,1) model is developed for each principal component
+separately and then transformed back using the matrix Pt to the volatility of the original vector of returns. For common principal components, we have Pt ≡ P which is the analogue
+of Bollerslev’s (1990) constant-correlation GARCH models, the methodology for this new multivariate GARCH model along with empirical studies is developed in Alexander (2001)
+using the orthogonal matrix of eigenvectors of the sample covariance matrix of the whole data. However, the more flexible cases of (M04) and (M05), which allow more time-variation
+in the “dependence” component, has not been pursued in the finance literature as yet. For arbitrary time-varying {Σt}, the problem is even more challenging because orthogonality of
+Pt ’s makes it difficult to write an analogue of (14). A possible way around this problem
+19
+is to reparameterize the p × p orthogonal matrix by its p(p−1)
+2 Givens angles (Daniels and
+Kass, 1999) θt = (θ21t
+, θ31,t, · · · , θp,p−1,t) and then write an analogue of (14) or a first-order
+difference equation for {θt}.
+
+The use of spectral decomposition in nonparametric estimation of covariance of functional data, arising from experiments where the basic observed responses are curves, were initiated by Rice and Silverman (1991) and has been pursued vigorously by others (Silverman, 1996; Boente and Fraiman, 2000; Ramsay and Silverman, 1997). The covariance structure is estimated using the so-called functional principal component analysis, this amounts to smoothing the principal components of functional data using penalized least squares of the normalized eigenvectors subject to the orthogonality constraint. A kernel-based principal component analysis for functional data is proposed by Boente and Fraiman (2000) which allows derivation of the asymptotic distribution of the smooth principal components. Maintaining orthogonality of the smooth principal components remains a major computational challenge in both approaches.
+

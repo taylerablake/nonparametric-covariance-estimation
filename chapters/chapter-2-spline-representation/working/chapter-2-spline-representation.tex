@@ -124,7 +124,7 @@ and
 \[
 \sigma_{ij}^2 = \sigma^2\left(t_{ij}\right).
 \]
-where $t_{ij} < t_{ik}$ for $j < k$. This leads to varying coefficient model
+where $t_{ij} < t_{ik}$ for $J < k$. This leads to varying coefficient model
 \begin{equation}   
 y\left(t_{ij} \right)  = \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left({t_i}\right) \;\;\;\; i=1,\dots, N, 
 \label{eq:MyModel} 
@@ -145,7 +145,7 @@ m &= \frac{t + s}{2}, \\
 \end{split}
 \end{align}
 \noindent
-where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply the direction orthogonal to $l$. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them, i.e. has the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$, or using transformed coordinates \ref{eq:l-m-transformation},
+ where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply its orthogonal direction. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them, i.e. has the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$, or using transformed coordinates \ref{eq:l-m-transformation},
 
 \begin{equation*}
 Cov\left(y\left( t_i \right),y\left( t_j \right)\right) = G\left( l_{ij}  \right)
@@ -161,8 +161,6 @@ where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional componen
 
 While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu (see \citet{gu2013smoothing}), and estimation is achieved through similar computational strategies.
 
-
-\bigskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

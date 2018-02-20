@@ -2,6 +2,7 @@
 \usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
 \usepackage{arydshln}
 \usepackage{amsmath}
+\usepackage{subfiles}
 \usepackage{tikz}
 \usepackage[mathscr]{euscript}
 \usepackage{enumitem}
@@ -16,7 +17,6 @@
 \usepackage{cite}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
-\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
@@ -31,7 +31,7 @@
 \newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
 \newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
 \newcommand{\PP}{\mathcal{P}}
-\newcommand{\vphistar}{\mbox{\boldmath $\phi^*$}}
+\newcommand{\vphistar}{\mbox{\boldmath $\phi$}}
 \newcommand{\vsigmasq}{\mbox{\boldmath $\sigma^2$}}
 \newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
 \newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
@@ -116,27 +116,26 @@ We naturally accommodate irregularly spaced data and unequal sample sizes betwee
 
 We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
 \bigskip
-If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T} \subset \Re$. We let 
+If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T} \subset \Re$. Henceforth, we view $\tilde{\phi}$ and $\sigma^2$ as a smooth continuous functions. For ease of exposition, we let $\tilde{\phi}_{ijk}$ denote the varying coefficient function evalutated at the $\left(j,k\right)$ pairs of time points observed on subject $i$: 
 \[
-\phi_{ijk} = \tilde{\phi}\left(t_{ij},t_{ik}\right), 
+\tilde{\phi}_{ijk} = \tilde{\phi}\left(t_{ij},t_{ik}\right). 
 \]
-and
+We adopt similar notation for the innovation variance function and let
 \[
-\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right).
+\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right),
 \]
-where $t_{ij} < t_{ik}$ for $J < k$. This leads to varying coefficient model
+where $t_{ij} < t_{ik}$ for $j < k$. This leads to varying coefficient model
 \begin{equation}   
 y\left(t_{ij} \right)  = \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left({t_i}\right) \;\;\;\; i=1,\dots, N, 
-\label{eq:MyModel} 
+\label{eq:cholesky-functional-vc-modell} 
 \end{equation}
 \noindent
 
-
-With this parameterization, the task of estimating a covariance matrix becomes a function estimation problem. We estimate $\phi\left(t,s\right)$ (and $\sigma\left(t \right)$) using bivariate (univariate) smoothing. Like other nonparametric situations, we make no assumption about the functional form of $\phi$ other than that $\phi$ is smooth, with smoothness defined in terms of square integrability of certain derivatives. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+Our goal is now to estimate the above model, utilizing bivariate smoothing to estimate $\phi\left(t,s\right)$  and one-dimensional smoothing to estimate $\sigma\left(t \right)$. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
 
 \bigskip
 
-Our intention is to design the estimation framework that can span the spectrum between completely unstructured estimators, like the sample covariance matrix, and commonly elicited fully structured parametric models by leveraging the regularizaiton techniques in the usual function estimation setting. With proper penalty specification, this procedure will result in null models which correspond to the parametric and semiparametric models for $\phi$ and $\sigma^2$ discussed in \ref{chapter-1-parametric-semiparametric-garp-models}. To facilitate this, rather than considering the GARPs as functions of $\left(t,s\right)$, we instead propose estimation after transforming
+Our approach to estimation is constructed to provide a fully data-driven methodology for selecting the optimal covariance model (given some optimization criterion) from a expansive class of estimators ranging in complexity from that of the previously aforementioned parametric models to that of completely unstructured estimators, like the sample covariance matrix. We leverage the collection of regularization techniques that are accessible in the usual function estimation setting. By properly specifying the roughness penalty, our optimization procedure results in null models which correspond to the parametric and semiparametric models for $\phi$ and $\sigma^2$ discussed in \ref{chapter-1-parametric-semiparametric-garp-models}. To facilitate the penalty specification that achieves this, we consider modeling the varying coefficient function which takes inputs
 
 \begin{align} 
 \begin{split}\label{eq:l-m-transformation}
@@ -145,7 +144,7 @@ m &= \frac{t + s}{2}, \\
 \end{split}
 \end{align}
 \noindent
- where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply its orthogonal direction. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them, i.e. has the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$, or using transformed coordinates \ref{eq:l-m-transformation},
+ where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply its orthogonal direction. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them. Covariance functions taking the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$ can then be written as 
 
 \begin{equation*}
 Cov\left(y\left( t_i \right),y\left( t_j \right)\right) = G\left( l_{ij}  \right)
@@ -159,7 +158,7 @@ where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional componen
 
 \bigskip
 
-While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu (see \citet{gu2013smoothing}), and estimation is achieved through similar computational strategies.
+While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \citet{gu2013smoothing}, and estimation is achieved through similar computational strategies.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,157 +170,27 @@ While our framework allows for estimation of the autoregressive coefficient func
 
 \bigskip
 
-For fixed $\sigma^2$, the penalized likelihood is equivalent to the usual penalized least squares functional one commonly encounters in the nonparametric function estimation literature:
+For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
 
 \begin{equation} \label{eq:penalized-least-squares}
--\ell\left(Y_1, \dots, Y_N \vert c,d\right) + \lambda J\left(\phi^*\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J_m \left( \phi^* \right)
+-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J_m \left( \phi \right),
 \end{equation}
 \noindent
-where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$
+where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$. This corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term pernalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. 
 
 \bigskip
 
 \subsection{Smoothing spline representation of $\phi$, $\sigma$}
 
-In this section, we introduce a regularization method for estimating the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{T}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is called an RKHS if there exists a bivariate
-function $K\left(\cdot, \cdot \right)$ on $\mathcal{V} \times \mathcal{V}$ such that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
-\begin{enumerate}
-\item item $K\left(\cdot, v \right) \in \hilbert$ 
-\item $f\left(v\right) = \langle f, K\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
-\end{enumerate}
-\noindent
-$K$ is called the reproducing kernel of $\hilbert$, and the first property is called the reproducing property of $K$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel.
-
-We first consider 
-Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the reproducing kernel Hilbert space (r.k.h.s) corresponding to the tensor product of the first-order and second-order Sobolev spaces:
-
-\[
-\mathcal{H} = \mathcal{H}_{l} \otimes \mathcal{H}_{m}, \;\; \mathcal{H}_{l} = W_2\left(0,1\right),\;\;\mathcal{H}_{m} = W_1\left(0,1\right)\;\mbox{where }
-\]
-
-\[W_m\left(0,1\right) \equiv \lbrace f: \;\;f^\prime, \dots, f^{\left( m-1 \right)} \mbox{absolutely continuous}, \int_0^1 \left(f^{\left( m \right)}\right)^2 dt < \infty \rbrace\]
-\noindent
-We seek $\phi^*\left(\cdot, \cdot \right) \in \mathcal{H}$ which minimizes
-\begin{equation}
-\frac{1}{2}\sum_{i=1}^N \sum_{j=2}^{n_i} {\sigma^{-2}_{ij}}\left( y\left(t_{ij}\right) - \sum_{k=1}^{n_i - 1}\phi^*\left(l^i_{jk},m^i_{jk} \right)y\left(t_{ik}\right) \right)^2 + \lambda J\left(\phi^*\right)  
-\label{eq:objectivefun}
-\end{equation}
-\noindent
-where $P_1 \phi^*$ is the projection of $\phi^*$ onto $\mathcal{H}_1$, $J\left(\phi^*\right) = \vert \vert P_1 \phi^* \vert \vert^2$. Define the differential operator $M_\nu f = \int_0^1 f^{\left( m \right)}\left(x\right) dx\;,\;\; \nu = 1, \dots, m$ and endow $W_m\left(0,1\right)$ with inner product
-%\begin{equation}
-%\left< f,g\right> = \underbrace{\sum_{\nu=0}^{m-1} M_\nu f M_\nu g}_{\left< f,g\right>_0} + \underbrace{\int_0^1 f^{\left( m \right)}\left(x\right)g^{\left( m \right)}\left(x\right)dx}_{\left< f,g\right>_1}
-%\end{equation}
-
-\begin{equation}
-\left< f,g\right> = \left< f,g\right>_0 + \left< f,g\right>_1 = \sum_{\nu=0}^{m-1} M_\nu f M_\nu g + \int_0^1 f^{\left( m \right)}\left(x\right)g^{\left( m \right)}\left(x\right)dx
-\end{equation}
-\noindent
-which induces norm 
-\[
-\vert \vert f \vert \vert^2 = \left< f,f\right> = \left< f,f\right>_0 + \left< f,f\right>_1 = \vert \vert P_0 f \vert \vert^2 + \vert \vert P_1 f \vert \vert^2
-\]
-\noindent
-Let $k_j\left(x\right) = B_j\left(x\right)/{j!}$ for $x \in \left[0,1\right]$, where $B_j\left(x\right)$ is the $j^{th}$ Bernoulli polynomial which can be defined according to the recursive relationship:
-
-\[
-B_0\left(x\right) = 1,\;\;\;\;\;\; \frac{d}{dx} B_r\left(x\right) = rB_{r-1}\left(x\right)
-\]
-\noindent
-Noting that $M_\nu B_r = \delta_{\nu-r}$, $W_m$ can be written as a direct sum of the $m$ orthogonal subspaces: $\lbrace k_r \rbrace_{r=0}^{m-1}$ and $W_m^1$.   Here, $\lbrace k_r \rbrace$ is the subspace spanned by $k_r$ and $W_m^1$ is the space orthogonal to $W_m^0 \equiv \lbrace 1 \rbrace \oplus \lbrace k_1 \rbrace \oplus \dots \oplus \lbrace k_{m-1} \rbrace$ which satisfies 
-\[
-W_m^1 = \lbrace f: M_\nu f = 0,\;\; \nu = 0,1,\dots, m-1\rbrace
-\]
-
-\noindent
-Writing $\mathcal{H}$ as the tensor product of the two decomposed Sobolev spaces, we have
-
-\begin{eqnarray}
-\mathcal{H} = \mathcal{H}_l  \otimes \mathcal{H}_m &=& W_2 \otimes W_1 \label{eq:HilbertDecomp} \\ 
-&=& \left[ W_2^0 \oplus W_2^1 \right] \otimes \left[ W_1^0 \oplus W_1^1 \right] \nonumber \\ 
-&=& \left[ \left[ \lbrace 1 \rbrace \oplus \lbrace k_1 \rbrace \right] \oplus W_2^1 \right] \otimes \left[ \lbrace 1 \rbrace \oplus W_1^1 \right] \nonumber \\ 
-&=&\left[ \lbrace 1 \rbrace  \oplus \lbrace k_1 \rbrace \right] \oplus W_2^1 \oplus W_1^1 \oplus  \left[ \lbrace k_1 \rbrace  \otimes  W_1^1 \right]  \oplus  \left[W_2^1 \otimes  W_1^1   \right] \nonumber \\
-&\equiv& \left[ \mathcal{H}_{\mu^*} \oplus \mathcal{H}_l^0 \right] \oplus \left[ \mathcal{H}_l^1 \oplus \mathcal{H}_m^1 \oplus \mathcal{H}_{lm}^{01} \oplus \mathcal{H}_{lm}^{11}\right]
-\nonumber\\
-&=& \mathcal{H}_0 \oplus \mathcal{H}_1
-\nonumber
-\end{eqnarray} 
-
-\noindent
-where the functional components corresponding to $\mathcal{H}_\mu$, $\mathcal{H}_l^0$, $\mathcal{H}_l^1$, $\mathcal{H}_m^1$, and $\left[ \mathcal{H}_{lm}^{01} \oplus \mathcal{H}_{lm}^{11}\right]$ are the overall mean, the nonparametric main effect of $l$, the parametric main effect of $l$, the parametric main effect of $m$, the nonparametric-parametric interaction, and the parametric-parametric interaction (between $l$ and $m$). Given this decomposition of the function space, any $\phi^* \in \mathcal{H}$ may be written as a sum of components from each of the 
-
-\begin{equation}
-\phi^*\left(l,m\right) = \mu^* + \phi_l^*\left(l\right) + \phi_m^*\left(m\right) + \phi_{lm}^*\left(l,m\right)  \label{eq:ANOVAdecomp}
-\end{equation} 
-\noindent
-where $\int_{0}^1 \phi^*_{l}\left(l\right)dl = \int_{0}^1 \phi^*_{m}\left(m\right)dm = 0$, $\int_{0}^1 \phi^*_{lm}\left(l,m\right)dl = \int_{0}^1 \phi^*_{lm}\left(l,m\right)dm = 0$. The reproducing kernel (r.k.) for $\lbrace k_r \rbrace$ is $k_r\left(x \right)k_r\left(x^\prime \right)$. It can be verified that the r.k. for $W_m^1$ (Craven and Wahba 1979) is given by $R^1\left(x,x^\prime\right) = k_m\left(x \right)k_m\left(x^\prime \right) + \left( -1 \right)^{m-1}k_{2m}\left(\left[ x-x^\prime \right] \right)$
-where $\left[ \alpha \right]$ is the fractional part of $\alpha$. The r.k. for $W_m$ is given by 
-\begin{eqnarray*}
-R\left(x,x^\prime\right) &=& R^0\left(x,x^\prime\right) + R^1\left(x,x^\prime\right) \\
-&=&\left[ \sum_{\nu=1}^{m-1} k_\nu\left(x \right)k_\nu\left(x^\prime \right) \right]+ \left[ k_m\left(x \right)k_m\left(x^\prime \right) + \left( -1 \right)^{m-1}k_{2m}\left(\left[ x-x^\prime \right] \right)\right] \label{eq:RKforH1}
-\end{eqnarray*}
-\noindent
-Using the fact that the r.k. for a tensor product space is the product of the corresponding reproducing kernels, the r.k. for $\mathcal{H}$ is given by 
-\begin{eqnarray}
-R\left( \left(l,m\right),\left(l^\prime,m^\prime\right)\right) &=&  R_l\left(l,l^\prime\right) \times R_m\left(m,m^\prime\right) \nonumber \\
- &=& \left[  R_l^0\left(l,l^\prime\right) + R_l^1\left(l,l^\prime\right) \right] \times \left[  R_m^0\left(l,l^\prime\right) + R_m^1\left(l,l^\prime\right) \right] \nonumber \\
- &=& R_l^0\left(l,l^\prime\right)R_m^0\left(m,m^\prime\right) + R_l^0\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) \nonumber \\
-&\mbox{ }&\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; +  R_l^1\left(l,l^\prime\right) R_m^0\left(m,m^\prime\right)  + R_l^1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) \nonumber \\
-&=& \left[ k_1\left(l \right)k_1\left(l^\prime \right)\right] + \left[ R_l^1\left(l,l^\prime\right)  + k_1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) + R_l^1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right)\right] \nonumber \\
-&=& R^0\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right) + R^1\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right)
-\end{eqnarray}
-
-We must introduce some notation to simplify the following expression of the form of the elements in $\mathcal{H}$. Denote the set of unique pairs of observed within-subject time points and the corresponding set of unique transformed coordinates by $\mathcal{W}$ and $\mathcal{W}^*$, respectively:
-
-\begin{eqnarray*}
-\mathcal{W} &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij} ,t_{ik} \right)\\
-\mathcal{W}^* &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij}-t_{ik} ,\frac{1}{2}\left( t_{ij}+t_{ik} \right) \right) = \bigcup_{i=1}^N \bigcup_{j>k}\left(l^i_{jk},m^i_{jk} \right)\\
-\end{eqnarray*}
-\noindent
-with $\vert \mathcal{W}\vert = \vert \mathcal{W}^* \vert = N_{\phi^*}$. For simplicity of presentation, relabel the elements of $\mathcal{W}^*$ so that 
-\[
-\mathcal{W}^* = \lbrace \left( l_1,m_1 \right), \left( l_2,m_2 \right), \dots, \left( l_{N_{\phi^*}},m_{N_{\phi^*}} \right)  \rbrace
-\]
-\noindent
-One may verify that any $\phi^* \in \mathcal{H}$ can be written 
-\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
-\phi^*\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) + \rho\left(l,m\right)
-\end{equation}
-\noindent
-where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; \textup{span}\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$.  It can be shown that the minimizer of \ref{eq:objectivefun} has $\rho = 0$, so that the $\phi^* \in \mathcal{H}$ minimizing \ref{eq:objectivefun} can be written as a (finite) linear combination of inner products:
-
-\begin{equation}\label{eq:ss-finite-dim-solution}
-\phi^*\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) 
-\end{equation}
-\noindent
-
-The proof entails demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi^*\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
-Let $\Phi^*$ be the $N_{\phi^*} \times 1$ vector of regression coefficients given by \eqref{eq:MyTransformedModel} corresponding to $\phi^*$ evaluated at the elements of $\mathcal{W}^*$, $\Phi^* = \left(\phi^*_1,\phi^*_2, \dots, \phi^*_{N_{\phi^*}}  \right)^T$. Let $d = \left(d_0, d_1\right)^T$, $c = \left(c_1, \dots, c_{N_{\phi^*}}  \right)^T$, and $b = \left(b_1, \dots, b_{N_m}  \right)^T$.   Define $K_{11}$, $K_{12}$, $K_{22}$, $B_{1}$, and $B_2$ as follows: 
-
-\[
-\begin{array}{ll}
-{K_{11}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(l_j,m_j\right)\right) &  i,j = 1, \dots, N_{\phi^*}\\
-{K_{12}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(0,m_j\right)\right) &  i = 1, \dots, N_{\phi^*},\;j = 1, \dots, N_m \\
-{K_{22}}\left[i,j\right] = R_1\left(\left(0,m_i\right),\left(0,m_j\right)\right) &  i,j = 1, \dots, N_m\\
-B_1\left[i , j\right] = k_j\left(l_i\right) &  i = 1, \dots, N_{\phi^*},\;j = 1, 2\\
-B_2\left[i , j\right] = k_j\left(0\right) &  i = 1, \dots, N_m,\;j = 1, 2\\
-\end{array}
-\]
-\[
-K = \left[\begin{array}{cc}
-		K_{11} & K_{12}\\
-		K_{12}^T & K_{22}
-		\end{array}\right] = \left[\begin{array}{c}
-		K_1\\
-		K_2
-		\end{array}\right]\\;\;\;\; B = \left[ \begin{array}{c}B_1\\
-										       B_2\end{array}\right] \]
+\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
 
 
-\noindent
-In matrix notation:
-\[
-\Phi^* = S d + R c							
-\]
+
+\subsubsection{Example: $m^{th}$ order Sobolev space, $W_m\left(0,1\right)$}
+
+\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-reproducing-kernel-example-1}
+
+
 
 %and 
 %\begin{equation} \label{eq:loglik-phi-component}
@@ -1017,7 +886,7 @@ We employ maximum likelihood  for the estimation of  the varying coefficient fun
 For fixed $\left\{ \sigma_j^2 \right\}$, as a function of $\phi_{jk}$ the negative log-likelihood for a sample of $N$  i.i.d. observations $Y_1,Y_2,\dots,Y_N$ from a multivariate Gaussian distribution is proportional to the usual error sums of squares:
 
 \begin{equation}
--2 L\left(y_1,\dots,y_N ,\phi^* \vert \vsigmasq \right) \propto \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma\left({t_j}\right)^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \label{loglikelihood}
+-2 L\left(y_1,\dots,y_N ,\phi \vert \vsigmasq \right) \propto \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma\left({t_j}\right)^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \label{loglikelihood}
 \end{equation}
 \noindent
 where 
@@ -1031,7 +900,7 @@ denotes the vector of observations for subject $i$ with corresponding measuremen
 \[
 t_{i1} < t_{i2} < \dots < t_{i,m_i}.
 \]
-The form of the likelihood of $y_1,\dots,y_N$ indicates that we allow both the number of measurements as well as the observation times to varying across subjects. The $\left\{t_{ij} \right\}$ need not be evenly-spaced within or across individuals. Denote the innovation variance function evaluated at the vector of observed time points by $\vsigmasq$, and similarly let $\vphistar$ denote the resulting vector when evaluating $\phi^*$ at the observed grid of time points, transformed to the $l$-$m$ axis. Estimation of the varying coefficient function and the innovation variance function may be accomplished in an iterative fashion:
+The form of the likelihood of $y_1,\dots,y_N$ indicates that we allow both the number of measurements as well as the observation times to varying across subjects. The $\left\{t_{ij} \right\}$ need not be evenly-spaced within or across individuals. Denote the innovation variance function evaluated at the vector of observed time points by $\vsigmasq$, and similarly let $\vphistar$ denote the resulting vector when evaluating $\phi$ at the observed grid of time points, transformed to the $l$-$m$ axis. Estimation of the varying coefficient function and the innovation variance function may be accomplished in an iterative fashion:
 
 \fbox{\parbox{\textwidth}{\begin{enumerate}
 \item Fix $\vsigmasq = \vsigmasq_0$;
@@ -1072,7 +941,7 @@ The form of the likelihood of $y_1,\dots,y_N$ indicates that we allow both the n
 %Decompose
 %\begin{equation} \label{eq:SANOVA-model}
 %\carrotorangemath{
-%\phi^*\left(l,m\right) = \mu + \phi_1\left(l\right) + \phi_2\left(m\right) + \phi_{12}\left(l,m\right)},
+%\phi\left(l,m\right) = \mu + \phi_1\left(l\right) + \phi_2\left(m\right) + \phi_{12}\left(l,m\right)},
 %\end{equation} 
 %so Model~\ref{eq:MyModel} becomes
 %
@@ -1112,19 +981,19 @@ The form of the likelihood of $y_1,\dots,y_N$ indicates that we allow both the n
 %\end{columns}
 %\vspace{0.3cm}
 %\begin{equation*}
-%\phi^*\left(l,m\right) = \sum_{i=1}^K \sum_{j=1}^L \theta_{ij} B_{i}\left(l\right) B_{j}\left(m\right)
+%\phi\left(l,m\right) = \sum_{i=1}^K \sum_{j=1}^L \theta_{ij} B_{i}\left(l\right) B_{j}\left(m\right)
 %\end{equation*}
 %
  
 
 
 
-%The parameters of the functional autoregressive model given by \ref{eq:MyModel} define the elements of the precision matrix $\Omega$, rather than the elements of $\Sigma$ itself. It is well known that if we let $Y = \left(Y_1, \dots, Y_m\right)^\prime$ denote the random vector having joint distribution with mean zero and covariance matrix $\Sigma$, then the elements of $\Sigma^{-1}=\Omega$, $\left\{ \omega_{ij} \right\}$ may be interpreted as partial covariances between the elements of $Y$. This suggests shrinking $\phi^*$ to zero for large values of $l$. One can show that if $T$ has $k$ non-zero diagonals, then the middle $k$ diagonals of $\Sigma^{-1}$ are non-zero.  
+%The parameters of the functional autoregressive model given by \ref{eq:MyModel} define the elements of the precision matrix $\Omega$, rather than the elements of $\Sigma$ itself. It is well known that if we let $Y = \left(Y_1, \dots, Y_m\right)^\prime$ denote the random vector having joint distribution with mean zero and covariance matrix $\Sigma$, then the elements of $\Sigma^{-1}=\Omega$, $\left\{ \omega_{ij} \right\}$ may be interpreted as partial covariances between the elements of $Y$. This suggests shrinking $\phi$ to zero for large values of $l$. One can show that if $T$ has $k$ non-zero diagonals, then the middle $k$ diagonals of $\Sigma^{-1}$ are non-zero.  
 
 
 For ease of exposition, we first focus our attention on the estimation of $\phi$ assume that $\sigma^2\left(t\right)$ is fixed and known. Estimation of the innovation variance function is presented in Section~\ref{section:variance-estimation}. In the case that subjects share a common set of observation times $t_1 < \dots < t_m$,  it is well known that the MLE for $\Sigma$, $S = \sum_{i=1}^N y_i y_i^\prime$ is highly unstable in high dimensions, a condition that is potentially worsened when one or more subjects has at least one observation time that is unique from the set of observation times common across subjects. To mitigate instability due to high dimensionality and simultaneously permit the estimation of $\phi\left(\cdot,\cdot\right)$ as a smooth bivariate function, we obtain a covariance estimator by applying bivariate smoothing of the elements of the Cholesky factor. 
 
-Estimating the varying coefficient function $\phi^*$, however, is quite different from the usual problem of estimating an arbitrary bivariate function. In the case of the latter, we most typically treat both arguments equally in terms of regularization, but in the case of covariance estimation and the generalized coefficient function equal treatment of $l$ and $m$ in terms of penalization perhaps is not the most appropriate approach. The lag component, $l$, has particularly significant meaning in terms of the covariance function and thus also in terms of $\phi^*$ and is of considerable more interest than the orthogonal component, $m$. We parameterize $\phi$ in terms of the transformed domain:
+Estimating the varying coefficient function $\phi$, however, is quite different from the usual problem of estimating an arbitrary bivariate function. In the case of the latter, we most typically treat both arguments equally in terms of regularization, but in the case of covariance estimation and the generalized coefficient function equal treatment of $l$ and $m$ in terms of penalization perhaps is not the most appropriate approach. The lag component, $l$, has particularly significant meaning in terms of the covariance function and thus also in terms of $\phi$ and is of considerable more interest than the orthogonal component, $m$. We parameterize $\phi$ in terms of the transformed domain:
 
 \begin{align*}
 l = t-s, \qquad m = \frac{1}{2}\left(s+t\right),
@@ -1132,7 +1001,7 @@ l = t-s, \qquad m = \frac{1}{2}\left(s+t\right),
 \noindent
 so that the following relationship holds:
 \begin{align*}
-\phi\left(s,t\right) = \phi^*\left(s-t, \frac{1}{2}\left(s+t\right)\right) =\phi^*\left(l,m\right)
+\phi\left(s,t\right) = \phi\left(s-t, \frac{1}{2}\left(s+t\right)\right) =\phi\left(l,m\right)
 \end{align*}
 with 
 \begin{equation} \label{eq:phi-star-domain}
@@ -1144,8 +1013,8 @@ The likelihood can be written in terms of the reparameterized varying coefficien
 
 \begin{align} 
 \begin{split} \label{loglikelihood}
--2L\left(y_1,\dots,y_N ,\phi^* \vert \vsigmasq \right) &= \sum_{i=1}^n \sum_{j=2}^{m_i} \sigma_{ij}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \\
-&= \sum_{i=1}^n \sum_{j=2}^{m_i} \sigma_{ij}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi^*\left({l_{ijk},m_{ijk}}\right)y_{ik} \right)^2 
+-2L\left(y_1,\dots,y_N ,\phi \vert \vsigmasq \right) &= \sum_{i=1}^n \sum_{j=2}^{m_i} \sigma_{ij}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \\
+&= \sum_{i=1}^n \sum_{j=2}^{m_i} \sigma_{ij}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({l_{ijk},m_{ijk}}\right)y_{ik} \right)^2 
 \end{split} 
 \end{align}
 
@@ -1161,7 +1030,7 @@ T_{jk}\left(l,m\right) = B_j\left(l\right){B}_k\left(m\right)
 carve the $l$-$m$ domain into rectangles.  Figure~\ref{fig:sparse_bicubic_BS_basis} shows a thinned tensor product basis $\left\{ T_{kl} \right\}$; a portion of the basis was omitted to eliminate overlapping of the basis functions so that the reader can identify individual tensor products. Each ``hill'' in Figure~\ref{fig:sparse_bicubic_BS_basis} is associated with an unknown coefficient $\theta_{ij}$ which determines the height of the hill. For a given knot grid, we can approximate a surface by
 
 \begin{equation} \label{eq:varying-coefficient-tensor-product-expansion}
-\phi^*\left(l,m\right) = \sum_{i=1}^K \sum_{j=1}^L \theta_{ij} B_{i}\left(l\right) B_{j}\left(m\right), 
+\phi\left(l,m\right) = \sum_{i=1}^K \sum_{j=1}^L \theta_{ij} B_{i}\left(l\right) B_{j}\left(m\right), 
 \end{equation}
 \noindent
 and the function evaluated at the observed $\left(l_{ijk}, m_{ijk}\right)$ may be written 
@@ -1215,7 +1084,7 @@ one can derive a banded matrix $P$ using the properties of B-splines such that
 %These approaches implicitly adopt different notions of sparsity. Like \citet{huang2006covariance} and \citet{levina2008sparse}, our aim is to regularize the inverse of the covariance matrix through the Cholesky factor. Expressing the varying coefficient function using a tensor product basis expansion builds the foundation for a flexible estimation framework within which employing multiple notions of smoothness is simple and straightforward. 
 %
 
-In some applications, it is useful to work with third and fourth order differences, since for large values of $\lambda$, the fitted curve approaches a parametric polynomial model. This may be of particular interest in the context of estimating the elements of the Cholesky factor, as many have proposed simple parametric functions of lag only for $\phi^*$, such as low order polynomials. See \citet{pourahmadi1999joint}. However, with the use of higher order derivatives, the computation of $P$ is nontrivial and becomes very tedious. \citet{eilers1996flexible} were the first to propose P-splines, or \emph{penalized B-splines}, as an approach to nonparametric regression. P-splines circumvent complexity associated with constructing such penalty matrices by omitting derivatives and integrals altogether, replacing them with finite differences and sums. 
+In some applications, it is useful to work with third and fourth order differences, since for large values of $\lambda$, the fitted curve approaches a parametric polynomial model. This may be of particular interest in the context of estimating the elements of the Cholesky factor, as many have proposed simple parametric functions of lag only for $\phi$, such as low order polynomials. See \citet{pourahmadi1999joint}. However, with the use of higher order derivatives, the computation of $P$ is nontrivial and becomes very tedious. \citet{eilers1996flexible} were the first to propose P-splines, or \emph{penalized B-splines}, as an approach to nonparametric regression. P-splines circumvent complexity associated with constructing such penalty matrices by omitting derivatives and integrals altogether, replacing them with finite differences and sums. 
 
 Instead, flexibility of the fitted function is controlled by using a discrete penalty matrix based on finite difference formulas. Smoothness of the fitted function is achieved by first using a rich B-spline basis with equally spaced knots to purposefully overfit the smooth coefficient vectors; this eliminates the difficulty of choosing the optimal set of knots. Then by attaching a difference penalty to the goodness of fit measure, one may prevent overfitting and make a potentially ill-conditioned fitting procedure a well-conditioned one. The finite difference penalty is simple to compute and can be handled mechanically for any order of the differences. Since it is easily introduced into regression equations, it is feasible to evaluate the impact of different orders of the differences on the fitted model.  Using the properties of B-splines, it is straightforward to show that the difference penalty of order $d$ is a good discrete approximation to the integrated square of the $d^{th}$ derivative, so little is lost by replacing the derivative-based penalty with
 
@@ -1320,11 +1189,11 @@ A smoother sequence of coefficients leads to a smoother curve, as illustrated in
 
 
 
-To extend these results to the bivariate setting for regularizing of $\phi^*$, the only modification to the differencing procedure in one dimension necessary is the addition of a second difference penalty, one for each variable $l$ and $m$. We append the pair of penalties to the negative log likelihood \ref{eq:loglikelihood} and take the estimator of $\phi^*$ to correspond to the B-spline coefficients minimizing
+To extend these results to the bivariate setting for regularizing of $\phi$, the only modification to the differencing procedure in one dimension necessary is the addition of a second difference penalty, one for each variable $l$ and $m$. We append the pair of penalties to the negative log likelihood \ref{eq:loglikelihood} and take the estimator of $\phi$ to correspond to the B-spline coefficients minimizing
 
 \begin{align} 
 \begin{split}\label{eq:unfolded-difference-penalty-log-likelihood}
--2L + J\left(\phi^*\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma\left({t_j}\right)^{-2} \left\{y_{ij} - \sum_{k=1}^{j-1} \left( \sum_{r=1}^L \sum_{s=1}^K \theta_{rs} B_r\left(l_{ijk}\right)B_s\left(m_{ijk}\right)\right)y_{ik} \right\}^2 \\ 
+-2L + J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma\left({t_j}\right)^{-2} \left\{y_{ij} - \sum_{k=1}^{j-1} \left( \sum_{r=1}^L \sum_{s=1}^K \theta_{rs} B_r\left(l_{ijk}\right)B_s\left(m_{ijk}\right)\right)y_{ik} \right\}^2 \\ 
 + \lambda_l \sum_{r^\prime=1}^K \vert D_{d_{\ms l}} \theta_{r^\prime \cdot} \vert^2 + \lambda_m \sum_{s^\prime=1}^L \vert D_{d_{\ms m}} \theta_{\cdot s^\prime} \vert^2.
 \end{split}
 \end{align}
@@ -1357,11 +1226,11 @@ where $\theta_{k \cdot}$ and $\theta_{\cdot l}$ denote the $k^{th}$ row and $l^{
  \caption{\textit{Nine cubic B-spline tensor products with heavy linear column penalty and heavy linear row penalty}}
 \end{figure}
 \noindent
-We take the estimator of $\phi^*$ to be the minimizer of 
+We take the estimator of $\phi$ to be the minimizer of 
 It is computationally advantageous to express the coefficient matrix in ``unfolded'' notation, which allows us to express the varying coefficient function at the observed coordinate grid as in the usual multiple regression form:
 
 \begin{equation*}
-\mbox{vec}\left\{\phi^*\left(l,m\right)\right\} = B \theta
+\mbox{vec}\left\{\phi\left(l,m\right)\right\} = B \theta
 \end{equation*}
 \noindent
 Stacking the columns of $\Theta$ gives the vectorized coefficient matrix $\theta = \mbox{vec}\left( \Theta \right)$. The $p \times KL$ tensor product basis $B$ is constructed from the tensor product of the marginal B-spline bases defined in \citet{eilers2006fast} as the \textit{row-wise Kronecker product} of the individual bases:
@@ -1379,7 +1248,7 @@ The operator $\odot$ denotes the element-wise matrix product; $1_K$ ($1_L$) deno
 where $P_l = I_L \otimes D_{d_{\ms l}}^\prime D_{d_{\ms l}} $ and $P_m =  D_{d_{\ms m}}^\prime D_{d_{\ms m}} \otimes I_K$. We define the matrix $W$ of historical regressors so that \ref{eq:unfolded-difference-penalty-log-likelihood} can be written in matrix form as
 
 \begin{equation} \label{eq:tensor-pspline-objective-function}
--2L + J\left(\phi^*\right) = \left( Y - WB\theta\right)^\prime D^{-1}\left( Y - WB\theta\right)  + \lambda_l \vert\vert P_l \theta \vert\vert^2 + \lambda_m \vert\vert P_m \theta\vert \vert^2,
+-2L + J\left(\phi\right) = \left( Y - WB\theta\right)^\prime D^{-1}\left( Y - WB\theta\right)  + \lambda_l \vert\vert P_l \theta \vert\vert^2 + \lambda_m \vert\vert P_m \theta\vert \vert^2,
 \end{equation}
 \noindent
 with $\hat{\theta}$ solving the system of equations 
@@ -1389,7 +1258,7 @@ with $\hat{\theta}$ solving the system of equations
 \noindent
 From \ref{eq:tensor-pspline-normal-equations}, we note that the system of equations depends on basis coefficients remains fixed at $KL$, even as the number of observations increases.   The grid of regression coefficients can be recovered by arranging the elements of $\hat{\theta}$ into a matrix of $L$ columns having length $K$. 
 
-This recipe for constructing a tensor product basis for $\phi^*$ is an easy and convenient way to construct a two-dimensional basis for a bivariate function with domain corresponding to the unit square. However, the domain of the autoregressive coefficient function, specified in \ref{eq:phi-star-domain}, lies on the lower triangle of the unit square:
+This recipe for constructing a tensor product basis for $\phi$ is an easy and convenient way to construct a two-dimensional basis for a bivariate function with domain corresponding to the unit square. However, the domain of the autoregressive coefficient function, specified in \ref{eq:phi-star-domain}, lies on the lower triangle of the unit square:
 
 \begin{figure}[H] \label{fig:triangle-domain}
     \graphicspath{{img/}}
@@ -1397,7 +1266,7 @@ This recipe for constructing a tensor product basis for $\phi^*$ is an easy and 
  \caption{$\frac{l}{2} < m < 1 - \frac{l}{2}, \quad 0 < l < 1.$}
  \end{figure}
 
-The triangular domain of $\phi^*$ cannot be modeled by the tensor product basis as constructed due to singularities resulting from the large number of basis functions anchored at knots near which we have no data, and hence little information about the corresponding basis coefficient. Much work in computer graphics has been done proposing methods of smoothing over arbitrary function domains, which are approximated by triangulations. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. These methods are, however, quite computationally intensive; to correct for the instability in the smoothed surface, we can simply remove the knots corresponding to tensor products functions which do not overlap with the function domain from the basis, $B$, and trimming the penalty matrices $P_l$ and $P_m$ as needed. With the trimmed basis and penalties, we can carry out optimization as previously discussed.
+The triangular domain of $\phi$ cannot be modeled by the tensor product basis as constructed due to singularities resulting from the large number of basis functions anchored at knots near which we have no data, and hence little information about the corresponding basis coefficient. Much work in computer graphics has been done proposing methods of smoothing over arbitrary function domains, which are approximated by triangulations. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. These methods are, however, quite computationally intensive; to correct for the instability in the smoothed surface, we can simply remove the knots corresponding to tensor products functions which do not overlap with the function domain from the basis, $B$, and trimming the penalty matrices $P_l$ and $P_m$ as needed. With the trimmed basis and penalties, we can carry out optimization as previously discussed.
 
 
 

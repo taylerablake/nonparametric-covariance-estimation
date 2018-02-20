@@ -1,0 +1,40 @@
+To satisfy the positive-definiteness constraint, methods have been developed and applied to certain reparameterizations of the covariance structure. Chiu, Leonard, and Tsui modeled the matrix logarithm of the covariance matrix. Early nonparametric work using the spectral decomposition of the covariance matrix included that of Rice and Silverman (1991) which discussed smoothing and smoothing parameter choice for eigenfunction estimation for regularly-spaced data. Staniswalis and Lee (1998) extended kernel-based smoothing of eigenfunctions to functional data observed on irregular grids. However, when the data are sparse in the sense that there are few repeated within-subject measurements and measurement times are quite different from subject-to-subject, approximation of the functional principal component scores defined by the Karhunen-Loeve expansion of the stochastic process by usual integration is unsatisfactory and requires numerical quadrature. Many have explored regression-based approaches using the Spectral decomposition, framing principal components analysis as a least-squares optimization problem. Among many others, Zou, Hastie and Tibshirani (2006) imposed penalties on regression coefficients to induce sparse loadings. {\needsparaphrased[REVIEW THE METHODS OF HUANG, KAUFMAN, YAO HERE]}
+\bigskip
+
+The log link resolves the issued presented by the constrained parameter space associated with the identity link, leading to unconstrained parameterization of a covariance matrix. However, the parameters of the matrix logarithm lack any meaningful statistical interpretation. The hybrid link  constructed from the modified Cholesky decomposition of $\Sigma^{-1}$ given in \ref{eq:cholesky-decompostion-link-function} combines ideas in \citet{edgeworth1892xxii}, \citet{gabriel1962ante}, \citet{anderson1973asymptotically}, \citet{dempster1972covariance}, \citet{chiu1996matrix}, and \citet{zimmerman1997structured}. It leads to unconstrained and statistically meaningful reparameterization of the covariance matrix so that the ensuing GLM overcomes most of the shortcomings of the linear and log-linear models.  For an unstructured covariance matrix $\Sigma$, the nonredundant entries of the components $\left(T, \log D\right)$ of the modified Cholesky decompostion~\ref{eq:modified-cholesky-decomposition} can be written as the entries of 
+
+\begin{equation}\label{eq:cholesky-decompostion-link-function}
+g\left( \Sigma \right) = 2I - T - T' + \log D.
+\end{equation}
+\noindent
+These entries are unconstrained, allowing them to be modeled using any desired technique, including parametric, semi- and nonparametric, and Bayesian approaches. Covariates can be included in said models seamlessly. As in the usual GLM setting for estimation of the mean, one can elicit parametric models for $\phi_{tj}$ and $\log\sigma_t^2$.  For example, one might model the nonredundant entries of $T$, say, linearly as in model~\ref{eq:linear-covariance-model} and those of $\log D$ as in, say, model~\ref{eq:log-linear-covariance-model}, letting
+
+\begin{align}
+\begin{split} \label{eq:linear-models-for-GARPs-IVs}
+\phi_{tj} &= x'_{tj} \beta,\\
+\log\sigma_t^2 &= z'_t \gamma,
+\end{split}
+\end{align}
+\noindent
+where $x_{tj}$ and $z_{t}$ denote $q \times 1$ and $p \times 1$ vectors of known covariates, and $\beta = \left(\beta_1,\dots, \beta_q \right)'$ and $\gamma = \left(\gamma_1,\dots, \gamma_p \right)'$ are the parameters relating these covariates to the innovation variances and the dependence among the elements of $Y$. Modeling the covariance according to \ref{eq:linear-models-for-GARPs-IVs} reduces the constrained and potentially high dimensional parameter space for $\Sigma$ to an unconstrained parameter space of dimension $q + p$. \citet{pourahmadi1999joint}, \citet{pourahmadi2000maximum}, and \citet{pan2006regression} prescribe methods for identifying models such as model~\ref{eq:linear-models-for-GARPs-IVs} using model selection criteria, such as AIC, and regressograms, which are a nonstationary analogue of the correlelogram one typically encounters in the time series literature. 
+
+\bigskip
+
+{\needsparaphrased{TO DO: OUTLINE semi and nonparametric approaches to modeling the $\phi_tj$ and $\log \sigma_t^2$}}
+
+\bigskip
+
+{\needsparaphrased{
+The fact that the entries of $T$ are unconstrained makes the Cholesky decomposition ideal for nonparametric estimation. Wu and Pourahmadi (2003) have used local polynomial estimators to smooth the subdiagonals of $T$. Denoting estimators of $T$ and $D$ in \ref{eq:modified-cholesky-decomposition} by $\hat{T}$ and $\hat{D}$, we can construct an estimator of $\Sigma$ 
+
+\begin{equation}
+\hat{T}^{-1}\hat{D}\hat{T}'^{-1}
+\end{equation}
+\noindent
+is guaranteed to be positive-definite. Although one could smooth rows and columns of T, or the whole T viewed as a bivariate function, the idea of smoothing along its subdiagonals is motivated by the similarity of the regressions in (3) to the varying-coefficients autoregressions (Kitagawa and Gersch, 1985, 1996; Dahlhaus, 1997):
+}}
+
+
+
+
+
