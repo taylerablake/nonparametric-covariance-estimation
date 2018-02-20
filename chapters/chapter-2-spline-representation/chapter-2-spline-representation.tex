@@ -184,10 +184,10 @@ where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\righ
 \subsection{Smoothing spline representation of $\phi$, $\sigma$}
 
 In this section, we introduce a regularization method for estimating the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{T}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is called an RKHS if there exists a bivariate
-function $K\left(\cdot, \cdot \right)$ on $\mathcal{V} \times \mathcal{V}$ such that for every $v \in \mathcal{V}$ and $f \in \mathcal{H},
+function $K\left(\cdot, \cdot \right)$ on $\mathcal{V} \times \mathcal{V}$ such that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
 \begin{enumerate}
 \item item $K\left(\cdot, v \right) \in \hilbert$ 
-\item f\left(v\right) = \langle f, K\left(\cdot, v\right)\rangle_\hilbert.\label{rkhs-reproducing-property}
+\item $f\left(v\right) = \langle f, K\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
 \end{enumerate}
 \noindent
 $K$ is called the reproducing kernel of $\hilbert$, and the first property is called the reproducing property of $K$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel.
