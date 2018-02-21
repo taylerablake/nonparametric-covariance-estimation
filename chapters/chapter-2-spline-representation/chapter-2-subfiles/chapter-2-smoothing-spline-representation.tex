@@ -51,7 +51,33 @@ y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
 \end{equation}
 
 
+Let $Y$ denote the $n_y \times 1$ vector, $n_y=\left(\sum \limits_{i} M_i \right) - N$ resulting from stacking the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ one on top of each other. Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(v_i, v_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
 
+\begin{align}
+\begin{split} \label{eq:penalized-likelihood-vectorized} 
+-\ell\left(Y \vert c,d\right) + \lambda J_m\left(\phi^*\right) = \left( Y - W \left( Bd + Kc \right) \right)^\prime D^{-1} \left( Y - W \left( Bd + Kc \right) \right) + \lambda c^\prime Q c 
+\end{split}
+\end{align} 
+\bigskip
+\noindent
+ where $W$ is the matrix of autoregressive covariates constructed so that $\ref{eq:thin-plate-loss-function}$ and $\ref{eq:thin-plate-loss-function-matrix}$ are equivalent. 
+\bigskip
+Differentiating $Q_\lambda$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial Q_\lambda}{\partial c} = Q W^\prime D^{-1}\left[ W\left(Sd + Kc\right) - Y  \right] + \lambda Kc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    W'D^{-1} W \bigg[ Bd + Kc \bigg] + \lambda c  &= W' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+\noindent
+
+\begin{align*}
+\frac{\partial Q_\lambda}{\partial d} = S^\prime W^\prime D^{-1}\left[ W\left(Sd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda S' c  &= 0  
+\end{align*}
+\bigskip
+\noindent
 
 
 

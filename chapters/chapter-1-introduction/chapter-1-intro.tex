@@ -450,39 +450,39 @@ where $\mbox{var}\left( \epsilon_i \right) = \sigma_i^2$. If we take the $i$-$j^
 \noindent
 and taking covariances on both sides of \eqref{epsilon}, we see that $T$ and $D$ satisfy \ref{eq:T-Sigma-Ttrans-equals-D}. Immediately, we have that $\Sigma^{-1} = T' D^{-1} T$. The regression coefficients $\lbrace \phi_{ij} \rbrace$ are referred to as the \emph{generalized autoregressive parameters} (GARPs), and the $\lbrace \sigma_{ij} \rbrace$ are referred to as the \emph{innovation variances} (IVs.) 
 \bigskip
-Assuming that $Y$ follows a multivariate normal distribution, the loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
-
-\begin{equation} \label{eq:loglik-general-form}
--2\ell\left( Y, \Sigma \right) = \log \vert \Sigma \vert + Y' \Sigma Y
-\end{equation}
-\noindent
-From \ref{eq:T-Sigma-Ttrans-equals-D}, we have that 
-\[
-\vert \Sigma\vert = \vert D \vert = \prod_{i = 1}^m \sigma_i^2
-\]
-and 
-\[
-\Sigma^{-1} = T' D^{-1} T.
-\]
-Thus, \ref{eq:loglik-general-form} can be written in terms of the prediction errors and their variances of the non-redundant entries of $\left(T , D\right)$:
-
-\begin{align}
-\begin{split} \label{eq:loglik-cholesky-form}
--2\ell\left( Y, \Sigma \right) &= \log \vert D \vert + Y' T' D^{-1} T Y \\
-&= \sum_{i = 1}^m \log \sigma_i^2  + \sum_{i = 1}^m \frac {\epsilon_i^2}{\sigma_i^2},
-\end{split}
-\end{align}
-\noindent
-where $\epsilon_1 = y_1$ and $\epsilon_i = y_i - \sum_{j = 1}^{i-1} \phi_{ij} y_j$. Maximum likelihood estimation or any of its penalized variants may then be employed to obtain estimates of $T$ and $D$.
-
-\bigskip
-Unlike many of those before who have used the Cholesky decomposition as a means of modeling $\Sigma$, we allow observed time points to be individual-specific and not necessarily regularly spaced.  Let $Y_1, \dots, Y_N$ denote a random sample of mean zero vectors of longitudinal measurements taken on $N$ subjects having common covariance structure $\Sigma$.  We allow subject $i$ to have observation vector $y_i = \left(y_{i1} ,\dots , y_{i,m_i}\right)'$ with corresponding vector of observation times $\left(t_{i1} ,\dots , t_{i,m_i}\right)'$.  Accommodating the subject-specific sample sizes and measurement times requires merely adding a subscript, and Model \ref{eq:discrete-evenly-spaced-ar-model} becomes 
-
-\begin{equation}
-{y}_{ij}  = \sum_{k=1}^{j-1} \phi_{ijk} y_{ik} + \sigma_{ij}\epsilon_{ij}, \label{eq:discrete-unevenly-spaced-ar-model}
-\end{equation}
-\noindent
-where $\phi_{ijk}$ is the autoregressive coefficient corresponding to the pair of measurements observed at time $t_{ij}$ and $t_{ik}$. A vectorized representation of Model~\ref{eq:discrete-unevenly-spaced-ar-model} can be obtained as before by adding the necessary parameters to $T$ and $D$.
+%Assuming that $Y$ follows a multivariate normal distribution, the loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
+%
+%\begin{equation} \label{eq:loglik-general-form}
+%-2\ell\left( Y, \Sigma \right) = \log \vert \Sigma \vert + Y' \Sigma Y
+%\end{equation}
+%\noindent
+%From \ref{eq:T-Sigma-Ttrans-equals-D}, we have that 
+%\[
+%\vert \Sigma\vert = \vert D \vert = \prod_{i = 1}^m \sigma_i^2
+%\]
+%and 
+%\[
+%\Sigma^{-1} = T' D^{-1} T.
+%\]
+%Thus, \ref{eq:loglik-general-form} can be written in terms of the prediction errors and their variances of the non-redundant entries of $\left(T , D\right)$:
+%
+%\begin{align}
+%\begin{split} \label{eq:loglik-cholesky-form}
+%-2\ell\left( Y, \Sigma \right) &= \log \vert D \vert + Y' T' D^{-1} T Y \\
+%&= \sum_{i = 1}^m \log \sigma_i^2  + \sum_{i = 1}^m \frac {\epsilon_i^2}{\sigma_i^2},
+%\end{split}
+%\end{align}
+%\noindent
+%where $\epsilon_1 = y_1$ and $\epsilon_i = y_i - \sum_{j = 1}^{i-1} \phi_{ij} y_j$. Maximum likelihood estimation or any of its penalized variants may then be employed to obtain estimates of $T$ and $D$.
+%
+%\bigskip
+%Unlike many of those before who have used the Cholesky decomposition as a means of modeling $\Sigma$, we allow observed time points to be individual-specific and not necessarily regularly spaced.  Let $Y_1, \dots, Y_N$ denote a random sample of mean zero vectors of longitudinal measurements taken on $N$ subjects having common covariance structure $\Sigma$.  We allow subject $i$ to have observation vector $y_i = \left(y_{i1} ,\dots , y_{i,m_i}\right)'$ with corresponding vector of observation times $\left(t_{i1} ,\dots , t_{i,m_i}\right)'$.  Accommodating the subject-specific sample sizes and measurement times requires merely adding a subscript, and Model \ref{eq:discrete-evenly-spaced-ar-model} becomes 
+%
+%\begin{equation}
+%{y}_{ij}  = \sum_{k=1}^{j-1} \phi_{ijk} y_{ik} + \sigma_{ij}\epsilon_{ij}, \label{eq:discrete-unevenly-spaced-ar-model}
+%\end{equation}
+%\noindent
+%where $\phi_{ijk}$ is the autoregressive coefficient corresponding to the pair of measurements observed at time $t_{ij}$ and $t_{ik}$. A vectorized representation of Model~\ref{eq:discrete-unevenly-spaced-ar-model} can be obtained as before by adding the necessary parameters to $T$ and $D$.
 \bigskip
 
 \begin{table}\centering

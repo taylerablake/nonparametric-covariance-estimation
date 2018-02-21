@@ -116,22 +116,24 @@ We naturally accommodate irregularly spaced data and unequal sample sizes betwee
 
 We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
 \bigskip
-If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{ijk} \rbrace$ and innovation variances as the evaluation of the smooth functions $\phi\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T} \subset \Re$. Henceforth, we view $\tilde{\phi}$ and $\sigma^2$ as a smooth continuous functions. For ease of exposition, we let $\tilde{\phi}_{ijk}$ denote the varying coefficient function evalutated at the $\left(j,k\right)$ pairs of time points observed on subject $i$: 
+
+
+If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{tj} \rbrace$ and innovation variances as the evaluation of the smooth functions $\tilde{\phi}\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T}$. Without loss of generality, we take $\mathcal{T} = \left[0,1\right]$. Henceforth, we view $\tilde{\phi}$ and $\sigma^2$ as a smooth continuous functions, but for ease of exposition, we let $\tilde{\phi}_{ij}$ denote the varying coefficient function evalutated at $\left(t_i,t_j\right)$: 
 \[
-\tilde{\phi}_{ijk} = \tilde{\phi}\left(t_{ij},t_{ik}\right). 
+\tilde{\phi}_{tj} = \tilde{\phi}\left(t_{i},t_{j}\right). 
 \]
-We adopt similar notation for the innovation variance function and let
+Adopting similar notation for the innovation variance function, denote
 \[
-\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right),
+\sigma_{j}^2 = \sigma^2\left(t_{j}\right),
 \]
-where $t_{ij} < t_{ik}$ for $j < k$. This leads to varying coefficient model
-\begin{equation}   
-y\left(t_{ij} \right)  = \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left({t_i}\right) \;\;\;\; i=1,\dots, N, 
-\label{eq:cholesky-functional-vc-model} 
+where $0 \le t_{j} < t_{i} \le 1$ for $j < i$. This leads to varying coefficient model
+
+\begin{equation}  \label{eq:cholesky-regression-model-1} 
+y\left(t_{i} \right)  = \sum_{j=1}^{i-1} \tilde{\phi}\left(t_{i} ,t_{j}\right) y\left(t_{j}\right) + \sigma\left(t_{j}\right)\epsilon\left({t_j}\right) \;\;\;\; i=1,\dots, M, 
 \end{equation}
 \noindent
 
-Our goal is now to estimate the above model, utilizing bivariate smoothing to estimate $\phi\left(t,s\right)$  and one-dimensional smoothing to estimate $\sigma\left(t \right)$. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+Our goal is now to estimate the above model, utilizing bivariate smoothing to estimate $\tilde{\phi}\left(t,s\right)$ for $0 \le s < t \le 1$,  and one-dimensional smoothing to estimate $\sigma\left(t \right)$, $0 \le t \le 1$. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
 
 \bigskip
 
@@ -160,31 +162,90 @@ where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional componen
 
 While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \citet{gu2013smoothing}, and estimation is achieved through similar computational strategies.
 
+\subsection{Penalized maxiumum likelihood estimation of $\phi$, $\log\sigma^2$}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bigskip
+Let random vector $Y$ follow a multivariate normal distribution with zero mean vector and covariance $\Sigma$. The loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
 
-
-{\needsparaphrased{TO DO: Here, give a high level overview of the iterative approach to the joint estimation of $\phi$, $\sigma^2$}}
-
-\bigskip
-
-For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
-
-\begin{equation} \label{eq:penalized-least-squares}
--2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+\begin{equation} \label{eq:loglik-general-form}
+-2\ell\left( Y, \Sigma \right) = \log \vert \Sigma \vert + Y' \Sigma Y
 \end{equation}
 \noindent
-where $v_{ijk} = \left(t_{ij}-t_{ik}, \frac{1}{2}\left(t_{ij}+t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$. This corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. 
+Using $T \Sigma T' = D$, we can write 
+\[
+\vert \Sigma\vert = \vert D \vert = \prod_{i = 1}^m \sigma_i^2
+\]
+and 
+\[
+\Sigma^{-1} = T' D^{-1} T.
+\]
+Writing \ref{eq:loglik-general-form} in terms of the prediction errors and their variances of the non-redundant entries of $\left(T , D\right)$, we have
+
+\begin{align}
+\begin{split} \label{eq:loglik-cholesky-form}
+-2\ell\left( Y, \Sigma \right) &= \log \vert D \vert + Y' T' D^{-1} T Y \\
+&= \sum_{i = 1}^m \log \sigma_i^2  + \sum_{i = 1}^m \frac {\epsilon_i^2}{\sigma_i^2},
+\end{split}
+\end{align}
+\noindent
+where 
+\begin{equation} \label{eq:loglik-cholesky-form}
+\epsilon_i = \left\{\begin{array}{lr}y\left(t_1\right), & i = 1, \\
+y\left(t_i\right) - \sum_{j = 1}^{i-1} \phi\left(v_{ij}\right) y_j, & i= 2, \dots, M, \\
+\end{array} \right.
+\end{equation}
+\noindent
+where $\phi\left(v_{ij}\right) = \phi\left(l_{ij},m_{ij}\right) = \tilde{\phi}\left(t_i,t_j\right)$.  Accommodating subject-specific sample sizes and measurement times merely requires appending an additional index to observation times. Let  $Y_1, \dots, Y_N$ denote a sample of $N$ independent mean zero random trajectories from a  multivariate normal distribution with common covariance $\Sigma$. We associate with each trajectory $Y_i = \left(y_{i1}, \dots, y_{i,m_i}\right)'$ with a vector of potentially subject-specific observation times $\left(t_{i1}, \dots, t_{i,m_i}\right)'$, so that the $j^{th}$ measurement of trajectory $i$ is modeled
+
+\begin{align}
+\begin{split} \label{eq:cholesky-regression-model-2} 
+y\left(t_{ij} \right)  &= \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)  \\
+&= \sum_{k=1}^{j-1} \phi\left(v_{ijk}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)
+\end{split}
+\end{align}
+\noindent
+for $i = 1,\dots, N$, $j = 2,\dots, m_i$.
+\noindent
+Making similar ammendments to indexing, the joint log likelihood for the sample $Y_1, \dots, Y_N$ is given by  
+
+\begin{equation} \label{eq:joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) = \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma_{ij}^2  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma_{ij}^2},
+\end{equation}
 
 \bigskip
+
+With this, we can estimate $\phi$ and $\log\sigma^2$ using maximum likelihood or any of its penalized variants by appending a roughness penalty (penalties) to \ref{eq:joint-loglik}. Employing regularization, we take $\phi$, $\sigma^2$ to minimize 
+
+\begin{equation} \label{eq:penalized-joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \kappa \right) = \sum_{i = 1}^N \sum_{j = 1}^{m_i} \kappa_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{e^{\kappa_{ij}}} +  \lambda J\left( \phi \right) +  \breve{\lambda}\breve{J}\left( \kappa \right),
+\end{equation}
+\noindent
+where $J$ and $\breve{J}$ are roughness penalties on $\phi$ and $\kappa = \log\sigma^2$, and $\lambda$, $\breve{\lambda}$ are non-negative smoothing parameters.  To jointly estimate the GARP function and the IV function, we adopt an iterative approach in the spirit of \citet{huang2006covariance}, \citet{huang2007estimation}, and \citet{pourahmadi2000maximum}. A procedure for minimizing \ref{eq:joint-loglik} starts with initializing $\left\{\sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, m_i$.  For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-sigma}
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+\end{equation}
+\noindent
+which corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. Given $\phi^*$ the minimizer of \ref{eq:penalized-joint-loglik-given-sigma} and setting $\phi = \phi^*$, as a function of $\kappa$, the penalized loglikelihood \ref{eq:} is given by  
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi}
+-2\ell_\kappa + \breve{\lambda} \breve{J}\left(\kappa\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {z_{ij}^*} + \breve{\lambda} \breve{J}\left( \kappa \right),
+\end{equation}
+where the current data $z_{ij}^* =\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)$ denote the working residuals.  We update our estimate of $\kappa$ by finding $\kappa^*$ which minimizes \ref{eq:penalized-joint-loglik-given-phi}, and setting $\kappa = \kappa^*$ in \ref{:penalized-joint-loglik-given-sigma}. This process is repeated until convergence is achieved. 
+\bigskip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \subsection{Smoothing spline representation of $\phi$, $\sigma$}
 
+
+\subsubsection{An RKHS framework for estimating $\phi$}
 \subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
 
-
+\subsubsection{An RKHS framework for estimating $\log \sigma^2$}
+\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-spline-representation}
 
 \subsubsection{Example: $m^{th}$ order Sobolev space, $W_m\left(0,1\right)$}
 
