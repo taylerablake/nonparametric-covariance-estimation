@@ -17,7 +17,7 @@ The first property is called the reproducing property of $R$. Every reproducing 
 
 The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
 \begin{equation} \label{eq:penalized-least-squares-2}
--2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 f \vert \vert^2
+-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
 \end{equation}
 \noindent
 where $P_1$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_1$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
@@ -26,16 +26,33 @@ where $P_1$ is the projection operator which projects $\phi$ onto the subspace $
 \phi\left( v \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_1 \xi_i \right)
 \end{equation}
 \noindent
-where $V = \bigcup\limits_{i = 1}^N v_{ijk}$, and $\left\{\eta_1,\dots, \eta_{m}\right\}$ span $\hilbert_0$, the null space of $P_1$.
+where $V = \bigcup\limits_{i = 1}^N v_{ijk}$, and $\left\{\eta_1,\dots, \eta_{m}\right\}$ span $\hilbert_0$, the null space of $P_1$,
 
-\bigskip
-
+\begin{equation*}
+\hilbert_0 = \left\{ \phi \in \hilbert:\;J\left( \phi \right) = 0 \right\}.
+\end{equation*}
+\noindent
 Any $\phi \in \mathcal{H}$ can be written 
 \begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
 \phi\left( v \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_1 \xi_i \right) + \rho\left(v\right)
 \end{equation}
 \noindent
 where $\rho \perp \mathcal{H}_0,\; \textup{span}\lbrace \left(P_1 \xi_{j} \right) \rbrace_{j = 1}^{\vert V\vert}$. To establish that the solution has form \ref{eq:form-of-smoothing-spline-solution} requires showing that the minimizer of \ref{eq:penalized-least-squares-2} has $\rho = 0$. The proof entails demonstrating that $\rho$ does not improve the residual sums of squares and only adds to the penalty term, $J\left(\phi\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
+
+Let $X_i$ denote the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-functional-vc-model}. For example, in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$, then 
+
+\begin{equation}
+X_i =  \begin{bmatrix} 
+y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
+ 0 & y_{i, t_1} &  y_{i, t_2}&0 & \dots & 0 \\
+ \vdots &&&&&\\
+ 0 & \dots &0 & y_{i,t_1} & \dots &  y_{i, t_{M-1}}
+\end{bmatrix}
+\end{equation}
+
+
+
+
 
 
 
