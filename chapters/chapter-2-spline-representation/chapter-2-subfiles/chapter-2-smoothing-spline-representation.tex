@@ -39,7 +39,13 @@ Any $\phi \in \mathcal{H}$ can be written
 \noindent
 where $\rho \perp \mathcal{H}_0,\; \textup{span}\lbrace \left(P_1 \xi_{j} \right) \rbrace_{j = 1}^{\vert V\vert}$. To establish that the solution has form \ref{eq:form-of-smoothing-spline-solution} requires showing that the minimizer of \ref{eq:penalized-least-squares-2} has $\rho = 0$. The proof entails demonstrating that $\rho$ does not improve the residual sums of squares and only adds to the penalty term, $J\left(\phi\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
 
-Let $X_i$ denote the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-functional-vc-model}. For example, in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$, then 
+Let $Y$ denote the vector 
+
+\[
+Y = \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N2}, y_{N3},\dots, y_{N,m_N} \right)'
+\]
+
+of length $n_y=\left(\sum \limits_{i} M_i \right) - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other. Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}. For example, in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$, then 
 
 \begin{equation}
 X_i =  \begin{bmatrix} 
@@ -49,9 +55,48 @@ y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
  0 & \dots &0 & y_{i,t_1} & \dots &  y_{i, t_{M-1}}
 \end{bmatrix}
 \end{equation}
+\noindent
+for all $i = 1,\dots, N$. Note that this design matrix specification does not require that measurement times be regularly spaced.  To illustrate the construction of $X_i$ when observation times vary between subjects, consider a toy example: let $N = 2$, $m_1 = 4$, $m_2 = 4$ with measurements on subject 1 taken at $t_{11} = 0, t_{12} = 0.2, t_{13} = 0.5, t_{14} = 0.9$ and on subject 2 taken at $t_{21} = 0, t_{22} = 0.1, t_{23} = 0.5, t_{24} = 0.7$.  Then the unique within-subject pairs of observation times $\left(t,s\right)$ such that $0 \le s < t \le 1$ are
 
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+t & 0.1 & 0.2 & 0.5 & 0.5 & 0.5 & 0.7 & 0.7 & 0.7 & 0.9 & 0.9 & 0.9 \\ 
+ s & 0.0 & 0.0 & 0.0 & 0.1 & 0.2 & 0.0 & 0.1 & 0.5 & 0.0 & 0.2 & 0.5 \\
+\end{tabular}
+\end{table}
+\noindent
+This gives that $V =  \left\{v_{121},\dots, v_{143}  \right\} \bigcup \left\{v_{221},\dots, v_{243}  \right\} = \left\{v_1,\dots, v{11} \right\}$, where the distinct $v_{i} = \left(l_i , m_i\right)$ are 
 
-Let $Y$ denote the $n_y \times 1$ vector, $n_y=\left(\sum \limits_{i} M_i \right) - N$ resulting from stacking the $N$ observed response vectors $y_1,\dots, y_N$ less their first element $y_{i1}$ one on top of each other. Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(v_i, v_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+% &$ v_1$ & $v_2$ & $v_3$ &$ v_4$ & $v_5$ & $v_6$ & $v_7$ & $v_8$ & $v_9$ & $v_{10}$ & $v_{11}$ \\ 
+ % \hline
+l & 0.10 & 0.20 & 0.50 & 0.40 & 0.30 & 0.70 & 0.60 & 0.20 & 0.90 & 0.70 & 0.40 \\ 
+  m & 0.05 & 0.10 & 0.25 & 0.30 & 0.35 & 0.35 & 0.40 & 0.60 & 0.45 & 0.55 & 0.70 \\ 
+\end{tabular}
+\end{table}
+
+Then a potential construction of the autoregressive design matrix for subject is given by:
+\begin{equation}
+X_1 =  \begin{bmatrix} 
+0   & y_{1, 1}  &	0   	     &    0   &    0  	    &  0   &	 0   &	0   	& 	0   	&    0         & 	0  \\
+0   &	0  	  &	y_{1, 1}  &    0   & y_{1, 2}   &  0   &	 0   &	0   	& 	0   	&    0         & 	0  \\
+0   &	0   	  &	0    	     &    0   &  0   	    &  0   &	 0   &	0   	&  y_{1, 1}    & y_{1, 2}& y_{1, 3} 
+\end{bmatrix},
+\end{equation}
+\noindent
+and similarly, for subject 2:
+\begin{equation}
+X_2 =  \begin{bmatrix} 
+y_{2, 1}   & 0  &	0   &    0   &  0   &  0   &	 0   &	0   	& 	0   	&    0   & 	0  \\
+0   &	0   &	 y_{2, 1} & y_{2, 2}  & 0  &  0   &	 0   &	0   	& 	0   	&    0   & 	0  \\
+0   &	0   &	0   &    0   &  0   &  0   &	 0   &	0   	&  y_{2, 1} & y_{2, 2}&y_{2, 3}
+\end{bmatrix}.
+\end{equation}
+
+Let $S$ denote the $n \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank; let $Q$ denote the $n \times n$ kernel matrix with $i$-$j^{th}$ element $E_m\left(v_i, v_j\right)$, and let $D$ denote the $n_y \times n_y$ diagonal matrix of innovation variances $\sigma^2_{ijk}$. The $\phi^*$ minimizing \ref{eq:thin-plate-loss-function} corresponds to the coefficient vectors $c$, $d$ minimizing
 
 \begin{align}
 \begin{split} \label{eq:penalized-likelihood-vectorized} 
