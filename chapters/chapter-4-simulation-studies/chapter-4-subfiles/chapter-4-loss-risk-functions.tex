@@ -1,0 +1,37 @@
+To assess performance of estimator $\hat{\Sigma}$, we consider two commonly used loss functions:
+\begin{equation} \label{eq:quad-loss}
+\Delta_1\left(\Sigma,\hat{\Sigma} \right) = tr\left(\left( \Sigma^{-1} \hat{\Sigma} - \mathrm{I}\right)^2 \right),
+\end{equation}
+\noindent
+\begin{equation} \label{eq:entropy-loss}
+\Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - M,
+\end{equation}
+\noindent
+where $\Sigma$ is the true covariance matrix and $\hat{\Sigma}$ is an $M \times M$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the transformation $Z$ as
+
+\[
+Z = CY. 
+\]
+\noindent
+for some $M \times M$ matrix $C$,  then $Z$ has covariance matrix $\Sigma_z = C \Sigma C'$. Given an estimator $\hat{\Sigma}$ of $\Sigma$, one immediately obtains an estimator for $\Sigma_z$, $\hat{\Sigma}_z = C \hat{\Sigma} C'$. If $C$ is invertible, then the loss functions $\Delta_1$ and $\Delta_2$ satisfy
+\[
+\Delta_i\left(\Sigma,\hat{\Sigma}\right) = \Delta_i\left(C \Sigma C', C \hat{\Sigma}C' \right). 
+\]
+\noindent
+The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities with the same mean corresponding to the two covariance matrices. The second loss $\Delta_2$, or the quadratic loss, measures the discrepancy between $\left(\Sigma^{-1} \hat{\Sigma}\right)$ and the identity matrix with the squared Frobenius norm. The Frobenius norm of a symmetric matrix $A$ is given by 
+
+\[
+\vert \vert A \vert \vert^2 = \mbox{tr}\left(A A'\right).
+\]
+\noindent
+The quadratic loss consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \citet{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{nS}{n+p+1}$ is optimal under $\Delta_1$. 
+
+\bigskip
+
+Given $\Sigma$, the corresponding values of the risk functions are obtained by taking expectations:
+
+\begin{equation*}
+R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\Sigma}\right)\right], \quad i = 1,2.
+\end{equation*}
+\noindent
+We prefer one estimator $\hat{\Sigma}_1$ to another $\hat{\Sigma}_2$ if it has smaller risk.  Given $\Sigma$, we estimate the risk of an estimator via Monte Carlo approximation. 

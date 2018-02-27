@@ -8,7 +8,9 @@
 \usepackage{accents}
 \usepackage{lscape}
 \usepackage{framed}
-\usepackage{subcaption}
+%\usepackage{subcaption}
+%\usepackage[hang]{subfigure}
+\usepackage{subfig} 
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
@@ -85,8 +87,8 @@
 \begingroup\lccode`~=`_
 \lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
 \AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
-
 \makeatletter
+\newcommand{\clearsubcaptcounter}{\setcounter{sub\@captype}{0}}
 \renewcommand{\theenumi}{\Roman{enumi}}
 \renewcommand{\labelenumi}{\theenumi.}
 \renewcommand{\theenumii}{\Alph{enumii}}
@@ -112,222 +114,43 @@
 
 \section{Performance assessment via simulation study}
 
-%
-%To gauge the utility of our method, we compare the performance of the estimator based on complete data to that of  three alternative estimators. 
-%
-%A complete dataset is one in which all subjects share a common set of evenly-spaced observation times $t_1, \dots, t_M$, and there are no observations missing for any patient. To examine the robustness of our method to sparsity in the data, we also compare our performance in the ideal sampling case to the performance of the estimator based on incomplete data by subsampling observations and treating the remaining unused observations as missing data. 
 
 To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$. In the first portion of the study, we simulate data so that all subjects share a common set of $M$ regularly-spaced observation times so as to permit performance comparison with three alternative estimators based on the sample covariance matrix, which cannot accommodate irregularly spaced observations.  In the second portion of the study, our primary concern is studying the stability of our estimator as the irregularity in the observed time points across subjects increases. For fixed $N$, we observe performance when the data are generated from the same underlying covariance structures for varying within-subject sample sizes $M$ and varying levels of data sparsity by subsampling observations from the complete dataset. 
 
 \bigskip
 
-We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. To examine how well our estimator selects models belonging to the null space of the cubic smoothing spline penalty functional, we consider a class of covariance structures defined by the GARPs, which are the evaluation of a linear function of $t$, and the IVs, which are constant over the time domain. We induce three degrees of sparisty in the Cholesky factor by truncating its entries to zero at three values of $l = t - s \in \left[0,1\right]$. This is equivalent to banding the inverse covariance matrices at the same values of $l$; see \citet{bickel2008regularized}. We also consider the compound symmetry model to assess how well our method can identify a commonly utilized parametric model for longitudinal data. While the structure is of the overall covariance matrix is parsimonious in that it can be represented with few coefficients, the varying coefficient function and innovation variance function of the corresponding Cholesky decomposition are nonlinear in $t$.  Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. 
-
-\section{Alternative estimators for performance benchmarking}
-
-For the complete data case with common observation times across all subjects, we consider three additional covariance estimators for comparison: the sample covariance matrix $S$, the soft thresholding estimator of \citet{rothman2009generalized},  $S^\lambda$, and the tapering estimator of \citet{cai2010optimal}, $S^\omega$. See Chapter 2, Section~\ref{section:element-wise-shrinkage-estimators} for additional discussion of these estimators and those belonging to similar classes. \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
-
-\[
-S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
-\]
-\noindent 
-where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. \citet{cai2010optimal} derived optimal rates of convergence under the operator norm for the tapering estimator:
-\[
-S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
-\]
-\noindent
-where the $\omega_{ij}^k$ are given by 
-\begin{equation*}
-\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
-\end{equation*}
-\noindent
-The weights $\omega^k_{ij}$ are indexed with superscript to indicate that they  are controlled by a tuning parameter, $k$,  which can take integer values between 0 and $M$, the dimension of the covariance matrix.  Without loss of generality,  we assume that $k_h = k/2$ is even. The weights may be rewritten as
-\begin{align*}
-\omega_{ij} = \left\{\begin{array}{ll} 1, & \vert \vert i -j \vert \vert \le k_h \\
-                             2 - \frac{i - j}{k_h}, & k_h < \vert \vert i -j \vert \vert \le k, \\
-                             0, & \mbox{otherwise}  \end{array} \right.
-\end{align*}
-\noindent
-This expression of the weights makes it clear how the selection of $k$ controls the amount of shrinkage applied to different elements of the sample covariance matrix. The estimator applies no shrinkage to elements of $S$ belonging to the subdiagonals closest to the main diagonal. As one moves away from the main diagonal, shrinkage increases. A shrinkage factor of $2 - \frac{i - j}{k_h}$ is applied to elements belonging to subdiagonals $k_h,\dots,k-1,k$, and elements further than $k$ subdiagonals from the main diagonal are shrunk to zero.   
-
-\section{Loss functions and corresponding risk measures}
-
-To assess performance of estimator $\hat{\Sigma}$, we consider two commonly used loss functions:
-\begin{equation} \label{eq:quad-loss}
-\Delta_1\left(\Sigma,\hat{\Sigma} \right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - M,
-\end{equation}
-\noindent
-\begin{equation} \label{eq:entropy-loss}
-\Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left(\left( \Sigma^{-1} \hat{\Sigma} - \mathrm{I}\right)^2 \right)
-\end{equation}
-\noindent
-where $\Sigma$ is the true covariance matrix and $\hat{\Sigma}$ is an $M \times M$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the transformation $Z$ as
-
-\[
-Z = CY. 
-\]
-\noindent
-for some $M \times M$ matrix $C$,  then $Z$ has covariance matrix $\Sigma_z = C \Sigma C'$. Given an estimator $\hat{\Sigma}$ of $\Sigma$, one immediately obtains an estimator for $\Sigma_z$, $\hat{\Sigma}_z = C \hat{\Sigma} C'$. If $C$ is invertible, then the loss functions $\Delta_1$ and $\Delta_2$ satisfy
-\[
-\Delta_i\left(\Sigma,\hat{\Sigma}\right) = \Delta_i\left(C \Sigma C', C \hat{\Sigma}C' \right). 
-\]
-\noindent
-The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities with the same mean corresponding to the two covariance matrices. The second loss $\Delta_2$, or the quadratic loss, measures the discrepancy between $\left(\Sigma^{-1} \hat{\Sigma}\right)$ and the identity matrix with the squared Frobenius norm. The Frobenius norm of a symmetric matrix $A$ is given by 
-
-\[
-\vert \vert A \vert \vert^2 = \mbox{tr}\left(A A'\right).
-\]
-\noindent
-The quadratic loss consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \citet{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{nS}{n+p+1}$ is optimal under $\Delta_1$. 
+We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. To examine how well our estimator selects models belonging to the null space of the cubic smoothing spline penalty functional, we consider a class of covariance structures defined by the GARPs, which are the evaluation of a linear function of $t$, and the IVs, which are constant over the time domain. Banding the Cholesky factor is equivalent to banding the inverse covariance matrices at the same values of $l$; see \citet{bickel2008regularized}.  To investigate the performance of the estimator when inverse covariance has a banded structure, we take the Cholesky factor to have the same simple structure as in the previous setting, but truncate it to zero at a given value of $l = t - s \in \left[0,1\right]$. Lastly, being interested in understanding how well our method can identify commonly used parametric models, we simulate data under the compound symmetric model. 
 
 \bigskip
 
-Given $\Sigma$, the corresponding values of the risk functions are obtained by taking expectations:
+Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} illustrate the relationship between the Cholesky surface (and the innovation variance function) and the corresponding covariance surface.  Cholesky factors rising from $\phi$ having simple (non-zero) structure do not necessarily coincide with covariance matrices exhibiting simple structure, and visa versa. For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model, which is parsimonious in that it can be represented with exactly two coefficients. However, the varying coefficient function and innovation variance function of the corresponding Cholesky decomposition are nonlinear in $t$.  The precise covariance structures used for simulations are presented in Table~\ref{simulation-model-list}.  
 
-\begin{equation*}
-R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\Sigma}\right)\right], \quad i = 1,2.
-\end{equation*}
-\noindent
-We prefer one estimator $\hat{\Sigma}_1$ to another $\hat{\Sigma}_2$ if it has smaller risk.  Given $\Sigma$, we estimate the risk of an estimator via Monte Carlo approximation. 
+\subfile{chapter-4-subfiles/chapter-4-true-covariance-heatmaps}
+
+\subfile{chapter-4-subfiles/chapter-4-true-cholesky-heatmaps}
+
+%\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-graphic}
+
+\bigskip
+
+
+
+\section{Alternative estimators for performance benchmarking}
+\subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
+
+\section{Loss functions and corresponding risk measures}
+\subfile{chapter-4-subfiles/chapter-4-loss-risk-functions}
+
+Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.
 
 \section{Discussion}
 
+\subfile{chapter-4-subfiles/chapter-4-cov-lattice-graphic}
+
 \subfile{chapter-4-subfiles/chapter-4-numerical-discussion-1}
-%
-%For each of the general covariance structures outlined in the previous simulation study description, data were simulated according to multivariate normal distributions with the following covariance matrices: 
-%\begin{enumerate} 
-%\item\label{item:cov-type-1} Mutual independence: $\Sigma = \mathrm{I}$, where 
-%\begin{align*}
-%\phi\left(t,s\right) &= 0, \quad 0 \le s < t \le 1,\\ 
-%\sigma^2\left(t\right) &= 1, \quad 0 \le t \le 1.
-%\end{align*}
-%\item \label{item:cov-type-2} Linear varying coefficient model with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$, where 
-%\begin{align*}
-%\phi\left(t,s\right) &= t - \frac{1}{2},  \quad 0 \le t \le 1, \\
-%\sigma^2\left(t\right) &= 0.1^2,  \quad 0 \le t \le 1.
-%\end{align*}
-%{\needsparaphrased{TODO: How do we describe the structures for models II-V in terms of continuous $t\in\left[0,1\right]$? }}
-%\item \label{item:cov-type-3} $k_{1/2}$-banded linear varying coefficient model with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$, where
-%\begin{align*}
-%\phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le 0.5\\ 
-%0, & t - s > 0.5\end{array}\right.,\\
-%\sigma^2\left(t\right) &= 0.1^2, \quad 0 \le t \le 1.
-%\end{align*}
-%\item \label{item:cov-type-4} $1$-banded linear varying coefficient model with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$ where 
-%\begin{align*}
-%\phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le \frac{1}{M}\\ 0, & t - s > \frac{1}{M}\end{array}\right.,\\
-%\sigma^2\left(t\right) &= 0.1^2, \quad 0 \le t \le 1.
-%\end{align*}
-%\item \label{item:cov-type-5} The compound symmetry model: $\Sigma = \sigma^2\left(\rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}\right),\; \rho=0.7,\;\sigma^2=1$. 
-%\begin{align*}
-%\phi_{ts} &= -\frac{\rho}{1 + \left(t-1\right)\rho}, \quad t = 2, \dots, M,\;\; s = 1, \dots, t-1\\
-%\sigma_t^2 &= \left\{\begin{array}{ll} 1, & t = 1\\ 1 -\frac{\left(t-1\right)\rho^2}{1 + \left(t-1\right)\rho}, & t = 2, \dots, M \end{array}\right.
-%\end{align*}
-%\end{enumerate}
-%
-%{\needsparaphrased{TODO: Include figures of the true Cholesky surfaces for models 2-5.}}
-
-
-
-%\begin{figure}[H] \label{fig:cov-type-2}
-%\begin{center}
-%    \includegraphics[width=\textwidth]{../img/chapter-4/simulation-covariance-structure-3-heat-map}
-%\end{center}
-% \caption{covariance surface corresponding to Model~\ref{item:cov-type-2}}
-% \end{figure}
-%
-%\begin{figure}[H] \label{fig:cov-type-3}
-%\begin{center}
-% \includegraphics[width=\textwidth]{../img/chapter-4/simulation-covariance-structure-2-heat-map}
-%\end{center}
-% \caption{covariance surface corresponding to Model~\ref{item:cov-type-3}}
-%\end{figure} 
-%
-%
-%\begin{figure}[H] \label{fig:cov-type-4}
-%\begin{center}
-% \includegraphics[width=\textwidth]{../img/chapter-4/simulation-covariance-structure-4-heat-map}
-%\end{center}
-% \caption{covariance surface corresponding to Model~\ref{item:cov-type-4}}
-%\end{figure} 
-
-
 \bigskip
 
 \subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
-%
-%The results of the simulations for complete data under entropy loss are presented in tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}; the results for quadratic loss are similar and can be found in the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. The results for the second simulation study of performance with sparsely sampled data are given in tables \ref{table:simulation-2-sigma-1} - \ref{table:simulation-2-sigma-5}.  Standard errors of the risk estimates are left to the appendix; see Table~\ref{table:ssanova-estimator-performance-with-se-ure} and Table~\ref{table:ssanova-estimator-performance-with-se-loso}.
-%
-%\bigskip
-%
-%
-%Our estimator is stable across all of the underlying covariance  structures for the differing number of sampled trajectories $N = 50, 100$, while the performance of the alternative estimators markedly improves when the subject sample size is doubled for each of the generating structures, particularly for the case of $M = 30$. Irrespective of tuning parameter selection method, our estimator is preferable to all three of the alternative estimators, except under Model IV when $N$ is large and within-subject sampling rates are moderate. Under this model, both the inverse covariance as well as the covariance matrix itself are sparse. Specifically, the inverse is banded so that $\sigma^{ij} = 0$ for $\vert i - j \vert > 1$, but the non-zero elements are quite large. Inversion results in a covariance matrix which decays quickly as distance from the main diagonal increases, which is in concordance with the assumed structure of the softthresholding estimator. 
-%
-%\bigskip
-%
-%The covariance matrix corresponding to Model II is highly nonstationary. It is neither sparse, nor has entries which decrease in absolute value as the time between observations increases, which is in discordance with the assumed structure of both element-wise shrinkage estimators. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The covariance matrix under Model III has similar structure, presenting similar difficulties for both estimators. The sample covariance matrix far outperforms both of its regularized renditions almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
-% 
-%\bigskip
-%
-%Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case. Making the same comparison for the banded Cholesky factor having linear varying coefficient function truncated at $t = 0.5$, we see only slight decreases in performance for $M = 10$: an estimated entropy risk of 0.3174  with no missing data versus 0.3451 (0.3498, 0.3437) with $5\%$ ($7\%$, $9\%$) missing data. The degredation is more pointed for the moderate sample size of $M = 20$. The rate of missing observations has the greatest impact for the simulation conducted using the compound symmetric model. This is not surprising, since it corresponds to the Cholesky factor having the most complex structure. While the functions defining the Cholesky factors of Models III and IV do not belong to the null space defined by the cubic smoothing spline penalty, they are both piecewise functions with each piece itself belonging to $\mathcal{H}_0$.
-%
-%\bigskip
-%
-%{\needsparaphrased{Should the discussion that immediately follows be moved to after the tables containing non-appendix numerical results?}}
-%
-%\bigskip
-%
-%{\needsparaphrased{Should the discussion of study \# 1 be with the tablse for study 1, separate from the discussion + tables for study 2?}}
-%
-%\bigskip
-%
-%Review of generalized thresholding estimators, including the soft thresholding estimator is presented in in \ref{subsubsection:chapter-1-sss-1-3-4}. Recall that  $S^\lambda$ can be written as the solution to the optimization problem
-%
-%\begin{equation} \label{eq:soft-thresholding-objective-function}
-%\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right],
-%\end{equation}
-%\noindent
-%so that estimation of the covariance matrix can be accomplished by solving multiple univariate Lasso-penalized least squares problems. 
-%%The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
-%%
-%%\begin{equation} \label{eq:forbenius-norm}
-%%\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
-%%\end{equation}
-%%\noindent
-%%If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
-%%\[
-%%E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
-%%\]
-%%\noindent
-%%and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation. $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. 
-%
-%\bigskip
-%
-%Under certain conditions pertaining to the ration of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
-%
-%\begin{equation} \label{eq:K-fold-matrix--cv}
-%\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
-%\end{equation}
-%\noindent
-%%where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on based on $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(-k\right)}$ is the regularized estimator under consideration based on the data after holding $\mathcal{D}_k$ out.  Using this approach, the size of the training data set is approximately $\left(K - 1 \right)N/K$, and the size of the validation set is approximately $N/K$ (though these quantities are only relevant when subjects have equal numbers of observations). For linear models, it has been shown that cross validation is asymptotically consistent is the ratio of the validation data set size over the training set size goes to 1. See \citet{shao1993linear}. This result motivates the reverse cross validation criterion, which is defined as follows:
-%%
-%%\begin{equation} \label{eq:K-fold-matrix-reverse-cv}
-%%\mbox{rCV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(k\right)} - \tilde{\Sigma}^{\left(-k\right)}  \vert \vert_F^2, 
-%%\end{equation}
-%%\noindent
-%%where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
-%There is little established about the optimal method for tuning parameter selection in for the class of estimators based on element-wise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \citet{fang2016tuning}, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \citet{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
-%
-%\bigskip
-%
-%Element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite, though \citet{rothman2009generalized} established that in the limit, soft thresholding produces a positive definite estimator with probability tending to 1.  We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.   In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
-%
-%\bigskip
-%
-%{\needsparaphrased{We need to decide which tables will be included in the non-appendix numerical results. In the actual dissertation, section 6 will not immediate follow section 5.}}
-%
-%\bigskip
-
 \section{Numerical results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Simulation study 1: complete data}
