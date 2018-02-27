@@ -1,0 +1,72 @@
+
+The results of the simulations for complete data under entropy loss are presented in tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}; the results for quadratic loss are similar and can be found in the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. The results for the second simulation study of performance with sparsely sampled data are given in tables \ref{table:simulation-2-sigma-1} - \ref{table:simulation-2-sigma-5}.  Standard errors of the risk estimates are left to the appendix; see Table~\ref{table:ssanova-estimator-performance-with-se-ure} and Table~\ref{table:ssanova-estimator-performance-with-se-loso}.
+
+\bigskip
+
+
+Our estimator is stable across all of the underlying covariance  structures for the differing number of sampled trajectories $N = 50, 100$, while the performance of the alternative estimators markedly improves when the subject sample size is doubled for each of the generating structures, particularly for the case of $M = 30$. Irrespective of tuning parameter selection method, our estimator is preferable to all three of the alternative estimators, except under Model IV when $N$ is large and within-subject sampling rates are moderate. Under this model, both the inverse covariance as well as the covariance matrix itself are sparse. Specifically, the inverse is banded so that $\sigma^{ij} = 0$ for $\vert i - j \vert > 1$, but the non-zero elements are quite large. Inversion results in a covariance matrix which decays quickly as distance from the main diagonal increases, which is in concordance with the assumed structure of the softthresholding estimator. 
+
+\bigskip
+
+The covariance matrix corresponding to Model II is highly nonstationary. It is neither sparse, nor has entries which decrease in absolute value as the time between observations increases, which is in discordance with the assumed structure of both element-wise shrinkage estimators. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The covariance matrix under Model III has similar structure, presenting similar difficulties for both estimators. The sample covariance matrix far outperforms both of its regularized renditions almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
+ 
+\bigskip
+
+Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case. Making the same comparison for the banded Cholesky factor having linear varying coefficient function truncated at $t = 0.5$, we see only slight decreases in performance for $M = 10$: an estimated entropy risk of 0.3174  with no missing data versus 0.3451 (0.3498, 0.3437) with $5\%$ ($7\%$, $9\%$) missing data. The degredation is more pointed for the moderate sample size of $M = 20$. The rate of missing observations has the greatest impact for the simulation conducted using the compound symmetric model. This is not surprising, since it corresponds to the Cholesky factor having the most complex structure. While the functions defining the Cholesky factors of Models III and IV do not belong to the null space defined by the cubic smoothing spline penalty, they are both piecewise functions with each piece itself belonging to $\mathcal{H}_0$.
+
+\bigskip
+
+{\needsparaphrased{Should the discussion that immediately follows be moved to after the tables containing non-appendix numerical results?}}
+
+\bigskip
+
+{\needsparaphrased{Should the discussion of study \# 1 be with the tablse for study 1, separate from the discussion + tables for study 2?}}
+
+\bigskip
+
+Review of generalized thresholding estimators, including the soft thresholding estimator is presented in in \ref{subsubsection:chapter-1-sss-1-3-4}. Recall that  $S^\lambda$ can be written as the solution to the optimization problem
+
+\begin{equation} \label{eq:soft-thresholding-objective-function}
+\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right],
+\end{equation}
+\noindent
+so that estimation of the covariance matrix can be accomplished by solving multiple univariate Lasso-penalized least squares problems. 
+%The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
+%
+%\begin{equation} \label{eq:forbenius-norm}
+%\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
+%\end{equation}
+%\noindent
+%If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
+%\[
+%E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
+%\]
+%\noindent
+%and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation. $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. 
+
+\bigskip
+
+Under certain conditions pertaining to the ration of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
+
+\begin{equation} \label{eq:K-fold-matrix--cv}
+\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+%where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on based on $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(-k\right)}$ is the regularized estimator under consideration based on the data after holding $\mathcal{D}_k$ out.  Using this approach, the size of the training data set is approximately $\left(K - 1 \right)N/K$, and the size of the validation set is approximately $N/K$ (though these quantities are only relevant when subjects have equal numbers of observations). For linear models, it has been shown that cross validation is asymptotically consistent is the ratio of the validation data set size over the training set size goes to 1. See \citet{shao1993linear}. This result motivates the reverse cross validation criterion, which is defined as follows:
+%
+%\begin{equation} \label{eq:K-fold-matrix-reverse-cv}
+%\mbox{rCV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(k\right)} - \tilde{\Sigma}^{\left(-k\right)}  \vert \vert_F^2, 
+%\end{equation}
+%\noindent
+%where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
+There is little established about the optimal method for tuning parameter selection in for the class of estimators based on element-wise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \citet{fang2016tuning}, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \citet{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
+
+\bigskip
+
+Element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite, though \citet{rothman2009generalized} established that in the limit, soft thresholding produces a positive definite estimator with probability tending to 1.  We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.   In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
+
+\bigskip
+
+{\needsparaphrased{We need to decide which tables will be included in the non-appendix numerical results. In the actual dissertation, section 6 will not immediate follow section 5.}}
+
+\bigskip
