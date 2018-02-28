@@ -1,23 +1,23 @@
-This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle Q_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
+This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $R \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle R_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
 
 \bigskip
 
-The symmetric, bivariate function $Q\left(v_1, v_2 \right) = Q_{v_2 }\left(v_1\right) = \langle Q_{v_1}, Q_{v_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
+The symmetric, bivariate function $R\left(v_1, v_2 \right) = R_{v_2 }\left(v_1\right) = \langle R_{v_1}, R_{v_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
 
 \begin{enumerate}
-\item $Q\left(\cdot, v \right) \in \hilbert$ 
-\item $f\left(v\right) = \langle f, Q\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
+\item $R\left(\cdot, v \right) \in \hilbert$ 
+\item $f\left(v\right) = \langle f, R\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
 \end{enumerate}
 \noindent
-The first property is called the reproducing property of $Q$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \citet{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{v_1,\dots, v_{n_1}\right\}$, $\left\{\breve{v}_1,\dots, \breve{v}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
+The first property is called the reproducing property of $R$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \citet{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{v_1,\dots, v_{n_1}\right\}$, $\left\{\breve{v}_1,\dots, \breve{v}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
 
 \begin{equation}
- \langle\sum_{i = 1}^{n_1} a_i Q\left(\cdot, v_i\right), \sum_{j = 1}^{n_2} a'_j Q\left(\cdot, \breve{v}_j\right) \rangle_\hilbert.
+ \langle\sum_{i = 1}^{n_1} a_i R\left(\cdot, v_i\right), \sum_{j = 1}^{n_2} a'_j R\left(\cdot, \breve{v}_j\right) \rangle_\hilbert.
 \end{equation}
 
 The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
 \begin{equation} \label{eq:penalized-least-squares-2}
--2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
+-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
 \end{equation}
 \noindent
 where $P_1$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_1$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
@@ -68,16 +68,33 @@ where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ m
 
 \bigskip
 
+
+Differentiating $-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial\left[-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)\right]}{\partial c} = Q X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] + \lambda Qc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    X'D^{-1} X \bigg[ Bd + Qc \bigg] + \lambda c  &= X' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+
+\begin{align}
+\frac{\partial\left[-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)\right]}{\partial d} = B^\prime X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda B' c  &= 0  
+\end{align}
+\bigskip
+\noindent
+
 \begin{example}{Construction of $X_i$ with complete data}
 \\
 Straightforward construction of the autoregressive design matrix $X_i$ is straight forward in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$. When complete data are available for measurement times $t_1, \dots, t_M$, 
 
 \begin{equation}
 X_i =  \begin{bmatrix} 
-y_{i, t_1} & 0 & 0 &0&& \dots & 0 \\
- 0 & y_{i, t_1} &  y_{i, t_2}&0 &0& \dots & 0 \\
- \vdots &&&&&&\\
- 0 & \dots &0 & \dots& y_{i,t_1} & \dots &  y_{i, t_{M-1}}
+y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
+ 0 & y_{i, t_1} &  y_{i, t_2}&0 & \dots & 0 \\
+ \vdots &&&&&\\
+ 0 & \dots &0 & y_{i,t_1} & \dots &  y_{i, t_{M-1}}
 \end{bmatrix}
 \end{equation}
 \noindent
@@ -125,32 +142,6 @@ y_{2, 1}  & 	0  &	  0           &    0            &    0   & 0 & 0 & 0 & 0 & 0  
 \end{bmatrix}
 \end{equation}
 \end{example}
-
-
-Differentiating $-2\ell_\phi + \lambda J\left(\phi\right)$ with respect to $c$ and $d$ and setting equal to zero, we have that 
-
-\begin{align}
-\frac{\partial}{\partial c}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = Q X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] + \lambda Qc &= 0 \nonumber \\
-%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
-\iff    X'D^{-1} X \bigg[ Bd + Qc \bigg] + \lambda c  &= X' D^{-1}Y \label{eq:normal-eq-1}
-\end{align}
-
-\begin{align}
-\frac{\partial}{\partial d}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = B^\prime X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] &=0 \nonumber \\
-%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
-\iff   - \lambda B' c  &= 0  
-\end{align}
-\bigskip
-\noindent
-For fixed smoothing parameter, the solution $\phi$ is obtained by finding $c$ and $d$ which satisfy
-\begin{align} 
-Y &= X \bigg[ Bd + \left(Q  + \lambda \left(X^\prime D^{-1} X \right)^{-1} \right) c \bigg] \label{eq:ssanova-normal-eq-1} \\
-B' c  &= 0  \label{eq:ssanova-normal-eq-2}
-\end{align}
-\noindent
-
-
-
 
 
 
