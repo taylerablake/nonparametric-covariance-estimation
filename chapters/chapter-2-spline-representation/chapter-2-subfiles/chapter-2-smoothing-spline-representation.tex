@@ -1,18 +1,18 @@
-This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $R \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle R_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
+This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle Q_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
 
 \bigskip
 
-The symmetric, bivariate function $R\left(v_1, v_2 \right) = R_{v_2 }\left(v_1\right) = \langle R_{v_1}, R_{v_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
+The symmetric, bivariate function $Q\left(v_1, v_2 \right) = Q_{v_2 }\left(v_1\right) = \langle Q_{v_1}, Q_{v_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
 
 \begin{enumerate}
-\item $R\left(\cdot, v \right) \in \hilbert$ 
-\item $f\left(v\right) = \langle f, R\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
+\item $Q\left(\cdot, v \right) \in \hilbert$ 
+\item $f\left(v\right) = \langle f, Q\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
 \end{enumerate}
 \noindent
-The first property is called the reproducing property of $R$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \citet{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{v_1,\dots, v_{n_1}\right\}$, $\left\{\breve{v}_1,\dots, \breve{v}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
+The first property is called the reproducing property of $Q$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \citet{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{v_1,\dots, v_{n_1}\right\}$, $\left\{\breve{v}_1,\dots, \breve{v}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
 
 \begin{equation}
- \langle\sum_{i = 1}^{n_1} a_i R\left(\cdot, v_i\right), \sum_{j = 1}^{n_2} a'_j R\left(\cdot, \breve{v}_j\right) \rangle_\hilbert.
+ \langle\sum_{i = 1}^{n_1} a_i Q\left(\cdot, v_i\right), \sum_{j = 1}^{n_2} a'_j Q\left(\cdot, \breve{v}_j\right) \rangle_\hilbert.
 \end{equation}
 
 The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
@@ -84,6 +84,14 @@ Differentiating $-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)$ with respec
 \end{align}
 \bigskip
 \noindent
+Setting equal to zero, we have that $c$ and $d$ satisfy normal equations
+\begin{align} 
+Y &= X \bigg[ Bd + \left(Q  + \lambda \left(X^\prime D^{-1} X \right)^{-1} \right) c \bigg] \label{eq:ssanova-normal-eq-1} \\
+B' c  &= 0  \label{eq:ssanova-normal-eq-2}
+\end{align}
+\noindent
+
+
 
 \begin{example}{Construction of $X_i$ with complete data}
 \\
@@ -91,10 +99,10 @@ Straightforward construction of the autoregressive design matrix $X_i$ is straig
 
 \begin{equation}
 X_i =  \begin{bmatrix} 
-y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
- 0 & y_{i, t_1} &  y_{i, t_2}&0 & \dots & 0 \\
- \vdots &&&&&\\
- 0 & \dots &0 & y_{i,t_1} & \dots &  y_{i, t_{M-1}}
+y_{i, t_1} & 0 & 0 &0&& \dots & 0 \\
+ 0 & y_{i, t_1} &  y_{i, t_2}&0 &0& \dots & 0 \\
+ \vdots &&&&&&\\
+ 0 & \dots &0 & \dots& y_{i,t_1} & \dots &  y_{i, t_{M-1}}
 \end{bmatrix}
 \end{equation}
 \noindent

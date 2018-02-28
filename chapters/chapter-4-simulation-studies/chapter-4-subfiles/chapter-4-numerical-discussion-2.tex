@@ -31,18 +31,6 @@ Review of generalized thresholding estimators, including the soft thresholding e
 \end{equation}
 \noindent
 so that estimation of the covariance matrix can be accomplished by solving multiple univariate Lasso-penalized least squares problems. 
-%The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
-%
-%\begin{equation} \label{eq:forbenius-norm}
-%\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
-%\end{equation}
-%\noindent
-%If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
-%\[
-%E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
-%\]
-%\noindent
-%and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation. $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. 
 
 \bigskip
 
@@ -66,6 +54,8 @@ There is little established about the optimal method for tuning parameter select
 Element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite, though \citet{rothman2009generalized} established that in the limit, soft thresholding produces a positive definite estimator with probability tending to 1.  We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.   In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
 \bigskip
+
+\citet{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\lambda$, $\gamma$ of the polynomial model \ref{eq:GARP-IV-parametric-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is  is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \citet{pan2017jmcm}. 	 
 
 {\needsparaphrased{We need to decide which tables will be included in the non-appendix numerical results. In the actual dissertation, section 6 will not immediate follow section 5.}}
 

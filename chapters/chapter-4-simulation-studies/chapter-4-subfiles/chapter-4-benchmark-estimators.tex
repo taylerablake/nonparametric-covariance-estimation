@@ -1,5 +1,9 @@
 
-For the complete data case with common observation times across all subjects, we consider three additional covariance estimators for comparison: the sample covariance matrix $S$, the soft thresholding estimator of \citet{rothman2009generalized},  $S^\lambda$, and the tapering estimator of \citet{cai2010optimal}, $S^\omega$. See Chapter 2, Section~\ref{section:element-wise-shrinkage-estimators} for additional discussion of these estimators and those belonging to similar classes. \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
+In the case of complete data with common observation times across all subjects, we consider four additional covariance estimators for comparison. Three of these are the sample covariance matrix $S$ and two of its regularized variants: the soft thresholding estimator of \citet{rothman2009generalized},  $S^\lambda$, and the tapering estimator of \citet{cai2010optimal}, $S^\omega$. See Chapter 2, Section~\ref{section:element-wise-shrinkage-estimators} for additional discussion of these estimators and those belonging to similar classes. We also consider a parametric estimator based on the modified Cholesky decomposition; the MCD polynomial estimator proposed by   \citet{pourahmadi1999joint}, \citet{pan2006regression}, \citet{pourahmadi2002dynamic} and others is discussed in detail in Section~\ref{chapter-1-matrix-decompositions}. 
+
+\bigskip
+
+\citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
 
 \[
 S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
@@ -24,4 +28,23 @@ The weights $\omega^k_{ij}$ are indexed with superscript to indicate that they  
 \noindent
 This expression of the weights makes it clear how the selection of $k$ controls the amount of shrinkage applied to different elements of the sample covariance matrix. The estimator applies no shrinkage to elements of $S$ belonging to the subdiagonals closest to the main diagonal. As one moves away from the main diagonal, shrinkage increases. A shrinkage factor of $2 - \frac{i - j}{k_h}$ is applied to elements belonging to subdiagonals $k_h,\dots,k-1,k$, and elements further than $k$ subdiagonals from the main diagonal are shrunk to zero.   
 
+\bigskip
 
+In the spirit of the GLM, the MCD polynimal estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
+
+\begin{align}
+\begin{split}  \label{eq:GARP-IV-parametric-model}
+\phi_{jk} &= z'_{jk} \gamma \\
+\log \sigma^2_{jk} &= z'_{i}\lambda, 
+\end{split}
+\end{align}
+\noindent
+for $j = 1,\dots, M$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $p \times 1$  containing covariates
+\begin{align}
+\begin{split}  \label{eq:GARP-IV-parametric-model}
+z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
+z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'.
+\end{split}
+\end{align}
+\noindent
+where polynomial orders $p$, $q$ are chosen by BIC. 

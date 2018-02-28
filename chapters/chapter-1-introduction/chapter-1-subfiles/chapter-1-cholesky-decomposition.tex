@@ -16,7 +16,21 @@ These entries are unconstrained, allowing them to be modeled using any desired t
 \end{split}
 \end{align}
 \noindent
-where $x_{tj}$ and $z_{t}$ denote $q \times 1$ and $p \times 1$ vectors of known covariates, and $\beta = \left(\beta_1,\dots, \beta_q \right)'$ and $\gamma = \left(\gamma_1,\dots, \gamma_p \right)'$ are the parameters relating these covariates to the innovation variances and the dependence among the elements of $Y$. Modeling the covariance according to \ref{eq:linear-models-for-GARPs-IVs} reduces the constrained and potentially high dimensional parameter space for $\Sigma$ to an unconstrained parameter space of dimension $q + p$. \citet{pourahmadi1999joint}, \citet{pourahmadi2000maximum}, and \citet{pan2006regression} prescribe methods for identifying models such as model~\ref{eq:linear-models-for-GARPs-IVs} using model selection criteria, such as AIC, and regressograms, which are a nonstationary analogue of the correlelogram one typically encounters in the time series literature. 
+where $x_{tj}$ and $z_{t}$ denote $q \times 1$ and $p \times 1$ vectors of known covariates, and $\beta = \left(\beta_1,\dots, \beta_q \right)'$ and $\gamma = \left(\gamma_1,\dots, \gamma_p \right)'$ are the parameters relating these covariates to the innovation variances and the dependence among the elements of $Y$. Covariates most frequently used in the analysis of real longitudinal data sets are low order polynomials of lag and time, modeling
+
+\begin{align}
+\begin{split}  \label{eq:GARP-IV-parametric-model}
+z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)' \\
+z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'
+\end{split}
+\end{equation}
+\noindent
+Modeling the covariance according to \ref{eq:linear-models-for-GARPs-IVs} and \ref{eq:GARP-IV-parametric-model} reduces the constrained and potentially high dimensional parameter space for $\Sigma$ to an unconstrained parameter space of dimension $q + p$.
+
+\cbigskip
+
+\citet{pourahmadi1999joint}, \citet{pourahmadi2000maximum}, and \citet{pan2006regression} prescribe methods for identifying models such as model~\ref{eq:linear-models-for-GARPs-IVs} using model selection criteria, such as AIC, and regressograms, which are a nonstationary analogue of the correlelogram one typically encounters in the time series literature. \citet{pan2003modelling} jointly estimate the mean and covariance of longitudinal data using maximum likelihood, iterating between estimation of the mean vector $\mu$, the log innovation variances $\log \sigma_{ij}^2$, and the generalized autoregressive parameters $\phi_{ij}$. Score functions can be computed  by direct differentiation of the normal log likelihood, and optimization is achieved by solving these via iterative quasi-Newton method. 
+
 
 \bigskip
 
@@ -34,7 +48,7 @@ The fact that the entries of $T$ are unconstrained makes the Cholesky decomposit
 is guaranteed to be positive-definite. Although one could smooth rows and columns of T, or the whole T viewed as a bivariate function, the idea of smoothing along its subdiagonals is motivated by the similarity of the regressions in (3) to the varying-coefficients autoregressions (Kitagawa and Gersch, 1985, 1996; Dahlhaus, 1997):
 }}
 
-
+  \citet{pourahmadi1999joint}, \citet{pan2006regression}, \citet{pourahmadi2002dynamic}. In the spirit of the GLM, they model the components of the Cholesky decomposition using covariates, modeling the GARPs and IVs parametrically as polynomials of lag and time, respectively:
 
 
 

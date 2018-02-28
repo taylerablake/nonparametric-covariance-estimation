@@ -119,31 +119,42 @@ To understand the strengths and weaknesses of our method, in the first portion o
 
 \bigskip
 
-We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. To examine how well our estimator selects models belonging to the null space of the cubic smoothing spline penalty functional, we consider a class of covariance structures defined by the GARPs, which are the evaluation of a linear function of $t$, and the IVs, which are constant over the time domain. Banding the Cholesky factor is equivalent to banding the inverse covariance matrices at the same values of $l$; see \citet{bickel2008regularized}.  To investigate the performance of the estimator when inverse covariance has a banded structure, we take the Cholesky factor to have the same simple structure as in the previous setting, but truncate it to zero at a given value of $l = t - s \in \left[0,1\right]$. Lastly, being interested in understanding how well our method can identify commonly used parametric models, we simulate data under the compound symmetric model. 
+We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. The two-dimensional surfaces corresponding to each of these are show in Figure~\ref{fig:true-covariance-heatmaps}. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. To examine how well our estimator selects models belonging to the null space of the cubic smoothing spline penalty functional, we consider a class of covariance structures defined by the GARPs, which are the evaluation of a linear function of $t$, and the IVs, which are constant over the time domain. Banding the Cholesky factor is equivalent to banding the inverse covariance matrices at the same values of $l$; see \citet{bickel2008regularized}.  To investigate the performance of the estimator when inverse covariance has a banded structure, we take the Cholesky factor to have the same simple structure as in the previous setting, but truncate it to zero at a given value of $l = t - s \in \left[0,1\right]$. Lastly, being interested in understanding how well our method can identify commonly used parametric models, we simulate data under the compound symmetric model. 
 
 \bigskip
 
-Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} illustrate the relationship between the Cholesky surface (and the innovation variance function) and the corresponding covariance surface.  Cholesky factors rising from $\phi$ having simple (non-zero) structure do not necessarily coincide with covariance matrices exhibiting simple structure, and visa versa. For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model, which is parsimonious in that it can be represented with exactly two coefficients. However, the varying coefficient function and innovation variance function of the corresponding Cholesky decomposition are nonlinear in $t$.  The precise covariance structures used for simulations are presented in Table~\ref{simulation-model-list}.  
-
 \subfile{chapter-4-subfiles/chapter-4-true-covariance-heatmaps}
 
+\bigskip
+
+The two-dimensional surface corresponding to the Cholesky factor $T$ associated with the inverse of each of the underlying covariances used for simulation are shown in Figure~\ref{fig:true-cholesky-heatmaps}. Comparison with Figure~\ref{fig:true-covariance-heatmaps}  alludes to the relationship between the Cholesky surface (and the innovation variance function) and the corresponding covariance surface.
+
 \subfile{chapter-4-subfiles/chapter-4-true-cholesky-heatmaps}
+
+Covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition.  For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model. It can be represented with exactly two parameters. However, the $\phi$ and $\log \sigma^2$ corresponding to the Cholesky decomposition $D = T \Sigma T'$ are nonlinear in $t$. Similarly, sparsity in the covariance matrix itself does not imply sparsity in the inverse or in the components of $T$. For example, the covariance matrix corresponding to the moving average model of order $q=1$  has a banded structure. Its surface is shown in column IV of Figure~\ref{fig:true-covariance-heatmaps} (Model IV.) The elements on the first off diagonal are non-zero, and zero on every other off-diagonal. However, the inverse covariance matrix as well as the corresponding Cholesky factor are not sparse, the elements of which decay geometrically in distance from the main diagonal. The Cholesky factor for the MA(1) model is shown in column IV of  Figure~\ref{fig:true-cholesky-heatmaps}.
+
 
 %\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-graphic}
 
 \bigskip
 
-
-
 \section{Alternative estimators for performance benchmarking}
 \subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
+
+
+
+
 
 \section{Loss functions and corresponding risk measures}
 \subfile{chapter-4-subfiles/chapter-4-loss-risk-functions}
 
-Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.
+Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. 
 
 \section{Discussion}
+
+{\needsparaphrased{TODO: remember to cite the nlme package for fitting the MA(1) and CS oracle models.}}
+
+\bigskip
 
 \subfile{chapter-4-subfiles/chapter-4-cov-lattice-graphic}
 
