@@ -112,10 +112,10 @@
 \bibliographystyle{plainnat}
 \maketitle
 
-\section{Performance assessment via simulation study}
+\section{Performance assessment via simulation study} 
 
 
-To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$. In the first portion of the study, we simulate data so that all subjects share a common set of $M$ regularly-spaced observation times so as to permit performance comparison with three alternative estimators based on the sample covariance matrix, which cannot accommodate irregularly spaced observations.  In the second portion of the study, our primary concern is studying the stability of our estimator as the irregularity in the observed time points across subjects increases. For fixed $N$, we observe performance when the data are generated from the same underlying covariance structures for varying within-subject sample sizes $M$ and varying levels of data sparsity by subsampling observations from the complete dataset. 
+To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$.
 
 \bigskip
 
@@ -127,30 +127,42 @@ We study estimator performance for five covariance structures, which were chosen
 
 \bigskip
 
-The two-dimensional surface corresponding to the Cholesky factor $T$ associated with the inverse of each of the underlying covariances used for simulation are shown in Figure~\ref{fig:true-cholesky-heatmaps}. Comparison with Figure~\ref{fig:true-covariance-heatmaps}  alludes to the relationship between the Cholesky surface (and the innovation variance function) and the corresponding covariance surface.
+The two-dimensional surface corresponding to the Cholesky factor $T$ associated with the inverse of each of the underlying covariances used for simulation are shown in Figure~\ref{fig:true-cholesky-heatmaps}. Comparison with Figure~\ref{fig:true-covariance-heatmaps}  connects the Cholesky surface (and the innovation variance function) with its corresponding covariance surface.
 
 \subfile{chapter-4-subfiles/chapter-4-true-cholesky-heatmaps}
 
-Covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition.  For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model. It can be represented with exactly two parameters. However, the $\phi$ and $\log \sigma^2$ corresponding to the Cholesky decomposition $D = T \Sigma T'$ are nonlinear in $t$. Similarly, sparsity in the covariance matrix itself does not imply sparsity in the inverse or in the components of $T$. For example, the covariance matrix corresponding to the moving average model of order $q=1$  has a banded structure. Its surface is shown in column IV of Figure~\ref{fig:true-covariance-heatmaps} (Model IV.) The elements on the first off diagonal are non-zero, and zero on every other off-diagonal. However, the inverse covariance matrix as well as the corresponding Cholesky factor are not sparse, the elements of which decay geometrically in distance from the main diagonal. The Cholesky factor for the MA(1) model is shown in column IV of  Figure~\ref{fig:true-cholesky-heatmaps}.
+Covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition.  For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model. It can be represented with exactly two parameters. However, the $\phi$ and $\log \sigma^2$ corresponding to the Cholesky decomposition $D = T \Sigma T'$ are nonlinear in $t$. Similarly, sparsity in the covariance matrix itself does not imply sparsity in the inverse or in the components of $T$. For example, the covariance matrix corresponding to the moving average model of order $q=1$  is banded, which elements $\sigma_{ij} = 0$ when $\vert i-j \vert > 1$.  Its surface is shown in column IV of Figure~\ref{fig:true-covariance-heatmaps} (Model IV.) The elements on the first off diagonal are non-zero, and zero on every other off-diagonal. However, the inverse covariance matrix as well as the corresponding Cholesky factor are not sparse. The elements of both $T$ and $\Sigma^{-1}$ decay geometrically in $\vert t_i - t_j \vert$, the distance from the main diagonal.  The Cholesky factor for the MA(1) model is shown in column IV of  Figure~\ref{fig:true-cholesky-heatmaps}. A similar relationship holds for the relationship between the Cholesky factor and covariance surface for Model III, where the Cholesky structure exhibits sparsity, but the corresponding covariance structure does not. 
+
+\subfile{chapter-4-subfiles/chapter-4-true-covariance-functions}
+\bigskip
+
+\section{Loss functions and corresponding risk measures}
+\subfile{chapter-4-subfiles/chapter-4-loss-risk-functions}
 
 
 %\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-graphic}
 
 \bigskip
 
-\section{Alternative estimators for performance benchmarking}
+
+
+\section{Performance benchmarking with complete data}
+
+
+
+
 \subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
 
+\subfile{chapter-4-subfiles/chapter-4-benchmark-study-discussion}
 
 
 
+\section{Performance with irregularly sampled data}
 
-\section{Loss functions and corresponding risk measures}
-\subfile{chapter-4-subfiles/chapter-4-loss-risk-functions}
+\subfile{chapter-4-subfiles/chapter-4-missing-data-study-discussion}
 
-Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. 
 
-\section{Discussion}
+
 
 {\needsparaphrased{TODO: remember to cite the nlme package for fitting the MA(1) and CS oracle models.}}
 
@@ -158,13 +170,14 @@ Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100
 
 \subfile{chapter-4-subfiles/chapter-4-cov-lattice-graphic}
 
-\subfile{chapter-4-subfiles/chapter-4-numerical-discussion-1}
-\bigskip
+
 
 \subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
-\section{Numerical results}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Simulation study 1: complete data}
+\subsection{Numerical results}
+\subsubsection{Simulation study 1: complete data} \label{benchmarking-results}
 
 \setlength{\dashlinedash}{0.5pt}
 \setlength{\dashlinegap}{1pt}
@@ -258,6 +271,7 @@ $N = 50$&    20 & 0.7551& 0.7657& 5.0283& 35.4067 & 5.1671 \\
    &    30 & 1.1780 & 1.1813 & 5.2562 & 39.2108 & 5.2592 \\
   \end{tabular}
 \end{table}
+
 
 %-------------------------------------------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------------------------------------------

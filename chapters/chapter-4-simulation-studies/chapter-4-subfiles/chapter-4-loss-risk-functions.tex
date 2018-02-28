@@ -1,13 +1,13 @@
-Regularized estimators are usually obtained by minimizing appropruate norms or risk functions. To assess performance of an estimator $\hat{\Sigma}$, we consider two loss functions commonly used when $n_Y > M$:
+Regularized estimators are typically obtained by minimizing appropriate norms or risk functions. To assess performance of an estimator $\hat{\Sigma}$, we consider two loss functions commonly used when the total number of observations $n_Y$ is greater than the dimension $M$:
 \begin{equation} \label{eq:quad-loss}
 \Delta_1\left(\Sigma,\hat{\Sigma} \right) = tr\left(\left( \Sigma^{-1} \hat{\Sigma} - \mathrm{I}\right)^2 \right),
 \end{equation}
 \noindent
 \begin{equation} \label{eq:entropy-loss}
-\Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - M,
+\Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - M.
 \end{equation}
 \noindent
-where $\Sigma$ is the true covariance matrix and $\hat{\Sigma}$ is an $M \times M$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the transformation $Z$ as
+$\Sigma$ denotes the true covariance matrix and $\hat{\Sigma}$ is an $M \times M$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the transformation $Z$ as
 
 \[
 Z = CY. 
