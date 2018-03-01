@@ -17,7 +17,7 @@ The first property is called the reproducing property of $Q$. Every reproducing 
 
 The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
 \begin{equation} \label{eq:penalized-least-squares-2}
--2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
 \end{equation}
 \noindent
 where $P_1$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_1$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
@@ -68,7 +68,10 @@ where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ m
 
 \bigskip
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cc10e8225503967265891c7b98fd982e18d01ca5
 \begin{example}{Construction of $X_i$ with complete data}
 \\
 Straightforward construction of the autoregressive design matrix $X_i$ is straight forward in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$. When complete data are available for measurement times $t_1, \dots, t_M$, 
@@ -126,6 +129,32 @@ y_{2, 1}  & 	0  &	  0           &    0            &    0   & 0 & 0 & 0 & 0 & 0  
 \end{bmatrix}
 \end{equation}
 \end{example}
+
+
+Differentiating $-2\ell_\phi + \lambda J\left(\phi\right)$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial}{\partial c}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = Q X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] + \lambda Qc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    X'D^{-1} X \bigg[ Bd + Qc \bigg] + \lambda c  &= X' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial d}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = B^\prime X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda B' c  &= 0  
+\end{align}
+\bigskip
+\noindent
+For fixed smoothing parameter, the solution $\phi$ is obtained by finding $c$ and $d$ which satisfy
+\begin{align} 
+Y &= X \bigg[ Bd + \left(Q  + \lambda \left(X^\prime D^{-1} X \right)^{-1} \right) c \bigg] \label{eq:ssanova-normal-eq-1} \\
+B' c  &= 0  \label{eq:ssanova-normal-eq-2}
+\end{align}
+\noindent
+
+
+
 
 
 

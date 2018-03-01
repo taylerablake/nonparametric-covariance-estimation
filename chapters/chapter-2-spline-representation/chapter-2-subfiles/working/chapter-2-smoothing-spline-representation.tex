@@ -1,0 +1,149 @@
+This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $R \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle R_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
+
+\bigskip
+
+The symmetric, bivariate function $R\left(v_1, v_2 \right) = R_{v_2 }\left(v_1\right) = \langle R_{v_1}, R_{v_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
+
+\begin{enumerate}
+\item $R\left(\cdot, v \right) \in \hilbert$ 
+\item $f\left(v\right) = \langle f, R\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
+\end{enumerate}
+\noindent
+The first property is called the reproducing property of $R$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \citet{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{v_1,\dots, v_{n_1}\right\}$, $\left\{\breve{v}_1,\dots, \breve{v}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
+
+\begin{equation}
+ \langle\sum_{i = 1}^{n_1} a_i R\left(\cdot, v_i\right), \sum_{j = 1}^{n_2} a'_j R\left(\cdot, \breve{v}_j\right) \rangle_\hilbert.
+\end{equation}
+
+The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
+\begin{equation} \label{eq:penalized-least-squares-2}
+-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
+\end{equation}
+\noindent
+where $P_1$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_1$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
+
+\begin{equation} \label{eq:form-of-smoothing-spline-solution}
+\phi\left( v \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_1 \xi_i \right)
+\end{equation}
+\noindent
+where $V = \bigcup\limits_{i,j,k} v_{ijk}$, and $\left\{\eta_1,\dots, \eta_{m}\right\}$ span $\hilbert_0$, the null space of $P_1$,
+
+\begin{equation*}
+\hilbert_0 = \left\{ \phi \in \hilbert:\;J\left( \phi \right) = 0 \right\}.
+\end{equation*}
+\noindent
+To show this, we start by noting that any $\phi \in \mathcal{H}$ can be written 
+\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
+\phi\left( v \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_1 \xi_i \right) + \rho\left(v\right)
+\end{equation}
+\noindent
+where $\rho \perp \mathcal{H}_0,\; \textup{span}\lbrace \left(P_1 \xi_{j} \right) \rbrace_{j = 1}^{\vert V\vert}$. To establish that the solution has form \ref{eq:form-of-smoothing-spline-solution} requires showing that the minimizer of \ref{eq:penalized-least-squares-2} has $\rho = 0$. The proof entails demonstrating that $\rho$ does not improve the residual sums of squares and only adds to the penalty term, $J\left(\phi\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
+
+\bigskip
+\noindent
+Let $Y$ denote the vector 
+
+\[
+Y = \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N2}, y_{N3},\dots, y_{N,m_N} \right)'
+\]
+\noindent
+of length $n_y= \sum_{i} M_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other. Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}, and stack these on top of one another to obtain
+
+\begin{equation} \label{eq:ar-design-matrix-1}
+X = \begin{bmatrix}
+X_1 \\
+X_2\\
+\vdots \\
+X_N
+\end{bmatrix},
+\end{equation}
+\noindent
+which has dimension $n_y \times \vert V \vert$. Then the solution $\phi$  minimizing \ref{eq:penalized-least-squares-2}  is the solution to the minimization problem
+
+\begin{equation} \label{eq:ar-design-matrix-1}
+\vert \vert D^{-1/2}\left( Y - X \left( Bd + Qc \right) \right) \vert \vert^2  + \lambda c^\prime Q c 
+\end{equation}
+\noindent
+where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $Q$ is given by $\langle P_1 \xi_i,  P_1 \xi_j \rangle_\hilbert$, and $B$ is the $\vert V \vert \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank.  The diagonal matrix $D$ holds the $n_y \times n_y$  innovation variances $\sigma^2_{ijk}$. 
+
+\bigskip
+
+
+Differentiating $-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial\left[-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)\right]}{\partial c} = Q X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] + \lambda Qc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    X'D^{-1} X \bigg[ Bd + Qc \bigg] + \lambda c  &= X' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+
+\begin{align}
+\frac{\partial\left[-2\ell_\phi + \frac{\lambda}{2} J\left(\phi\right)\right]}{\partial d} = B^\prime X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda B' c  &= 0  
+\end{align}
+\bigskip
+\noindent
+
+\begin{example}{Construction of $X_i$ with complete data}
+\\
+Straightforward construction of the autoregressive design matrix $X_i$ is straight forward in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$. When complete data are available for measurement times $t_1, \dots, t_M$, 
+
+\begin{equation}
+X_i =  \begin{bmatrix} 
+y_{i, t_1} & 0 & 0 &0& \dots & 0 \\
+ 0 & y_{i, t_1} &  y_{i, t_2}&0 & \dots & 0 \\
+ \vdots &&&&&\\
+ 0 & \dots &0 & y_{i,t_1} & \dots &  y_{i, t_{M-1}}
+\end{bmatrix}
+\end{equation}
+\noindent
+for all $i = 1,\dots, N$. Note that this design matrix specification does not require that measurement times be regularly spaced.  
+\end{example}
+
+\begin{example}{Construction of $X_i$ with incomplete data}
+\\
+We demonstrate the construction of the autoregressive design matrices when subjects do not share a universal set of observation times for $N = 2$; the construction extends naturally for an arbitrary number of trajectories. Let subjects have corresponding sample sizes $m_1 = 4$, $m_2 = 4$, with measurements on subject 1 taken at $t_{11} = 0, t_{12} = 0.2, t_{13} = 0.5, t_{14} = 0.9$ and on subject 2 taken at $t_{21} = 0, t_{22} = 0.1, t_{23} = 0.5, t_{24} = 0.7$.  Then the unique within-subject pairs of observation times $\left(t,s\right)$ such that $0 \le s < t \le 1$ are
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+t & 0.1 & 0.2 & 0.5 & 0.5 & 0.5 & 0.7 & 0.7 & 0.7 & 0.9 & 0.9 & 0.9 \\ 
+ s & 0.0 & 0.0 & 0.0 & 0.1 & 0.2 & 0.0 & 0.1 & 0.5 & 0.0 & 0.2 & 0.5 \\
+\end{tabular}
+\end{table}
+\noindent
+This gives that $V =  \left\{v_{121},\dots, v_{143}  \right\} \bigcup \left\{v_{221},\dots, v_{243}  \right\} = \left\{v_1,\dots, v_{11} \right\}$, where the distinct observed $v = \left(l, m\right)$ are 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+l & 0.10 & 0.20 & 0.50 & 0.40 & 0.30 & 0.70 & 0.60 & 0.20 & 0.90 & 0.70 & 0.40 \\ 
+  m & 0.05 & 0.10 & 0.25 & 0.30 & 0.35 & 0.35 & 0.40 & 0.60 & 0.45 & 0.55 & 0.70 \\ 
+\end{tabular}
+\end{table}
+\noindent
+Then a potential construction of the autoregressive design matrix for subject is given by:
+\begin{equation}
+X_1 =  \begin{bmatrix} 
+0   & y_{1, 1}  &	0            &    0   &    0           & 0 & 0 & 0 & 0 & 0  \\
+0   &	0  	      &	y_{1, 1}  &    0   & y_{1, 2}   &  0 & 0 & 0 & 0 & 0 \\
+ 0   &    0         & 0           &    0   &    0          & 0  & 0	&  y_{1, 1}    & y_{1, 2}& y_{1, 3} 
+\end{bmatrix}
+\end{equation}
+\noindent
+and similarly, for subject 2:
+
+\begin{equation}
+X_2 =  \begin{bmatrix} 
+y_{2, 1}  & 	0  &	  0           &    0            &    0   & 0 & 0 & 0 & 0 & 0  \\
+0   	      &  	0  &	y_{2, 1}  &    y_{2,2}   &    0   &  0 & 0 & 0 & 0 & 0 \\
+ 0   	      &        0  &    0           &    0            &  y_{2, 1}    & y_{2, 2}& y_{2, 3} &    0   & 0  & 0
+\end{bmatrix}
+\end{equation}
+\end{example}
+
+
+
+
+
