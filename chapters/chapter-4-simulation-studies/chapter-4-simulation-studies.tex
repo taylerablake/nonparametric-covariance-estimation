@@ -115,11 +115,7 @@
 \section{Performance assessment via simulation study} 
 
 
-To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$.
-
-\bigskip
-
-We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. The two-dimensional surfaces corresponding to each of these are show in Figure~\ref{fig:true-covariance-heatmaps}. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. To examine how well our estimator selects models belonging to the null space of the cubic smoothing spline penalty functional, we consider a class of covariance structures defined by the GARPs, which are the evaluation of a linear function of $t$, and the IVs, which are constant over the time domain. Banding the Cholesky factor is equivalent to banding the inverse covariance matrices at the same values of $l$; see \citet{bickel2008regularized}.  To investigate the performance of the estimator when inverse covariance has a banded structure, we take the Cholesky factor to have the same simple structure as in the previous setting, but truncate it to zero at a given value of $l = t - s \in \left[0,1\right]$. Lastly, being interested in understanding how well our method can identify commonly used parametric models, we simulate data under the compound symmetric model. 
+To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$.  We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. The two-dimensional surfaces corresponding to each of these are show in Figure~\ref{fig:true-covariance-heatmaps}. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. The second covariance structure is that of a heterogeneous AR model, where the autoregressive coefficient are a linear function of $t$, and the IVs are constant over the time domain.  The third covariance structure corresponds to the same linear autoregressive model, but we truncate the autoregressive coefficients for large $l = t - s \in \left[0,1\right]$. Lastly, we consider the compound symmetric model, shown rightmost in Figure~\ref{fig:true-covariance-heatmaps}.
 
 \bigskip
 
@@ -161,7 +157,7 @@ Similarly, sparsity in the covariance matrix itself does not imply sparsity in t
 
 \subfile{chapter-4-subfiles/chapter-4-benchmark-study-discussion}
 
-\subfile{chapter-4-subfiles/chapter-4-cov-lattice-graphic}
+\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
 
 \subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-graphic}
 
