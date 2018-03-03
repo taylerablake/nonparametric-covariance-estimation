@@ -1,0 +1,26 @@
+
+When both $N$ and $M$ are large, it is reasonable to assume that $\Sigma$ is sparse, so that many elements of the covariance matrix are equal to 0. In this case, setting certain elements of sample estimates to zero can improve the quality of estimators. Thresholding was originally a method developed in nonparametric function estimation, but recently \citet{bickel2008covariance} and \citet{rothman2009generalized} have utilized thresholding for estimating large covariance matrices.  For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
+\begin{itemize}
+\item $\mathpzc{s}_\lambda\left( z \right) \le z$;
+\item $\mathpzc{s}_\lambda\left( z \right) = 0 \mbox{ for } \vert z\vert \le \lambda$;
+\item $\vert \mathpzc{s}_\lambda\left( z \right) - z \vert \le \lambda$
+\end{itemize}
+
+Shrinkage and thresholding estimators can be viewed as the solution to the problem of minimizing a penalized quadratic loss function, and since the thresholding operator is applied elementwise to the sample covariance $S$,  these optimization problems are univariate. A generalized thresholding estimator $\mathpzc{s}_\lambda\left( z \right)$ is the solution to
+\begin{equation} \label{eq:general-thresholding-objective-function}
+\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right]
+\end{equation}
+\noindent
+For detailed discussion of the connection between penalty functions and the resulting thresholding rules, see \citet{antoniadis2001regularization}. Soft thresholding results from minimizing \ref{eq:general-thresholding-objective-function} using the lasso penalty, $J_\lambda = \lambda \vert \sigma \vert$, which corresponds to thresholding rule
+
+\begin{equation} 
+\mathpzc{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
+\end{equation}
+
+\citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
+
+\[
+S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
+\]
+\noindent 
+where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. These estimators are simple to compute compared to competitor estimates like the penalized likelihood with LASSO penalty, but they suffer from the lack of guaranteed positive definiteness. However, similar to the result for banded estimators, \citet{bickel2008covariance} have established the consistency of the threshold estimator in the operator norm, uniformly over the class of matrices that satisfy a certain sparsity requirement. 

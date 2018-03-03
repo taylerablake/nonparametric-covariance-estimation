@@ -56,7 +56,7 @@ Of course, there are the nonstationary analogues to these classes of models, som
 
 \subsubsection{Log-linear covariance models} \label{log-linear-glms}
 
-The constraint on the $\alpha_i$s in \ref{eq:linear-covariance-model} was eliminated with the introduction of log-linear covariance models; see \citet{chiu1996matrix},  \citet{pinheiro1996unconstrained}, . For a general covariance matrix having spectral decomposition
+The constraint on the $\alpha_i$s in \ref{eq:linear-covariance-model} was eliminated with the introduction of log-linear covariance models; see \citet{chiu1996matrix},  \citet{pinheiro1996unconstrained}. For a general covariance matrix having spectral decomposition
 \begin{equation}
 \Sigma = P \Lambda P',
 \end{equation}
@@ -70,6 +70,6 @@ where the $U_i$s are as before in \ref{eq:linear-covariance-model} and the $\alp
 
 \bigskip
 
-\citet{rice1991estimating} initiated pursuit of nonparametric estimation of the spectral decomposition for functional data, arising from experiments which produce observed responses in the form of curves. See \citet{ramsay2006functional}, \citet{ramsay2007applied}. The covariance structure is estimated via functional principal component analysis (fPCA), which entails smoothing the principal components of functional data using penalized least squares of the normalized eigenvectors, subject to the orthogonality constraint. Additionally, \citet{boente2000kernel} proposed  kernel-based PCA, but maintaining orthogonality of the smooth principal components remains a major computational challenge in both approaches.
+\citet{rice1991estimating} were the first to pursue nonparametric estimation of the spectral decomposition for functional data, which arise from experiments which produce observed responses in the form of curves. See \citet{ramsay2006functional}, \citet{ramsay2007applied}. The covariance structure is estimated via functional principal component analysis (fPCA); principal components of functional data are estimated using penalized least squares of the normalized eigenvectors, subject to the orthogonality constraint. Additionally, \citet{boente2000kernel} proposeds kernel-based PCA, but maintaining orthogonality of the smooth principal components remains a major computational challenge in both approaches.
 
 

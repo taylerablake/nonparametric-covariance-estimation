@@ -4,21 +4,11 @@ The spectral decomposition is the basis of several methods in multivariate stati
 \Sigma = P \Lambda P' = \sum_{i = 1}^M \lambda_i e_i e'_i,
 \end{equation}
 
-where $\Lambda$ is a diagonal matrix of eigenvalues $\lambda_1,\dots, \lambda_M$, and $P$ is the orthogonal matrix of normalized eigenvectors, having  $e_i$ as its $i^{th} column. The entries of $\Lambda$ and $P$ can be interpreted as thevariances and coefficients of the $M$ principal components. The matrix $P$ is constrained by its orthogonality, its use within the framework of GLM or alongside covariates in an effort to reduce parameter dimension is inconvenient. In spite of this,  \citet{chiu1996matrix} proposed an new unconstrained reparameterization of a covariance matrix using the spectral decomposition, modeling the matrix logarithm. However, the components of the reparameterization, while unconstrained lack statistical interpretability. See section \ref{log-linear-glms} for discussion of the log-linear GLM for covariance matrices.
+where $\Lambda$ is a diagonal matrix of eigenvalues $\lambda_1,\dots, \lambda_M$, and $P$ is the orthogonal matrix of normalized eigenvectors, having  $e_i$ as its $i^{th}$ column. The entries of $\Lambda$ and $P$ can be interpreted as thevariances and coefficients of the $M$ principal components. The matrix $P$ is constrained by its orthogonality, its use within the framework of GLM or alongside covariates in an effort to reduce parameter dimension is inconvenient. In spite of this,  \citet{chiu1996matrix} proposed an new unconstrained reparameterization of a covariance matrix using the spectral decomposition, modeling the matrix logarithm:
 
-The MLE of the parameters under (M03) is reviewed in Section 4, it is of interest in the current literature of finance. Since correlations among the asset returns are the main reason
-for complexity of multivariate GARCH models (Alexander, 2001), they can be removed using the spectral decompositions (15) of their volatility matrices. Indeed, the orthogonal
-matrices Pt is known to transform the vector of returns Yt to their uncorrelated principal components, standard univariate GARCH(1,1) model is developed for each principal component
-separately and then transformed back using the matrix Pt to the volatility of the original vector of returns. For common principal components, we have Pt ≡ P which is the analogue
-of Bollerslev’s (1990) constant-correlation GARCH models, the methodology for this new multivariate GARCH model along with empirical studies is developed in Alexander (2001)
-using the orthogonal matrix of eigenvectors of the sample covariance matrix of the whole data. However, the more flexible cases of (M04) and (M05), which allow more time-variation
-in the “dependence” component, has not been pursued in the finance literature as yet. For arbitrary time-varying {Σt}, the problem is even more challenging because orthogonality of
-Pt ’s makes it difficult to write an analogue of (14). A possible way around this problem
-19
-is to reparameterize the p × p orthogonal matrix by its p(p−1)
-2 Givens angles (Daniels and
-Kass, 1999) θt = (θ21t
-, θ31,t, · · · , θp,p−1,t) and then write an analogue of (14) or a first-order
-difference equation for {θt}.
-
+\begin{equation} \label{eq:spectral-decomposition}
+\log \Sigma = P \log\Lambda P' = \sum_{i = 1}^M \log\left(\lambda_i \right)e_i e'_i,
+\end{equation}
+\noindent
+This decomposition is particularly interesting because it highlights a tradeoff between the requirements for unconstrained parameterization of covariance matrices and the statistical interpretability of the corresponding parameters. The components of the matrix logarithm, $\log \lambda_i$, are free, but lack any relevant statistical interpretability. We further discuss the log-linear GLM for covariance matrices in Section~\ref{log-linear-glms} .
 
