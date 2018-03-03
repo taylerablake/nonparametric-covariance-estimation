@@ -1,0 +1,64 @@
+Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased{[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} }The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
+
+
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsubsection{Shrinking the spectrum and the correlation matrix}
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsubsection{Ledoit-Wolf shrinkage estimator}
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsubsection{Elementwise shrinkage} \label{subsubsection:chapter-1-sss-1-3-4}
+Another way to induce parsimony is by applying a shrinkage operator elementwise to the sample covariance matrix. 
+
+\subsubsection{tapering/banding estimators}
+ 
+
+\subsubsection{thresholding the sample covariance matrix}
+
+For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
+\begin{itemize}
+\item $\mathpzc{s}_\lambda\left( z \right) \le z$;
+\item $\mathpzc{s}_\lambda\left( z \right) = 0 \mbox{ for } \vert z\vert \le \lambda$;
+\item $\vert \mathpzc{s}_\lambda\left( z \right) - z \vert \le \lambda$
+\end{itemize}
+
+Shrinkage and thresholding estimators can be viewed as the solution to the problem of minimizing a penalized quadratic loss function, and since the thresholding operator is applied elementwise to the sample covariance $S$,  these optimization problems are univariate. A generalized thresholding estimator $\mathpzc{s}_\lambda\left( z \right)$ is the solution to
+\begin{equation} \label{eq:general-thresholding-objective-function}
+\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right]
+\end{equation}
+\noindent
+For detailed discussion of the connection between penalty functions and the resulting thresholding rules, see \citet{antoniadis2001regularization}. Soft thresholding results from minimizing \ref{eq:general-thresholding-objective-function} using the lasso penalty, $J_\lambda = \lambda \vert \sigma \vert$, which corresponds to thresholding rule
+
+\begin{equation} 
+\mathpzc{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
+\end{equation}
+
+\subsubsection{Tuning parameter selection for element-wise shrinkage estimators}
+
+The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
+
+\begin{equation} \label{eq:forbenius-norm}
+\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
+\end{equation}
+\noindent
+If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
+\[
+E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
+\]
+\noindent
+and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation, though unanimous agreement on which precise procedure is optimal is fleeting.  $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. The value of the tuning parameter is selected to minimize
+
+\begin{equation} \label{eq:K-fold-matrix--cv}
+\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on based on $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(-k\right)}$ is the regularized estimator under consideration based on the data after holding $\mathcal{D}_k$ out.  Using this approach, the size of the training data set is approximately $\left(K - 1 \right)N/K$, and the size of the validation set is approximately $N/K$ (though these quantities are only relevant when subjects have equal numbers of observations). For linear models, it has been shown that cross validation is asymptotically consistent is the ratio of the validation data set size over the training set size goes to 1. See \citet{shao1993linear}. This result motivates the reverse cross validation criterion, which is defined as follows:
+
+\begin{equation} \label{eq:K-fold-matrix-reverse-cv}
+\mbox{rCV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(k\right)} - \tilde{\Sigma}^{\left(-k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
+
+{\needsparaphrased{TODO: introduce bootstrap risk estimator methods here  - See \citet{fang2016tuning}, section 2.2.1}}
+
