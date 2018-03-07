@@ -1,0 +1,25 @@
+
+\makenomenclature
+%% This removes the main title:
+\renewcommand{\nomname}{}
+%% this modifies item separation:
+\setlength{\nomitemsep}{8pt}
+%% this part defines the groups:
+%----------------------------------------------
+
+\renewcommand\nomgroup[1]{%
+  \item[\Large\bfseries
+  \ifstrequal{#1}{N}{Nomenclature}{%
+]\vspace{10pt}} % this is to add vertical space between the groups.
+%----------------------------------------------
+
+\nomenclature[N]{$Y_i$}{vector of repeated measurements on the $i^{th}$ trajectory or subject}
+\nomenclature[N]{$\bft_i$}{vector of observation times corresponding to the $i^{th}$ trajectory or subject}
+\nomenclature[N]{$\v_{ijk}}{The transformation of the $\left(j,k\right)$ observation times for subject $i$}
+\nomenclature[N]{$\bfv_i = $}{collection of the transformed unique pairs of observation times on the $i^{th}$ trajectory or subject}
+\nomenclature[N]{$V$}{the set of transformed unique within-subject pairs of observation times on the $i^{th}$ trajectory or subject}
+\nomenclature[N]{$Q$}{$\vert V \vert \times \vert V \vert$ }
+
+\nomenclature[N]{$h$}{Plank constant}
+
+\printnomenclature[2cm]

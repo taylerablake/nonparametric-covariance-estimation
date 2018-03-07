@@ -10,8 +10,9 @@
 \usepackage{framed}
 \usepackage{subcaption}
 \usepackage{algorithm}
+\usepackage{etoolbox}
 \usepackage{algorithmic}
-
+\usepackage{nomencl}
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
@@ -46,9 +47,11 @@
 \newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
 \newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
 \newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfg}{\mbox{\boldmath $g$}}
+\newcommand{\bfv}{\mbox{\boldmath $v$}}
 \newcommand{\bff}{\mbox{\boldmath $f$}}
 \newcommand{\bfone}{\mbox{\boldmath $1$}}
-\newcommand{\bft}{\mbox{\boldmath $t$}}
 \newcommand{\bfo}{\mbox{\boldmath $0$}}
 \newcommand{\bfO}{\mbox{\boldmath $O$}}
 \newcommand{\bfx}{\mbox{\boldmath $x$}}
@@ -204,16 +207,16 @@ Writing \ref{eq:loglik-general-form} in terms of the prediction errors and their
 where 
 \begin{equation} \label{eq:loglik-cholesky-form}
 \epsilon_i = \left\{\begin{array}{lr}y\left(t_1\right), & i = 1, \\
-y\left(t_i\right) - \sum_{j = 1}^{i-1} \phi\left(v_{ij}\right) y_j, & i= 2, \dots, M, \\
+y\left(t_i\right) - \sum_{j = 1}^{i-1} \phi\left(\bfv_{ij}\right) y_j, & i= 2, \dots, M, \\
 \end{array} \right.
 \end{equation}
 \noindent
-where $\phi\left(v_{ij}\right) = \phi\left(l_{ij},m_{ij}\right) = \tilde{\phi}\left(t_i,t_j\right)$.  Accommodating subject-specific sample sizes and measurement times merely requires appending an additional index to observation times. Let  $Y_1, \dots, Y_N$ denote a sample of $N$ independent mean zero random trajectories from a  multivariate normal distribution with common covariance $\Sigma$. We associate with each trajectory $Y_i = \left(y_{i1}, \dots, y_{i,m_i}\right)'$ with a vector of potentially subject-specific observation times $\left(t_{i1}, \dots, t_{i,m_i}\right)'$, so that the $j^{th}$ measurement of trajectory $i$ is modeled
+where $\phi\left(\bfv_{ij}\right) = \phi\left(l_{ij},m_{ij}\right) = \tilde{\phi}\left(t_i,t_j\right)$.  Accommodating subject-specific sample sizes and measurement times merely requires appending an additional index to observation times. Let  $Y_1, \dots, Y_N$ denote a sample of $N$ independent mean zero random trajectories from a  multivariate normal distribution with common covariance $\Sigma$. We associate with each trajectory $Y_i = \left(y_{i1}, \dots, y_{i,m_i}\right)'$ with a vector of potentially subject-specific observation times $\left(t_{i1}, \dots, t_{i,m_i}\right)'$, so that the $j^{th}$ measurement of trajectory $i$ is modeled
 
 \begin{align}
 \begin{split} \label{eq:cholesky-regression-model-2} 
 y\left(t_{ij} \right)  &= \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)  \\
-&= \sum_{k=1}^{j-1} \phi\left(v_{ijk}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)
+&= \sum_{k=1}^{j-1} \phi\left(\bfv_{ijk}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)
 \end{split}
 \end{align}
 \noindent
@@ -236,7 +239,7 @@ With this, we can estimate $\phi$ and $\log\sigma^2$ using maximum likelihood or
 where $J$ and $\breve{J}$ are roughness penalties on $\phi$ and $\sigma^2$, and $\lambda$, $\breve{\lambda}$ are non-negative smoothing parameters.  To jointly estimate the GARP function and the IV function, we adopt an iterative approach in the spirit of \citet{huang2006covariance}, \citet{huang2007estimation}, and \citet{pourahmadi2000maximum}. A procedure for minimizing \ref{eq:joint-loglik} starts with initializing $\left\{\sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, m_i$.  For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
 
 \begin{equation} \label{eq:penalized-joint-loglik-given-sigma}
--2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(v_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
 \end{equation}
 \noindent
 which corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. Given $\phi^*$ the minimizer of \ref{eq:penalized-joint-loglik-given-sigma} and setting $\phi = \phi^*$, we update our estimate of $\sigma^2$ by minimizing 
@@ -244,7 +247,7 @@ which corresponds to the usual penalized least squares functional encountered  i
 \begin{equation} \label{eq:penalized-joint-loglik-given-phi}
 -2\ell_{\sigma^2} + \breve{\lambda} \breve{J}\left(\sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {r_{ij}^*}^2 + \breve{\lambda} \breve{J}\left(\sigma^2 \right),
 \end{equation}
-where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(v_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
+where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(\bfv_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
 \bigskip
 
 The remainder of the chapter is reserved for presenting two functional representations of $\left(\phi, \sigma^2\right)$. The first leverages the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \citet{aronszajn1950theory}, \citet{wahba1990spline}, and \citet{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. The second approach is based on the penalized B-splines, or P-splines, of \citet{eilers1996flexible}; these models exhibit many of the attractive numerical properties of the basis functions on which they are built. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization.
@@ -258,11 +261,7 @@ The remainder of the chapter is reserved for presenting two functional represent
 
 \subsubsection{An RKHS framework for estimating $\phi$}
 \subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
-
-
-\subsubsection{Example: $m^{th}$ order Sobolev space, $W_m\left(0,1\right)$}
-\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-reproducing-kernel-example-1}
-
+\
 
 \subsubsection{Smoothing parameter selection}
 \subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}
@@ -274,33 +273,6 @@ The remainder of the chapter is reserved for presenting two functional represent
 
 \subsubsection{An RKHS framework for estimating $\log \sigma^2$}
 \subfile{chapter-2-subfiles/chapter-2-iv-smoothing-spline-representation}
-
-
-
-<<<<<<< HEAD
-=======
-
-
-%==============================================================================================================================================
-
->>>>>>> cc10e8225503967265891c7b98fd982e18d01ca5
-
-
-
-%and 
-%\begin{equation} \label{eq:loglik-phi-component}
-%\sum_{i = 1}^N \sum_{j = 2}^{m_i} \frac{\epsilon_{ij}^2}{\sigma_{ij}^{2}}
-%\end{equation}
-%
-%\begin{equation} \label{eq:loglik-sigma-component}
-%\sum_{ \bigcup t_{i1}}  \log \sigma_{i1}^2 + \sum_{i = 1}^N \frac{\epsilon_{i1}^2}{\sigma_{i1}^2}. 
-%\end{equation}
-%\noindent
-%and 
-%\begin{equation} \label{eq:loglik-phi-component}
-%\sum_{ \bigcup \limits_{k>1} t_{ik}}  \log \sigma_{ij}^2 + \sum_{i = 1}^N \sum_{j = 2}^{m_i} \sigma_{ij}^{-2}  \left( y_{ij} - \sum \limits_{k < j}\phi_{ijk} y_{ik} \right)^2 .
-%\end{equation}
-
 
 
 \bibliography{../Master}

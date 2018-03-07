@@ -1,8 +1,26 @@
-The first of our two primary goals in this simulation study is to assess the utility of our proposed methods under the covariance structures discussed in the previous section. We gauge the performance of our estimator by comparing it to that of four additional covariance estimators serving as points of reference in benchmarking performance: the sample covariance matrix $S$ and two of its regularized variants: the soft thresholding estimator of \citet{rothman2009generalized},  $S^\lambda$, and the tapering estimator of \citet{cai2010optimal}, $S^\omega$, as well as the MCD polynomial estimator proposed by \citet{pourahmadi1999joint}, \citet{pan2006regression}, \citet{pourahmadi2002dynamic}. 
+The following estimators serve as benchmarks for performance under the five simulation settings outlined above: the MCD polynomial estimator $\hat{\Sigma}_{poly}$, the sample covariance matrix $S$, the soft thresholding estimator $S^\lambda$, and the tapering estimator $S^\omega$. We will review the general definitions of these, but for detailed discussion of the construction and properties of these estimators, see Chapter 1,  Section~\ref{chapter-1-banding-tapering-estimators}, \ref{section:element-wise-shrinkage-estimators} and \ref{chapter-1-matrix-decompositions}.
 
 \bigskip
 
-\citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
+In the spirit of the GLM, the MCD polynomial estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
+
+\begin{align*}
+\begin{split}  \label{eq:GARP-IV-parametric-model}
+\phi_{jk} &= z'_{jk} \gamma \\
+\log \sigma^2_{jk} &= z'_{i}\lambda, 
+\end{split}
+\end{align*}
+\noindent
+for $j = 1,\dots, M$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $p \times 1$  which hold covariates
+
+\begin{align*}
+\begin{split} 
+z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
+z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'.
+\end{split}
+\end{align*}
+\noindent
+where polynomial orders $p$, $q$ are chosen by BIC. \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
 
 \[
 S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
@@ -25,27 +43,10 @@ The weights $\omega^k_{ij}$ are controlled by a tuning parameter, $k$,  which ca
                              0, & \mbox{otherwise}  \end{array} \right.
 \end{align*}
 \noindent
-See Chapter 1, Section~\ref{chapter-1-banding-tapering-estimators} for detailed discussion.
+
 \bigskip
 
-In the spirit of the GLM, the MCD polynimal estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
-
-\begin{align*}
-\begin{split}  \label{eq:GARP-IV-parametric-model}
-\phi_{jk} &= z'_{jk} \gamma \\
-\log \sigma^2_{jk} &= z'_{i}\lambda, 
-\end{split}
-\end{align*}
-\noindent
-for $j = 1,\dots, M$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $p \times 1$  which hold covariates
-
-\begin{align*}
-\begin{split} 
-z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
-z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'.
-\end{split}
-\end{align*}
-\noindent
-where polynomial orders $p$, $q$ are chosen by BIC.  For detailed discussion of these estimators, see See Chapter 1, Section~\ref{section:element-wise-shrinkage-estimators} and Section~\ref{chapter-1-matrix-decompositions}.  Since construction of the sample covariance matrix $S$, $S^\omega$, and $S^\lambda$ rely on having an equal number of regularly-spaced observations on each subject, these simulations were conducted using complete data with common measurement times across all $N$ subjects. Performance is evaluated for varying sample size $N$ and within-subject sample size $M$.
+Since construction of the sample covariance matrix $S$, $S^\omega$, and $S^\lambda$ rely on having an equal number of regularly-spaced observations on each subject, these simulations were conducted using complete data with common measurement times across all $N$ subjects. 
+\bigskip
 
 

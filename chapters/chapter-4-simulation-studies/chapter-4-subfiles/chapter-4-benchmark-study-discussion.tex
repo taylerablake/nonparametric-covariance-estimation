@@ -1,36 +1,44 @@
 
-Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance. 
- The results of the simulations for complete data under entropy loss are presented in Section~Section~\ref{benchmarking-results}, tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}. We also obtained risk estimates under quadratic loss, which echo conclusions made based on entropy loss. There are left to the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. 
+Figure~\ref{fig:cov-estimate-lattice} provides a visual representation of the qualitative differences between the estimates resulting from each of the eight methods of estimation for the five covariance structures used for simulation. The first row in the grid shows the surface plot of each of the true covariance structures, and each row thereafter corresponds to the five covariance estimates for the given estimation method. The surface plots of the oracle estimate in the second row serve as a point of reference for the `gold standard` in each scenario, since the oracle estimates were constructed assuming that the functional form of the covariance is known (either the full covariance structure or the components of the Cholesky decomposition.) The corresponding estimates of the Cholesky factor $T$ for the estimators based on the modified Cholesky decomposition are shown in Figure~\ref{fig:chol-estimate-lattice}, and the decomposition of the $\hat{T}$ corresponding to the smoothing spline ANOVA estimator $\hat{\Sigma}_{SS}$ into functional components is displayed in Figure~\ref{fig:ssanova-component-lattice}
+
+\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
+\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-ggplot}
+\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
+
+\bigskip
+Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.  The results of the simulations for complete data under entropy loss are presented in Section~\ref{benchmarking-results}, tables \ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}. Risk estimates under quadratic loss lead to similar conclusions as those made using entropy loss and are left to the Appendix, Table~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}.  
 
 \bigskip
 
-Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of how well our estimator as well as each of the alternative estimators correctly identify the underlying covariance structure. The first row in the grid shows the surface plot of each of the true covariance structures. The suface plots of the oracle estimate for each of the corresponding models shown in the second row serve as a point of reference. 
-
-
-\bigskip
-
-
-Our estimator is stable across all of the underlying covariance  structures for the differing number of sampled trajectories $N = 50, 100$, while the performance of the alternative estimators markedly improves when the subject sample size is doubled for each of the generating structures, particularly for the case of $M = 30$. Irrespective of tuning parameter selection method, our estimator is preferable to all three of the alternative estimators, except under Model IV when $N$ is large and within-subject sampling rates are moderate. Under this model, both the inverse covariance as well as the covariance matrix itself are sparse. Specifically, the inverse is banded so that $\sigma^{ij} = 0$ for $\vert i - j \vert > 1$, but the non-zero elements are quite large. Inversion results in a covariance matrix which decays quickly as distance from the main diagonal increases, which is in concordance with the assumed structure of the softthresholding estimator. 
+%Our estimator is stable across all of the underlying covariance  structures for the differing number of sampled trajectories $N = 50, 100$, while the performance of the alternative estimators markedly improves when the subject sample size is doubled for each of the generating structures, particularly for the case of $M = 30$. Irrespective of tuning parameter selection method, our estimator is preferable to all three of the alternative estimators, except under Model IV when $N$ is large and within-subject sampling rates are moderate. Under this model, both the inverse covariance as well as the covariance matrix itself are sparse. Specifically, the inverse is banded so that $\sigma^{ij} = 0$ for $\vert i - j \vert > 1$, but the non-zero elements are quite large. Inversion results in a covariance matrix which decays quickly as distance from the main diagonal increases, which is in concordance with the assumed structure of the soft thresholding estimator. 
 
 \bigskip
 
-The covariance matrix corresponding to Model II is highly nonstationary. It is neither sparse, nor has entries which decrease in absolute value as the time between observations increases, which is in discordance with the assumed structure of both element-wise shrinkage estimators. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The covariance matrix under Model III has similar structure, presenting similar difficulties for both estimators. The sample covariance matrix far outperforms both of its regularized renditions almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
+Since the regularized sample covariance estimators assume that $\Sigma$ is either sparse or has entries which decrease in absolute value in distance from the diagonal, both estimators perform poorly under Model II, which exhibits neither of these characteristics. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The MCD polynomial estimator fails for the same reason, since it assumes that $\phi$ can be modeled as a function of $l$ only. The non-zero elements of  the covariance matrix under Model III have similar structure and presenting similar difficulties for the three alternative estimators. The sample covariance matrix far outperforms both of its regularized variants almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
  
 \bigskip
 
 
-
-Review of generalized thresholding estimators, including the soft thresholding estimator is presented in in \ref{subsubsection:chapter-1-sss-1-3-4}. Recall that  $S^\lambda$ can be written as the solution to the optimization problem
-
-\begin{equation} \label{eq:soft-thresholding-objective-function}
-\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right],
-\end{equation}
-\noindent
-so that estimation of the covariance matrix can be accomplished by solving multiple univariate Lasso-penalized least squares problems. 
-
+%Review of generalized thresholding estimators, including the soft thresholding estimator is presented in in \ref{subsubsection:chapter-1-sss-1-3-4}. Recall that  $S^\lambda$ can be written as the solution to the optimization problem
+%
+%\begin{equation} \label{eq:soft-thresholding-objective-function}
+%\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right],
+%\end{equation}
+%\noindent
+%so that estimation of the covariance matrix can be accomplished by solving multiple univariate Lasso-penalized least squares problems. 
+%
 \bigskip
 
-Under certain conditions pertaining to the ration of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
+\setlength{\dashlinedash}{0.5pt}
+\setlength{\dashlinegap}{1pt}
+\setlength{\arrayrulewidth}{0.2pt}
+\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-1}
+\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-2}
+\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-3}
+\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-4}
+\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-5}
+
+Tuning parameter selection for the regularized versions of the sample covariance matrix was performed using cross validation. Under certain conditions pertaining to the ratio of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
 
 \begin{equation} \label{eq:K-fold-matrix--cv}
 \mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
@@ -47,12 +55,12 @@ There is little established about the optimal method for tuning parameter select
 
 \bigskip
 
-Element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite, though \citet{rothman2009generalized} established that in the limit, soft thresholding produces a positive definite estimator with probability tending to 1.  We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.   In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
+As discussed in Chapter 1, in the limit, soft thresholding produces a positive definite estimator with probability tending to 1 (\citet{rothman2009generalized}), however element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite. We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.  In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
 \bigskip
 
 \citet{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\lambda$, $\gamma$ of the polynomial model \ref{eq:GARP-IV-parametric-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is  is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \citet{pan2017jmcm}. 	 
 
-{\needsparaphrased{We need to decide which tables will be included in the non-appendix numerical results. In the actual dissertation, section 6 will not immediate follow section 5.}}
+
 
 \bigskip

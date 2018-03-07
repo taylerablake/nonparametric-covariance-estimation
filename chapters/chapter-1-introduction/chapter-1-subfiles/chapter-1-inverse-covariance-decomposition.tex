@@ -1,0 +1,29 @@
+Gaussian graphical models Recall that the marginal (pairwise) dependence among the entries of a random vector is captured by the off-diagonal entries of $\Sigma$ or the entries of the correlation matrix $R = \left(\rho_{ij}\right)$. However, the conditional dependencies can be found in the off-diagonal entries of the precision matrix $\Sigma^{-1} = \left( \sigma^{ij} \right)$. More precisely, for $Y$ a mean zero normal random vector with a positive-definite covariance matrix, if the $\left(i,j\right)$ component of the precision matrix is zero, then given the other variables, $y_i$ and $y_j$ are conditionally independent (\citet{Anderson84a}). 
+
+\bigskip
+
+Graphical models are a common way of representing the conditional independence structure in $Y$, with the nodes of the graph corresponding to variables. The absence of an edge between variables $i$ and $j$, or a zero in the $\left(i,j\right)$ position of the inverse covariance matrix indicates that the two variables are conditionally independent. The entries of the variance-correlation decomposition of the precision matrix 
+
+\begin{equation} \label{eq:inverse-covariance-decomposition}
+\Sigma^{-1} = \left( \sigma^{ij}\right) = \tilde{D} \tilde{R} \tilde{D} 
+\end{equation}
+\noindent
+can be interpretted as certain coefficients of a regression model. A number of regression-based approaches to modeling the precision structure have spawned from the work of \citet{Meinshausen2006highDimGraphs}. Their method is based on solving $M$ separate LASSO regression problems. The entries of $\left(\tilde{R}, \tilde{D}\right)$ have direct statistical interpretations in terms of partial correlations, and variance of predicting a variable given the rest. Regression calculations can be used to show that the partial correlation coefficient between $y_i$ and $y_j$ after removing the linear effect of the $M - 2$ remaining variables is given by 
+\begin{equation} \label{eq:partial-correlation}
+\tilde{\rho}_{ij}= -\frac{\sigma^{ij}}{\sqrt{\sigma^{ii}\sigma^{jj}}}.
+\end{equation}
+\noindent
+The partial variance of $y_i$ after removing the linear effect of the remaining $M-$ variables is given by 
+\begin{equation} \label{eq:partial-variance}
+\tilde{d}^2_{ii}= \frac{1}{\sigma^{ii}}.
+\end{equation}
+
+To connect these parameters to those of a regression model, consider partitioning random vector $Y = \left(y_1,\dots, y_M\right)'$ into two components $\left(Y'_1,Y'_2\right)'$ of dimensions $M_1$ and $M_2$, and similarly partitioning its covariance and precision matrices:
+
+\begin{equation} \label{eq:partitioned-covariance-matrix}
+\Sigma = \begin{bmatrix} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \\  
+\end{bmatrix}, \quad \Sigma = \begin{bmatrix} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \\  
+\end{bmatrix},
+\end{equation}
+\noindent
+Let $\Phi_{2\vert 1}$ denote the $M_2 \times M_1$ matrix of regression coefficients resulting from the least squares regression of $Y_2$ on $Y_1$, and let $e_{2\vert 1} = Y_2 - \Phi_{2\vert 1} Y_1$ denote the corresponding vector of residuals

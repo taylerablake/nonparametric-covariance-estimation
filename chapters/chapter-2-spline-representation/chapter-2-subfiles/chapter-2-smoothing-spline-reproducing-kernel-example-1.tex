@@ -1,7 +1,6 @@
+\begin{example}{Example: $m^{th}$ order Sobolev space, $W_m\left(0,1\right)$}
 
-
-We first consider 
-Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the reproducing kernel Hilbert space (r.k.h.s) corresponding to the tensor product of the first-order and second-order Sobolev spaces:
+A popular choice of RKHS for the marginal space of $l$ and the marginal space of $m$ is the Sobolev space of order $m$. Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the RKHS corresponding to the tensor product of the first-order and second-order Sobolev spaces:
 
 \[
 \mathcal{H} = \mathcal{H}_{l} \otimes \mathcal{H}_{m}, \;\; \mathcal{H}_{l} = W_2\left(0,1\right),\;\;\mathcal{H}_{m} = W_1\left(0,1\right)\;\mbox{where }
@@ -9,13 +8,15 @@ Let $\mathcal{H} = \mathcal{H}_{0} \oplus \mathcal{H}_{1}$ be the reproducing ke
 
 \[W_m\left(0,1\right) \equiv \lbrace f: \;\;f^\prime, \dots, f^{\left( m-1 \right)} \mbox{absolutely continuous}, \int_0^1 \left(f^{\left( m \right)}\right)^2 dt < \infty \rbrace\]
 \noindent
-We seek $\left(\cdot, \cdot \right) \in \mathcal{H}$ which minimizes
-\begin{equation}
-\frac{1}{2}\sum_{i=1}^N \sum_{j=2}^{n_i} {\sigma^{-2}_{ij}}\left( y\left(t_{ij}\right) - \sum_{k=1}^{n_i - 1}\phi\left(l^i_{jk},m^i_{jk} \right)y\left(t_{ik}\right) \right)^2 + \lambda J\left(\phi\right)  
-\label{eq:objectivefun}
-\end{equation}
-\noindent
-where $P_1 \phi$ is the projection of $\phi$ onto $\mathcal{H}_1$, $J\left(\phi\right) = \vert \vert P_1 \phi \vert \vert^2$. Define the differential operator $M_\nu f = \int_0^1 f^{\left( m \right)}\left(x\right) dx\;,\;\; \nu = 1, \dots, m$ and endow $W_m\left(0,1\right)$ with inner product
+%We seek $\left(\cdot, \cdot \right) \in \mathcal{H}$ which minimizes
+%\begin{equation}
+%\frac{1}{2}\sum_{i=1}^N \sum_{j=2}^{n_i} {\sigma^{-2}_{ij}}\left( y\left(t_{ij}\right) - \sum_{k=1}^{n_i - 1}\phi\left(l^i_{jk},m^i_{jk} \right)y\left(t_{ik}\right) \right)^2 + \lambda J\left(\phi\right)  
+%\label{eq:objectivefun}
+%\end{equation}
+%\noindent
+%where $P_1 \phi$ is the projection of $\phi$ onto $\mathcal{H}_1$, $J\left(\phi\right) = \vert \vert P_1 \phi \vert \vert^2$. 
+
+Define the differential operator $M_\nu f = \int_0^1 f^{\left( m \right)}\left(x\right) dx\;,\;\; \nu = 1, \dots, m$ and endow $W_m\left(0,1\right)$ with inner product
 %\begin{equation}
 %\left< f,g\right> = \underbrace{\sum_{\nu=0}^{m-1} M_\nu f M_\nu g}_{\left< f,g\right>_0} + \underbrace{\int_0^1 f^{\left( m \right)}\left(x\right)g^{\left( m \right)}\left(x\right)dx}_{\left< f,g\right>_1}
 %\end{equation}
@@ -77,56 +78,36 @@ R\left( \left(l,m\right),\left(l^\prime,m^\prime\right)\right) &=&  R_l\left(l,l
 &=& \left[ k_1\left(l \right)k_1\left(l^\prime \right)\right] + \left[ R_l^1\left(l,l^\prime\right)  + k_1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right) + R_l^1\left(l,l^\prime\right) R_m^1\left(m,m^\prime\right)\right] \nonumber \\
 &=& R^0\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right) + R^1\left( \left(l,m\right) , \left(l^\prime,m^\prime \right) \right)
 \end{eqnarray}
+%
+%We must introduce some notation to simplify the following expression of the form of the elements in $\mathcal{H}$. Denote the set of unique pairs of observed within-subject time points and the corresponding set of unique transformed coordinates by $\mathcal{W}$ and $\mathcal{W}^*$, respectively:
+%
+%\begin{eqnarray*}
+%\mathcal{W} &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij} ,t_{ik} \right)\\
+%\mathcal{W}^* &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij}-t_{ik} ,\frac{1}{2}\left( t_{ij}+t_{ik} \right) \right) = \bigcup_{i=1}^N \bigcup_{j>k}\left(l^i_{jk},m^i_{jk} \right)\\
+%\end{eqnarray*}
+%\noindent
+%with $\vert \mathcal{W}\vert = \vert \mathcal{W}^* \vert = N_{\phi}$. For simplicity of presentation, relabel the elements of $\mathcal{W}^*$ so that 
+%\[
+%\mathcal{W}^* = \lbrace \left( l_1,m_1 \right), \left( l_2,m_2 \right), \dots, \left( l_{N_{\phi}},m_{N_{\phi}} \right)  \rbrace
+%\]
+%\noindent
+%One may verify that any $\phi \in \mathcal{H}$ can be written 
+%\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
+%\phi\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) + \rho\left(l,m\right)
+%\end{equation}
+%\noindent
+%where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; \textup{span}\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$.  It can be shown that the minimizer of \ref{eq:objectivefun} has $\rho = 0$, so that the $\phi \in \mathcal{H}$ minimizing \ref{eq:objectivefun} can be written as a (finite) linear combination of inner products:
+%
+%\begin{equation}\label{eq:ss-finite-dim-solution}
+%\phi\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) 
+%\end{equation}
+%\noindent
+%
+%The proof entails demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
+%Let $\Phi$ be the $N_{\phi} \times 1$ vector of regression coefficients given by \eqref{eq:MyTransformedModel} corresponding to $\phi$ evaluated at the elements of $\mathcal{W}^*$, $\phi = \left(\phi_1,\phi_2, \dots, \phi_{N_{\phi}}  \right)^T$. Let $d = \left(d_0, d_1\right)^T$, $c = \left(c_1, \dots, c_{N_{\phi}}  \right)^T$, and $b = \left(b_1, \dots, b_{N_m}  \right)^T$.   Define $K_{11}$, $K_{12}$, $K_{22}$, $B_{1}$, and $B_2$ as follows: 
 
-We must introduce some notation to simplify the following expression of the form of the elements in $\mathcal{H}$. Denote the set of unique pairs of observed within-subject time points and the corresponding set of unique transformed coordinates by $\mathcal{W}$ and $\mathcal{W}^*$, respectively:
+\bigskip
+TO DO: insert table of the marginal RK's and how they construct the tensor prodcut RK!
 
-\begin{eqnarray*}
-\mathcal{W} &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij} ,t_{ik} \right)\\
-\mathcal{W}^* &=& \bigcup_{i=1}^N \bigcup_{j>k}\left(t_{ij}-t_{ik} ,\frac{1}{2}\left( t_{ij}+t_{ik} \right) \right) = \bigcup_{i=1}^N \bigcup_{j>k}\left(l^i_{jk},m^i_{jk} \right)\\
-\end{eqnarray*}
-\noindent
-with $\vert \mathcal{W}\vert = \vert \mathcal{W}^* \vert = N_{\phi}$. For simplicity of presentation, relabel the elements of $\mathcal{W}^*$ so that 
-\[
-\mathcal{W}^* = \lbrace \left( l_1,m_1 \right), \left( l_2,m_2 \right), \dots, \left( l_{N_{\phi}},m_{N_{\phi}} \right)  \rbrace
-\]
-\noindent
-One may verify that any $\phi \in \mathcal{H}$ can be written 
-\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
-\phi\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) + \rho\left(l,m\right)
-\end{equation}
-\noindent
-where $\rho \perp \mathcal{H}_0 = \lbrace 1\rbrace \oplus \lbrace k_1\rbrace,\; \textup{span}\lbrace R_1\left(\left(l_i, m_i \right),\cdot \right)  \rbrace$.  It can be shown that the minimizer of \ref{eq:objectivefun} has $\rho = 0$, so that the $\phi \in \mathcal{H}$ minimizing \ref{eq:objectivefun} can be written as a (finite) linear combination of inner products:
+\end{example}
 
-\begin{equation}\label{eq:ss-finite-dim-solution}
-\phi\left(l,m \right) = d_0 + d_1k_1\left(l\right) + \sum_{i=1}^n  c_i R_1\left( \left(l,m\right) , \left(l_i,m_i \right)\right) 
-\end{equation}
-\noindent
-
-The proof entails demonstrating that  $\rho$ does not improve the first term in \eqref{eq:objectivefun} (the data fit functional) and only adds to the penalty term, $J\left(\phi\right)$. Details are left to the appendix \ref{chapter-7-appendix}.
-Let $\Phi$ be the $N_{\phi} \times 1$ vector of regression coefficients given by \eqref{eq:MyTransformedModel} corresponding to $\phi$ evaluated at the elements of $\mathcal{W}^*$, $\phi = \left(\phi_1,\phi_2, \dots, \phi_{N_{\phi}}  \right)^T$. Let $d = \left(d_0, d_1\right)^T$, $c = \left(c_1, \dots, c_{N_{\phi}}  \right)^T$, and $b = \left(b_1, \dots, b_{N_m}  \right)^T$.   Define $K_{11}$, $K_{12}$, $K_{22}$, $B_{1}$, and $B_2$ as follows: 
-
-\[
-\begin{array}{ll}
-{K_{11}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(l_j,m_j\right)\right) &  i,j = 1, \dots, N_{\phi}\\
-{K_{12}}\left[i,j\right] = R_1\left(\left(l_i,m_i\right),\left(0,m_j\right)\right) &  i = 1, \dots, N_{\phi},\;j = 1, \dots, N_m \\
-{K_{22}}\left[i,j\right] = R_1\left(\left(0,m_i\right),\left(0,m_j\right)\right) &  i,j = 1, \dots, N_m\\
-B_1\left[i , j\right] = k_j\left(l_i\right) &  i = 1, \dots, N_{\phi},\;j = 1, 2\\
-B_2\left[i , j\right] = k_j\left(0\right) &  i = 1, \dots, N_m,\;j = 1, 2\\
-\end{array}
-\]
-\[
-K = \left[\begin{array}{cc}
-		K_{11} & K_{12}\\
-		K_{12}^T & K_{22}
-		\end{array}\right] = \left[\begin{array}{c}
-		K_1\\
-		K_2
-		\end{array}\right]\\;\;\;\; B = \left[ \begin{array}{c}B_1\\
-										       B_2\end{array}\right] \]
-
-
-\noindent
-In matrix notation:
-\[
-\phi = S d + R c							
-\]

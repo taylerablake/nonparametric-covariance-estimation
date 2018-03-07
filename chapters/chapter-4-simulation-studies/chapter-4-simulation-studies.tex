@@ -113,9 +113,13 @@
 \maketitle
 
 \section{Performance assessment via simulation study} 
+\subsection{Performance benchmarking with complete data}
 
+In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by citet{pourahmadi1999joint},  \citet{pan2003modelling}, and \citet{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix (\citet{cai2010optimal}) and the soft thresholding estimator (\citet{rothman2009generalized}), which does not rely on a natural ordering among the variables. 
 
-To understand the strengths and weaknesses of our method, in the first portion of our simulation study, we examine performance for five underlying covariance structures across varying numbers of subjects, $N$, and within-subject sample sizes, $M$.  We study estimator performance for five covariance structures, which were chosen to exhibit varying degrees of structural complexity. The two-dimensional surfaces corresponding to each of these are show in Figure~\ref{fig:true-covariance-heatmaps}. At one end of the spectrum, we consider covariance corresponding to mutual independence. It is both the simplest and sparsest structure, having constant zero-valued varying coefficient function, and constant innovation variance function. The second covariance structure is that of a heterogeneous AR model, where the autoregressive coefficient are a linear function of $t$, and the IVs are constant over the time domain.  The third covariance structure corresponds to the same linear autoregressive model, but we truncate the autoregressive coefficients for large $l = t - s \in \left[0,1\right]$. Lastly, we consider the compound symmetric model, shown rightmost in Figure~\ref{fig:true-covariance-heatmaps}.
+\bigskip
+
+Simulations were carried out for five covariance structures: the diagonal covariance with homogenous variances, a heterogenous autoregressive process with linear varying coefficient function, the same heterogeneous process but truncated to zero to band the inverse covariance matrix, the rational quadratic covariance model, and the compound symmetric model. The two-dimensional surfaces corresponding to each of these are shown left to right in Figure~\ref{fig:true-covariance-heatmaps}. The first row of image plots display the surface which coincides with the appropriate discrete covariance matrix, and in the second row are the surface maps of the corresponding Cholesky factors. Precise models used for simulations are defined in Table~\ref{simulation-model-list}.
 
 \bigskip
 
@@ -123,502 +127,160 @@ To understand the strengths and weaknesses of our method, in the first portion o
 
 \bigskip
 
-The two-dimensional surface corresponding to the Cholesky factor $T$ associated with the inverse of each of the underlying covariances used for simulation are shown in Figure~\ref{fig:true-cholesky-heatmaps}. Comparison with Figure~\ref{fig:true-covariance-heatmaps}  connects the Cholesky surface (and the innovation variance function) with its corresponding covariance surface.
-
-\subfile{chapter-4-subfiles/chapter-4-true-cholesky-heatmaps}
-
-Covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition.  For example, Model V in Figure~\ref{fig:true-covariance-heatmaps} and Figure~\ref{fig:true-cholesky-heatmaps} show the covariance surface and the Cholesky factor for the compound symmetric model. It can be represented with exactly two parameters. However, the $\phi$ and $\log \sigma^2$ corresponding to the Cholesky decomposition $D = T \Sigma T'$ are nonlinear in $t$. 
-
-\bigskip
-
-Similarly, sparsity in the covariance matrix itself does not imply sparsity in the inverse or in the components of $T$. For example, the covariance matrix corresponding to the moving average model of order $q=1$  is banded, which elements $\sigma_{ij} = 0$ when $\vert i-j \vert > 1$.  Its surface is shown in column IV of Figure~\ref{fig:true-covariance-heatmaps}. The elements on the first off diagonal are non-zero, and zero on every other off-diagonal. However, the inverse covariance matrix as well as the corresponding Cholesky factor are not sparse. The elements of both $T$ and $\Sigma^{-1}$ decay geometrically in distance from the main diagonal,  $\vert i-j \vert$.  The Cholesky factor for the MA(1) model is shown in column IV of  Figure~\ref{fig:true-cholesky-heatmaps}. A similar relationship holds for the relationship between the Cholesky factor and covariance surface for Model III, where the Cholesky structure exhibits sparsity, but the corresponding covariance structure does not. 
+Connecting the covariance matrices in first row of Figure~\ref{fig:true-covariance-heatmaps} with their Cholesky factor in the second row, covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition. The Cholesky factor for Model III, the truncated linear varying coefficient AR model, is sparse, with elements on the outer half of the subdiagonals equal to zero. While this corresponds to a banded inverse covariance structure, $\Sigma$ itself is not sparse.  The compound symmetric model has simple structure and is parsimonious; its dependence parameters can be expressed as the evaluation of a function which is constant in time $t$. However, the elements of the Cholesky factor and diagonal matrix $D = T \Sigma T'$ do not exhibit such elementary structure, the elements of which are nonlinear in $t$. 
 
 \bigskip
 
 \subfile{chapter-4-subfiles/chapter-4-true-covariance-functions}
 \bigskip
 
-\section{Loss functions and corresponding risk measures}
+For each of the covariance models, we generated a set of observations of sample size $N = 50, 100$ from a multivariate normal distribution, and considered three different values of within-subject sample size $M = 10, 20, 30$. The estimators were computed with tuning parameters selected using both leave-one-subject-out cross validation $\mbox{losoCV}\left(\lambda\right)$ and unbiased risk estimate $\mbox{U}\left(\lambda\right)$. Given the selected values of the tuning parameters, we computed the estimated covariance matrix and compared it to the true covariance matrix via entropy loss and quadratic loss. 
+
+\bigskip
+\subsubsection{Loss functions and corresponding risk measures}
 \subfile{chapter-4-subfiles/chapter-4-loss-risk-functions}
-
-
-%\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-graphic}
 
 \bigskip
 
-
-
-\section{Performance benchmarking with complete data}
-
-
-
-
+\subsubsection{Alternative estimators}
 \subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
+
+\bigskip
 
 \subfile{chapter-4-subfiles/chapter-4-benchmark-study-discussion}
 
-\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
-\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-ggplot}
-
-\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
-
-\section{Performance with irregularly sampled data}
+\subsection{Performance with irregularly sampled data}
 
 \subfile{chapter-4-subfiles/chapter-4-missing-data-study-discussion}
 
 \bigskip
-
+\setlength{\dashlinedash}{0.5pt}
+\setlength{\dashlinegap}{1pt}
+\setlength{\arrayrulewidth}{0.2pt}
+\subfile{chapter-4-subfiles/simulation-study-2-risk-tables-ure}
 
 {\needsparaphrased{TODO: remember to cite the nlme package for fitting the MA(1) and CS oracle models.}}
 
-
 \subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Numerical results}
-\subsubsection{Simulation study 1: complete data} \label{benchmarking-results}
-
-\setlength{\dashlinedash}{0.5pt}
-\setlength{\dashlinegap}{1pt}
-\setlength{\arrayrulewidth}{0.2pt}
-
-%% entropy risk
-\begin{table}[H] \label{table:simulation-1-entropy-loss-sigma-1}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under entropy loss, $\Delta_2$ when the data are generated according to model~\ref{item:cov-type-1}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
-&    10 & 0.0684 & 	0.0678	&1.2339 & 0.4451 & 1.1760\\ 
-$N = 50$ &    20 & 0.0799 & 	0.0720	&5.0827 & 1.6504 & 4.7847 \\ 
-  &    30 & 0.0668 &	0.0740	 &12.5162  & 1.9975 & 11.0434 \\ 
-   \hdashline
- &    10 & 0.0405 & 0.0379 & 0.5854  & 0.1783 & 0.5201 \\ 
-$N = 100$ &    20 & 0.0356 &  0.0378 & 2.3038 & 0.4394 & 1.9637 \\ 
-  &    30 & 0.0396 & 0.0322  &5.2641 & 0.6717 & 4.5410 \\ 
-\end{tabular}
-\end{table}
-
+%\subsection{Numerical results}
+%\subsubsection{Simulation study 1: complete data} \label{benchmarking-results}
 
 %-------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Appendix}
 
-\begin{table}[H] \label{table:simulation-1-entropy-loss-sigma-2}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under entropy loss, $\Delta_2$ when the data are generated according to model~\ref{item:cov-type-2}.} \begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
- &    10 & 0.0647 & 0.0696	 & 1.2431 & 1.4242 & 1.1195\\ 
-$N = 50$ &    20 & 0.0884 & 0.0969 & 5.0437 & 17.0220 & 13.5290\\ 
-&    30 & 0.0702 & 0.0894 & 12.4559 & 39.9769 & 159.0521 \\ 
-   \hdashline
-&    10 & 0.0307 & 0.0302 & 0.5403& 0.7659 & 0.5609 \\ 
-$N = 100 $ &    20 & 0.0357 & 0.0350  & 2.3195 & 8.5141 & 11.3740 \\ 
-   &    30 & 0.0372 & 0.0334 & 5.2817& 16.5003 & 89.3414  \\ 
-\end{tabular}
-\end{table}
+%\subsection{Quadratic risk estimates for simulation study 1}
+%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-1}
+%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-1}.} 
+%\centering
+%\begin{tabular}{l|r|rrrrrr}
+%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
+%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+%\hline
+%		&    10 & 0.0010 & 0.0013 & 0.4702  & 0.3926 & 0.3871 \\ 
+%$N = 50$  &    20 & 0.0007 &  0.0006	& 0.8495 & 0.8301 & 0.8287 \\ 
+%  		&    30 & 0.0003 &  0.0004	& 1.1449 & 1.1926 & 1.1924  \\ \hdashline
+%		 &    10 & 0.0004 &  0.0004	& 0.2072 &  0.1802 & 0.1777\\ 
+%$N = 100$ &    20 & 0.0002 & 0.0002	& 0.3920  & 0.3858 & 0.3817 \\ 
+%   &    30 & 0.0001 & 0.0001 &0.5712 & 0.6191 & 0.6109 \\ 
+%\end{tabular}
+%\end{table}
+%
+%%-------------------------------------------------------------------------------------------------------------------------------------------
+%
+%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-2}
+%\centering
+%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-2}.} 
+%\begin{tabular}{l|r|rrrrrr}
+%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
+%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+%  \hline
+%&    10 & 0.0314 &  0.0411	&0.5726  & 0.5810 & 0.7758\\ 
+%$N = 50 $ &    20 & 0.3266 & 0.7265	& 2.3130   & 5.5964 & 2.7545  \\ 
+% &    30 & 5.0696 &  4.9073	 &15.1096 & 765.7206 & 28.6820  \\ \hdashline
+% &    10 & 0.0156 &  0.0147	& 0.2479  & 0.2501 & 0.3544 \\ 
+%$N = 100$ &    20 & 0.1894 &  0.2017	 &1.3177 & 5.1945 & 4.7634 \\ 
+%  &    30 & 2.3876 &	1.6465  & 9.8175 & 488.6801 & 85.9508\\ 
+%\end{tabular}
+%\end{table}
+%%-------------------------------------------------------------------------------------------------------------------------------------------
+%
+%
+%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-3}
+%\centering
+%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-3}.} 
+%\begin{tabular}{l|r|rrrrrr}
+%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
+%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+%  \hline
+% 	          &    10 & 0.0562 &	0.0547 & 0.5237 & 0.5810 & 0.5313 \\ 
+% $N = 50$ 	 &     20 & 0.7832 & 0.8934   & 2.1419 & 9.5721 & 9.1421\\ 
+%  		  &    30 & 8.2650 & 10.6855  & 15.2842 & 407.3659 & 129.7459\\ \hdashline
+%		  &    10 & 0.0376 &0.0449	 & 0.2546  & 0.2556 & 0.2661\\ 
+% $N = 100$  &    20 & 0.6260 & 0.5967	 & 1.3751 & 3.3281 & 1.2759\\ 
+%   &    30 & 5.7635 &	6.2824 & 7.4750& 203.6710 & 10.0634 \\ 
+%\end{tabular}
+%\end{table}
+%
+%%-------------------------------------------------------------------------------------------------------------------------------------------
+%
+%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-4}
+%\centering
+%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-4}.} 
+%\begin{tabular}{l|r|rrrrrr}
+%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
+%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+%  \hline
+% &    10 & 0.0134 &  0.0145	& 0.4169 & 0.3987 & 0.3985 \\ 
+%$N = 50$ &    20 & 0.0590 & 0.0574 & 0.8810& 0.9078 & 0.9073 \\ 
+% &    30 & 0.1351 &  0.1362	& 1.2571  & 1.2570 & 1.2575\\ \hdashline
+%     &    10 & 0.0077 &  0.0078 & 0.2263  & 0.2111 & 0.2104 \\ 
+%  $N = 100$ &    20 & 0.0549 & 0.0534  & 0.4309 & 0.4127 & 0.4120 \\ 
+%   &    30 & 0.1331 & 0.1320 & 0.6819  & 0.6579 & 0.6565 \\\
+%\end{tabular}
+%\end{table}
+%
+%
+%%-------------------------------------------------------------------------------------------------------------------------------------------
+%
+%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-5}
+%\centering
+%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-5}.} 
 
-%-------------------------------------------------------------------------------------------------------------------------------------------
+%\begin{tabular}{l|r|rrrrrr}
+%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
+%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
+%  \hline
+% &    10 & 0.3688 & 0.3599	& 0.7872& 0.8058 & 1.4774 \\ 
+%$N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\ 
+%  &    30 & 1.6067 &	1.6151   &  2.5548 & 2.4837 & 4.9027 \\ \hdashline
+%  &    10 & 0.3210 & 0.3168 & 0.3913 & 0.3819 & 0.8958\\ 
+%  $N = 100$ &    20 & 0.9793 & 0.9774 &  0.8714 & 0.8479 & 2.2110\\ 
+%   &    30 & 1.6177 &  1.6032  & 1.2967  & 1.2293 & 3.4968\\ 
+%\end{tabular}
+%\end{table}
+%\subfile{chapter-4-subfiles/simulation-study-1-short-quad-table}
 
-\begin{table}[H] \label{table:simulation-1-entropy-loss-sigma-3}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under entropy loss, $\Delta_2$ when the data are generated according to model~\ref{item:cov-type-3}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\  
-&    10 & 0.3354 &	0.3174	&  1.1947  & 1.1073 & 1.1649\\ 
-$N = 50$ &    20 & 1.1144 &	1.1143	&  5.0966&17.0220 & 12.6171 \\ 
-  &    30 & 2.3247 & 	2.3168	&  12.4905 & 50.3684 & 101.8245\\ 
-   \hdashline
-    &    10 & 0.2826 & 0.2955  & 0.5446& 0.5410 & 0.5531  \\ 
-  $N = 100$ &    20 & 1.0690 &  1.0627 & 2.3514 & 12.8490 & 11.4934\\ 
-   &    30 & 2.2737 & 2.2767 & 5.4204& 27.2736 & 30.5818  \\ 
-\end{tabular}
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-\begin{table}[H] \label{table:simulation-1-entropy-loss-sigma-4}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under entropy loss, $\Delta_2$ when the data are generated according to model~\ref{item:cov-type-4}.} \begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
-&    10 & 0.2605 & .2743&  1.1692 & 0.5899 & 1.1126 \\ 
-$N = 50$ &    20 & 0.8836 & .8764 & 5.0899 & 1.8834 & 4.6363 \\ 
-   &    30 & 1.6087 & 1.6195 &12.5844&3.1902 & 11.4818 \\ \hdashline
- &    10 & 0.2193 & 0.2183 & 0.5642 & 0.2902 & 0.5456 \\ 
-  $N = 100$ &    20 & 0.8468 & 0.8491 & 2.2607 & 0.7869 & 2.2028\\ 
-   &    30 & 1.5743 & 1.5802 & 5.2437 & 1.1974 & 4.8555 \\
-  \end{tabular}
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H] \label{table:simulation-1-entropy-loss-sigma-5}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under entropy loss, $\Delta_2$ when the data are generated according to model~\ref{item:cov-type-5}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
- &    10 & 0.2837 & 	  0.2766	& 1.1943 &  17.3871 & 1.2122 \\ 
-$N = 50$&    20 & 0.7551& 0.7657& 5.0283& 35.4067 & 5.1671 \\ 
-  &    30 & 1.1936 & 1.1927& 12.5871& 46.5337 & 12.4110  \\ \hdashline
- &    10 & 0.2449 &  0.2390 & 0.5734 & 16.2705 & 0.5796\\ 
-  $N = 100$ &    20 & 0.7231 & 0.7299 & 2.2678& 31.3226 & 2.2988 \\ 
-   &    30 & 1.1780 & 1.1813 & 5.2562 & 39.2108 & 5.2592 \\
-  \end{tabular}
-\end{table}
-
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\subsection{Simulation study 2: irregularly sampled data}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------------------------------------------------------------------
-\setlength{\dashlinedash}{0.5pt}
-\setlength{\dashlinegap}{1pt}
-\setlength{\arrayrulewidth}{0.2pt}
-
-\begin{table}[H] \label{table:simulation-2-sigma-1}
-\centering
-\begin{tabular}{rrrrrr}
-M & \% subsampling &  \multicolumn{2}{c}{$\hat{\Delta}_1$}  &  \multicolumn{2}{c}{$\hat{\Delta}_2$} \\ 
-  \hline
-10 & 0.05 & 0.0016 & (0.0002) & 0.0760 & (0.0059) \\ 
-  10 & 0.07 & 0.0017 & (0.0002) & 0.0824 & (0.0055) \\ 
-  10 & 0.09 & 0.0015 & (0.0002) & 0.0776 & (0.0058) \\ 
-    \hdashline
-  15 & 0.05 & 0.0020 & (0.0003) & 0.1027 & (0.0085) \\ 
-  15 & 0.07 & 0.0024 & (0.0004) & 0.1135 & (0.0100) \\ 
-  15 & 0.09 & 0.0021 & (0.0004) & 0.1013 & (0.0087) \\ 
-    \hdashline
-  20 & 0.05 & 0.0011 & (0.0001) & 0.0878 & (0.0069) \\ 
-  20 & 0.07 & 0.0011 & (0.0001) & 0.0971 & (0.0071) \\ 
-  20 & 0.09 & 0.0013 & (0.0002) & 0.0998 & (0.0073) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator when the data are generated according to model~\ref{item:cov-type-1}  and smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H] \label{table:simulation-2-sigma-2}
-\centering
-\begin{tabular}{rrrrrr}
-M & \% subsampling &  \multicolumn{2}{c}{$\hat{\Delta}_1$}  &  \multicolumn{2}{c}{$\hat{\Delta}_2$} \\ 
-  \hline
-10 & 0.05 & 0.0520 & (0.0063) & 0.0940 & (0.0076) \\ 
-  10 & 0.07 & 0.0462 &( 0.0061) & 0.0949 & (0.0085) \\ 
-  10 & 0.09 & 0.0676 & (0.0088) & 0.1124 & (0.0101)\\ 
-    \hdashline
-  15 & 0.05 & 0.4004 & (0.0548) & 0.1434 & (0.0111) \\ 
-  15 & 0.07 & 0.7398 & (0.1168) & 0.1895 & (0.0161) \\ 
-  15 & 0.09 & 1.3971 & (0.1984) & 0.3201 & (0.0332) \\ 
-    \hdashline
-  20 & 0.05 & 5.1618 & (0.6220) & 0.2705 & (0.0218)\\ 
-  20 & 0.07 & 9.9945 & (1.0978) & 0.3894 & (0.0306 )\\ 
-  20 & 0.09 & 19.6154 & (2.0697) & 0.7071 & (0.0520) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator when the data are generated according to model~\ref{item:cov-type-2}  and smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-\begin{table}[H] \label{table:simulation-2-sigma-3}
-\centering
-\begin{tabular}{rrrrrr}
-M & \% subsampling &  \multicolumn{2}{c}{$\hat{\Delta}_1$}  &  \multicolumn{2}{c}{$\hat{\Delta}_2$} \\  
-  \hline
-10 & 0.05 & 0.0617 & (0.0041) & 0.3451 & (0.0078) \\ 
-  10 & 0.07 & 0.0681 & (0.0043) & 0.3498 &( 0.0074) \\ 
-  10 & 0.09 & 0.0574 & (0.0041) & 0.3427 & (0.0085) \\ 
-    \hdashline
-  15 & 0.05 & 0.2226 & (0.0193) & 0.6905 & (0.0257) \\ 
-  15 & 0.07 & 0.4622 & (0.0680) & 0.6909 & (0.0253) \\ 
-  15 & 0.09 & 0.6438 & (0.0708) & 0.8038 & (0.0463) \\ 
-    \hdashline
-  20 & 0.05 & 3.6000 & (0.4421) & 1.2193 & (0.0208) \\ 
-  20 & 0.07 & 8.6383 & (1.1900) & 1.3306 & (0.0316) \\ 
-  20 & 0.09 & 10.0914 & (1.4934) & 1.3546 & (0.0369) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator when the data are generated according to model~\ref{item:cov-type-3}  and smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H] \label{table:simulation-2-sigma-4}
-\centering
-\begin{tabular}{rrrrrr}
-M & \% subsampling &  \multicolumn{2}{c}{$\hat{\Delta}_1$}  &  \multicolumn{2}{c}{$\hat{\Delta}_2$} \\ 
- \hline
-10 & 0.05 & 0.0116 & (0.0006) & 0.2573 & (0.0051) \\ 
-  10 & 0.07 & 0.0126 &( 0.0007) & 0.2665 & (0.0064) \\ 
-  10 & 0.09 & 0.0113 & (0.0006) & 0.2537 & (0.0056) \\ 
-    \hdashline
-  15 & 0.05 & 0.0325 & (0.0012) & 0.5596 & (0.0077) \\ 
-  15 & 0.07 & 0.0421 & (0.0027) & 0.6065 & (0.0131) \\ 
-  15 & 0.09 & 0.0365 & (0.0014) & 0.5835 & (0.0082) \\ 
-    \hdashline
-  20 & 0.05 & 0.0659 & (0.0019) & 0.9159 & (0.0105) \\ 
-  20 & 0.07 & 0.0603 & (0.0009) & 0.8904 & (0.0066) \\ 
-  20 & 0.09 & 0.0615 & (0.0012) & 0.8935 & (0.0078) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator when the data are generated according to model~\ref{item:cov-type-4}  and smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-%-------------------------------------------------------------------------------------------------------------------------------------------
-\begin{table}[H] \label{table:simulation-2-sigma-5}
-\centering
-\begin{tabular}{rrrrrr}
-M & \% subsampling &  \multicolumn{2}{c}{$\hat{\Delta}_1$}  &  \multicolumn{2}{c}{$\hat{\Delta}_2$} \\ 
-  \hline
-10 & 0.05 & 0.4202 & (0.0165) & 0.3159 & (0.0099) \\ 
-  10 & 0.07 & 0.4674 & (0.0187) & 0.3349 & (0.0100) \\ 
-  10 & 0.09 & 0.6244 & (0.0363) & 0.3887 & (0.0149) \\ 
-  \hdashline
-  15 & 0.05 & 0.7857 & (0.0262) & 0.6157 & (0.0137) \\ 
-  15 & 0.07 & 0.8649 & (0.0260) & 0.6548 & (0.0145) \\ 
-  15 & 0.09 & 1.0203 & (0.0425) & 0.7163 & (0.0195) \\ 
-    \hdashline
-  20 & 0.05 & 1.0288 & (0.0203) & 0.8323 & (0.0156) \\ 
-  20 & 0.07 & 1.1388 & (0.0343) & 0.9065 & (0.0247) \\ 
-  20 & 0.09 & 1.3248 & (0.0593) & 1.0355 & (0.0351) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator when the data are generated according to model~\ref{item:cov-type-5} and smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------------------------------------------------------------------
-\section{Appendix}
-
-\subsection{Quadratic risk estimates for simulation study 1}
-\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-1}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-1}.} 
-\centering
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-\hline
-		&    10 & 0.0010 & 0.0013 & 0.4702  & 0.3926 & 0.3871 \\ 
-$N = 50$  &    20 & 0.0007 &  0.0006	& 0.8495 & 0.8301 & 0.8287 \\ 
-  		&    30 & 0.0003 &  0.0004	& 1.1449 & 1.1926 & 1.1924  \\ \hdashline
-		 &    10 & 0.0004 &  0.0004	& 0.2072 &  0.1802 & 0.1777\\ 
-$N = 100$ &    20 & 0.0002 & 0.0002	& 0.3920  & 0.3858 & 0.3817 \\ 
-   &    30 & 0.0001 & 0.0001 &0.5712 & 0.6191 & 0.6109 \\ 
-\end{tabular}
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-2}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-2}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
-&    10 & 0.0314 &  0.0411	&0.5726  & 0.5810 & 0.7758\\ 
-$N = 50 $ &    20 & 0.3266 & 0.7265	& 2.3130   & 5.5964 & 2.7545  \\ 
- &    30 & 5.0696 &  4.9073	 &15.1096 & 765.7206 & 28.6820  \\ \hdashline
- &    10 & 0.0156 &  0.0147	& 0.2479  & 0.2501 & 0.3544 \\ 
-$N = 100$ &    20 & 0.1894 &  0.2017	 &1.3177 & 5.1945 & 4.7634 \\ 
-  &    30 & 2.3876 &	1.6465  & 9.8175 & 488.6801 & 85.9508\\ 
-\end{tabular}
-\end{table}
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-
-\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-3}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-3}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
- 	          &    10 & 0.0562 &	0.0547 & 0.5237 & 0.5810 & 0.5313 \\ 
- $N = 50$ 	 &     20 & 0.7832 & 0.8934   & 2.1419 & 9.5721 & 9.1421\\ 
-  		  &    30 & 8.2650 & 10.6855  & 15.2842 & 407.3659 & 129.7459\\ \hdashline
-		  &    10 & 0.0376 &0.0449	 & 0.2546  & 0.2556 & 0.2661\\ 
- $N = 100$  &    20 & 0.6260 & 0.5967	 & 1.3751 & 3.3281 & 1.2759\\ 
-   &    30 & 5.7635 &	6.2824 & 7.4750& 203.6710 & 10.0634 \\ 
-\end{tabular}
-\end{table}
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-4}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-4}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
- &    10 & 0.0134 &  0.0145	& 0.4169 & 0.3987 & 0.3985 \\ 
-$N = 50$ &    20 & 0.0590 & 0.0574 & 0.8810& 0.9078 & 0.9073 \\ 
- &    30 & 0.1351 &  0.1362	& 1.2571  & 1.2570 & 1.2575\\ \hdashline
-     &    10 & 0.0077 &  0.0078 & 0.2263  & 0.2111 & 0.2104 \\ 
-  $N = 100$ &    20 & 0.0549 & 0.0534  & 0.4309 & 0.4127 & 0.4120 \\ 
-   &    30 & 0.1331 & 0.1320 & 0.6819  & 0.6579 & 0.6565 \\\
-\end{tabular}
-\end{table}
-
-
-%-------------------------------------------------------------------------------------------------------------------------------------------
-
-\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-5}
-\centering
-\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-5}.} 
-\begin{tabular}{l|r|rrrrrr}
-&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-  \hline
- &    10 & 0.3688 & 0.3599	& 0.7872& 0.8058 & 1.4774 \\ 
-$N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\ 
-  &    30 & 1.6067 &	1.6151   &  2.5548 & 2.4837 & 4.9027 \\ \hdashline
-  &    10 & 0.3210 & 0.3168 & 0.3913 & 0.3819 & 0.8958\\ 
-  $N = 100$ &    20 & 0.9793 & 0.9774 &  0.8714 & 0.8479 & 2.2110\\ 
-   &    30 & 1.6177 &  1.6032  & 1.2967  & 1.2293 & 3.4968\\ 
-\end{tabular}
-\end{table}
-
-
+\subsubsection{Quadratic risk estimates for simulation study 1.}
+\subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-1}
+\subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-2}
+\subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-3}
+\subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-4}
+\subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-5}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Simulation study 1: risk estimates (standard errors)}
-
-\setlength{\dashlinedash}{0.5pt}
-\setlength{\dashlinegap}{1pt}
-\setlength{\arrayrulewidth}{0.2pt}
-
-{\needsparaphrased{Should we decide to keep the following tables in the chapter, the analogous tables for $S^\lambda$ and $S^\omega$ will also be included here as well.}}
-
-
-\begin{table}[H] \label{table:ssanova-estimator-performance-with-se-ure}
-\centering
-\begin{tabular}{lrrrrrrrrrr}
-Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} \\ 
-  \hline
-1 & 50 & 10 & 0.0023 & (0.0006) & 0.0843 & (0.0099) & 0.3915 & (0.0262) & 1.1924 & (0.0348) \\ 
-  1 & 50 & 20 & 0.0009 & (0.0002) & 0.0804 & (0.0062) & 0.7953 & (0.0365) & 5.0792 & (0.0676) \\ 
-  1 & 50 & 30 & 0.0006 & (0.0001) & 0.0822 & (0.0064) & 1.2408 & (0.0460) & 12.2989 & (0.1174) \\ 
-  \hdashline
-  1 & 100 & 10 & 0.0007 &(0.0001) & 0.0453 & (0.0042) & 0.1901 & (0.0107) & 0.5800 & (0.0133) \\ 
-  1 & 100 & 20 & 0.0003 & (0.0001) & 0.0421 &(0.0034) & 0.4025 & (0.0199) & 2.3150 & (0.0273) \\ 
-  1 & 100 & 30 & 0.0002 & (0.0001) & 0.0407 & (0.0040) & 0.5914 & (0.0224) & 5.2940 & (0.0476) \\ 
-    \hdashline \\
-      \hdashline
-  2 & 50 & 10 & 0.0709 & (0.0063) & 0.3298 & (0.0082) & 0.5168 & (0.0359) & 1.2156 & (0.0318) \\ 
-  2 & 50 & 20 & 1.0948 & (0.1234) & 1.1179 & (0.0108) & 2.3802 & (0.1604) & 5.0130 & (0.0664) \\ 
-  2 & 50 & 30 & 13.9982 & (1.9602) & 2.3284 & (0.0161) & 22.5542 & (2.8650) & 12.3822 & (0.1101) \\ 
-    \hdashline
-  2 & 100 & 10 & 0.0449 & (0.0022) & 0.2955 & (0.0047) & 0.2515 & (0.0145) & 0.5566 & (0.0127) \\ 
-  2 & 100 & 20 & 0.6322 & (0.0421) & 1.0638 & (0.0064) & 1.1628 & (0.0925) & 2.3893 & (0.0252) \\ 
-  2 & 100 & 30 & 7.1979 & (0.6928) & 2.2805 & (0.0091) & 10.7818 & (1.4529) & 5.2753 & (0.0418) \\ 
-    \hdashline \\
-      \hdashline
-  3 & 50 & 10 & 0.0573 & (0.0086) & 0.0753 & (0.0061) & 0.5234 & (0.0369) & 1.2228 & (0.0308) \\ 
-  3 & 50 & 20 & 0.8747 & (0.1197) & 0.1025 & (0.0085) & 2.8719 & (0.2644) & 5.0775 & (0.0733) \\ 
-  3 & 50 & 30 & 8.1496 & (1.5069) & 0.0958 & (0.0077) & 24.8586 & (3.9217) & 12.5350 & (0.1127) \\ 
-      \hdashline
-  3 & 100 & 10 & 0.0200 &(0.0028) & 0.0329 & (0.0028) & 0.2642 & (0.0217) & 0.5750 & (0.0165) \\ 
-  3 & 100 & 20 & 0.3360 & (0.0624) & 0.0387 & (0.0038) & 1.4008 & (0.1128) & 2.3517 & (0.0290) \\ 
-  3 & 100 & 30 & 3.6555 & (1.0573) & 0.0382 & (0.0043) & 9.6946 & (1.1953) & 5.2919 & (0.0413) \\ 
-      \hdashline \\
-      \hdashline
-  4 & 50 & 10 & 0.0170 & (0.0015) & 0.2812 & (0.0067) & 0.4254 & (0.0273) & 1.2228 & (0.0338) \\ 
-  4 & 50 & 20 & 0.0600 & (0.0012) & 0.8899 & (0.0082) & 0.9665 & (0.0423) & 5.1032 & (0.0639) \\ 
-  4 & 50 & 30 & 0.1378 & (0.0015) & 1.6220 & (0.0074) & 1.1690 & (0.0417) & 12.3825 & (0.1139) \\ 
-      \hdashline
-  4 & 100 & 10 & 0.0088 & (0.0005) & 0.2252 & (0.0046) & 0.1941 & (0.0102) & 0.5676 & (0.0187) \\ 
-  4 & 100 & 20 & 0.0543 & (0.0007) & 0.8514 & (0.0043) & 0.4281 & (0.0221) & 2.2750 & (0.0250) \\ 
-  4 & 100 & 30 & 0.1333 & (0.0009) & 1.5826 & (0.0037) & 0.6650 & (0.0219) & 5.2777 & (0.0408) \\ 
-      \hdashline \\
-      \hdashline
-  5 & 50 & 10 & 0.3956 & (0.0207) & 0.2900 & (0.0078) & 0.8750 & (0.0619) & 1.2395 & (0.0400) \\ 
-  5 & 50 & 20 & 0.9995 & (0.0110) & 0.7660 & (0.0063) & 1.8312 & (0.0745) & 5.0307 & (0.0719) \\ 
-  5 & 50 & 30 & 1.6198 & (0.0134) & 1.1976 & (0.0090) & 2.5880 & (0.1102) & 12.4199 & (0.0979) \\ 
-      \hdashline
-  5 & 100 & 10 & 0.3194 & (0.0065) & 0.2407 & (0.0037) & 0.4209 & (0.0284) & 0.5530 & (0.0115) \\ 
-  5 & 100 & 20 & 0.9774 & (0.0060) & 0.7299 & (0.0041) & 0.8714 & (0.0339) & 2.2297 & (0.0283) \\ 
-  5 & 100 & 30 & 1.6032 & (0.0088) & 1.1813 & (0.0051) & 1.2967 & (0.0474) & 5.3014 & (0.0526) \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator and the sample covariance matrix under models I - V where smoothing parameters are selected using the unbiased risk estimate.} 
-\end{table}
-
-
-{\needsparaphrased{The following table will be formatted just as the one immediately before it if we decide to include it in the chapter.}}
-
-\begin{table}[H] \label{table:ssanova-estimator-performance-with-se-loso}
-\centering
-\begin{tabular}{lllrrrrrrrr}
-Model & N & M & \multicolumn{2}{c}{$\hat{\Delta}_1(\hat{\Sigma}_{SS})$} & \multicolumn{2}{c}{$\hat{\Delta}_2(\hat{\Sigma}_{SS})$} &  \multicolumn{2}{c}{$\hat{\Delta}_1(S)$} & \multicolumn{2}{c}{$\hat{\Delta}_2(S)$} \\ 
-  \hline
-1 & 50 & 10 & 0.0031 & 0.0009 & 0.0941 & 0.0115 & 0.4624 & 0.0249 & 1.2584 & 0.0316 \\ 
-  1 & 50 & 20 & 0.0015 & 0.0003 & 0.1065 & 0.0105 & 0.8609 & 0.0543 & 5.0851 & 0.0660 \\ 
-  1 & 50 & 30 & 0.0005 & 0.0001 & 0.0778 & 0.0075 & 1.1356 & 0.0396 & 12.5491 & 0.1248 \\
-      \hdashline 
-  1 & 100 & 10 & 0.0006 & 0.0001 & 0.0477 & 0.0045 & 0.2092 & 0.0124 & 0.5911 & 0.0143 \\ 
-  1 & 100 & 20 & 0.0003 & 0.0000 & 0.0410 & 0.0037 & 0.3891 & 0.0161 & 2.3162 & 0.0278 \\ 
-  1 & 100 & 30 & 0.0002 & 0.0000 & 0.0457 & 0.0042 & 0.5724 & 0.0211 & 5.2742 & 0.0498 \\ 
-        \hdashline \\
-      \hdashline
-  2 & 50 & 10 & 0.0715 & 0.0073 & 0.3476 & 0.0091 & 0.5318 & 0.0415 & 1.2190 & 0.0301 \\ 
-  2 & 50 & 20 & 0.8640 & 0.1042 & 1.1204 & 0.0117 & 2.2754 & 0.1813 & 5.0921 & 0.0713 \\ 
-  2 & 50 & 30 & 14.6715 & 2.0991 & 2.3440 & 0.0144 & 16.2024 & 1.6967 & 12.4749 & 0.1194 \\ 
-      \hdashline
-  2 & 100 & 10 & 0.0415 & 0.0026 & 0.2854 & 0.0034 & 0.2661 & 0.0170 & 0.5510 & 0.0138 \\ 
-  2 & 100 & 20 & 0.6597 & 0.0495 & 1.0718 & 0.0071 & 1.3733 & 0.1096 & 2.3569 & 0.0304 \\ 
-  2 & 100 & 30 & 6.8953 & 0.6368 & 2.2727 & 0.0082 & 7.3618 & 0.8281 & 5.4390 & 0.0428 \\ 
-       \hdashline \\
-      \hdashline
-  3 & 50 & 10 & 0.0498 & 0.0083 & 0.0736 & 0.0064 & 0.5675 & 0.0425 & 1.2447 & 0.0353 \\ 
-  3 & 50 & 20 & 0.4704 & 0.0763 & 0.0972 & 0.0088 & 2.5606 & 0.2129 & 5.0612 & 0.0705 \\ 
-  3 & 50 & 30 & 8.2884 & 1.6398 & 0.0823 & 0.0089 & 18.9040 & 2.3564 & 12.4416 & 0.1086 \\ 
-      \hdashline
-  3 & 100 & 10 & 0.0245 & 0.0046 & 0.0379 & 0.0042 & 0.2558 & 0.0163 & 0.5506 & 0.0134 \\ 
-  3 & 100 & 20 & 0.3433 & 0.0729 & 0.0404 & 0.0041 & 1.4803 & 0.1345 & 2.3231 & 0.0304 \\ 
-  3 & 100 & 30 & 3.3560 & 0.6491 & 0.0392 & 0.0036 & 9.3395 & 0.8295 & 5.2862 & 0.0421 \\ 
-         \hdashline \\
-      \hdashline
-  4 & 50 & 10 & 0.0163 & 0.0019 & 0.2692 & 0.0081 & 0.4266 & 0.0286 & 1.1800 & 0.0319 \\ 
-  4 & 50 & 20 & 0.0590 & 0.0010 & 0.8836 & 0.0074 & 0.8810 & 0.0399 & 5.0899 & 0.0724 \\ 
-  4 & 50 & 30 & 0.1365 & 0.0015 & 1.6123 & 0.0084 & 1.2551 & 0.0433 & 12.5609 & 0.1101 \\ 
-      \hdashline
-  4 & 100 & 10 & 0.0088 & 0.0008 & 0.2246 & 0.0046 & 0.2216 & 0.0131 & 0.5639 & 0.0168 \\ 
-  4 & 100 & 20 & 0.0551 & 0.0007 & 0.8476 & 0.0037 & 0.4292 & 0.0198 & 2.2649 & 0.0295 \\ 
-  4 & 100 & 30 & 0.1342 & 0.0010 & 1.5769 & 0.0035 & 0.6775 & 0.0222 & 5.2374 & 0.0480 \\ 
-        \hdashline \\
-      \hdashline
- 5 & 50 & 10 & 0.4017 & 0.0216 & 0.2988 & 0.0117 & 0.7943 & 0.0523 & 1.2061 & 0.0395 \\ 
-  5 & 50 & 20 & 0.9817 & 0.0105 & 0.7555 & 0.0051 & 1.6034 & 0.0775 & 5.0172 & 0.0601 \\ 
-  5 & 50 & 30 & 1.6266 & 0.0135 & 1.2043 & 0.0083 & 2.5378 & 0.0861 & 12.5483 & 0.1092 \\ 
-      \hdashline
-  5 & 100 & 10 & 0.3307 & 0.0101 & 0.2507 & 0.0058 & 0.3969 & 0.0235 & 0.5751 & 0.0133 \\ 
-  5 & 100 & 20 & 6.0835 & 4.9816 & 1.3637 & 0.5844 & 0.8470 & 0.0327 & 2.2673 & 0.0300 \\ 
-  5 & 100 & 30 & 3.2806 & 1.6330 & 1.5457 & 0.3612 & 1.2599 & 0.0439 & 5.2507 & 0.0499 \\ 
-   \hline
-\end{tabular}
-\caption{Risk estimates and corresponding standard errors for our proposed estimator and the sample covariance matrix under models I - V where smoothing parameters are selected using losoCV.} 
-\end{table}
+\subfile{chapter-4-subfiles/simulation-study-1-extra-tables}
 
 %%-----------------------------------------------------------------------------------------------------------------------------
 
 \begin{landscape}
-\subfile{chapter-4-subfiles/simulation-study-1-results-master-quad-loss-table}
+\subfile{chapter-4-subfiles/simulation-study-1-master-quadratic-risk-table}
 \end{landscape}
 
 %%-----------------------------------------------------------------------------------------------------------------------------
 \begin{landscape}
-\subfile{chapter-4-subfiles/simulation-study-1-results-master-entropy-loss-table}
+\subfile{chapter-4-subfiles/simulation-study-1-master-entropy-risk-table}
 \end{landscape}
 
 

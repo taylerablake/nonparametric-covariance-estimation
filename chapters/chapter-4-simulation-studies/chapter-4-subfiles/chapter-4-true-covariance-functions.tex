@@ -11,18 +11,22 @@ For each of the general covariance structures outlined in the previous simulatio
 \phi\left(t,s\right) &= t - \frac{1}{2},  \quad 0 \le t \le 1, \\
 \sigma^2\left(t\right) &= 0.1^2,  \quad 0 \le t \le 1.
 \end{align*}
-{\needsparaphrased{TODO: How do we describe the structures for models II-V in terms of continuous $t\in\left[0,1\right]$? }}
 \item \label{item:cov-type-3} $k_{1/2}$-banded linear varying coefficient model with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$, where
 \begin{align*}
 \phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le 0.5\\ 
 0, & t - s > 0.5\end{array}\right.,\\
 \sigma^2\left(t\right) &= 0.1^2, \quad 0 \le t \le 1.
 \end{align*}
-\item \label{item:cov-type-4} geometrically decaying GARPs with constant innovation variance: $\Sigma^{-1} = T' D^{-1} T$ where 
-\begin{align*}
-\phi\left(t,s\right) &= 0.6^{t - s}, \quad 0 \le s < t \le 1,\\
-\sigma^2\left(t\right) &= \frac{4}{3}, \quad 0 \le t \le 1.
-\end{align*}
+\item \label{item:cov-type-4} Rational quadratic covariance: $\Sigma = \left(\sigma_{ij}\right)$ where 
+\begin{equation}
+Cov\left(y\left(t_i\right), y\left(t_j\right)\right) = \left(1 + \frac{\left(t_i - t_j\right)^2}{2\alpha k^2}\right)^{-\alpha},
+\end{equation}
+\noindent
+with $k = 0.6$ and $\alpha = 1$.
+%\begin{align*}
+%\phi\left(t,s\right) &= 0.6^{t - s}, \quad 0 \le s < t \le 1,\\
+%\sigma^2\left(t\right) &= \frac{4}{3}, \quad 0 \le t \le 1.
+%\end{align*}
 \item \label{item:cov-type-5} The compound symmetry model: $\Sigma = \sigma^2\left(\rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}\right),\; \rho=0.7,\;\sigma^2=1$. 
 \begin{align*}
 \phi_{ts} &= -\frac{\rho}{1 + \left(t-1\right)\rho}, \quad t = 2, \dots, M,\;\; s = 1, \dots, t-1\\
