@@ -1,0 +1,96 @@
+Convenient construction of a reproducing kernel Hilbert space on a domain
+\[
+\mathcal{V} = \mathcal{V}_1 \otimes \mathcal{V}_2
+\]
+\noindent
+which can be written as a product domain, is available through the tensor product of the RKHS for each of the marginal domains $\mathcal{V}_1$ and $\mathcal{V}_2$. Without loss of generality, we can let $l,\;m \in \left[0,1\right] = \mathcal{V}_1 = \mathcal{V}_2$. Given Hilbert space for the domain of $l$, $\hilbert_{\left[1\right]}$ with reproducing kernel $Q_1$ and Hilbert space on the domain of $m$, $\hilbert_{\left[2\right]}$ with reproducing kernel $Q_2$, the reproducing kernel $Q = Q_{\left[1\right]}Q_{\left[2\right]}$ corresponds to that of the tensor product space of $\hilbert_{\left[1\right]}$ and $\hilbert_{\left[2\right]}$, denoted
+\[
+\hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}.
+\]
+\noindent
+See \citet{gu2002smoothing}, Theorem 2.6. Let $\mathcal{A}_1$, $\mathcal{A}_2$ denote the averaging operators defining ANOVA decompositions on $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$, respectively, where $\hilbert_{0\left[i\right]}$ has RK $Q_{0\left[i\right]}$, $i = 1, 2$ and $\hilbert_{1\left[i\right]}$ has RK $Q_{1\left[i\right]}$ satisfying $\mathcal{A}_1Q_{\left[1\right]}\left(l,\cdot\right) = \mathcal{A}_2Q_{\left[2\right]}\left(m,\cdot\right) = 0$. Then the tensor product space $\hilbert$ has tensor sum decomposition
+
+\begin{align} 
+\begin{split} \label{eq:tensor-sum-decomposition}
+\hilbert &= \left[\hilbert_{0\left[1\right]} \oplus \hilbert_{1\left[1\right]} \right] \otimes \left[\hilbert_{0\left[2\right]} \oplus \hilbert_{1\left[2\right]} \right] \\
+&= \left[\hilbert_{0\left[1\right]} \otimes  \hilbert_{0\left[2\right]}\right] \oplus \left[\hilbert_{0\left[1\right]} \otimes \hilbert_{1\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes  \hilbert_{0\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes  \hilbert_{1\left[2\right]}\right] 
+\end{split}
+\end{align}
+\noindent
+If $Q_{0\left[i\right]} \propto 1$ for $i = 1,2$, then $\hilbert$ can be further simplified:
+\begin{equation}
+\hilbert = \hilbert_1 \oplus \hilbert_2,
+\end{equation}
+\noindent
+which has reproducing kernel $Q = Q_{\left[1\right]}Q_{\left[2\right]}$.
+
+\begin{example}{Tensor product cubic spline}
+\vspace{0.5cm}
+Let the marginal domain of $l$ correspond to 
+\[
+\hilbert_1 = \mathcal{C}^{\left(m_1\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_1\right)}\;dl < \infty  \right\},
+\]
+\noindent
+and similarly let the marginal domain of $m$ correspond to 
+\[
+\hilbert_2 = \mathcal{C}^{\left(m_2\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_2\right)}\;dm < \infty  \right\},
+\]
+\noindent
+where $\hilbert_i$ are equipped with inner products
+\begin{align}
+\begin{split}
+\langle f,g\rangle &= \langle f,g\rangle_0 + \langle f,g\rangle_1\\
+ &= \sum_{\nu=0}^{m-1}M_{\nu} f M_{\nu} g + \int_0^1 f^{\left( m_i \right)}\left(v\right)g^{\left( m_i \right)}\left(v\right)dv,
+\end{split}
+\end{align}
+\noindent
+where the differential operator $M^i_\nu$ is defined $M^i_\nu f = \int_0^1 f^{\left( m \right)}\left(v\right) dv\;,\;\; \nu = 1, \dots, m_i$, $i = 1,2$. Denote the norm corresponding to this inner product by
+which induces norm 
+\[
+\vert \vert f \vert \vert^2 = \left< f,f\right> = \left< f,f\right>_0 + \left< f,f\right>_1 = \vert \vert P_0 f \vert \vert^2 + \vert \vert P_1 f \vert \vert^2
+\]
+\noindent
+The reproducing kernel $Q$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(v\right) = B_j\left(v\right)/{j!} \right\}$, $v \in \left[0,1\right]$, where $B_j$ is :
+
+\begin{align*}
+B_0\left(x\right) &= 1\\
+\frac{d}{dx} B_j\left(x\right) &= jB_{j-1}\left(x\right), \;j = 1, 2, \dots
+\end{align*}
+\noindent
+One can verify that $\int \limits_0^1 k_\mu^\nu dv = \delta_{\mu,\nu}$ for $\nu, \mu= 0,\dots, m_i -1$, where $\delta_{\mu,\nu}$ is the Kronecker delta. This implies that the $k_\nu$, $\nu = 0,\dots, m_i-1$ for an orthonormal basis for 
+
+\[
+\hilbert_{0\left[i\right]} = \left\{ \phi: \phi^{\left( m_i \right)} = 0 \right\}
+\]
+\noindent
+under the inner product $\langle f,g\rangle_0 =  \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g$, $i = 1, 2$, and that 
+\[
+Q_{0\left[i\right]}\left(v,v'\right) = \sum_{\nu=0}^{m_i-1}  k_\nu\left(v\right)  k_\nu\left(v'\right) 
+\]
+\noindent
+is the reproducing kernel for $\hilbert_{0\left[i\right]}$. The subspaces of \hilbert_{\left[i\right]} which are orthogonal to $\hilbert_{0\left[i\right]}$ are comprised of functions $\phi$ satisfying 
+\[
+\hilbert_{1\left[i\right]} = \lbrace \phi: M_\nu f = 0,\;\; \nu = 0,1,\dots, m_i-1,\int\limits_{0}^1 \phi^{\left(m_i\right)}\;dv < \infty \rbrace, \quad i = 1,2.
+\]
+One can show that the representer for the evaluation functional $\left[v\right] \phi$ in $\hilbert_{1\left[i\right]}$ with squared norm $\langle f,g\rangle_1= \int_0^1 f^{\left(m_i\right)}g^{\left(m_i\right)}\;dv$ is given by the function
+
+\begin{equation}
+{Q_{\left[i\right]} }_v'\left(v\right) = k_{m_i}\left(v\right)k_{m_i}\left(v'\right) + \left(-1\right)^{m_i-1}k_{2m_i}\left(v' - v\right)
+\end{equation}
+\noindent
+See \citet{gu2002smoothing} Example 2.3.3 for proof. Letting $m_1 = m_2 = 2$ yields the tensor product smoothing spline. 
+
+
+
+
+
+
+
+
+
+\end{example}
+
+
+
+
+

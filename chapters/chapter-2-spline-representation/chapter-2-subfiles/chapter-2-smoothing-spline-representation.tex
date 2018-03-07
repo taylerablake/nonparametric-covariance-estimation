@@ -1,4 +1,4 @@
-This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[v\right]f = f\left(v\right)$ is continuous in $\hilbert$ for all $v \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[v\right]\left(\cdot\right)$, such that $\langle Q_v, f \rangle_\hilbert = f\left(v\right)$ for all $f \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
+This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
 
 \bigskip
 
@@ -18,9 +18,7 @@ The first property is called the reproducing property of $Q$. Every reproducing 
 \bigskip
 
 
-\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-reproducing-kernel-example-1}
-
-Let $\mathcal{N}_J = \left\{ \phi:\; J\left(\phi\right) = 0\right\}$ denote the null space of $J$, and consider the tensor sum decomposition
+Let $\mathcal{N}_J = \left\{ \phi:\; J\left(\phi\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition given in \ref{eq:tensor-sum-decomposition}:
 
 \[
 \hilbert = \mathcal{N}_J \oplus \hilbert_J.
@@ -36,6 +34,10 @@ The space $\hilbert_J$ is a RKHS having $J\left(\phi\right)$ as the squared norm
 where $\lbrace \eta_\nu \rbrace$ is a basis for $\mathcal{N}_J$, and $Q_J$ is the RK in $\hilbert_J$. 
 
 \bigskip
+
+
+\subfile{chapter-2-subfiles/tensor-product-hilbert-space-construction}
+\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-reproducing-kernel-example-1}
 
 For $\bfv \in V$ where $V$ is a product domain, ANOVA decompositions can be characterized by 
 \begin{equation}\label{eq:ssanova-decomposition-of-RKHS}
