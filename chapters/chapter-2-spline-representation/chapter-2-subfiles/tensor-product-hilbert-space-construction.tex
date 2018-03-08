@@ -75,9 +75,8 @@ One can show that the representer for the evaluation functional $\left[v\right] 
 See \citet{gu2002smoothing} Example 2.3.3 for proof. The tensor product smoothing spline results from letting $m_1 = m_2 = 2$, so that the marginal subspaces can be written
 
 \begin{align} \label{eq:cubic-spline-hilbert-space}
-\left\{ \phi: \phi'' \in \mathcal{L}_2\left[0,1\right] \right\} = &\left\{ \phi: \phi \propto 1 \right\} \oplus  \left\{ \phi: \phi \propto k_1 \right\} \\
-\oplus &\left\{ \phi: \int_0^1 \phi dv = \int_0^1 \phi' dv = 0,\; \phi'' \in \mathcal{L}_2\left[0,1\right]  \right\} \\
-= \hilbert_{00} \oplus \hilbert_{01} \oplus \hilbert_1,
+\left\{ \phi: \phi'' \in \mathcal{L}_2\left[0,1\right] \right\} = &\left\{ \phi: \phi \propto 1 \right\} \oplus  \left\{ \phi: \phi \propto k_1 \right\} \oplus \left\{ \phi: \int_0^1 \phi dv = \int_0^1 \phi' dv = 0,\; \phi'' \in \mathcal{L}_2\left[0,1\right]  \right\} \\
+&= \hilbert_{00} \oplus \hilbert_{01} \oplus \hilbert_1,
 \end{align}
 \noindent
 where $ \hilbert_{01} \oplus \hilbert_1$ forms the contrast in a one-way ANOVA decomposition with averaging operator $\mathcal{A}\phi = \int_0^1 \phi\;dv$. The corresponding reproducing kernels are
@@ -87,14 +86,41 @@ Q_{01}\left(v,v'\right) &= k_1\left(v\right)k_1\left(v'\right)\\
 Q_{1}\left(v,v'\right) &= k_2\left(v\right)k_2\left(v'\right) - k_4\left(v-v'\right).
 \end{align}
 \noindent
-The tensor product space can be constructed with nine tensor sum terms; the reproducing kernels of the nine subspaces are given in Table~\ref{eq:tensor-product-cubic-spline-RK}.
+The tensor product space can be constructed with nine tensor sum terms; the construction of the tensor product space from the terms of the tensor sum. The corresponding reproducing kernels and inner products are given in Table~\ref{table:tensor-product-cubic-spline-RKHS-table} and Table~\ref{table:tensor-product-cubic-spline-RK-table}, respectively.
 
+\begin{table}[H]
+\centering % used for centering table
+\begin{tabular}{r|c|c|c|} % centered columns (4 columns)
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{	$\hilbert_{00\left[2\right]}$}	&	\multicolumn{1}{c}{$\hilbert_{01\left[2\right]}$}	&\multicolumn{1}{c}{ $\hilbert_{1\left[2\right]}$}\\ [1.5ex] 
+\cline{2-4}  % inserts single horizontal line\\
+$\hilbert_{00\left[1\right]}$		& $\hilbert_{00\left[1\right]}\otimes \hilbert_{00\left[2\right]}$ 	&	$\hilbert_{00\left[1\right]}	\otimes \hilbert_{01\left[2\right]} $	&	$\hilbert_{00\left[1\right]}	\otimes \hilbert_{1\left[2\right]}$   \\ [1.5ex] 
+$\hilbert_{01\left[1\right]}$		& $\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]}$			& 	$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$   &   $\hilbert_{01\left[1\right]} \otimes \hilbert_{1\left[2\right]}$\\ [1.5ex] 
+ $\hilbert_{1\left[1\right]}$	& 	 $\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$	&	$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	&	$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$ \\ [1.5ex] 
+\cline{2-4}
+\end{tabular}
+\caption{Construction of the tensor product cubic spline subspace from marginal subspaces $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$} % title of Table
+\label{table:tensor-product-cubic-spline-RKHS-table}
+\end{table}
 
-
-
-
-
-
+\begin{landscape}
+\begin{table}[H]
+\caption{Tensor product cubic spline subspace reproducing kernels and inner products} % title of Table
+\centering % used for centering table
+\begin{tabular}{lll} % centered columns (4 columns)
+\hline\hline %inserts double horizontal lines
+Subspace 	& 		Reproducing kernel 		& 	Inner product \\
+\hline % inserts single horizontal line
+$\hilbert_{00\left[1\right]} \otimes \hilbert_{00\left[2\right]}$ & 	$1$								     & 	$\left( \int_0^1 \int_0^1 f \right) \left( \int_0^1 \int_0^1 g \right)$ \\ [1ex] 
+$\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]} $& 	$k_1\left(l\right)k_1\left(l'\right)$						     & 	$\left( \int_0^1 \int_0^1 f'_{\left[1\right]} \right) \left( \int_0^1 \int_0^1 g'_{\left[1\right]} \right)$ \\ [1ex] 
+$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(l\right)k_1\left(l'\right)k_1\left(m\right)k_1\left(m'\right)$ & $\left( \int_0^1 \int_0^1 f''_{\left[12\right]} \right) \left( \int_0^1 \int_0^1 g''_{\left[12\right]} \right)$ \\ [1ex] 
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$  	& 	$k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)$	      & $\int_0^1 \left( \int_0^1 f''_{\left[12\right]}\;dl' \right) \left(  \int_0^1 g''_{\left[12\right]} \;dl'\right)\;dl $\\ [1ex] 
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	& 	$\left[k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)\right]k_1\left(m\right)k_1\left(m'\right)$ & $\int_0^1 \left( \int_0^1 f^{\left(3\right)}_{\left[112\right]}\;dl' \right) \left(  \int_0^1 g^{\left(3\right)}_{\left[112\right]} \;dl'\right)\;dl$ \\ [1ex]  
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  		& $\left[k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)\right]\left[k_2\left(m\right)k_2\left(m'\right) - k_4\left(m - m'\right)\right]$ & $\int_0^1  \int_0^1 f^{\left(4\right)}_{\left[1122\right]}g^{\left(4\right)}_{\left[1122\right]}$ \\ [1ex]  
+\hline %inserts single line
+\end{tabular}
+\label{table:tensor-product-cubic-spline-RK-table}
+\end{table}
+\end{landscape}
 \end{example}
 
 

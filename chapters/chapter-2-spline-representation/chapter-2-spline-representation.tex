@@ -8,9 +8,11 @@
 \usepackage{enumitem}
 \usepackage{accents}
 \usepackage{framed}
+\usepackage[utf8]{inputenc}
 \usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{etoolbox}
+\usepackage{lscape}
 \usepackage{algorithmic}
 \usepackage{nomencl}
 \usepackage{natbib}
@@ -108,7 +110,7 @@
 \makeatother
 
 \begin{document}
-
+\listoftables
 %\nocite{*}
 \def\bL{\mathbf{L}}
 %\usepackage{mathtime}
@@ -261,7 +263,10 @@ The remainder of the chapter is reserved for presenting two functional represent
 
 \subsubsection{An RKHS framework for estimating $\phi$}
 \subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
-\
+
+\bigskip
+TO DO: discuss efficient approximation of $\hilbert$ using a low rank smoother technique, as discussed in Gu's book at the end of Chapter 3. \citet{kim2004smoothing}
+\bigskip
 
 \subsubsection{Smoothing parameter selection}
 \subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}

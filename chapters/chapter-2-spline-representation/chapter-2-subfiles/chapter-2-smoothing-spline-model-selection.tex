@@ -105,7 +105,7 @@ where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\le
 
 \subsection{Selection of multiple smoothing parameters}
 
-With the definition of the unbiased risk estimate and the leave-one-subject-out criteria, the expression of the smoothing matrix in Equation~\ref{eq:smoothing-matrix-A-tilde} permits the straightforward evaluation of both scores $U\left(\lambda, \bftheta \right)$ and $V_{loso}^*\left(\lambda, \bftheta \right)$, where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.  In this section, we discuss a algorithm to minimize the unbiased risk estimate $U\left(\lambda, \bftheta\right)$ with respect to $\lambda$ and $\bftheta$ hidden in $Q = \sum_{\beta = 1}^q \theta_\beta Q_\beta$, where the $\left(i,j\right)$ entry of $Q_\beta$ is given by $R_\beta\left(\bfv_i,\bfv_j\right)$. 
+With the definition of the unbiased risk estimate and the leave-one-subject-out criteria, the expression of the smoothing matrix in Equation~\ref{eq:smoothing-matrix-A-tilde} permits the straightforward evaluation of both scores $U\left(\lambda, \bftheta \right)$ and $V_{loso}^*\left(\lambda, \bftheta \right)$, where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.  In this section, we discuss a algorithm to minimize the unbiased risk estimate $U\left(\lambda, \bftheta\right)$ with respect to $\lambda$ and $\bftheta$ hidden in $Q = \sum_{\beta = 1}^q \theta_\beta Q_\beta$, where the $\left(i,j\right)$ entry of $Q_\beta$ is given by $R_\beta\left(\bfv_i,\bfv_j\right)$.  We present minimization of the unbiased risk estimate explicitly, but the mechanics of the optimization are very similar to those necessary for optimizing the leave-one-subject-out cross validation criterion. The details of a procedue for explicitly minimizing the alternative criterion are presented in \citet{xu2012asymptotic}, which is based on the algorithms of \citet{gu1991minimizing}, \citet{kim2004smoothing} (which is the basis for the algorithm which follows) and \citet{wood2004stable}. The key difference between the minimization of $U$ and the minimization of $V^*_{loso}$ lies in the calculation of the gradient and the Hessian matrix in the Newton update. To minimize the unbiased risk estimate,
 
 \begin{enumerate}
 \item Fix $\bftheta$; minimize $U\left(\lambda \vert \bftheta\right)$ with respect to $\lambda$.
@@ -116,7 +116,7 @@ Executing step 1 follows immediately from the expression for the smoothing matri
 
 \subsubsection{Algorithms}
 
-The following presents the main  algorithm for minimizing $U\left(\lambda, \bftheta \right)$ and its key components are presented in the section to follow. \citet{xu2012asymptotic} present an efficient algorithm to minimize the leave-one-subject-out cross validation criterion based on the algorithms of \citet{gu1991minimizing} (which is the basis for the algorithm which follows) and \citet{wood2004stable}. The minimization of $U$ is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $U$ with respect to smoothing parameters via quasi-Newton iteration of \citet{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
+The following presents the main algorithm for minimizing $U\left(\lambda, \bftheta \right)$ and its key components are presented in the section to follow. The minimization of $U$ is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $U$ with respect to smoothing parameters via quasi-Newton iteration of \citet{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
 
 \begin{algorithm}[H]
 \caption{ }
@@ -176,7 +176,7 @@ The first pass allows equal opportunity for each penalty to contribute to the GC
 J\left(\right)= \sum_{\beta = 1}^q \theta^{-1}_\beta \langle \phi, \phi\rangle_\beta
 \]
 \noindent
-After the first pass, the initial fit $\breve{\phi}$ reveals where the structure in the true $\phi$ lie in terms of the components of the subspaces $\hilbert_\beta$. Less penalty should be applied to terms exhibiting strong signal. 
+After the first pass, the initial fit $\breve{\phi}$ reveals where the structure in the true $\phi$ lie in terms of the components of the subspaces $\hilbert_\beta$. Less penalty should be applied to terms exhibiting strong signal.  
  
 
 
