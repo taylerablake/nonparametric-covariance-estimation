@@ -87,14 +87,14 @@ where $Q_\beta$ is the RK in $\hilbert_\beta$. The $\left \{ \theta_\beta \right
 
 \bigskip
 \noindent
-Let $Y$ denote the vector 
+Let $Y$ denote the vector of length $n_y= \sum_{i} M_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other:
 
-\begin{align}
+\begin{align*}
 Y &= \left( Y'_1, Y'_2, \dots, Y'_{N} \right)'\\
  &= \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N2}, y_{N3},\dots, y_{N,m_N} \right)'
-\end{align}
+\end{align*}
 \noindent
-of length $n_y= \sum_{i} M_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other. Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}, and stack these on top of one another to obtain
+Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}, and stack these on top of one another to obtain
 
 \begin{equation} \label{eq:ar-design-matrix-1}
 X = \begin{bmatrix}

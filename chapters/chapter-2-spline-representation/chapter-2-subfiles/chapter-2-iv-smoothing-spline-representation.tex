@@ -1,9 +1,9 @@
 
 
-Recall that the joint likelihood of the data $Y_1,\dots, Y_N$ is satisfies
+Recall that the negative log likelihood of the data $Y_1,\dots, Y_N$ is satisfies
 
 \begin{equation} \label{eq:penalized-joint-loglik-given-phi-2}
--2\ell\left( Y_1,\dots, Y_N, \phi, \kappa \right) =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma^2_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma^2_{ij}};
+-\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) =  \frac{1}{2}\sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma^2_{ij}  + \frac{1}{2}\sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma^2_{ij}};
 \end{equation}
 \noindent
 Let 
@@ -12,7 +12,34 @@ Let
 \mbox{RSS}\left( t \right) = \sum_{i,j:t_{ij}= t} \left( y_{ij} - \sum_{k<j} \phi_{ijk} y_{ik}\right)^2
 \end{equation}
 \noindent
-denote the squared residuals for the observations $y_{ij}$ having corresponding measurement time $t_{ij} - t$. Then $\mbox{RSS}\left( t \right)/\sigma^2\left(t\right) \sim \chi^2_{df_t}$, where the degrees of freedom $df_{t}$ corresponds to the number of observations $y_{ij}$ having corresponding measurement time $t$. In this light, for fixed $\phi$, the penalized likelihood \ref{eq:penalized-joint-loglik-given-phi-2} is that of a variance model with the $\epsilon_{ij}^2$ serving as the response. This corresponds to a generalized linear model with gamma errors and known scale parameter equal to 2.
+denote the squared residuals for the observations $y_{ij}$ having corresponding measurement time $t_{ij} - t$. Then $\mbox{RSS}\left( t \right)/\sigma^2\left(t\right) \sim \chi^2_{df_t}$, where the degrees of freedom $df_{t}$ corresponds to the number of observations $y_{ij}$ having corresponding measurement time $t$. In this light, for fixed $\phi$, the penalized likelihood \ref{eq:penalized-joint-loglik-given-phi-2} is that of a variance model with the $\epsilon_{ij}^2$ serving as the response.  This corresponds to a generalized linear model with gamma errors and known scale parameter equal to 2. Let $z_{ij} = \epsilon_{ij}^2$, and let $Z_{i} = \left(z_{i1},z_{i,m_i} \right)'$ denote the vector of residuals for the $i^{th}$ observed trajectory. The Gamma distribution is parameterized by shape parameter$\alpha$ and scale parameter $\beta$, where the mean of the distribution given by $\mu = \alpha \beta$. Reparameterizing the Gamma likelihood in terms of $\left(\alpha, \mu \right)$ and dropping terms that don't involve $\mu\left(\cdot\right)$ gives  
+\begin{align}
+-\ell\left(z,\mu, \alpha \right) &\propto \alpha\left[\frac{z}{\mu} + \log \mu\right]  \label{eq:gamma-iv-likelihood} \\ 
+&= \alpha\left[ze^{-\kappa} + \kappa\right],\label{eq:gamma-iv-likelihood-canonical-link}
+\end{align}
+\noindent
+where $\alpha^{-1}$ is the dispersion parameter and $\eta = \log \mu$ is the canonical link. Letting $\mu_{ij}$ denote $E\left[ z_{ij} \right] = \sigma_{ij}^2$, the log likelihood of the working residuals becomes 
 
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
+-\ell\left( Z_1,\dots, Z_N, \phi, \sigma^2 \right) =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \mu_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {z_{ij}}{\mu_{ij}},
+\end{equation}
+\noindent
+which we can see coincides with a Gamma dsitribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential familes have been studied extensively (\citet{wahba1995smoothing}, \citet{wang1997grkpack}, \citet{gu2013smoothing}). Parallel to the penalized sums of squares for $\phi$ (\ref{eq:penalized-least-squares-2}), we can append a smoothness penalty to obtain the penalized likelihood for $\kappa\left(t\right) = \sigma^2\left(t\right)$:
 
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
+-\ell\left( \bfz_1,\dots, \bfz_N, \phi, \sigma^2 \right) + =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \kappa_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} z_{ij} e^{-\kappa_{ij}} + \lambda J\left(\kappa\right),  
+\end{equation}
+noindent
+for $\kappa \in \hilbert = \oplus_{\beta = 0}^q \hilbert_\beta$, where the penalty $J$ can be written as a square norm and decomposed as in (\ref{eq:ssanova-decomposition-of-penalty}), with
 
+\begin{equation*} 
+J\left(\kappa \right) = \langle \kappa, \kappa \rangle = \sum_{\beta = 1}^q \theta_\beta^{-1}\langle \kappa, \kappa \rangle_{\beta}.
+\end{equation*}
+\noindent 
+The $\langle \cdot, \cdot \rangle_{\beta}$ are inner products in $\hilbert_\beta$ having reproducing kernels $Q_\beta\left(t,t'\right)$. The penalty $J\left(\kappa\right)$ is an inner product in $\oplus_{\beta = 0}^q \hilbert_\beta$ with reproducing kernel $\sum_{\beta=1}^q \theta_\beta Q_\beta\left(t, t'\right)$ and null space $\mathcal{N}_J = \hilbert_0$. The first term in (\ref{eq:penalized-joint-loglik-given-phi-3}) serves as a measure of the goodness of fit of $\kappa$ to the data, and only depends on $\kappa$ through the evaluation functional $\left[t_{ij}\right]\kappa$. So the argument justifying the form of the minimizer in (\ref{eq:form-of-smoothing-spline-solution}) applies, and the minimizer of the penalized likelihood has the form 
+
+\begin{equation} \label{eq:form-of-smoothing-spline-solution-kappa}
+\kappa\left( t \right) = \sum_{\nu = 1}^{d_0} d_\nu\eta_\nu\left( t \right) + \sum_{i = 1}^{\vert \mathcal{T} \vert} c_i Q_J\left( t, t_i \right),
+\end{equation}  
+\noindent
+where $\mathcal{T} = \bigcup_{j=1}^N\bigcup_{k=1}^{m_i} t_{jk}$ denotes the unique values of the observations times pooled across subjects, where $\left\{\eta_\nu \right\}_{\nu=1}^{d_0}$ is a basis for the null space $\mathcal{N}_J = \hilbert_0$. 
