@@ -18,7 +18,7 @@ The first property is called the reproducing property of $Q$. Every reproducing 
 \bigskip
 
 
-Let $\mathcal{N}_J = \left\{ \phi:\; J\left(\phi\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition given in \ref{eq:tensor-sum-decomposition}:
+Let $\mathcal{N}_J = \left\{ \phi:\; J\left(\phi\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition
 
 \[
 \hilbert = \mathcal{N}_J \oplus \hilbert_J.
@@ -34,6 +34,27 @@ The space $\hilbert_J$ is a RKHS having $J\left(\phi\right)$ as the squared norm
 where $\lbrace \eta_\nu \rbrace$ is a basis for $\mathcal{N}_J$, and $Q_J$ is the RK in $\hilbert_J$. 
 
 \bigskip
+
+
+The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
+\begin{equation} \label{eq:penalized-least-squares-2}
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_J \phi \vert \vert^2
+\end{equation}
+\noindent
+where $P_J$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_J$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
+
+\begin{equation} \label{eq:form-of-smoothing-spline-solution}
+\phi\left( \bfv \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_J \xi_i \right)
+\end{equation}
+\noindent
+where $V = \bigcup\limits_{i,j,k} \bfv_{ijk}$, and $\left\{\eta_1,\dots, \eta_{m}\right\}$ span $\hilbert_0$, the null space of $P_J$. To show this, we start by noting that any $\phi \in \mathcal{H}$ can be written 
+
+\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
+\phi\left( \bfv \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_J \xi_i \right) + \rho\left(\bfv\right)
+\end{equation}
+\noindent
+where $\rho \perp \mathcal{H}_0,\; \textup{span}\lbrace \left(P_1 \xi_{j} \right) \rbrace_{j = 1}^{\vert V\vert}$. To establish that the solution has form \ref{eq:form-of-smoothing-spline-solution} requires showing that the minimizer of \ref{eq:penalized-least-squares-2} has $\rho = 0$. The proof entails demonstrating that $\rho$ does not improve the residual sums of squares and only adds to the penalty term, $J\left(\phi\right)$. Details are similar to those in the proof provided in \citet{wahba1990spline} and are left to the appendix \ref{chapter-7-appendix}.
+
 
 
 \subfile{chapter-2-subfiles/tensor-product-hilbert-space-construction}
@@ -63,24 +84,6 @@ where $Q_\beta$ is the RK in $\hilbert_\beta$. The $\left \{ \theta_\beta \right
 
 \bigskip
 
-The objective function \ref{eq:penalized-least-squares} can be rewritten in terms of the squared norm with respect to $\langle\cdot,\cdot\rangle_\hilbert$:
-\begin{equation} \label{eq:penalized-least-squares-2}
--2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_J \phi \vert \vert^2
-\end{equation}
-\noindent
-where $P_J$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_J$, and $L_{ijk}$ denotes the evalutation functional $\left[v_{ijk}\right] \phi$. Let $\xi_{ijk}$ denote the representer of $L_{ijk}$; \citet{kimeldorf1971some} established that the minimizer of \ref{eq:penalized-least-squares-2} has form
-
-\begin{equation} \label{eq:form-of-smoothing-spline-solution}
-\phi\left( \bfv \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_J \xi_i \right)
-\end{equation}
-\noindent
-where $V = \bigcup\limits_{i,j,k} \bfv_{ijk}$, and $\left\{\eta_1,\dots, \eta_{m}\right\}$ span $\hilbert_0$, the null space of $P_J$. To show this, we start by noting that any $\phi \in \mathcal{H}$ can be written 
-
-\begin{equation} \label{eq:smoothing-spline-representer-expansion-1}
-\phi\left( \bfv \right) = \sum_{\nu=1}^{m} d_\nu \eta_\nu \left( v \right) + \sum_{i = 1}^{\vert V \vert} c_{i}\left(P_J \xi_i \right) + \rho\left(\bfv\right)
-\end{equation}
-\noindent
-where $\rho \perp \mathcal{H}_0,\; \textup{span}\lbrace \left(P_1 \xi_{j} \right) \rbrace_{j = 1}^{\vert V\vert}$. To establish that the solution has form \ref{eq:form-of-smoothing-spline-solution} requires showing that the minimizer of \ref{eq:penalized-least-squares-2} has $\rho = 0$. The proof entails demonstrating that $\rho$ does not improve the residual sums of squares and only adds to the penalty term, $J\left(\phi\right)$. Details are similar to those in the proof provided in \citet{wahba1990spline} and are left to the appendix \ref{chapter-7-appendix}.
 
 \bigskip
 \noindent

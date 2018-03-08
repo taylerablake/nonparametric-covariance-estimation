@@ -24,51 +24,45 @@ If $Q_{0\left[i\right]} \propto 1$ for $i = 1,2$, then $\hilbert$ can be further
 \noindent
 which has reproducing kernel $Q = Q_{\left[1\right]}Q_{\left[2\right]}$.
 
-\begin{example}{Tensor product cubic spline}
+\begin{example}{\textbf {Tensor product cubic spline}}\\
 \vspace{0.5cm}
-Let the marginal domain of $l$ correspond to 
+Let the marginal domains of $l$ and $m$ correspond to $\hilbert_1$ and $\hilbert_2$ respectively, where
 \[
-\hilbert_1 = \mathcal{C}^{\left(m_1\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_1\right)}\;dl < \infty  \right\},
+\hilbert_i = \mathcal{C}^{\left(m_i\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_i\right)}\;dv < \infty  \right\},
 \]
 \noindent
-and similarly let the marginal domain of $m$ correspond to 
-\[
-\hilbert_2 = \mathcal{C}^{\left(m_2\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_2\right)}\;dm < \infty  \right\},
-\]
-\noindent
-where $\hilbert_i$ are equipped with inner products
+which are equipped with inner product
 \begin{align}
 \begin{split}
 \langle f,g\rangle &= \langle f,g\rangle_0 + \langle f,g\rangle_1\\
- &= \sum_{\nu=0}^{m-1}M_{\nu} f M_{\nu} g + \int_0^1 f^{\left( m_i \right)}\left(v\right)g^{\left( m_i \right)}\left(v\right)dv,
+ &= \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g + \int_0^1 f^{\left( m_i \right)}\left(v\right)g^{\left( m_i \right)}\left(v\right)dv, \quad i = 1,2
 \end{split}
 \end{align}
 \noindent
-where the differential operator $M^i_\nu$ is defined $M^i_\nu f = \int_0^1 f^{\left( m \right)}\left(v\right) dv\;,\;\; \nu = 1, \dots, m_i$, $i = 1,2$. Denote the norm corresponding to this inner product by
-which induces norm 
+where the order $i$ differential operator $M_\nu$ is defined $M_\nu \phi = \int_0^1 \phi^{\left( m \right)}\left(v\right) dv\;,\;\; \nu = 1, \dots, m_i$, $i = 1,2$. Denote the norm corresponding to this inner product by
+
 \[
 \vert \vert f \vert \vert^2 = \left< f,f\right> = \left< f,f\right>_0 + \left< f,f\right>_1 = \vert \vert P_0 f \vert \vert^2 + \vert \vert P_1 f \vert \vert^2
 \]
 \noindent
-The reproducing kernel $Q$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(v\right) = B_j\left(v\right)/{j!} \right\}$, $v \in \left[0,1\right]$, where $B_j$ is :
+The reproducing kernel $Q$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(v\right) = \frac{1}{j!}B_j\left(v\right) \right\}$, $v \in \left[0,1\right]$, where $B_j$ is defined according to:
 
 \begin{align*}
 B_0\left(x\right) &= 1\\
 \frac{d}{dx} B_j\left(x\right) &= jB_{j-1}\left(x\right), \;j = 1, 2, \dots
 \end{align*}
 \noindent
-One can verify that $\int \limits_0^1 k_\mu^\nu dv = \delta_{\mu,\nu}$ for $\nu, \mu= 0,\dots, m_i -1$, where $\delta_{\mu,\nu}$ is the Kronecker delta. This implies that the $k_\nu$, $\nu = 0,\dots, m_i-1$ for an orthonormal basis for 
-
+One can verify that $\int \limits_0^1 k_\mu^\nu dv = \delta_{\mu,\nu}$ for $\nu, \mu= 0,\dots, m_i -1$, where $\delta_{\mu,\nu}$ is the Kronecker delta. This implies that the $k_\nu$, $\nu = 0,\dots, m_i-1$ for an orthonormal basis for $\hilbert_{0\left[i\right]} = \left\{ \phi: \phi^{\left( m_i \right)} = 0 \right\}$ under the inner product
 \[
-\hilbert_{0\left[i\right]} = \left\{ \phi: \phi^{\left( m_i \right)} = 0 \right\}
+\langle f,g\rangle_0 =  \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g, \quad i = 1, 2, 
 \]
 \noindent
-under the inner product $\langle f,g\rangle_0 =  \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g$, $i = 1, 2$, and that 
+and that 
 \[
 Q_{0\left[i\right]}\left(v,v'\right) = \sum_{\nu=0}^{m_i-1}  k_\nu\left(v\right)  k_\nu\left(v'\right) 
 \]
 \noindent
-is the reproducing kernel for $\hilbert_{0\left[i\right]}$. The subspaces of \hilbert_{\left[i\right]} which are orthogonal to $\hilbert_{0\left[i\right]}$ are comprised of functions $\phi$ satisfying 
+is the reproducing kernel for $\hilbert_{0\left[i\right]}$. The subspaces of $\hilbert_{\left[i\right]}$ which are orthogonal to $\hilbert_{0\left[i\right]}$ are comprised of functions $\phi$ satisfying 
 \[
 \hilbert_{1\left[i\right]} = \lbrace \phi: M_\nu f = 0,\;\; \nu = 0,1,\dots, m_i-1,\int\limits_{0}^1 \phi^{\left(m_i\right)}\;dv < \infty \rbrace, \quad i = 1,2.
 \]
@@ -78,9 +72,22 @@ One can show that the representer for the evaluation functional $\left[v\right] 
 {Q_{\left[i\right]} }_v'\left(v\right) = k_{m_i}\left(v\right)k_{m_i}\left(v'\right) + \left(-1\right)^{m_i-1}k_{2m_i}\left(v' - v\right)
 \end{equation}
 \noindent
-See \citet{gu2002smoothing} Example 2.3.3 for proof. Letting $m_1 = m_2 = 2$ yields the tensor product smoothing spline. 
+See \citet{gu2002smoothing} Example 2.3.3 for proof. The tensor product smoothing spline results from letting $m_1 = m_2 = 2$, so that the marginal subspaces can be written
 
-
+\begin{align} \label{eq:cubic-spline-hilbert-space}
+\left\{ \phi: \phi'' \in \mathcal{L}_2\left[0,1\right] \right\} = &\left\{ \phi: \phi \propto 1 \right\} \oplus  \left\{ \phi: \phi \propto k_1 \right\} \\
+\oplus &\left\{ \phi: \int_0^1 \phi dv = \int_0^1 \phi' dv = 0,\; \phi'' \in \mathcal{L}_2\left[0,1\right]  \right\} \\
+= \hilbert_{00} \oplus \hilbert_{01} \oplus \hilbert_1,
+\end{align}
+\noindent
+where $ \hilbert_{01} \oplus \hilbert_1$ forms the contrast in a one-way ANOVA decomposition with averaging operator $\mathcal{A}\phi = \int_0^1 \phi\;dv$. The corresponding reproducing kernels are
+\begin{align} \label{eq:cubic-spline-hilbert-space-rks}
+Q_{00}\left(v,v'\right) &= 1\\
+Q_{01}\left(v,v'\right) &= k_1\left(v\right)k_1\left(v'\right)\\
+Q_{1}\left(v,v'\right) &= k_2\left(v\right)k_2\left(v'\right) - k_4\left(v-v'\right).
+\end{align}
+\noindent
+The tensor product space can be constructed with nine tensor sum terms; the reproducing kernels of the nine subspaces are given in Table~\ref{eq:tensor-product-cubic-spline-RK}.
 
 
 
