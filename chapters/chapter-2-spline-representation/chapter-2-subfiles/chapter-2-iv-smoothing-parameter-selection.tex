@@ -2,13 +2,23 @@ The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-ka
 
 \subsubsection{Performance-oriented iteration} 
 
-A measure of the discrepancy between distributions belonging to an exponential family is the Kullback-Leibler distance
+A measure of the discrepancy between distributions belonging to an exponential family with density $p_Z\left(z\right) = exp\left\{\left(y \eta\left(t\right) - b\left(\eta\left(t\right)\right)\right)/a\left(\phi\right) + c\left(y,\phi\right) \right\}$ is the Kullback-Leibler distance
 
-\begin{equation} \label{eq:}
+\begin{align}
+\begin{split} \label{eq:kl-distance-definition}
+\mbox{KL}\left(\eta, \eta_\lambda\right) &= E_\lambda\left[Z \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right)\\
+&=\left[ b'\left(\eta\right) \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right),
+\end{split}
+\end{align}
+\noindent
+This distance is not symmetric; its symmetrized version is given by
 
-\end{equation}
-
-
+\begin{align}
+\begin{split} \label{eq:skl-distance-definition}
+\mbox{SKL}\left(\eta, \eta_\lambda\right) &= \mbox{KL}\left(\eta, \eta_\lambda\right) + \mbox{KL}\left(\eta_\lambda, \eta \right)\\
+&= \left(\mu - \mu_\lambda \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right),
+\end{split}
+\end{align}
 
 
 
