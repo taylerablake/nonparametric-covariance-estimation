@@ -13,12 +13,12 @@ In the spirit of the GLM, the MCD polynomial estimator is a particular case of e
 \noindent
 for $j = 1,\dots, M$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $p \times 1$  which hold covariates
 
-\begin{align*}
+\begin{align}
 \begin{split} 
 z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
 z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'.
 \end{split}
-\end{align*}
+\end{align} \label{eq:mcd-polynomial-model}
 \noindent
 where polynomial orders $p$, $q$ are chosen by BIC. \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
 

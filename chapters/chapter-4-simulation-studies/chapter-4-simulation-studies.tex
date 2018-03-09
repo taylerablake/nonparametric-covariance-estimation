@@ -7,10 +7,12 @@
 \usepackage{enumitem}
 \usepackage{accents}
 \usepackage{lscape}
+\usepackage{longtable}
 \usepackage{framed}
 %\usepackage{subcaption}
 %\usepackage[hang]{subfigure}
-\usepackage{subfig} 
+%\usepackage{subfig} 
+\usepackage{booktabs}
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
@@ -18,6 +20,7 @@
 \usepackage{filecontents}
 \usepackage{subfiles}
 \usepackage{cite}
+\usepackage{subcaption}
 \usepackage{rotating}
 \usepackage{arydshln}
 \usepackage{amsthm}
@@ -96,6 +99,9 @@
 \renewcommand{\p@enumii}{\theenumi.}
 \makeatother
 
+
+\DeclareCaptionSubType*[arabic]{table}
+\captionsetup[subtable]{labelformat=simple,labelsep=colon}
 \begin{document}
 
 %\nocite{*}
@@ -157,9 +163,13 @@ For each of the covariance models, we generated a set of observations of sample 
 \setlength{\dashlinedash}{0.5pt}
 \setlength{\dashlinegap}{1pt}
 \setlength{\arrayrulewidth}{0.2pt}
-\subfile{chapter-4-subfiles/simulation-study-2-risk-tables-ure}
+%\subfile{chapter-4-subfiles/simulation-study-2-risk-tables-ure}
+\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-1}
+\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-2}
+\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-3}
+\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-4}
+\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-5}
 
-{\needsparaphrased{TODO: remember to cite the nlme package for fitting the MA(1) and CS oracle models.}}
 
 \subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
 
@@ -170,117 +180,38 @@ For each of the covariance models, we generated a set of observations of sample 
 %-------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Appendix}
 
-%\subsection{Quadratic risk estimates for simulation study 1}
-%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-1}
-%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-1}.} 
-%\centering
-%\begin{tabular}{l|r|rrrrrr}
-%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-%\hline
-%		&    10 & 0.0010 & 0.0013 & 0.4702  & 0.3926 & 0.3871 \\ 
-%$N = 50$  &    20 & 0.0007 &  0.0006	& 0.8495 & 0.8301 & 0.8287 \\ 
-%  		&    30 & 0.0003 &  0.0004	& 1.1449 & 1.1926 & 1.1924  \\ \hdashline
-%		 &    10 & 0.0004 &  0.0004	& 0.2072 &  0.1802 & 0.1777\\ 
-%$N = 100$ &    20 & 0.0002 & 0.0002	& 0.3920  & 0.3858 & 0.3817 \\ 
-%   &    30 & 0.0001 & 0.0001 &0.5712 & 0.6191 & 0.6109 \\ 
-%\end{tabular}
-%\end{table}
-%
-%%-------------------------------------------------------------------------------------------------------------------------------------------
-%
-%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-2}
-%\centering
-%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-2}.} 
-%\begin{tabular}{l|r|rrrrrr}
-%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-%  \hline
-%&    10 & 0.0314 &  0.0411	&0.5726  & 0.5810 & 0.7758\\ 
-%$N = 50 $ &    20 & 0.3266 & 0.7265	& 2.3130   & 5.5964 & 2.7545  \\ 
-% &    30 & 5.0696 &  4.9073	 &15.1096 & 765.7206 & 28.6820  \\ \hdashline
-% &    10 & 0.0156 &  0.0147	& 0.2479  & 0.2501 & 0.3544 \\ 
-%$N = 100$ &    20 & 0.1894 &  0.2017	 &1.3177 & 5.1945 & 4.7634 \\ 
-%  &    30 & 2.3876 &	1.6465  & 9.8175 & 488.6801 & 85.9508\\ 
-%\end{tabular}
-%\end{table}
-%%-------------------------------------------------------------------------------------------------------------------------------------------
-%
-%
-%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-3}
-%\centering
-%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-3}.} 
-%\begin{tabular}{l|r|rrrrrr}
-%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-%  \hline
-% 	          &    10 & 0.0562 &	0.0547 & 0.5237 & 0.5810 & 0.5313 \\ 
-% $N = 50$ 	 &     20 & 0.7832 & 0.8934   & 2.1419 & 9.5721 & 9.1421\\ 
-%  		  &    30 & 8.2650 & 10.6855  & 15.2842 & 407.3659 & 129.7459\\ \hdashline
-%		  &    10 & 0.0376 &0.0449	 & 0.2546  & 0.2556 & 0.2661\\ 
-% $N = 100$  &    20 & 0.6260 & 0.5967	 & 1.3751 & 3.3281 & 1.2759\\ 
-%   &    30 & 5.7635 &	6.2824 & 7.4750& 203.6710 & 10.0634 \\ 
-%\end{tabular}
-%\end{table}
-%
-%%-------------------------------------------------------------------------------------------------------------------------------------------
-%
-%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-4}
-%\centering
-%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-4}.} 
-%\begin{tabular}{l|r|rrrrrr}
-%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-%  \hline
-% &    10 & 0.0134 &  0.0145	& 0.4169 & 0.3987 & 0.3985 \\ 
-%$N = 50$ &    20 & 0.0590 & 0.0574 & 0.8810& 0.9078 & 0.9073 \\ 
-% &    30 & 0.1351 &  0.1362	& 1.2571  & 1.2570 & 1.2575\\ \hdashline
-%     &    10 & 0.0077 &  0.0078 & 0.2263  & 0.2111 & 0.2104 \\ 
-%  $N = 100$ &    20 & 0.0549 & 0.0534  & 0.4309 & 0.4127 & 0.4120 \\ 
-%   &    30 & 0.1331 & 0.1320 & 0.6819  & 0.6579 & 0.6565 \\\
-%\end{tabular}
-%\end{table}
-%
-%
-%%-------------------------------------------------------------------------------------------------------------------------------------------
-%
-%\begin{table}[H]\ref{table:simulation-1-quad-loss-sigma-5}
-%\centering
-%\caption{Risk estimates and corresponding standard errors for our proposed estimator under quadratic loss, $\Delta_1$ when the data are generated according to model~\ref{item:cov-type-5}.} 
-
-%\begin{tabular}{l|r|rrrrrr}
-%&  & \multicolumn{2}{c}{$\hat{\Sigma}_{SS}$} & $S$ & $S^\lambda$ & $S^\omega$ \\ 
-%&M & \mbox{LosoCV} & \mbox{URE} &  \\ 
-%  \hline
-% &    10 & 0.3688 & 0.3599	& 0.7872& 0.8058 & 1.4774 \\ 
-%$N = 50$ &    20 & 0.9770 &   0.9954	 & 1.6167& 1.7840 & 3.4516 \\ 
-%  &    30 & 1.6067 &	1.6151   &  2.5548 & 2.4837 & 4.9027 \\ \hdashline
-%  &    10 & 0.3210 & 0.3168 & 0.3913 & 0.3819 & 0.8958\\ 
-%  $N = 100$ &    20 & 0.9793 & 0.9774 &  0.8714 & 0.8479 & 2.2110\\ 
-%   &    30 & 1.6177 &  1.6032  & 1.2967  & 1.2293 & 3.4968\\ 
-%\end{tabular}
-%\end{table}
-%\subfile{chapter-4-subfiles/simulation-study-1-short-quad-table}
-
-\subsubsection{Quadratic risk estimates for simulation study 1.}
+\subsubsection{Quadratic risk estimates for simulation study 1}
 \subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-1}
 \subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-2}
 \subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-3}
 \subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-4}
 \subfile{chapter-4-subfiles/simulation-study-1-quad-table-model-5}
+
+
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsubsection{Quadratic risk estimates for simulation study 2}
+\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-1}
+\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-2}
+\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-3}
+\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-4}
+\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-5}
+
 
 \subfile{chapter-4-subfiles/simulation-study-1-extra-tables}
 
 %%-----------------------------------------------------------------------------------------------------------------------------
 
-\begin{landscape}
-\subfile{chapter-4-subfiles/simulation-study-1-master-quadratic-risk-table}
-\end{landscape}
-
+\subsubsection{Comprehensive tables for study 1}
 %%-----------------------------------------------------------------------------------------------------------------------------
 \begin{landscape}
 \subfile{chapter-4-subfiles/simulation-study-1-master-entropy-risk-table}
+\end{landscape}
+
+%%-----------------------------------------------------------------------------------------------------------------------------
+
+\begin{landscape}
+\subfile{chapter-4-subfiles/simulation-study-1-master-quadratic-risk-table}
 \end{landscape}
 
 
