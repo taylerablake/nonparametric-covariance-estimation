@@ -7,19 +7,19 @@
 \usepackage{enumitem}
 \usepackage{accents}
 \usepackage{framed}
-\usepackage{subcaption}
+\usepackage{subfiles}
+\usepackage{subfig}
 \usepackage{natbib}
 \usepackage{mathtools}
 %\usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{cite}
 \usepackage{rotate}
-\usepackage{subcaption}
 \usepackage{amsthm}
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
 \usepackage{booktabs}
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
-\newcommand{\comment}[1]{\text{\phantom{(#1)}} \tag{#1}}
+
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \newcommand*\needsparaphrased{\color{red}}
 \newcommand*\needscited{\color{orange}}
@@ -122,10 +122,11 @@ See Kenward, Michael G. (1987). A Method for Comparing Profiles of Repeated Meas
 
 To compare two methods for controlling the disease, say treatment A and treatment B, each of 60 cattle were assigned randomly to two groups, each of size 30. Animal subjects were put out to pasture at the start of grazing season, with each member of the groups receiving one of the two treatments. Animals were weighed $m = 11$ times over a 133-day period; the first 10 measurements on each animal were made at two-week intervals and the final measurement was made one week later. Weights were recorded to the nearest kilogram. The measurement times were common across animals and were rescaled to $t = 1, 2, \dots, 10, 10.5$. The longitudinal dataset is balanced, as there were no missing observations for any of the experimental units. Observed weights are shown in Figure~\ref{fig:cattle-weights-by-trt}.
   
+  
 \begin{figure}[h] \label{fig:cattle-weights-by-trt}
 \caption{Subject-specific weight curves over time for treatment groups A and B.}
 \begin{center}
-\includegraphics[width = \textwidth]{img/cattle/cattle-weights-vs-time-by-trt}
+\includegraphics[width = \textwidth]{../img/cattle/cattle-weights-vs-time-by-trt}
 \end{center}
 \end{figure} 
 
@@ -149,19 +150,18 @@ The subject-specific random effects $\left\{ \alpha_i \right\}$ are assumed to b
 \[
 \alpha_i \sim N\left( 0, \sigma_\alpha^2 \right).
 \]
-
-We assume that the subject trajectories share a common mean function $f$, and that $f$ belong to the second-order Sobolev space:
+\noindent
+We assume that the subject trajectories share a common mean function $f \in $
 
 \[
-W^2_2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}.
+\mathcal{C}^2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}.
 \]
 \noindent
-
 Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight trajectories over time. Figure~\ref{fig:cattleA-smoothed-weights-vs-time} shows the corresponding fitted mean curves.
 
 \begin{figure}[H] \label{fig:cattleA-weights-vs-time}
 \begin{center}
-    \includegraphics[width=\textwidth]{img/cattle/cattleA-weights-vs-time}
+    \includegraphics[width=\textwidth]{../img/cattle/cattleA-weights-vs-time}
 \end{center}
  \caption{Weight trajectories over the observation period for experimental units in treatment group A.}
  \end{figure}
@@ -169,13 +169,13 @@ Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight traject
 \begin{figure}[H] \label{fig:cattleA-smoothed-weights-vs-time}
 \caption{Fitted mean weight curve for cattle in treatment group A. }
 \begin{center}
-\includegraphics[width = \textwidth]{img/cattle/cattleA-weights-vs-time-mean-fit}
+\includegraphics[width = \textwidth]{../img/cattle/cattleA-weights-vs-time-mean-fit}
 \end{center}
 \end{figure} 
 
 The nonstationarity suggested in Figure~\ref{fig:cattle-weights-by-trt} is also supported by the sample correlations given in Table~\ref{table:cattleA-sample-correlations}; correlations within the subdiagonals are not constant and increase over time, a secondary indication that a stationary covariance is not appropriate for the data.  Table~\ref{table:sample-regressogram-garps} gives the sample generalised autoregressive parameters and the innovation variances, which are plotted in Figure~\ref{fig:cattleA-regressogram} and Figure~\ref{fig:cattleA-innovation-variogram} respectively. 
 
-\begin{table}[ht] \label{table:cattleA-sample-correlations}
+\begin{table}[H] \label{table:cattleA-sample-correlations}
 \begin{center}
 \begin{tabular}{r|rrrrrrrrrrr}
 & \multicolumn{11}{c}{day}\\
@@ -225,14 +225,14 @@ t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_
 
 \begin{figure}[H] \label{fig:cattleA-innovation-variogram}
 \begin{center}
-    \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
+    \includegraphics[width=\textwidth]{../img/cattle/cattleA-innovation-variogram}
 \end{center}
  \caption{Sample estimates of innovation variances $\sigma_t^2$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.}
  \end{figure}
 
 \begin{figure}[H] \label{fig:cattleA-regressogram}
 \begin{center}
-\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
+\includegraphics[width = \textwidth]{../img/cattle/cattleA-regressogram}
 \end{center}
  \caption{Sample estimates of the generalized autoregressive parameters $\phi_{ij}$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.}
 \end{figure} 
@@ -257,92 +257,30 @@ They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cat
 
 
 \begin{figure}[H]
-  \begin{subfigure}[t]{0.45\textwidth}
 \centering
-\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
-\label{fig:cattleA-regressogram-cubic-smooth}
-\caption{The sample regressogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.}
-\end{subfigure}
+\subfloat[The sample regressogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.]{
+  \includegraphics[width = .45\textwidth]{../img/cattle/cattleA-regressogram-with-cubic-smooth}\label{fig:cattleA-regressogram-cubic-smooth}
+} 
 \hfill
- \begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
-\label{fig:cattleA-innovariogram-cubic-smooth}
-\caption{The sample innovariogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.}
-\end{subfigure} 
+\subfloat[The sample variogram for the cattle data from treatment group A, overlaid with a cubic polynomial smooth.]{
+  \includegraphics[width = .45\textwidth]{../img/cattle/cattleA-innovariogram-with-cubic-smooth}\label{fig:cattleA-innovariogram-cubic-smooth}
+} 
 \end{figure}
 
-Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma_2 \right)$. Examination of $\phi_{t,t-l}$ sliced across  inidividual values of $t = 2,\dots, 10, 10.5$ shows consistent behaviour over $l$ for each value of $t$, indicating a lack of a strong functional component of $m$, interaction or main effect, so it is pragmatic to let $\phi \in \hilbert = \hilbertl \otimes \hilbertm$, where 
+Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma_2 \right)$. \citet{pan2017jmcm} concluded that the regressogram of empirical estimates of $\phi_{t,t-l}$ show consistent behaviour over $l$ for each value of $t$, indicating a lack of a strong functional component of $m$. To facilitate a making this modeling decision in an entirely data-driven manner, we let $\phi \in \hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}$, where 
 
 \begin{align*} 
-\hilbertl &= \bigg\{ f: \ddot{f} = 0 \bigg\} \oplus \left\{f: f\left(0\right) = \dot{f}\left(0\right) = 0; \;\; \int\limits_0^1 \ddot{f}^2 \;dx < \infty \right\} \\
-%               &= \hilbertlnull \olpus \hilbertlpen
+\hilbert_{\left[1\right]} &= \bigg\{ \phi: \ddot{\phi} = 0 \bigg\} \oplus \left\{\phi: \phi\left(0\right) = \dot{\phi}\left(0\right) = 0; \;\; \int\limits_0^1 \ddot{\phi}^2 \;dx < \infty \right\} \\
+\hilbert_{\left[2\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int\limits_0^1 \phi \;dx = 0, \;\; \dot{f} \in \mathcal{L}_2\left[0,1\right]  \right\} 
 \end{align*} 
-
 \noindent
-and
-\begin{align*} 
-\hilbertm &= \bigg\{ f: f \propto 1 \bigg\} \oplus \left\{ f: \int\limits_0^1 f \;dx = 0, \;\; \dot{f} \in \mathcal{L}_2\left[0,1\right]  \right\} \\
-              % &= \hilbertmnull \olpus \hilbertmpen
-\end{align*} 
+This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by $\phi$ \citet{pan2017jmcm}, \citet{huang2006covariance}, and \citet{wu2003nonparametric} for the same data set.  Figure~\ref{fig:cattle-fitted-cholesky-decomposition} and Figure~\ref{fig:cattle-fitted-cholesky-ssanova} show the estimated Cholesky surface $\phi\left( t,s\right)$ and innovation variance function $\sigma^2\left(t\right)$ evaluated at $t = 1, 2, \dots, 10, 10.5$ and the corresponding pairs of observation times $\left(t,s\right)$, $1 \le s < t \le 10.5$.
+
+\subfile{chapter-5-subfiles/cattle-cholesky-cov-ggplot}
+\subfile{chapter-5-subfiles/cattle-cholesky-ssanova-ggplot}
 
 
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-3d}
-\end{center}
-\label{fig:cattleA-phi-3d}
-\caption{Cattle data: treatment group A estimated Cholesky surface.}
-\end{figure}
-
-\begin{figure}[H] \label{fig:cattle-cholesky-components}
-  \begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-intercept-3d}
-\label{fig:cattleA-phi-intercept}
-\caption{Estimated intercept of the Cholesky surface.}
-\end{subfigure}
-\hfill
- \begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-l-me-3d}
-\label{fig:cattleA-l-me}
-\caption{The estimated  functional main effect of $l$.}
-\end{subfigure} 
-
-\begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-m-me-3d}
-\label{fig:cattleA-m-me}
-\caption{The estimated functional main effect of $m$.}
-\end{subfigure}
-\hfill
- \begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/estimated-cholesky-surface-lm-interaction-3d}
-\label{fig:cattleA-lm-interaction}
-\caption{The estimated functional $l \times m$ interaction.}
-\end{subfigure} 
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H] \label{fig:cattle-cholesky-components}
-  \begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/fitted-innovation-variance-function-cattleA}
-\label{fig:cattleA-sig2-fit}
-\caption{Cattle data: treatment group A prediction residuals and estimated innovation variance function.}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{0.45\textwidth}
-\centering
-\includegraphics[width = \textwidth]{img/cattle/fitted-log-innovation-variance-function-cattleA}
-\label{fig:cattleA-log-sig2-fit}
-\caption{Cattle data: estimated log innovation variance function.}
-\end{subfigure} 
-\end{figure}
-
-Evaluating the normal likelihood at the fitted model gives $\hat{\ell} = -818.5323$.
-
+%Evaluating the normal likelihood at the fitted model gives $\hat{\ell} = -818.5323$.
+\bibliography{../Master}
 
 \end{document}
