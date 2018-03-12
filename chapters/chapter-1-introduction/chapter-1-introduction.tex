@@ -149,7 +149,7 @@ Our review of work in this area focuses on developments made from two connected 
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-%\subsection{Structured parametric covariances}
+\subsection{Structured parametric covariances}
 
 
 \subfile{chapter-1-subfiles/chapter-1-parametric-covariance-models}
@@ -157,28 +157,80 @@ Our review of work in this area focuses on developments made from two connected 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Shrinkage estimators based on the sample covariance matrix}
 
-\subfile{chapter-1-subfiles/chapter-1-S-based-shrinkage-estimators}
+%\subfile{chapter-1-subfiles/chapter-1-S-based-shrinkage-estimators}
 
-%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsubsection{Shrinking the spectrum and the correlation matrix}
 
-\subsubsection{Matrix decompositions} \label{chapter-1-matrix-decompositions}
-The most methodic and successful approaches to covariance modelling decompose a complicated and high-dimensional matrix into its variance and dependence components. The variance-correlation and spectral decompositions have constrained dependence €œcomponents and are not flexible in using covariates.
+\subfile{chapter-1-subfiles/chapter-1-spectrum-shrinkage}
+
+\subsubsection{Ledoit-Wolf shrinkage estimator}
+
+\subfile{chapter-1-subfiles/chapter-1-ledoit-wolf-estimator}
+
+
+\subsubsection{Elementwise shrinkage} \label{subsubsection:chapter-1-sss-1-3-4}
+A broad class of estimators that aim to stabilize the sample covariance matrix do so by applying shrinkage elementwise to the same covariance matrix. Shrinking the elements of the sample covariance matrix has been approached in a multitude of ways, including banding, tapering, and thresholding. These estimators are computationally inexpensive, with the exception of cross validation necessary for smoothing parameter selection. The tradeoff accompanying the ease of computation is that, because transformations of sample estimates are elementwise, the resulting estimators are not guaranteed to be positive definite.
+
+\subsubsection{Tapering and banding the sample covariance matrix} \label{chapter-1-banding-tapering-estimators}
+ 
+\subfile{chapter-1-subfiles/chapter-1-banding-tapering-estimators}
+
+\subsubsection{thresholding the sample covariance matrix}
+
+\subfile{chapter-1-subfiles/chapter-1-thresholding-estimators}
 
 \bigskip
 
+Alternately, for estimating the covariance of a random vector which is assumed to have a natural (time) ordering, several have proposed applying kernel smoothing methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. \citet{zeger1994semiparametric} introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  \citet{yao2005functional} applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error. The latter work is one of the few nonparametric methods utilizing smoothing in both dimensions of the covariance matrix, which was an inspiration of sorts for the work we present in Chapter 2. Like other elementwise shrinkage estimators, however, their proposed estimator is not guaranteed to be positive definite. 
+
+\subsubsection{Tuning parameter selection for element-wise shrinkage estimators}
+
+The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:general-thresholding-objective-function}, 
+
+\begin{equation} \label{eq:forbenius-norm}
+\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
+\end{equation}
+\noindent
+If $\Sigma$ were available, one would choose the value of the tuning parameter $\lambda$ which minimizes \ref{eq:frobenius-norm}. In practice, one tries to first approximate the risk, or 
+\[
+E_\Sigma\left[\vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 \right],
+\]
+\noindent
+and then choose the optimal value of $\lambda$.  As in regression methods, cross validation and a number of its variants have become popular choices for tuning parameter selection in covariance estimation, though unanimous agreement on which precise procedure is optimal is fleeting.  $K$-fold cross validation requires first splitting the data into folds $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$. The value of the tuning parameter is selected to minimize
+
+\begin{equation} \label{eq:K-fold-matrix--cv}
+\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on based on $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(-k\right)}$ is the regularized estimator under consideration based on the data after holding $\mathcal{D}_k$ out.  Using this approach, the size of the training data set is approximately $\left(K - 1 \right)N/K$, and the size of the validation set is approximately $N/K$ (though these quantities are only relevant when subjects have equal numbers of observations). For linear models, it has been shown that cross validation is asymptotically consistent is the ratio of the validation data set size over the training set size goes to 1. See \citet{shao1993linear}. This result motivates the reverse cross validation criterion, which is defined as follows:
+
+\begin{equation} \label{eq:K-fold-matrix-reverse-cv}
+\mbox{rCV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(k\right)} - \tilde{\Sigma}^{\left(-k\right)}  \vert \vert_F^2, 
+\end{equation}
+\noindent
+where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
+
+
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\subsection{Matrix decompositions} \label{chapter-1-matrix-decompositions}
+The most methodic and successful approaches to covariance modeling is to decompose the covariance matrix into its variance and dependence components. The following section demonstrates the role of multiple matrix parameterizations in removing the positive definite constraint that poses a challenge in most covariance estimation settings.
+
+\bigskip
+\subsubsection{The variance-correlation decomposition}
 \subfile{chapter-1-subfiles/chapter-1-variance-correlation-decomposition}
 
 \bigskip
 
+\subsubsection{Gaussian graphical models} 
 \subfile{chapter-1-subfiles/chapter-1-inverse-covariance-decomposition}
 
-\bigskip
-
+\subsubsection{The spectral decomposition}
 \subfile{chapter-1-subfiles/chapter-1-spectral-decomposition}
 
 \bigskip
 
-
+\subsubsection{The Cholesky decomposition} \label{chapter-1-cholesky-decomposition}
 \subfile{chapter-1-subfiles/chapter-1-cholesky-decomposition}
 
 
@@ -186,7 +238,9 @@ The most methodic and successful approaches to covariance modelling decompose a 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Generalized linear models for covariances}
 \subfile{chapter-1-subfiles/chapter-1-glm-covariance}
+
 \subfile{chapter-1-subfiles/chapter-1-mcd-as-glm}
+
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \bigskip
@@ -331,16 +385,7 @@ The most methodic and successful approaches to covariance modelling decompose a 
 %where $\phi_{ijk}$ is the autoregressive coefficient corresponding to the pair of measurements observed at time $t_{ij}$ and $t_{ik}$. A vectorized representation of Model~\ref{eq:discrete-unevenly-spaced-ar-model} can be obtained as before by adding the necessary parameters to $T$ and $D$.
 \bigskip
 
-\bigskip
-TODO: here, conclude with our view of the GARPs and IVs as functions, but allude to how this differs from the stationary approach of Pourahmadi and successive regressions by relaxing the stationarity assumption and viewing T as a continuous bivariate function. Move all the remaining details after this to Chapter 2.
-\bigskip
-
-\bigskip
-
- We prefer to take a full data-driven approach to the parameterization of the regression parameters in \ref{eq:discrete-unevenly-spaced-ar-model}, modeling $\phi_{ij} = \phi\left(t_i, t_j\right)$ as a smooth bivariate function, casting covariance estimation as estimation of a functional varying coefficient model. There is an already extensive body of surrounding the these models. {\needsparaphrased{See Senturk and Muller (2008), Noh and Park (2010), Chiou et
-al. (2012), and Senturk et al. (2013).}}
-
- While flexible enough to closely approximate nearly any functional relationship between a set of predictors and a response, they can also be incredibly interpretable, making them a pragmatic modeling choice when understanding the underlying data generating mechanism is of as much importance as strong predictive capability. By leveraging a likelihood-based estimation procedure, we can naturally relax the restriction that the data on individual curves $Y_1,\dots, Y_N$ be observed on a grid of time points which are equally spaced and common to all subjects. Simultaneously, by employing a functional view of the autoregressive coefficients $\phi_{t,j}$, we can seamlessly incorporate regularization framework that accompanies the usual nonparametric function estimation problem. We make only mild assumptions about the GARPs in terms of the direction perpendicular to the subdiagonals of $T$, but instead utilize penalties that shrink the coefficient function toward forms in concordance with previously proposed stationary parameterizations. In Chapter 2, we present a two functional representations of the varying coefficient function and innovation variance function in Model~\ref{eq:discrete-unevenly-spaced-ar-model}.
+Modeling $\phi_{ij} = \phi\left(t_i, t_j\right)$ as a smooth bivariate function, we cast the problem of estimating a covariance matrix as the estimation of a functional varying coefficient model. The existing body of literature surrounding these models is an extensive one; see \citet{csenturk2008generalized}, \citet{csenturk2013modeling}, and \citet{noh2010sparse}. This class of models is both flexible and interpretable, making them a pragmatic modeling choice when understanding the underlying data generating mechanism is of as much importance as strong predictive capability. We employ two representations of the GARPs, which we refer to as the \textit{generalized autoregressive coefficient function} within this frame. Chapter 2 presents a reproducing kernel Hilbert space framework for the estimation of both $\phi$ and $\sigma^2$. In Chapter 3, we discuss an alternative representation the varying coefficient function using the penalized B-splines of \citet{eilers1996flexible}. We properties of the P-splines that establish their connection to the usual spline penalty on the second derivative and demonstrate how their simple construction allows for extremely flexible regularization.
 
 
 

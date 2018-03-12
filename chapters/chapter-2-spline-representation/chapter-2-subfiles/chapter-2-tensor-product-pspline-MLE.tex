@@ -1,4 +1,5 @@
-
+\documentclass[../chapter-2-spline-representation.tex]{subfiles}
+\begin{document}
 We equip the $l$ and $m$ axes each with a B-spline basis to construct a basis for the varying coefficient function $\phi$ in \ref{eq:phi-star} by taking the tensor product of the two marginal bases. Let 
 \[
 B_{1}\left(l\right),\dots, B_{K}\left(l\right)  \mbox{ and } B_{1}\left(m\right),\dots, B_{L}\left(m\right)
@@ -248,4 +249,4 @@ This recipe for constructing a tensor product basis for $\phi$ is an easy and co
  \end{figure}
 
 The triangular domain of $\phi$ cannot be modeled by the tensor product basis as constructed due to singularities resulting from the large number of basis functions anchored at knots near which we have no data, and hence little information about the corresponding basis coefficient. Much work in computer graphics has been done proposing methods of smoothing over arbitrary function domains, which are approximated by triangulations. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. These methods are, however, quite computationally intensive; to correct for the instability in the smoothed surface, we can simply remove the knots corresponding to tensor products functions which do not overlap with the function domain from the basis, $B$, and trimming the penalty matrices $P_l$ and $P_m$ as needed. With the trimmed basis and penalties, we can carry out optimization as previously discussed.
-
+\end{document}

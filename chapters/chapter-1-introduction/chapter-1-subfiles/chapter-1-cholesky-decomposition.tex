@@ -1,3 +1,6 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
 The Cholesky decomposition of a positive-definite matrix has the form
 
 \begin{equation}\label{eq:standard-cholesky-decomposition}
@@ -16,22 +19,67 @@ where $L = D^{-1/2}C$. This is commonly referred to as the modified Cholesky dec
 D = T\Sigma T', \quad \Sigma^{-1} = T'D^{-1} T,
 \end{equation}
  \noindent
-where $T = L^{-1}$. The first identity in $\ref{eq:modified-cholesky-decomposition}$ looks much like the spectral decomposition in that the lower triangular matrix $T$ diagonalizes $\Sigma$. The entries of $T$ are statistically interpretable  and are, unlike the elements of the orthogonal matrix of the spectral decomposition, unconstrained.  
+where $T = L^{-1}$. Like $P$ as in the spectral decomposition, the lower triangular matrix $T$ diagonalizes $\Sigma$. However, the Cholesky decomposition is perhaps more attractive since unlike the entries of the orthogonal matrix of the spectral decomposition, the entries of $T$ are unconstrained, and furthermore, have a specific statistical interpretation.
 
 \bigskip
 
-Like the variance-correlation decomposition of the inverse covariance matrix \ref{eq:inverse-covariance-decomposition}, the Cholesky factor $T$ and diagonal matrix $D$ can be constructed using components of a regression model for $y_t$ using its predecessors $y_1, \dots, y_{t-1}$. Let $Y$ denote a mean zero random vector with positive definite covariance matrix $\Sigma$. Let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t?1}, \dots , y_1$, and let $\epsilon_t = y_t ? \hat{y}_t$ be its prediction error with variance  $\sigma_t^2 = Var\left(\epsilon_t\right).$ Then, standard regression machinery gives us that there exist unique scalars $\phi_{tj}$ so that
+Like the variance-correlation decomposition of the inverse covariance matrix \ref{eq:inverse-covariance-decomposition}, the Cholesky factor $T$ and diagonal matrix $D$ can be constructed using components of a regression model. Consider regressing $y_t$ on its predecessors $y_1, \dots, y_{t-1}$. Let $Y = \left( y_1,\dots, y_M \right)'$ denote a mean zero random vector with positive definite covariance matrix $\Sigma$, and let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t-1}, \dots , y_1$. Let  $\epsilon_t$ denote the corresponding prediction residual having variance  $\sigma_t^2 = Var\left(\epsilon_t\right)$. Standard regression machinery gives us that there exist unique scalars $\phi_{tj}$ so that
 
-\begin{equation}
-y_t = \sum_{j = 1}^{t-1} \phi_{t,j} y_j + \epsilon_t,
+\begin{equation} \label{eq:mcd-ar-model}
+y_t = \sum_{j = 1}^{t-1} \phi_{t,j} y_j + \sigma_t\epsilon_t, \quad t = 2, \dots, M
 \end{equation}
 \noindent
-where the $\left(t, j\right)$ entry of $T$ is $\phi_{tj}$ , the negatives of the regression coefficients and the $(t, t)$ entry of $D$ is $\sigma_t^2 = var\left(\epsilon_t\right)$, the innovation variance. A schematic view of the components of a covariance matrix obtained through successive regressions (Gram-Schmidt orthogonalization procedure) is given in Table 2. Since the $\phi_{ij}$s are regression coefficients, it is evident that for any unstructured covariance matrix these and the log innovation variances are unconstrained, in the sequel they are referred to as the generalized autoregressive parameters (GARP) and innovation variances (IV) (Pourahmadi, 1999, 2000). Interestingly, this regression approach reveals the equivalence of modeling a covariance matrix to that of dealing with a sequence of $M - 1$ varying-coefficient and varying-order regression models. Consequently, one can bring the entire regression machinery to the service of the unintuitive task of modeling covariance matrices. Stated differently, the framework above is similar to that of using increasing order autoregressive models in approximating the covariance matrix or the spectrum of a stationary time series.
+where 
+\begin{equation*}
+\epsilon_t = \left\{ \begin{array}{lr} 
+y_t  -  \hat{y}_t, & t > 1 \\
+y_t, & t = 1\end{array} \right. 
+\end{equation*}
+\noindent
+are i.i.d. mean zero random variables with unit variance.  The connection between the Cholesky decomposition and the autoregressive model (\ref{eq:mcd-ar-model}) is established by noting that the Cholesky factor contains the negatives of the regression coefficients and the prediction error variances are the diagonal elements of $D$.  Let $\epsilon = \left(y_1, \dots, y_M\right)'$ denote the vector of uncorrelated prediction residuals with
 
+\[
+Cov\left(\epsilon\right) = D = diag\left(\sigma_1^2,\dots, \sigma_M^2\right)'.
+\]
+\noindent
+Then model (\ref{eq:mcd-ar-model}) can be written in vector form $\epsilon = TY$,  where the $\left(t, j\right)$ entry of $T$ is $-\phi_{tj}$ , and the $(t, t)$ entry of $D$ is the $t^{th}$ prediction variance $\sigma_t^2 = var\left(\epsilon_t\right)$. 
+
+\begin{align}
+\begin{bmatrix}
+1&&&&\\
+-\phi_{21}&1&&&\\
+-\phi_{31}&-\phi_{32}&1&&\\
+\vdots &&&\ddots& \\
+-\phi_{m1}&-\phi_{m2}& \dots & -\phi_{m,m-1}&1\\
+\end{bmatrix}
+\begin{bmatrix}
+y_1 \\
+y_2 \\ \ddots \\ y_m
+\end{bmatrix} = \begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\ \ddots \\ \epsilon_m
+\end{bmatrix}
+\end{align}
+
+
+Table~\ref{table:cholesky-decomposition-successive-regressions} illustrates how the components of a covariance matrix are obtained through successive regressions. Specifically, this representation demonstrates how modeling a covariance matrix is equivalent to fitting a sequence of $M - 1$ varying-coefficient and varying-order regression models. Since the $\phi_{ij}$s are regression coefficients, for any unstructured covariance matrix, these and the log innovation variances are unconstrained. The regression coefficients of the model in (\label{eq:mcd-ar-model}) are referred to as the \textit{generalized autoregressive parameters} (GARP) and \textit{innovation variances} (IV) (\citet{pourahmadi1999joint}, \citet{pourahmadi2000maximum}). The powerful implication of the parallel regression framework of decomposition (\ref{eq:modified-cholesky-decomposition}) is the accessibility of the entire portfolio of regression methods for the service of modeling covariance matrices. Moreover, the estimator $\hat{\Sigma}^{-1} = \hat{T}' \hat{D}^{-1} {T}$ constructed from the unconstrained parameters $\phi_{ij}$, $\sigma_j^2$ is guaranteed to be positive definite. 
 \bigskip
 
-%where $T$ is a lower triangular matrix with $1$?s as its diagonal entries and $D = \mbox{diag}\left(\sigma_1^2, \dots , \sigma_m^2\right)$ is a diagonal matrix. An attractive feature of this decomposition is that unlike the entries of $\Sigma$, the subdiagonal entries of $T$ and the log of the diagonal elements of $D$, $\log\left( \sigma_m^2 \right)$, $t = 1, \dots , m$, are not constrained. This permits one to impose structures on the unconstrained parameters without worrying about the resulting estimator not satisfying the positive-definiteness constraint. Denote estimators of $T$ and $D$ in \ref{eq:T-Sigma-Ttrans-equals-D} by  $\hat{T}$ and $\hat{D}$, which may be obtained by fitting linear models or some other structural models; then an estimator of $\Sigma$ given by $\Sigma  = \hat{T}^{-T} \hat{D} \hat{T}^{-T}$ is guaranteed to be positive-definite.  From this perspective, covariance modeling can be considered an extension of generalized linear models \citet{McCullagh1989}. Factoring $\Sigma$ as in \ref{eq:cholesky-matrix-decomposition} provides a link function $g\left(\Sigma\right) = \left(T, \log\left(D\right)\right)$ where $\log\left(D\right) = \mbox{diag}\left( \log\left(\sigma_1^2\right),\dots , \log\left(\sigma_m^2 \right) \right)$. Parametric, nonparametric, or  Bayesian models may then be applied to  the unconstrained entries of $T$ and $\log\left(D\right)$.  Whereas other decompositions are permutation-invariant, the interpretation of  the regression model induced by the MCD assumes a natural (time) ordering among the variables in $Y$.
-%
+\begin{table}[H]
+\centering
+\caption{Autoregressive coefficients and prediction error variances of successive regressions.}
+\begin{tabular}{cccccc}
+ $y_{1}$&$y_{2}$ & $y_{3}$ & $\dots$ &$y_{m-1}$& $y_{m}$\\ \midrule
+ $1$& &&&&\\
+$\phi_{21}$& 1 &&&& \\
+$\phi_{31}$& $\phi_{32}$& 1 &&& \\ 
+$\vdots$ & $\vdots$ & & $\ddots$&& \\
+$\vdots$ & $\vdots$ & && $\ddots$& \\
+$\phi_{m1}$& $\phi_{m2}$&$\dots$ &$\dots$ &$\phi_{m,m-1}$ & 1\\ \midrule
+$\sigma_1^2$ & $\sigma_1^2$ & $\dots$&$\dots$ &$\sigma_{m-1}^2$ &$\sigma_m^2$
+\end{tabular} \label{table:cholesky-decomposition-successive-regressions}
+\end{table}
+
 %\bigskip
 %
 %immediately leads to the modified Cholesky decomposition \ref{eq:cholesky-matrix-decomposition}. It also can be used to clarify the close relation between the decomposition (2) and the time series ARMA models in that the latter is means to diagonalize a Toeplitz covariance matrix, for details see Pourahmadi (2001, Sec. 4.2.5).
@@ -55,25 +103,15 @@ where the $\left(t, j\right)$ entry of $T$ is $\phi_{tj}$ , the negatives of the
 %\begin{equation*}
 %\phi_{t,t-j} = f_{j,M}\left(t/M\right),\quad \sigma_t + \sigma_M \left(t/M\right). 
 %\end{equation*}
+%\begin{equation}
+%z_{ijk}^T = \left(1, t_{ij} - t_{ik},\left( t_{ij} - t_{ik} \right)^2, \dots, \left(t_{ij} - t_{ik}\right)^{q-1} \right) \label{covmodel}
+%\end{equation}
 
-The details of smoothing and selection of the order $m$ of the autoregression and a simulation study comparing performance of the sample covariance matrix to smoothed estimators are given in Wu and Pourahmadi (2003). Due to the closer connection between entries of $T$ and the family of regression (3), it is conceivable that some of the entries of $T$ could be zero or close to it. Smith and Kohn (2002) have used a prior that allows for zero entries in $T$ and have obtained a parsimonious model for $\Sigma$ without assuming a parametric structure. Similar results are reported in Huang, Liu and Pourahmadi (2004) using penalized likelihood with $L_1$-penalty to estimate $T$ for Gaussian data.
- A commonly utilized approach in previous work is to model $\phi_{ijk} = z_{ijk}^T \gamma$ where $z_{ijk}$ is a vector of powers of time differences and $\gamma$ is a vector of unknown ``dependence'' parameters to be estimated from the data. \citet{chen2011efficient}, \citet{lin2009robust}, \citet{pan2003modelling},  and \citet{pourahmadi1999joint} define
 
-\begin{equation}
-z_{ijk}^T = \left(1, t_{ij} - t_{ik},\left( t_{ij} - t_{ik} \right)^2, \dots, \left(t_{ij} - t_{ik}\right)^{q-1} \right) \label{covmodel}
-\end{equation}
-
-Modeling the covariance in such a way is reduces a potentially high dimensional problem to something much more computationally feasible; if one models the innovation variances $\sigma^2\left(t\right)$ similarly using a $d$-dimensional vector of covariates, the problem reduces to estimating $q+d$ unconstrained parameters, where much of the dimensionality reduction is a result of characterizing the GARPs in terms of only the difference between pairs of observed time points, and not the time points themselves.  Modeling $\phi$ in such a way is equivalent to specifying a Toeplitz structure for $\Sigma$. A $p \times p$ Toeplitz matrix $M$ is a matrix with elements $m_{ij}$ such that $m_{ij} = m_{\vert i-j \vert}$ i.e. a matrix of the form
 
 
 \bigskip
 
-The estimated covariance matrix may be considerably biased when the specified parametric model is far from the truth.  To avoid model misspecification that potentially accompanies parametric analysis, many have alternatively  proposed nonparametric and semiparametric techniques approaches to estimation.  While these estimators can be very flexible and thus exhibit low bias, this advantage can be offset with high variance.  To balance the tradeoff between bias and variance, shrinkage or regularization may be applied to estimates to improve stability of estimators. \citet{diggle1998nonparametric} proposed nonparametric estimation of the covariance matrix of longitudinal data by smoothing raw sample variogram ordinates and squared residuals.  [DISCUSS THE NONPARAMETRIC SMOOTHER OF HANS GEORG MULLER HERE]  However, neither of these methods ensure that the resulting estimates are positive-definite.  
-
-\bigskip
-Several others have proposed methods for covariance estimation within the same paradigm of a smooth, continuous function underlying a discretized covariance matrix associated with the observed data.   \citet{pourahmadi1999joint} employ the Cholesky decomposition to guarantee positive-definiteness and imposed structure on the elements of the Cholesky decomposition and heuristically argue that $\phi_{t,t-l}$ should be monotonically decreasing in $l$. That is, the effect of $y_{t-l}$ on $y_t$ through the autoregressive parameterization should decrease as the distance in time between the two measurements increases. In similar spirit, others including \citet{bickel2008regularized} and \citet{levina2008sparse} enforce such structure by setting $\phi_{t,t-l}$ equal to zero for $l$ large enough, or equivalently, setting all subdiagonals of $T$ to zero beyond the $K^{th}$ off-diagonal. The tuning parameter $K$ is chosen using a model selection criterion such as Akaike information criterion, Bayesian information criterion, or cross validation or a variant thereof.  In terms of the autoregressive model corresponding to the Cholesky decomposition, this form of regularization, known as ``banding'' the Cholesky factor $T$, is equivalent to regressing $y_t$ on only its $K$ immediate predecessors, setting $\phi_{tj} = 0$ for $t-j>K$. 
-
-\bigskip
 %
 %From this perspective, it is apparent that the presentation of covariance estimation as a least squares regression problem suggests that the familiar ideas of model regularization for least-squares regression can be used for estimating covariances.  . \citet{huang2007estimation} 
 %
@@ -93,26 +131,4 @@ Several others have proposed methods for covariance estimation within the same p
 %\bigskip
 %
 %\citet{yao2005functional} do not utilize the Cholesky parameterization, and their estimates are not guaranteed to be positive definite.  We combine the advantages of bivariate smoothing as in \citet{yao2005functional} with the added utility of the Cholesky parameterization in \citet{huang2007estimation}; in doing so, we present a flexible and coherent approach to covariance estimation, while simultaneously we ensuring positive definiteness of estimates.Rather than shrinking element of the Cholesky factor to zero after a particular value of $l$, we choose to softly enforce monotonicity in $l$ by using a hinge penalty as in the work of \citet{tibshirani2011nearly}. 
-
-\section{The Cholesky Decomposition and the MLE for $\Sigma$}
-
-Let $Y = \left( y_{1}, y_{2}, \dots, y_{m} \right)'$ denote a mean zero random vector with variance-covariance matrix $\Sigma$, which we can think of as the time-ordered measurements on one subject in a longitudinal study. To present a comprehensive overview our estimation procedure, we begin with the representation of the covariance matrix, $\Sigma$, in terms of its Cholesky decomposition. Decomposing $\Sigma$ in such a way allows for both an unconstrained parameterization and statistically meaningful interpretation of covariance parameters. For any positive definite matrix $\Sigma$, there exists a unique lower triangular matrix $T$ with diagonal entries equal to $1$ which diagonalizes $\Sigma$:
-
-\begin{equation} \label{eq:T-Sigma-Ttrans-equals-D}
- T \Sigma T^T = D
-\end{equation}
-\noindent
-
-The convenient statistical interpretation of the parameters of the covariance matrix then comes if we consider, for $t = 2, \dots, m$, regressing $y_t$ on its predecessors $y_1,\dots, y_{t-1}$, letting
-\begin{equation} 
-{y}_{i}  = \sum_{j=1}^{i-1} \phi_{ij} y_{j} + \sigma_{i}\epsilon_{i} \label{eq:discrete-evenly-spaced-ar-model},
-\end{equation}
-\noindent
-where $\mbox{var}\left( \epsilon_i \right) = \sigma_i^2$. If we take the $i$-$j^{th}$ element $T$ to be $-\phi_{ij}$ for $j < i$, and take the $i^{th}$ diagonal entry of $D$ to be $\mbox{var}\left( \epsilon_i \right) = \sigma_i^2$, a vectorized expression for Model~\ref{eq:discrete-evenly-spaced-ar-model} is given by
-
-\begin{equation}
-\bfeps = T Y \label{eq:vectorized-ar-model}.
-\end{equation}
-\noindent
-and taking covariances on both sides of \eqref{epsilon}, we see that $T$ and $D$ satisfy \ref{eq:T-Sigma-Ttrans-equals-D}. Immediately, we have that $\Sigma^{-1} = T' D^{-1} T$. The regression coefficients $\lbrace \phi_{ij} \rbrace$ are referred to as the \emph{generalized autoregressive parameters} (GARPs), and the $\lbrace \sigma_{ij} \rbrace$ are referred to as the \emph{innovation variances} (IVs.) 
-\bigskip
+\end{document}

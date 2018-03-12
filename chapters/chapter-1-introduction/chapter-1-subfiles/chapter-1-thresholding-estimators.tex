@@ -1,3 +1,5 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
 
 When both $N$ and $M$ are large, it is reasonable to assume that $\Sigma$ is sparse, so that many elements of the covariance matrix are equal to 0. In this case, setting certain elements of sample estimates to zero can improve the quality of estimators. Thresholding was originally a method developed in nonparametric function estimation, but recently \citet{bickel2008covariance} and \citet{rothman2009generalized} have utilized thresholding for estimating large covariance matrices.  For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
 \begin{itemize}
@@ -24,3 +26,6 @@ S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \la
 \]
 \noindent 
 where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. These estimators are simple to compute compared to competitor estimates like the penalized likelihood with LASSO penalty, but they suffer from the lack of guaranteed positive definiteness. However, similar to the result for banded estimators, \citet{bickel2008covariance} have established the consistency of the threshold estimator in the operator norm, uniformly over the class of matrices that satisfy a certain sparsity requirement. 
+
+
+\end{document}

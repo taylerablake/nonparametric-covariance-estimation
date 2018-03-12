@@ -1,4 +1,7 @@
-Gaussian graphical models Recall that the marginal (pairwise) dependence among the entries of a random vector is captured by the off-diagonal entries of $\Sigma$ or the entries of the correlation matrix $R = \left(\rho_{ij}\right)$. However, the conditional dependencies can be found in the off-diagonal entries of the precision matrix $\Sigma^{-1} = \left( \sigma^{ij} \right)$. More precisely, for $Y$ a mean zero normal random vector with a positive-definite covariance matrix, if the $\left(i,j\right)$ component of the precision matrix is zero, then given the other variables, $y_i$ and $y_j$ are conditionally independent (\citet{Anderson84a}). 
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+The marginal (pairwise) dependence among the entries of a random vector are captured by the off-diagonal entries of $\Sigma$ or the entries of the correlation matrix $R = \left(\rho_{ij}\right)$. However, the conditional dependencies can be found in the off-diagonal entries of the precision matrix $\Sigma^{-1} = \left( \sigma^{ij} \right)$. More precisely, for $Y$ a mean zero normal random vector with a positive-definite covariance matrix, if the $\left(i,j\right)$ component of the precision matrix is zero, then given the other variables, $y_i$ and $y_j$ are conditionally independent (\citet{Anderson84a}). 
 
 \bigskip
 
@@ -26,4 +29,57 @@ To connect these parameters to those of a regression model, consider partitionin
 \end{bmatrix},
 \end{equation}
 \noindent
-Let $\Phi_{2\vert 1}$ denote the $M_2 \times M_1$ matrix of regression coefficients resulting from the least squares regression of $Y_2$ on $Y_1$, and let $e_{2\vert 1} = Y_2 - \Phi_{2\vert 1} Y_1$ denote the corresponding vector of residuals
+Let $\Phi_{2\vert 1}$ denote the $M_2 \times M_1$ matrix of regression coefficients resulting from the least squares regression of $Y_2$ on $Y_1$, and let $e_{2\vert 1} = Y_2 - \Phi_{2\vert 1} Y_1$ denote the corresponding vector of residuals. The regression coefficients $\Phi_{2\vert 1}$ and residuals $e_{2\vert 1}$ are obtained from restricting $e_{2\vert 1}$ to be uncorrelated with $Y_1$:
+
+\begin{align}
+ \begin{split} \label{eq:conditional-coef-y2-given-y1}
+ \Phi_{2\vert 1} &= \Sigma_{21}  \Sigma_{11}^{-1}  \\
+ &= -\left( \Sigma^{22}\right)^{-1} \Sigma^{21} 
+ \end{split}
+ \end{align}
+\begin{align}
+ \begin{split} \label{eq:conditional-cov-y2-given-y1}
+Cov\left(e_{2\vert 1}\right) &=  \Sigma_{22} - \Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\\
+&=  \Sigma_{22\vert 1}  = \left(\Sigma^{22} \right)^{-1}. 
+ \end{split}
+\end{align}
+
+If we let $M_2 = 1$, then one can establish the relationship between elements of the inverse covariance matrix and these regression coefficients and conditional covariances. When $Y_1 = Y_{-\left(i\right)} = \left( y_1, \dots, y_{i-1}, y_{i+1},\dots, y_M \right)'$ and $Y_2$ corresponds to a single $y_i$, $\Sigma_{22\vert 1}$, a scalar, is referred to as the \textit{partial variance} of $y_i$ given the other variables.  Denote the linear least squares predictor of $y_i$ based on $Y_{-\left(i\right)}$ by $y^*_i$ and $\epsilon^*_i = y_i - y^*_i$ with prediction variance $Var\left(\epsilon^*_i \right) = {d^*}^2_i$. Then
+
+\[
+y_i = \sum_{j \ne i} \beta_{ij} y_j + \epsilon^*_i,
+\] 
+\noindent
+where (\ref{eq:conditional-cov-y2-given-y1}) and (\ref{eq:conditional-coef-y2-given-y1}) give 
+
+\begin{align}
+ \begin{split} \label{eq:conditional-coef-y2-given-y1}
+\beta_{ij} &= -\frac{\sigma^{ij}}{\sigma^{ii}}, \quad j \ne i \\
+{d^*}_i^2 &= Var\left(y_i \vert y_j\right) =  \frac{1}{\sigma_{ii}},\quad j \ne i, \;\; i = 1,\dots, M
+ \end{split}
+\end{align}
+\noindent
+Thus, the unconstrained regression coefficient of the $j^{th}$ variable when we regressing $y_i$ on the rest of the variables is given by the $\left(i,j\right)$ entry of the inverse covariance matrix. The partial correlation between $y_i$ and $y_j$ can be defined if we consider the case where $M_2 = 2$. Letting $Y_2 = \left(y_i, y_j\right)'$, $i \ne j$ and $Y_1 = Y_{-\left(ij\right)}$ contain the remaining $M - 2$ variables, the covariance of $\left(y_i, y_j\right)$ after removing the linear effects of $\left\{ y_k : k \ne i,j\right\}$ is given by 
+
+\begin{align*}
+\Sigma_{22 \vert 1} &= \begin{bmatrix} \sigma^{ii} & \sigma^{ij} \\ \sigma^{ji} & \sigma^{jj} \end{bmatrix}^{-1} \\
+&= \frac{1}{\sigma^{ii}\sigma^{jj} - \left(\sigma^{ij}\right)^2}\begin{bmatrix} \sigma^{jj} & -\sigma^{ij} \\ -\sigma^{ij} & \sigma^{ii}\end{bmatrix}
+\end{align*}
+\noindent
+The regression coefficients (\ref{eq:conditional-coef-y2-given-y1}) can be written in terms of the partial correlation between $y_i$ and $y_j$:
+
+\begin{equation} \label{eq:partial-correlation-coefficient}
+\rho^*_{ij} = -\frac{\sigma^{ij}}{\sqrt{\sigma^{ii}}\sigma^{ij}}.
+\end{equation}
+\noindent
+Rewriting the $\beta_{ij}$, we have
+\begin{equation} \label{eq:partial-correlation-coefficient}
+\beta_{ij} = \rho^*_{ij} \sqrt{\frac{\sigma^{jj}}{\sigma^{ii}}},
+\end{equation}
+\noindent
+which shows that the sparsity of the inverse covariance matrix mirrors that of the matrix of partial correlations. This parallel motivates estimation of the inverse covariance matrix by fitting a sequence of penalized regression models, notably the  approach taken by \citet{peng2012partial} which imposes a Lasso penalty on the off-diagonal elements of the partial correlation matrix. 
+ 
+\end{document}
+
+
+

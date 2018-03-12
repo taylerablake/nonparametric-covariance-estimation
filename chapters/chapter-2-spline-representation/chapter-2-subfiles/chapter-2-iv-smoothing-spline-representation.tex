@@ -1,4 +1,5 @@
-
+\documentclass[../chapter-2-spline-representation.tex]{subfiles}
+\begin{document}
 
 Once we have an initial estimate of the generalized autoregressive coefficient function, $\phi$, we can use the model residuals to estimate the innovation variance function $\sigma^2\left(t\right)$. We use the same estimation approach as outlined in Section~\ref{RKHS-framework-for-phi}. Fixing $\phi = \phi^*$ for given estimate $\phi^*$, the negative log likelihood of the data $Y_1,\dots, Y_N$ is satisfies
 
@@ -56,5 +57,8 @@ L\left( \eta \right) &= -\sum_{i=1}^N \sum_{j=1}^{m_i} \left[ z_{ij} \eta\left(t
 \end{align}
 \noindent
 is continuous and convex in $\eta \in \hilbert$
+\end{document}
+
+
 
 % b\left( \eta_\left(t_{ij}\right)\right)

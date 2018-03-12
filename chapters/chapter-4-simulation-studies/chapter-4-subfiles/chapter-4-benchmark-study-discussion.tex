@@ -6,7 +6,7 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 \subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
 
 \bigskip
-Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.  The results of the simulations for complete data under entropy loss are presented in Tables~\ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}. Risk estimates under quadratic loss lead to similar conclusions as those made using entropy loss and are left to the Appendix, Tables~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}.  
+Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.  The results of the simulations for complete data under entropy loss are presented in Tables~\ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}. Risk estimates under quadratic loss, while there is not agreement between results every time, qualitatively, they are similar in nature to those with entropy loss. These are left to the Appendix, Tables~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. Since both loss functions are not standardized, they cannot be compared across dimensions $M$.
 
 \bigskip
 
@@ -14,7 +14,11 @@ Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100
 
 \bigskip
 
-Since the regularized sample covariance estimators assume that $\Sigma$ is either sparse or has entries which decrease in absolute value in distance from the diagonal, both estimators perform poorly under Model II, which exhibits neither of these characteristics. However, on every subdiagonal are entries which are very small. The tapering estimator performs abysmally for this structure, since for almost any choice of $k$, it will incorrectly be shrinking many entries which are large in absolute values to zero. The soft thresholding estimator assumes no implicit structure of the $M$ measurements which make up the random vector (it does not assume that $y_1,\dots, y_M$ are time-ordered.) While the covariance is nonstationary, the elements of $\Sigma$ are highly structured, but the soft-thresholding esitmator fails to exploit this structure which results in $S^\lambda$ having 0s spuriously placed. The MCD polynomial estimator fails for the same reason, since it assumes that $\phi$ can be modeled as a function of $l$ only. The non-zero elements of  the covariance matrix under Model III have similar structure and presenting similar difficulties for the three alternative estimators. The sample covariance matrix far outperforms both of its regularized variants almost uniformly across subject sample sizes $N$ for moderate within-subject sampling rates ($M = 20, 30$.)
+In general, our estimators outperform the alternative estimators across the five covariance structures. This is not surprising; the soft thresholding estimator assumes no ordering of the variables of the random vector, which all but one of the generating structures exhibit. The tapering estimator assumes that the absolute value of the covariance decays as $l$ increases; only model IV satisfies this. The parametric estimator based on the modified Cholesky decomposition assumes that $\phi$ can be modeled as a univariate function of $l$, which does not hold for any of the models, save model IV.
+
+\bigskip
+
+The smoothing spline estimator outperforms the P-spline estimator in cases where the underlying covariance structure cannot be modeled as a multiplicative function of $l$ and $m$ - namely, model II. The P-spline estimator outperforms the smoothing spline estimator under model IV, likely due to the advantage of trivially change the order of the difference penalty. When the difference order is specified so that the generating model belongs to the null space $\hilbert_0$, the search for the optimal set of smoothing parameters is a much easier task.   
  
 \bigskip
 

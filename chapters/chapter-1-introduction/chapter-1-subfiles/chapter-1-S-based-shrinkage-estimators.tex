@@ -1,11 +1,14 @@
-Alternately, several have proposed applying nonparametric methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. Diggle and Verbyla (1998) introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  Yao, Mueller, and Wang applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error.  {\needsparaphrased{[REVIEW 2009 WU AND POURAHMADI METHOD: banding the sample covariance matrix. Under the assumption of short range dependency, they show that their estimator converges to the true covariance matrix for a broad class of nonlinear processes.]} }The estimates yielded by these approaches, however, are not guaranteed to be positive definite. 
-
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsubsection{Shrinking the spectrum and the correlation matrix}
+
+\subfile{chapter-1-subfiles/chapter-1-spectrum-shrinkage}
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsubsection{Ledoit-Wolf shrinkage estimator}
 
+\subfile{chapter-1-subfiles/chapter-1-ledoit-wolf-estimator}
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -18,11 +21,15 @@ A broad class of estimators that aim to stabilize the sample covariance matrix d
 
 \subsubsection{thresholding the sample covariance matrix}
 
-
 \subfile{chapter-1-subfiles/chapter-1-thresholding-estimators}
+
+\bigskip
+
+Alternately, for estimating the covariance of a random vector which is assumed to have a natural (time) ordering, several have proposed applying kernel smoothing methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. \citet{zeger1994semiparametric} introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  \citet{yao2005functional} applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error. The latter work is one of the few nonparametric methods utilizing smoothing in both dimensions of the covariance matrix, which was an inspiration of sorts for the work we present in Chapter 2. Like other elementwise shrinkage estimators, however, their proposed estimator is not guaranteed to be positive definite. 
+
 \subsubsection{Tuning parameter selection for element-wise shrinkage estimators}
 
-The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:soft-thresholding-objective-function}, 
+The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:general-thresholding-objective-function}, 
 
 \begin{equation} \label{eq:forbenius-norm}
 \vert \vert  \hat{\Sigma}^\lambda - \Sigma \vert \vert^2 = \left(\sum_{i,j} \left(\hat{\sigma}^\lambda_{ij} - \sigma_{ij} \right)^2\right)^{1/2}
@@ -46,6 +53,4 @@ where $\tilde{\Sigma}^{\left(k\right)}$ is the unregularized estimator based on 
 \end{equation}
 \noindent
 where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on based on the data after holding out $\mathcal{D}_k$, and $\hat{\Sigma}^{\left(k\right)}$ is the regularized estimator under consideration based on $\mathcal{D}_k$. 
-
-{\needsparaphrased{TODO: introduce bootstrap risk estimator methods here  - See \citet{fang2016tuning}, section 2.2.1}}
-
+\end{document}

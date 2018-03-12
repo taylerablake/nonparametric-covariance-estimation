@@ -1,4 +1,8 @@
-\subsection{Structured parametric covariances}
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+
+\subsection{Structured parametric covariances} \label{parametric-covariance-models}
 
 
 In the applied statistics literature, particularly for repeated measure data, it is quite common to pick a stationary covariance matrix for the covariance structure. Typical choices are simple models which depend on a small number of parameters such as compound symmetry and autoregressive models of order $k$, where $k$ is small.We will review a selection of modeled frequently encountered in the applied statistics literature in sections to follow. This approach is attractive because it is computationally inexpensive, and software packages implementing fitting procedures for a growing number of simple models are readily accessible. The compound symmetric model was at one time a very popular choice for parametric covariance structure, specifying
@@ -69,7 +73,7 @@ where the $\left\{\epsilon_t\right\}$ are independently and identically distribu
 \bigskip
 \noindent
 Thus, variances are constant and correlations between $y_t$ and $y_{t-l}$ vanish beyond a finite, constant lag $l$. Here $\rho_1,\dots, \rho_q$are arbitrary parameters subject only to positive definiteness constraints. This model generalizes to a $q^{th}$-order Toeplitz model, which specifies
-\begin{equation*}
+\begin{equation} \label{eq:toeplitz-covariance-model}
 \sigma_{ij} = \left\{ \begin{array}{ll}
 \rho_{i-j} & \vert i - j \vert\le q, \\ 
 &\\
@@ -77,15 +81,18 @@ Thus, variances are constant and correlations between $y_t$ and $y_{t-l}$ vanish
 & \\
 \sigma^2  & i = j,\\
 \end{array}\right.
-\end{equation*}
+\end{equation}
 or covariance matrix of the form
-\begin{equation}
-M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix}, \label{toeplitz}
+\begin{equation} \label{eq:toeplitz-covariance-matrix}
+M = \begin{bmatrix} m_0 & m_1 & m_2 & \dots & m_{p-1}\\ m_1 & m_0 & m_1 & \dots & m_{p-2}\\m_2 & m_1 & m_0 & \dots & m_{p-3}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\  m_{p-1} & m_{p-2} & m_{p-3} & \dots & m_0 \end{bmatrix}, 
 \end{equation}
 \noindent
 where $m_j = 0$ for all $j > q$.
 
-\noindent
+
+\bigskip
+
+
 In turn, one can further generalize to a $q^{th}$-order banded model by specifying that the covariances on off-diagonals of the correlation matrix beyond the $q^{th}$ off-diagonal are zero, and otherwise  not imposing any structural restrictions on the remaining elements of the covariance matrix beyond those required for positive definiteness. The tradeoff of the additional flexibility of the general banded model over the MA and Toeplitz models is that the number of parameters in a general $q$-banded covariance structure is $O\left(n\right)$ rather than $O\left(1\right)$.
 
 \bigskip
@@ -140,10 +147,11 @@ In the quadratic case, $Z_i =\begin{bmatrix}1_{m_i}, \left(t_{i1}, \dots, t_{i,m
 \sigma^2 + \sigma_{00} + 2\sigma_{01}j + \sigma_{11}j^2 &  i= j, \\
 \end{array}\right.
 \end{equation}
-\noindent
+\newline
+
 These models are can permit variance and covariances which exhibit several kinds time dependency, including increasing or decreasing variances and correlations of which some are negative while others are positive. However, this model does not permit variances which are concave-down in time, and it precludes the variances from being constant if the same-lag correlations are different.
 
 \bigskip
 
 The previous list is far from an exhaustive list of parametric covariance structures - we will later reference structures which we have not discussed here, such as antedependence models. For example, see \citet{jennrich1986unbalanced} for additional models for repeated measures data. While these models are computationally attractive and the choices for parametric model structure are seemingly unlimited, specifying the appropriate parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
-
+\end{document}

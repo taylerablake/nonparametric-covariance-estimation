@@ -1,3 +1,6 @@
+\documentclass[../chapter-2-spline-representation.tex]{subfiles}
+\begin{document}
+
 This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \citet{gu2013smoothing} Theorem 2.2.
 
 \bigskip
@@ -413,7 +416,7 @@ for
 G = \tildeB\left(\tildeB' \tildeB \right)^{-1}\tildeB'.
 \]
 
-
+\end{document}
 
 
 
