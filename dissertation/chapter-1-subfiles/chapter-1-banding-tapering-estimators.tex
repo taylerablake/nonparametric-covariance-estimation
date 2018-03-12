@@ -1,0 +1,52 @@
+The sample covariance matrix is unstable when the dimension of the data $M$ is larger than the sample size $N$, and even when the sample size is larger than the dimension of the data many entries of the sample covariance matrix $S = \left(s_{ij} \right)$ could be small. Setting certain entries to zero is one approach to reducing parameter dimension to stabilize estimates. In time series analysis, one observes a sample size of $N = 1$: the data is a single, long realization. Assuming stationarity of the process reduces the number of distinct parameters of the $M \times M$ covariance matrix $\Sigma$ from $M\left(M + 1\right)/2$ to $M$, which could be large yet. Moving average (MA) and autoregressive (AR) models reduce the number of parameters in the same way as banding a covariance or inverse covariance matrix. \citet{bickel2008regularized}; \citet{wu2009banding}. For a given sample covariance matrix $S = \left(s_{ij} \right)$ and integer $k$, $0 < k < M$, the $k$-banded sample covariance matrix is given by
+
+\begin{equation} \label{eq:general-banded-estimator} 
+B_k\left(S\right) = \begin{bmatrix} s_{ij} 1\left(\vert i-j \vert \le k\right) \end{bmatrix}
+\end{equation}
+\noindent
+This kind of regularization is ideal when the indices have been arranged so that
+
+\[
+\vert i -  j\vert > k \Rightarrow  \sigma_{ij} = 0,
+\]
+which is applicable if, for example, $y_t$, $t = 1, \dots,M$ follow a finite heterogeneous moving average process
+
+\begin{equation*} 
+y_t = \sum_{j = 1}^k \theta_{t, t-j} \epsilon_j,
+\end{equation*}
+\noindent
+where the $\epsilon_j$'s are iid mean zero errors having finite variance. Banding estimators are a special case of tapering estimators, which have the form
+\begin{equation} \label{eq:general-tapering-estimator} 
+\hat{\Sigma} = R \ast S 
+\end{equation}
+\noindent
+where $R$ is a positive definite tapering matrix, and the $\left( \ast \right)$ operator denotes the Schur matrix multiplication (the element-wise matrix product). The Schur product of two positive definite matrices is also guaranteed to be positive definite, so the tapering estimator's positive definiteness is dependent on the choice of tapering matrix $R$. Banding the sample covariance matrix is equivalent to premultiplying $S$ by 
+
+\[
+R = \left(r_{ij}\right) = \left( 1\left(\vert i-j \vert \le k\right)\right),
+\] 
+\noindent
+which is not positive definite. However, several have used the same concept on the lower triangular matrix of the Cholesky decomposition of $\Sigma^{-1}$, including \citet{wu2003nonparametric}, \citet{huang2006covariance}, \citet{levina2008sparse}. Banding the Cholesky factor mitigates the need for the tapering matrix to be positive definite, since the parameters of the reparameterization are completely free while still guaranteeing that the estimate is positive definite. Detailed discussion follows in Section~\ref{chapter-1-cholesky-decomposition}. 
+
+\bigskip
+
+When $N$, $M$, and $k$ are large, asymptotic analysis of banding estimators is available. \citet{bickel2008regularized} establish consistency of the banded estimator in the operator norm, and uniform consistency over the class of ``approximately bandable'' matrices under a normal likelihood. Convergence requires that $\log M/ N \rightarrow 0$, and they derive an explicit rate of convergence which depends on the rate at which $k$ grows. \citet{cai2010optimal} proposed the following tapering estimator of the sample covariance matrix:
+
+\begin{equation} \label{eq:cai-tapering-estimator}
+S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
+\end{equation}
+\noindent
+where the $\omega_{ij}^k$ are given by 
+\begin{equation*}
+\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
+\end{equation*}
+\noindent
+The weights $\omega^k_{ij}$ are indexed with superscript to indicate that they  are controlled by a tuning parameter, $k$,  which can take integer values between 0 and $M$, the dimension of the covariance matrix.  Without loss of generality,  we assume that $k_h = k/2$ is even. The weights may be rewritten as
+\begin{align*}
+\omega_{ij} = \left\{\begin{array}{ll} 1, & \vert \vert i -j \vert \vert \le k_h \\
+                             2 - \frac{i - j}{k_h}, & k_h < \vert \vert i -j \vert \vert \le k, \\
+                             0, & \mbox{otherwise}  \end{array} \right.
+\end{align*}
+\noindent
+This expression of the weights makes it clear how the selection of $k$ controls the amount of shrinkage applied to a particular element of the sample covariance matrix. Elements of $S$ belonging to the subdiagonals closest to the main diagonal are left unregularized. The shrinkage applied to elements increases as we move away from the diagonal: a multiplicative shrinkage factor of $2 - \frac{i - j}{k_h}$ is applied to elements belonging to subdiagonals $k_h,\dots,k-1,k$, and elements further than $k$ subdiagonals from the main diagonal are shrunk to zero. \citet{cai2010optimal} derived optimal rates of convergence under the operator norm for their estimator and presented simulations demonstrating that it nearly uniformly outperforms the banding estimator of \citet{bickel2008regularized}.  
+

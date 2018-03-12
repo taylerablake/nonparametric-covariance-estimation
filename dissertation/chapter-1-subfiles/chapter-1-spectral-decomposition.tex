@@ -1,0 +1,18 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+
+The spectral decomposition is the basis of several methods in multivariate statistics, including principal component analysis and factor analysis. See \citet{Anderson84a},  (Hotelling, 1933). The spectral decomposition of a covariance matrix $\Sigma$ is given by
+
+\begin{equation} \label{eq:spectral-decomposition}
+\Sigma = P \Lambda P' = \sum_{i = 1}^M \lambda_i e_i e'_i,
+\end{equation}
+\noindent
+where $\Lambda$ is a diagonal matrix of eigenvalues $\lambda_1,\dots, \lambda_M$, and $P$ is the orthogonal matrix of normalized eigenvectors, having  $e_i$ as its $i^{th}$ column. The entries of $\Lambda$ and $P$ can be interpreted as thevariances and coefficients of the $M$ principal components. The matrix $P$ is constrained by its orthogonality, its use within the framework of GLM or alongside covariates in an effort to reduce parameter dimension is inconvenient. In spite of this,  \citet{chiu1996matrix} proposed an new unconstrained reparameterization of a covariance matrix using the spectral decomposition, modeling the matrix logarithm:
+
+\begin{equation} \label{eq:spectral-decomposition}
+\log \Sigma = P \log\Lambda P' = \sum_{i = 1}^M \log\left(\lambda_i \right)e_i e'_i,
+\end{equation}
+\noindent
+This decomposition is particularly interesting because it highlights a tradeoff between the requirements for unconstrained parameterization of covariance matrices and the statistical interpretability of the corresponding parameters. The components of the matrix logarithm, $\log \lambda_i$, are free, but lack any relevant statistical interpretability. We further discuss the log-linear GLM for covariance matrices in Section~\ref{log-linear-glms}.
+\end{document}

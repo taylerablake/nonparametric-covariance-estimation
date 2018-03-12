@@ -1,0 +1,84 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+%To satisfy the positive-definiteness constraint, methods have been developed and applied to certain reparameterizations of the covariance structure. Chiu, Leonard, and Tsui modeled the matrix logarithm of the covariance matrix. Early nonparametric work using the spectral decomposition of the covariance matrix included that of Rice and Silverman (1991) which discussed smoothing and smoothing parameter choice for eigenfunction estimation for regularly-spaced data. Staniswalis and Lee (1998) extended kernel-based smoothing of eigenfunctions to functional data observed on irregular grids. However, when the data are sparse in the sense that there are few repeated within-subject measurements and measurement times are quite different from subject-to-subject, approximation of the functional principal component scores defined by the Karhunen-Loeve expansion of the stochastic process by usual integration is unsatisfactory and requires numerical quadrature. Many have explored regression-based approaches using the Spectral decomposition, framing principal components analysis as a least-squares optimization problem. Among many others, Zou, Hastie and Tibshirani (2006) imposed penalties on regression coefficients to induce sparse loadings. {\needsparaphrased[REVIEW THE METHODS OF HUANG, KAUFMAN, YAO HERE]}
+%\bigskip
+
+The log link resolves the issued presented by the constrained parameter space associated with the identity link, leading to unconstrained parameterization of a covariance matrix. However, the parameters of the matrix logarithm lack any meaningful statistical interpretation. The hybrid link  constructed from the modified Cholesky decomposition of $\Sigma^{-1}$ given in \ref{eq:cholesky-decompostion-link-function} combines ideas in \citet{edgeworth1892xxii}, \citet{gabriel1962ante}, \citet{anderson1973asymptotically}, \citet{dempster1972covariance}, \citet{chiu1996matrix}, and \citet{zimmerman1997structured}. It leads to unconstrained and statistically meaningful reparameterization of the covariance matrix so that the ensuing GLM overcomes most of the shortcomings of the linear and log-linear models.  For an unstructured covariance matrix $\Sigma$, the nonredundant entries of the components $\left(T, \log D\right)$ of the modified Cholesky decompostion~\ref{eq:modified-cholesky-decomposition} can be written as the entries of 
+
+\begin{equation}\label{eq:cholesky-decompostion-link-function}
+g\left( \Sigma \right) = 2I - T - T' + \log D.
+\end{equation}
+\noindent
+These entries are unconstrained, allowing them to be modeled using any desired technique, including parametric, semi- and nonparametric, and Bayesian approaches. Including covariates in any proposed model for these components can be done so seamlessly. As in the usual GLM setting for estimation of the mean, one can elicit parametric models for $\phi_{tj}$ and $\log\sigma_t^2$.  For example, one might model the nonredundant entries of $T$, say, linearly as in model~\ref{eq:linear-covariance-model} and those of $\log D$ as in, say, model~\ref{eq:log-linear-covariance-model}, letting
+
+\begin{align}
+\begin{split} \label{eq:linear-models-for-GARPs-IVs}
+\phi_{tj} &= x'_{tj} \beta,\\
+\log\sigma_t^2 &= z'_t \gamma,
+\end{split}
+\end{align}
+\noindent
+where $x_{tj}$ and $z_{t}$ denote $q \times 1$ and $p \times 1$ vectors of known covariates, and $\beta = \left(\beta_1,\dots, \beta_q \right)'$ and $\gamma = \left(\gamma_1,\dots, \gamma_p \right)'$ are the parameters relating these covariates to the innovation variances and the dependence among the elements of $Y$. Covariates most frequently used in the analysis of real longitudinal data sets are low order polynomials of lag and time, modeling
+
+\begin{align}
+\begin{split}  \label{eq:GARP-IV-parametric-model}
+z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)' \\
+z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'
+\end{split}
+\end{align}
+
+
+\citet{pourahmadi1999joint}, \citet{pourahmadi2000maximum}, and \citet{pan2006regression} prescribe methods for identifying models such as model~\ref{eq:linear-models-for-GARPs-IVs} using model selection criteria, such as AIC, and regressograms, which are a nonstationary analogue of the correlelogram one typically encounters in the time series literature. \citet{pan2003modelling} jointly estimate the mean and covariance of longitudinal data using maximum likelihood, iterating between estimation of the mean vector $\mu$, the log innovation variances $\log \sigma_{ij}^2$, and the generalized autoregressive parameters $\phi_{ij}$. Score functions can be computed  by direct differentiation of the normal log likelihood, and optimization is achieved by solving these via iterative quasi-Newton method.  Modeling the covariance in such a way is reduces a potentially high dimensional problem to something much more computationally feasible; if one models the innovation variances $\sigma^2\left(t\right)$ similarly using a $d$-dimensional vector of covariates, the problem reduces to estimating $q+d$ unconstrained parameters, where much of the dimensionality reduction is a result of characterizing the GARPs in terms of only the difference between pairs of observed time points, and not the time points themselves.  This model specification of $\phi$ is equivalent to specifying a Toeplitz structure for $\Sigma$. An $M \times M$ Toeplitz matrix $\Sigma$ is a matrix with elements $\sigma_{ij}$ such that $\sigma_{ij} = \sigma_{\vert i-j \vert}$ i.e. a matrix of the form (\ref{eq:toeplitz-covariance-matrix}), having entries which are constant on each subdiagonal.
+
+% \citet{chen2011efficient}, \citet{lin2009robust}, \citet{pan2003modelling},  and \citet{pourahmadi1999joint} define
+\bigskip
+
+The estimated covariance matrix may be considerably biased when the specified parametric model is far from the truth. To avoid model misspecification, many have alternatively  proposed nonparametric and semiparametric techniques approaches to estimation.  When the data $Y_1,\dots , Y_N$ are a random sample of $M$-dimensional vectors from a mean zero multivariate normal population with common covariance matrix $\Sigma$ parameterized as $D = T'\Sigma T$, the form of the likelihood allows for relatively simple computation of the MLE of the parameters. Up to a constant, the log likelihood is given by 
+
+\begin{align}
+\begin{split} \label{eq:regular-cholesky-log-likelihood}
+-2\ell\left(Y_1,\dots, Y_N, \Sigma\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y'_i\right) \\
+&= N \log \vert D \vert + N \mbox{tr}\Sigma^{-1}S \\
+& = N \log \vert D \vert + N \mbox{tr}D^{-1}TST', 
+\end{split}
+\end{align}
+\noindent
+where $S = N^{-1}\sum_{i=1}^N Y_iY'_i$. The negative log likelihood (\ref{eq:regular-cholesky-log-likelihood}) is quadratic in $T$ for fixed $D$, so the MLE for the $\phi_{ij}$ has closed form. Similarly, the MLE for $D$ for fixed $T$ has closed form. See \citet{pourahmadi2000maximum}.  While the MLE is flexible and thus exhibits low bias, this advantage can be offset with high variance, so to balance the tradeoff between bias and variance, shrinkage or regularization may be applied to estimates to improve stability of estimators.  
+
+\bigskip
+
+The fact that the entries of $T$ are unconstrained makes the Cholesky decomposition ideal for nonparametric estimation and regularization methods. \citet{wu2003nonparametric} proposed local polynomial smoothers to individually estimate the subdiagonals of $T$. The idea of smoothing along the subdiagonals rather than down the rows or columns, or viewing $T$ as a bivariate function is analogous to the successive regressions in (\ref{eq:mcd-ar-model}). A similar procedure by \citet{dahlhaus1997fitting} uses varying coefficient regression models for each subdiagonal of $T$:
+
+\[
+y_t = \sum_{j = 1}^{t-1} f_{j,M}\left( t/M \right) y_{t-j} + \sigma_M\left(t/M\right)
+\]
+
+\citet{wu2003nonparametric} give details of smoothing and selection of the order $k$ of the autoregression under the assumption that the $N$ subjects share common observation times.  In the first step, they derive a raw estimate of the covariance matrix and the estimated covariance matrix is subject to the modified Cholesky decomposition. In the second step, they apply local polynomial smoothing to the diagonal elements of $D$ and the subdiagonals of $T$. Their procedure is not capable of handling missing or irregular data. \citet{huang2007estimation} jointly model the mean and covariance matrix of longitudinal data using basis function expansions. They treat the subdiagonals of $T$ as smooth functions, approximated by B-splines and carry out estimation maximum (normal) likelihood. Their method permits subject-specific observations times, but assumes that observation times lie on some notion of a regular grid. They treat within-subject gaps in measurements as missing data and which they handle using the E-M algorithm. Regularization is achieved through the choice of $k$, the number of nonzero subdiagonals, and the total number of basis functions used to approximate the $k$ smoothed diagonals. They treat these as tuning parameters and use BIC for model selection. Due to the closer connection between entries of $T$ and the family of regression (\ref{eq:mcd-ar-model}), it is conceivable that $T$  exhibits sparsity, having some of its entries could be zero or close to it. \citet{smith2002parsimonious} propose a prior distribution that allows for zero entries in $T$ and have obtained a parsimonious model for $\Sigma$ without assuming a parametric structure. Similar results are reported in \citet{huang2006covariance} using penalized likelihood with $L_1$-penalty to estimate $T$ for Gaussian data. \citet{levina2008sparse} impose a banded structure on the Cholesky factor using penalized maximum likelihood estimation. A novel penalty that they call the nexted Lasso produces an estimator with an adaptive bandwidth for each row of the Cholesky factor. This structure has more flexibility than regular banding, but, unlike regular Lasso applied to the entries of the Cholesky factor, results in a sparse estimator for the inverse of the covariance matrix.
+ 
+ \bigskip
+ 
+Table~\ref{table:ideal-repeated-measurements} shows the ideal, rectangular shape of such data where $N$ units (subjects, stocks, households, financial instruments, etc.) are measured repeatedly on one variable. In most longitudinal studies, the functional trajectories of the involved smooth random processes are not directly observable. Often, the observed data are noisy, sparse and irregularly spaced measurements of these trajectories. In the case that subjects don't share a common set of observation times, the notion of the discrete lag doesn't have a clear definition. In turn, it is not clear then, how one would apply smoothing to each subdiagonal of $T$ since this relies on data observed on a regular grid. Moreover, if one believes that the data used to inform one subdiagonal could inform subdiagonals close to it, failing to smooth in both directions fails to make use of this information. In Chapter 2, we outline a proposed framework for covariance estimation based on the Cholesky decomposition, viewing $T$ as a continuous function in both the lag direction as well as the direction orthogonal to it. Using this approach allows us to also remove any restriction on observation times being regularly spaced and the same across subject. Henceforth, we take $Y_i$ and $\epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{i, m_i} \right)'$ to be continuous processes $Y\left(t\right)$, $\epsilon\left(t\right)$ observed at discrete measurement times $t_1,\dots, t_{m_i}$. Using a likelihood-based estimation approach alongside a functional interpretation of the GARPs permits a natural way to regularize the estimator and allow any functional characterizations of the dependency structure to be entirely data driven. 
+ 
+
+\begin{table}\centering
+\caption{Ideal shape of repeated measurements.}
+\begin{tabular}{cc|cccccc}
+\multicolumn{8}{c}{Occasion}\\
+& & $1$&$2$ &  $\dots$ & $t$ & $\dots$ & $m$ \\ \midrule
+& 1 & $y_{11}$&$y_{12}$ &$\dots$ & $y_{1t}$ & $\dots$& $y_{1m}$ \\
+& 2 & $y_{21}$&$y_{22}$ &$\dots$ & $y_{2t}$ & $\dots$& $y_{2m}$ \\
+\begin{rotate}{90}%
+\mbox{Unit}\end{rotate} & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+& $i$ & $y_{i1}$&$y_{i2}$ &$\dots$ & $y_{it}$ & $\dots$& $y_{im}$ \\
+ & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+ & $N$ & $y_{N1}$&$y_{N2}$ &$\dots$ & $y_{Nt}$ & $\dots$& $y_{Nm}$ \\
+\end{tabular} \label{table:ideal-repeated-measurements}
+\end{table}
+
+
+\bigskip
+
+
+\end{document}
+

@@ -1,0 +1,289 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
+\usepackage{arydshln}
+\usepackage{amsmath}
+\usepackage{subfiles}
+\usepackage{tikz}
+\usepackage[mathscr]{euscript}
+\usepackage{enumitem}
+\usepackage{accents}
+\usepackage{framed}
+\usepackage[utf8]{inputenc}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{etoolbox}
+\usepackage{lscape}
+\usepackage{algorithmic}
+\usepackage{nomencl}
+\usepackage{natbib}
+\usepackage{mathtools}
+\usepackage{IEEEtrantools}
+\usepackage{times}
+\usepackage{arydshln}
+\usepackage{cite}
+\usepackage{amsthm}
+\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\needsparaphrased{\color{red}}
+\newcommand*\needscited{\color{orange}}
+\newcommand*\needsproof{\color{blue}}
+\newcommand*\outlineskeleton{\color{green}}
+\newcommand{\ms}{\scriptscriptstyle}
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\hilbertl}{\mathcal{H}_{\langle l \rangle}}
+\newcommand{\hilbertm}{\mathcal{H}_{\langle m \rangle}}
+\newcommand{\hilbertlnull}{\mathcal{H}_{0\langle l \rangle}}
+\newcommand{\hilbertmnull}{\mathcal{H}_{0\langle m \rangle}}
+\newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
+\newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\vphistar}{\mbox{\boldmath $\phi$}}
+\newcommand{\vsigmasq}{\mbox{\boldmath $\sigma^2$}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfg}{\mbox{\boldmath $g$}}
+\newcommand{\bfv}{\mbox{\boldmath $v$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+\newcommand{\tildeY}{\tilde{Y}}
+\newcommand{\tildey}{\tilde{y}}
+\newcommand{\tildeQ}{\tilde{Q}}
+\newcommand{\tildeR}{\tilde{R}}
+\newcommand{\tildeA}{\tilde{A}}
+\newcommand{\tildeepsilon}{\tilde{\epsilon}}
+\newcommand{\bfepsilon}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\tildeS}{\tilde{S}}
+
+\newcommand{\bfm}{\mbox{\boldmath $m}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfa}{\mbox{\boldmath $a$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\bfY}{\mbox{\boldmath $Y$}}
+\newcommand{\bfB}{\mbox{\boldmath $B$}}
+\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
+\newcommand{\tildeB}{\tilde{B}}
+
+\newcommand{\cardT}{\vert \mathcal{T} \vert}
+%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\def\bL{\mathbf{L}}
+
+\begingroup\lccode`~=`_
+\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
+\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
+
+\makeatletter
+\renewcommand{\theenumi}{\Roman{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+\renewcommand{\theenumii}{\Alph{enumii}}
+\renewcommand{\labelenumii}{\theenumii.}
+\renewcommand{\p@enumii}{\theenumi.}
+\makeatother
+
+\begin{document}
+\listoftables
+%\nocite{*}
+\def\bL{\mathbf{L}}
+%\usepackage{mathtime}
+
+%%UNCOMMENT following line if you have package
+
+
+\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
+
+\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
+
+\bibliographystyle{plainnat}
+\maketitle
+
+\section{Smoothing Spline Varying-coefficient Models for Covariance Estimation}
+%
+%A predominant difficulty in the estimation of covariance matrices is the potentially high dimensionality of the problem, as the number of unknown elements in the covariance matrix grows quadratically with the size of the matrix. It is well-known that the sample covariance matrix can be unstable in high dimensions; ways for controlling the complexity of estimates is highly desirable for improving stability of estimates. In the longitudinal-data literature, it is a common practice to use parametric models for the covariance structure.  Many have specified parsimonious parametric models for $\phi_{ijk}$ to overcome the issue of dimensionality.  
+%
+%\bigskip
+%
+%We naturally accommodate irregularly spaced data and unequal sample sizes between subjects by defining the autoregressive parameters as the values of a smooth function evaluated at within-subject pairs of observed time points.  Furthermore, by viewing $\phi\left(t,s\right)$ as a smooth \emph{bivariate} function, we can utilize the information across the subdiagonals of $T$ to inform the fit, rather than treating each subdiagonal separately.  As in the classical nonparametric function estimation setting, we assume $\phi$ to vary in a high-dimensional (possibly infinite) function space. We propose two representations of $\phi\left(\cdot, \cdot\right)$ and $\sigma\left(\cdot, \cdot\right)$: approximation by smoothing splines and approximation by B-spline basis expansion. 
+%
+%We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
+%\bigskip
+
+
+If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We view the GARPs $\lbrace \phi_{tj} \rbrace$ and innovation variances as the evaluation of the smooth functions $\tilde{\phi}\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T}$. Without loss of generality, we take $\mathcal{T} = \left[0,1\right]$. Henceforth, we view $\tilde{\phi}$ and $\sigma^2$ as a smooth continuous functions, but for ease of exposition, we let $\tilde{\phi}_{ij}$ denote the varying coefficient function evalutated at $\left(t_i,t_j\right)$: 
+\[
+\tilde{\phi}_{tj} = \tilde{\phi}\left(t_{i},t_{j}\right). 
+\]
+Adopting similar notation for the innovation variance function, denote
+\[
+\sigma_{j}^2 = \sigma^2\left(t_{j}\right),
+\]
+where $0 \le t_{j} < t_{i} \le 1$ for $j < i$. This leads to varying coefficient model
+
+\begin{equation}  \label{eq:cholesky-regression-model-1} 
+y\left(t_{i} \right)  = \sum_{j=1}^{i-1} \tilde{\phi}\left(t_{i} ,t_{j}\right) y\left(t_{j}\right) + \sigma\left(t_{j}\right)\epsilon\left({t_j}\right) \;\;\;\; i=1,\dots, M, 
+\end{equation}
+\noindent
+
+Our goal is now to estimate the above model, utilizing bivariate smoothing to estimate $\tilde{\phi}\left(t,s\right)$ for $0 \le s < t \le 1$,  and one-dimensional smoothing to estimate $\sigma\left(t \right)$, $0 \le t \le 1$. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+
+\bigskip
+
+Our approach to estimation is constructed to provide a fully data-driven methodology for selecting the optimal covariance model (given some optimization criterion) from a expansive class of estimators ranging in complexity from that of the previously aforementioned parametric models to that of completely unstructured estimators, like the sample covariance matrix. We leverage the collection of regularization techniques that are accessible in the usual function estimation setting. By properly specifying the roughness penalty, our optimization procedure results in null models which correspond to the parametric and semiparametric models for $\phi$ and $\sigma^2$ discussed in \ref{chapter-1-parametric-semiparametric-garp-models}. To facilitate the penalty specification that achieves this, we consider modeling the varying coefficient function which takes inputs
+
+\begin{align} 
+\begin{split}\label{eq:l-m-transformation}
+l &= t - s \\
+m &= \frac{t + s}{2}, \\
+\end{split}
+\end{align}
+\noindent
+ where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply its orthogonal direction. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them. Covariance functions taking the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$ can then be written as 
+
+\begin{equation*}
+Cov\left(y\left( t_i \right),y\left( t_j \right)\right) = G\left( l_{ij}  \right)
+\end{equation*}
+\noindent
+where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional components of the Cholesky decomposition so that functions incurring large penalty correspond to functions which vary in only $l$ and are constant in $m$ allows us to model nonstationarity in a fully data-driven way.  Our goal is to estimate
+
+\begin{equation} 
+\phi\left(l,m\right) = \phi\left(s-t, \frac{1}{2}\left(s+t\right)\right) = \tilde{\phi}\left(t,s\right).
+\end{equation}
+
+\bigskip
+
+While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \citet{kimeldorf1971some} and \citet{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \citet{gu2013smoothing}, and estimation is achieved through similar computational strategies.
+
+\subsection{Penalized maxiumum likelihood estimation of $\phi$, $\log\sigma^2$}
+
+Let random vector $Y$ follow a multivariate normal distribution with zero mean vector and covariance $\Sigma$. The loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
+
+\begin{equation} \label{eq:loglik-general-form}
+-2\ell\left( Y, \Sigma \right) = \log \vert \Sigma \vert + Y' \Sigma Y
+\end{equation}
+\noindent
+Using $T \Sigma T' = D$, we can write 
+\[
+\vert \Sigma\vert = \vert D \vert = \prod_{i = 1}^m \sigma_i^2
+\]
+and 
+\[
+\Sigma^{-1} = T' D^{-1} T.
+\]
+Writing \ref{eq:loglik-general-form} in terms of the prediction errors and their variances of the non-redundant entries of $\left(T , D\right)$, we have
+
+\begin{align}
+\begin{split} \label{eq:loglik-cholesky-form}
+-2\ell\left( Y, \Sigma \right) &= \log \vert D \vert + Y' T' D^{-1} T Y \\
+&= \sum_{i = 1}^m \log \sigma_i^2  + \sum_{i = 1}^m \frac {\epsilon_i^2}{\sigma_i^2},
+\end{split}
+\end{align}
+\noindent
+where 
+\begin{equation} \label{eq:loglik-cholesky-form}
+\epsilon_i = \left\{\begin{array}{lr}y\left(t_1\right), & i = 1, \\
+y\left(t_i\right) - \sum_{j = 1}^{i-1} \phi\left(\bfv_{ij}\right) y_j, & i= 2, \dots, M, \\
+\end{array} \right.
+\end{equation}
+\noindent
+where $\phi\left(\bfv_{ij}\right) = \phi\left(l_{ij},m_{ij}\right) = \tilde{\phi}\left(t_i,t_j\right)$.  Accommodating subject-specific sample sizes and measurement times merely requires appending an additional index to observation times. Let  $Y_1, \dots, Y_N$ denote a sample of $N$ independent mean zero random trajectories from a  multivariate normal distribution with common covariance $\Sigma$. We associate with each trajectory $Y_i = \left(y_{i1}, \dots, y_{i,m_i}\right)'$ with a vector of potentially subject-specific observation times $\left(t_{i1}, \dots, t_{i,m_i}\right)'$, so that the $j^{th}$ measurement of trajectory $i$ is modeled
+
+\begin{align}
+\begin{split} \label{eq:cholesky-regression-model-2} 
+y\left(t_{ij} \right)  &= \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)  \\
+&= \sum_{k=1}^{j-1} \phi\left(\bfv_{ijk}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)
+\end{split}
+\end{align}
+\noindent
+for $i = 1,\dots, N$, $j = 2,\dots, m_i$.
+\noindent
+Making similar ammendments to indexing, the joint log likelihood for the sample $Y_1, \dots, Y_N$ is given by  
+
+\begin{equation} \label{eq:joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) = \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma_{ij}^2  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma_{ij}^2},
+\end{equation}
+
+\bigskip
+
+With this, we can estimate $\phi$ and $\log\sigma^2$ using maximum likelihood or any of its penalized variants by appending a roughness penalty (penalties) to \ref{eq:joint-loglik}. Employing regularization, we take $\phi$, $\sigma^2$ to minimize 
+
+\begin{equation} \label{eq:penalized-joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) +    \lambda J\left( \phi \right) +  \breve{\lambda}\breve{J}\left( \sigma^2 \right),
+\end{equation}
+\noindent
+where $J$ and $\breve{J}$ are roughness penalties on $\phi$ and $\sigma^2$, and $\lambda$, $\breve{\lambda}$ are non-negative smoothing parameters.  To jointly estimate the GARP function and the IV function, we adopt an iterative approach in the spirit of \citet{huang2006covariance}, \citet{huang2007estimation}, and \citet{pourahmadi2000maximum}. A procedure for minimizing \ref{eq:joint-loglik} starts with initializing $\left\{\sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, m_i$.  For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-sigma}
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+\end{equation}
+\noindent
+which corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. Given $\phi^*$ the minimizer of \ref{eq:penalized-joint-loglik-given-sigma} and setting $\phi = \phi^*$, we update our estimate of $\sigma^2$ by minimizing 
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi}
+-2\ell_{\sigma^2} + \breve{\lambda} \breve{J}\left(\sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {r_{ij}^*}^2 + \breve{\lambda} \breve{J}\left(\sigma^2 \right),
+\end{equation}
+where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(\bfv_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
+\bigskip
+
+The remainder of the chapter is reserved for presenting two functional representations of $\left(\phi, \sigma^2\right)$. The first leverages the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \citet{aronszajn1950theory}, \citet{wahba1990spline}, and \citet{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. The second approach is based on the penalized B-splines, or P-splines, of \citet{eilers1996flexible}; these models exhibit many of the attractive numerical properties of the basis functions on which they are built. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Smoothing spline representation of $\phi$, $\sigma$}
+
+
+\subsubsection{An RKHS framework for estimating $\phi$} \label{RKHS-framework-for-phi}
+\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
+
+\bigskip
+TO DO: discuss efficient approximation of $\hilbert$ using a low rank smoother technique, as discussed in Gu's book at the end of Chapter 3. \citet{kim2004smoothing}
+\bigskip
+
+\subsubsection{Smoothing parameter selection}
+\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}
+%
+%\subsubsection{Smoothing parameter selection}
+%\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-solution}
+
+
+
+\subsubsection{An RKHS framework for estimating $\log \sigma^2$}
+\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-spline-representation}
+
+\subsubsection{Smoothing parameter selection for exponential familes}
+\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-parameter-selection}
+
+
+
+\bibliography{../Master}
+
+\end{document}

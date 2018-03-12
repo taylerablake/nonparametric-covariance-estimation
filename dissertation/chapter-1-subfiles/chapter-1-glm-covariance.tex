@@ -1,0 +1,71 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+
+Modeling covariance matrices in a systematic, data-driven manner is impeded by the positive-definiteness constraint and high-dimensionality; however, similar (albeit simpler) hurdles in modeling the mean vector $\mu$ of the distribution of a random vector $Y = \left(y_1, \dots , y_M\right)'$ has been successfully handled in the context of regression analysis. The resulting techniques have lead to the framework of generalized linear models (GLM), which enjoys a rich and extensive theoretical foundation. The success of GLMs is in most part due to the use of a  link function $g\left(\cdot\right)$ and a linear predictor $g\left(\cdot\right) = X\beta$, which induces an unconstrained parameterization and reduces the parameter space dimension simultaneously. Since the covariance matrix of a random vector $Y$ , defined by $\Sigma = E\left(Y - \mu\right)\left(Y - \mu\right)$, is a mean-like parameter, one would like to exploit the idea of GLM along with the experience and progress in fitting the mixed-effects and time series models in developing a systematic, data-based procedure for covariance matrices. 
+
+\bigskip
+
+Approaches to modeling covariances with the explicit use covariates has been extensively explored in the time series literature, while the implicit use of covariates for covariance modeling has been the focus of many in the area of variance components; see \citet{klein1997statistical} and \citet{searle2009variance}. Time series techniques based on spectral and Cholesky decompositions provide the necessary tools for handling the cumbersome positivedefiniteness constraint on a stationary covariance matrix or covariance function. In the GLM setting, simply  applying a link function componentwise to the potentially constrained mean vector $\mu$ permits its unconstrained estimation. Unfortunately employing the same precise approach to  covariance matrices isn't viable since positive-definiteness is a simultaneous constraint on all entries of a matrix. Successfully modeling a general covariance structure almost necessitates decomposing a covariance matrix into its ``variance'' and ``dependence'' components because of its inherent complicated structure.  The three major methods for performing such decompositions include the variance-correlation decomposition, the spectral decomposition, and the Cholesky decomposition. Section~\ref{chapter-1-cholesky-decomposition} touched on the attractive properties of the latter that lead to advantages over the other two covariance parameterizations. 
+
+\bigskip
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Linear models for covariance}
+\citet{gabriel1962ante} was among the first to implicitly parameterize a multivariate normal distribution in terms of entries of the precision matrix $\Omega^{-1}$.  Dempster (1972) who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
+
+\[
+\log f\left(Y, \Sigma^{-1}\right) = -\frac{1}{2}\mbox{tr}\Sigma^{-1} \left(Y'Y\right) + \log\vert \Sigma \vert^{-1/2} - M \log\sqrt{\pi}
+\]
+
+Soon thereafter, the simple structures of time series and variance components models motivated \citet{anderson1973asymptotically} to define the class of linear covariance models:
+\begin{equation}\label{eq:linear-covariance-model}
+\Sigma = \sum_{i = 1}^q \alpha_qU_q
+\end{equation}
+\noindent
+where the $U_i$s are known symmetric matrices and the $\alpha_i$s are unknown parameters, restricted to ensure that $\Sigma$ is positive definite. This class of models is general enough to include all linear mixed effects models as well as certain time series and graphical models. In, for $q$ large enough, any covariance matrix admits representation of the form (\ref{eq:linear-covariance-model.}), since one can decompose every covariance matrix as 
+
+\begin{equation} \label{eq:linear-covariance-model-2}	
+\Sigma = \sum_{i = 1}^M \sum_{j = 1}^M \sigma_{ij} U_{ij},
+\end{equation}
+\noindent
+where $U_{ij}$ is an $M \times M$ matrix with a 1 in the $\left(i,j\right)$ position, and zeros everywhere else. The linear model (\ref{eq:linear-covariance-model}) can be viewed as modeling the link-transformed covariance $g\left(\Sigma\right) =\sum_{i = 1}^q \alpha_qU_q$, where $g\left(\cdot\right)$ is the identity link. Despite the convenience of parameterization, the positive definite constraint (\ref{eq:positive-definite-constraint}) makes estimation an arduous task. 
+
+\bigskip
+
+Inducing sparsity by setting certain elements of the covariance matrix or its inverse to zero is a common approach to reducing the dimensionality of a covariance structure. Inspection of model (\ref{eq:linear-covariance-model}) and the covariance parameterization given in (\ref{eq:linear-covariance-model-2}) makes it easy to see that this can be achieved by eliminating certain $U_{ij}$ from the covariates in the linear covariance model. On the extreme end of the sparsity spectrum is the case of independent observations and $\Sigma$ is diagonal, eliminating all $U_{ij}$ from the linear model covariates for $i \ne j$. Connection between the linear covariance model and other models for covariance discussed in previous sections can be established if we consider intermediary cases, such as classes of stationary moving average (MA) and autoregressive (AR) models introduced in the early times series literature. The $MA(q)$ model corresponds to a banded covariance matrix, setting 
+
+\begin{equation}  \label{eq:ar-p-elementwise-shrinkage}
+\sigma_{ij} = 0 \quad \mbox{for }\vert i - j \vert > q, 
+\end{equation}
+\noindent
+while the $AR(p)$ model corresponds to a banded inverse:
+\begin{equation} \label{eq:ar-p-elementwise-shrinkage}
+\sigma^{ij} = 0 \quad \mbox{for }\vert i - j \vert > p. 
+\end{equation}
+Of course, there are the nonstationary analogues to these classes of models, some of which were discussed in Section~\ref{section:}. We will review others which are related to antedependence models and Gaussian graphical models. Random variables $y_1, \dots, y_M$, which correspond to observation times $t_1,\dots, t_M$, with multivariate normal joint distribution said to be $p^{th}$-order antedependent or $AD(p)$ \citet{gabriel1962ante} if $y_t$ and $y_{t+s+1}$ are independent given the intervening values $y_{t+1}, \dots , y_{t+s}$ for $t = 1, \dots , p?s?1$ and all $s \ge p$. A random vector $Y = \left(y_1, \dots , y_p\right)$ is $AD(p)$ if and only if its covariance matrix satisfies (\ref{eq:ar-p-elementwise-shrinkage}). Closely connected are the classes of variable order $AD$ models and varying order, varying coefficient autoregressive models \citet{kitagawa1985smoothness} in which the coefficients and order of antedependence depend on time. 
+
+
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+\subsubsection{Log-linear covariance models} \label{log-linear-glms}
+
+The constraint on the $\alpha_i$s in (\ref{eq:linear-covariance-model}) was eliminated with the introduction of log-linear covariance models (\citet{chiu1996matrix},  \citet{pinheiro1996unconstrained}.) For a general covariance matrix having spectral decomposition
+\begin{equation}
+\Sigma = P \Lambda P',
+\end{equation}
+\noindent
+its matrix logarithm, denoted $\log\Sigma$, and defined by $log \Sigma = P \log\Lambda P'$ is a symmetric matrix with unconstrained entries taking values in $\Re$. Application of the log-link function leads to the log-linear model for $\Sigma$:
+\begin{equation} \label{eq:log-linear-covariance-model}
+g\left(\Sigma\right)  = \log\Sigma  = \sum_{i = 1}^q \alpha_i U_i, 
+\end{equation}
+\noindent
+where the $U_i$s are as before in \ref{eq:linear-covariance-model} and the $\alpha_i$s are now unconstrained. The $\alpha_i$s, however, now lack statistical interpretation since $g\left(A\right) = \log A$ is a highly nonlinear operation. But for diagonal $\Sigma$, $\log \Sigma = \mbox{diag}\left(\sigma_{11},\dots, \sigma_MM\right)$, and model \ref{eq:log-linear-covariance-model} reduces to modeling of heterogeneous variances, which has been extensively studied. Detailed presentation is given in \citet{carroll1988transformation}, \citet{verbyla1993modelling} and in references therein. 
+
+\bigskip
+
+\citet{rice1991estimating} were the first to pursue nonparametric estimation of the spectral decomposition for functional data, which arise from experiments which produce observed responses in the form of curves. See \citet{ramsay2006functional}, \citet{ramsay2007applied}. The covariance structure is estimated via functional principal component analysis (fPCA); principal components of functional data are estimated using penalized least squares of the normalized eigenvectors, subject to the orthogonality constraint. Additionally, \citet{boente2000kernel} proposeds kernel-based PCA, but maintaining orthogonality of the smooth principal components remains a major computational challenge in both approaches.
+
+\end{document}

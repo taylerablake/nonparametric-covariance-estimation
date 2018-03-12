@@ -1,0 +1,29 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+The estimator proposed by \citet{ledoit2004well} is motivated by the fact that the sample covariance matrix is unbiased but has high variance - the risk associated with $S$ is considerable when $M >> N$, and even in cases when the dimension is close to the sample size. In contrast, very little estimation error is associated with a highly structured estimator of a covariance matrix, like those presented in Section~\ref{parametric-covariance-models}, but when the model is misspecified, these can exhibit severe bias. A natural inclination is to define an estimator as a linear combination of the two extremes, letting
+
+\begin{equation} \label{eq:ledoit-wolf-estimator}
+\hat{\Sigma} = \alpha_1 I + \alpha_2 S,
+\end{equation}
+\noindent
+where $\alpha_1$, $\alpha_2$ are chosen to optimize the Frobenius norm of $\hat{\Sigma} - S$ or the slightly modified Frobenius norm:
+
+\[
+L\left(\hat{\Sigma},\Sigma\right) = M^{-1} \vert \vert\hat{\Sigma}-\Sigma   \vert \vert^2 = M^{-1} \mbox{tr}\left(\hat{\Sigma}-\Sigma \right)^2.
+\] 
+\noindent
+They show that the optimal $\alpha_i$ depend on only four characteristics of the true covariance matrix:
+
+\begin{align}
+\begin{split}
+\mu &= \mbox{tr}\left(\Sigma\right)/M, \\
+\alpha^2 &= \vert\vert \Sigma - \mu I\vert\vert^2, \\
+\beta^2 &= \vert\vert S - \Sigma  \vert\vert^2, \\
+\delta^2 &= \vert\vert S - \mu I\vert\vert^2.
+\end{split}
+\end{align}
+\noindent
+\citet{ledoit2004well} give consistent estimators of these quantities, so that substitution of these in $\hat{\Sigma}$ produces a positive definite estimator of $\Sigma$. They demonstrate the superiority of their estimator to several others including the sample covariance matrix and the empirical Bayes estimator (\citet{haff1980empirical}).
+\end{document}
+

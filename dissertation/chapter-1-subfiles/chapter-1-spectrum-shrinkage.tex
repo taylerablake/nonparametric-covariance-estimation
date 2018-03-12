@@ -1,0 +1,17 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+\citet{stein1975estimation} observed that the sample covariance matrix systematically distorts the eigenstructure of $\Sigma$, especially when $M$ is large. His work spurred efforts in the improvement of $S$, which he did by simply shrinking its eigenvalues.  He considered estimators of the form
+\begin{equation}\label{eq:stein-eigen-estimator}
+\hat{\Sigma} = \Sigma\left(S\right) = P \Phi\left(\lambda\right) P',
+\end{equation}
+
+\noindent
+where $\lambda = \left(\lambda_1, \dots, \lambda_M\right)'$, $\lambda_1 > \dots > \lambda_M$ are the ordered eigenvalues of $S$, $P$ is the orthogonal matrix whose $i^{th}$ column is the normalized eigenvector of $S$ corresponding to $\lambda_i$, and $\Phi\left(\lambda\right) = diag\left(\phi_1,\dots, \phi_M \right)$ is the diagonal matrix where $\phi_j\left(\lambda \right)$ is an estimate of the $j^{th}$ largest eigenvalue of $\Sigma$. Letting $\phi_j\left(\lambda \right) = \lambda_j$ corresponds to the usual unbiased estimator $S$. It is known that $\lambda_1$ and $\lambda_M$ are biased low and high, respectively, so Stein chooses $\Phi\left(\lambda\right)$ to shrink the eigenvalues toward central values to counteract the biases of the sample eigenvalues. The modified estimators of the eigenvalues of $\Sigma$ are given by $\phi_j = \frac{N \lambda_j}{\alpha_j}$, where
+
+\begin{equation}\label{eq:stein-eigen-estimator}
+\alpha_j\left(\lambda\right) = N - M + 2\lambda_j \sum_{i \ne j} \frac{1}{\lambda_j - \lambda_i}.
+\end{equation}
+\noindent
+The Stein estimators $\phi_j$ differ from the sample eigenvalues when are nearly equal and $N/M$ is not small. The work of \citet{lin1985monte} includes an algorithm to modify any $\phi_j$'s which are negative and or do not not satisfy $\phi_1 < \dots < \phi_M$.
+\end{document}

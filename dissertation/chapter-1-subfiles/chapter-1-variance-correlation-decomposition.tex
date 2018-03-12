@@ -1,0 +1,15 @@
+\documentclass[../chapter-1-introduction.tex]{subfiles}
+\begin{document}
+
+
+The variance-correlation decomposition of $\Sigma$ is perhaps the most familiar of the following three parameterizations, which parameterizes the covariance matrix according to
+
+\begin{equation}\label{eq:variance-correlation-decomposition}
+\Sigma = DRD,
+\end{equation}
+\noindent
+where $D = \mbox{diag}\left(\sqrt{\sigma_{11}},\dots , \sqrt{\sigma_{MM}}\right)$ denotes the diagonal matrix with diagonal entries equal to tje square-roots of those of $\Sigma$, and $R$ is the corresponding correlation matrix. This parameterization enjoys attractive practicality because the standard deviations are on the same scale as the responses, and because the estimation of $D$ and $R$ can be separated by eithering iteratively fixing one sequence of parameters to estimate the other. Moreover, one set of parameters may be more important than the others in some applications; the dynamic correlation model presented in  Engle’s (2002) is actually motivated by the fact that variances (volatilities) of individual assets are more important than their time-varying correlations.
+\bigskip
+
+While the diagonal entries of $D$ are constrained to be nonnegative, their logarithms are unconstrained. However, the correlation matrix $R$ is positive-definite constrained to have unit diagonal entires and off-diagonal entries to be less than or equal to 1 in absolute value. Because of these constraints, the variance-correlation decomposition does not lend to modeling its components with the use of covariates.
+\end{document}

@@ -1,0 +1,60 @@
+\documentclass[../chapter-2-spline-representation.tex]{subfiles}
+\begin{document}
+
+The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameter. Performance-oriented iteration and generalized approximate cross validation (GACV) are the most common approaches to selecting the smoothing parameter for penalized regression with exponential families. As in our discussion of model selection for $\phi$, we omit dependence of any components on the $\theta_\beta$ and only explicitly express dependence on smoothing parameters through $\lambda$.
+
+\subsubsection{Performance-oriented iteration} 
+
+A measure of the discrepancy between distributions belonging to an exponential family with density $p_Z\left(z\right) = exp\left\{\left(y \eta\left(t\right) - b\left(\eta\left(t\right)\right)\right)/a\left(\phi\right) + c\left(y,\phi\right) \right\}$ is the Kullback-Leibler distance
+
+\begin{align}
+\begin{split} \label{eq:kl-distance-definition}
+\mbox{KL}\left(\eta, \eta_\lambda\right) &= E_\lambda\left[Z \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right)\\
+&=\left[ b'\left(\eta\right) \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right),
+\end{split}
+\end{align}
+\noindent
+which simplifies to
+\[
+-\mu\left( e^{-\eta} - e^{-\tilde{\eta}}\right) - \left(\eta-\tilde{\eta}\right)
+\]
+\noindent
+for the Gamma distribution. The KL distance is not symmetric, so sometimes people opt for its symmetrized version:
+
+\begin{align}
+\begin{split} \label{eq:skl-distance-definition}
+\mbox{SKL}\left(\eta, \eta_\lambda\right) &= \mbox{KL}\left(\eta, \eta_\lambda\right) + \mbox{KL}\left(\eta_\lambda, \eta \right)\\
+&= \left(b'\left(\eta\right) - b'\left(\eta_\lambda\right) \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right), \\
+&= \left(\mu - \mu_\lambda \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right),
+\end{split}
+\end{align}
+\noindent
+A natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmetrized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots , t_{1,m_1},\dots,t_{N1}, \dots , t_{N,m_N}$:
+
+\begin{equation}\label{eq:SKL-loss-function}
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+\end{equation}
+\noindent
+which reduces to 
+\begin{equation}\label{eq:gamma-SKL-loss-function}
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+\end{equation}
+\noindent
+for the Gamma distribution. The ideal smoothing parameters are those which minimize (\ref{eq:gamma-SKL-loss-function}). The performance-oriented iteration operates on a alternative expression of the symmetrized Kullback-Leibler loss. The mean value theorem gives us that (\ref{eq:gamma-SKL-loss-function}) can be written
+\begin{equation}\label{eq:gamma-SKL-loss-function-mvt}
+L_\omega\left( \eta,\eta_\lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
+\end{equation}
+\noindent
+where $\omega^*\left(t_{ij}\right) = b''\left(\eta^*\left(t_{ij}\right)\right)$ and $\eta^*\left(t_{ij}\right)$ is a convex combination of  $\eta\left(t_{ij}\right)$ and $\eta_\lambda\left(t_{ij}\right)$. One can construct an unbiased risk estimate under the weighted loss, $L_\omega$, using re-weighted observations. Letting ${Z_{i}}_\omega = W_i Z_i$, where $W_i$ ist he $m_i \times m_i$ diagonal matrix having diagonal entries $\omega^*\left(t_{i1}\right), \dots, \omega^*\left(t_{i,m_i}\right)$, an unbiased estimate of relative loss is given by 
+
+\begin{equation}\label{eq:weighted-unbiased-risk-estimate}
+U_\omega\left( \lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
+\end{equation}
+
+
+
+
+
+
+
+

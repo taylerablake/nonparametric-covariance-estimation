@@ -1,0 +1,98 @@
+Hastie and Tibshirani were the first to introduce the varying coefficient model, which supplies a modeling approach which permits interpolation of regressors and response variables which varying according to an \emph{indexing variable} at values of this indexing variable where there is either missing data of only a single observation and slope estimation is not feasible. In the section that follows, we will discuss the approach to smoothing the coefficient vector (and \emph{not} the regressor, $x\left(t\right)$) first, for mechanical demonstration of parameterization and estimation of the coefficient function via B-spline basis expansion, at a predetermined set of values of an indexing variable, $t$ (knots), then following the approach of Eilers and Marx by assuming that the number and position of the knots are unknown and using penalized B-splines, or P-splines. 
+
+Consider data of the form 
+\[
+\left(x_i, y_i, t_i\right), \qquad i=1,\dots,m
+\]
+where $y_i$ is the response, $x_i$ is the single (univariate) regressor variable, and $t_i$ is an indexing variable. We first consider a simple situation as an introductory warmup for demonstrating the mechanics of the varying coefficient model. Suppose we wish to fit a scatterplot smoother to the points $\left(t_i, y_i\right)$ using a B-spline basis expansion. Assume that we can model 
+
+\begin{equation} \label{eq:varying_intercept_only_model}
+y\left(t\right) = f\left(t\right) + \epsilon\left(t \right)
+\end{equation}
+
+where $\epsilon$ is a zero-mean error process.  Modeling the mean function as a $q^{th}$-order B-spline, we can rewrite \ref{eq:varying_intercept_only_model} as
+
+\begin{equation} \label{eq:varying_intercept_only_model_bspline}
+y\left(t\right) = \sum_{j=1}^{K} \alpha_j B_j\left(t\right) + \epsilon\left(t \right)
+\end{equation}
+
+Assume we use $K$ of basis functions in our expansion of $f$. Let $y= \left(y_1,\dots,y_m\right)^T$, and let $B$ denote the $m \times K$ design matrix with $i-j^{th}$ element given by the $j^{th}$ order-$q$ B-spline evaluated at the $i^{th}$ value of $t$: 
+
+\[
+b_{ij} = B_j\left(t_i\right),
+\]
+$i=1,\dots,m$, $j=1,\dots,K$. Then in matrix notation, we may write the mean vector
+
+\[
+\mu = E\left[y\right] = B\alpha
+\]
+\noindent
+where $\alpha$ is the vector of $K$ unknown basis coefficients. We take $\hat{\alpha}$ to be the minimizer of 
+
+\begin{align}
+S &= \sum_{i=1}^m \left(y_i - \sum_{j=1}^{K} \alpha_j B_j\left(t_i\right) \right)^2 \nonumber\\
+&=\vert y - B\alpha \vert^2 \label{eq:S_varying_intercept_model}
+\end{align}
+
+
+\[
+B^TB\alpha = B^Ty
+\]
+which has explicit solution
+\[
+\hat{\alpha} = \left(B^T B\right)^{-1}B^Ty
+\]
+
+Given $\hat{\alpha}$, one may estimate the response at any new value of $t$, say $t^*$, by 
+\[
+\hat{y}\left(t^*\right) = \sum_{j=1}^{K} \hat{\alpha_j}B_j\left(t^*\right).
+\]
+
+\subsection{B-spline estimators for varying coefficient models with fixed knots}
+
+To extend the varying intercept model \ref{eq:varying_intercept_only_model} to accommodate for controlling for another regressor, it is natural to consider the varying coefficient model; the single regressor varying-coefficient (VC) model extends the classical linear model by allowing the slope coefficient to vary smoothly in the dimension of the indexing variable, $t$.  The single-index varying coefficient model assumes that the mean response is of the form
+
+\begin{equation} \label{eq:simplest_VC_model_mean}
+E\left[ Y\left(t\right) \right] = \beta_0\left(t\right) + \beta_1\left(t\right)x\left(t\right)
+\end{equation}
+
+where $\beta_0\left(t\right)$ is the smooth varying intercept function and $\beta_1\left(t\right)$ is the smooth slope function of interest. This model generalizes the well known simple linear regression model 
+\[
+E\left[Y\left(t\right)\right] = \beta_0 + \beta_1 x\left(t\right)
+\]
+by trading the static regression coefficients for smooth coefficient functions which are assumed to varying across an indexing variable, $t$. This allows for the regressor variable to having modified effect, depending on the value of $t$. Using a set of predetermined knots along the $t$ axis, the VC model can be fit in a fashion similar to that required for fitting model \ref{eq:varying_intercept_only_model}, requiring only minor adjustments to the design matrix. In matrix notation as described in \ref{eq:S_varying_intercept_model}, the mean vector may be written
+
+\begin{equation} \label{eq:VC_mean_matrix}
+\mu = B\alpha_0 + diag\left\{x\left(t\right) \right\}B\alpha_1
+\end{equation} 
+\noindent
+where $diag\left\{x\left(t\right) \right\}$ is the $m \times m$ diagonal matrix of regressor measurements which ensures that the varying coefficients are appropriately weighted according to the correct value of $x$ by aligning the regressor function with the corresponding slope value. Letting $U = diag\left\{x\left(t\right) \right\}B$, \ref{eq:VC_mean_matrix} becomes
+
+\begin{align}
+\mu &= \left[ B | U \right] \left(\alpha_0^T,\alpha_1^T\right)^T \\
+&\equiv Q\alpha
+\end{align} 
+
+where $\alpha$ is the augmented vector of basis coefficients. Here, the same basis is used for smoothing both the varying intercept as well as the varying slope function; this is feasible because both components varying along the same indexing variable. One can relax this structure and allow each additive term to varying according to its own indexing variable. This, of course, requires a separate B-spline basis for each component. Again using least squares techniques as with the varying intercept-only model, we take $\hat{\alpha}$ to minimize
+
+\begin{equation} \label{eq:S_varying_intercept_slope_model}
+S = \vert y-Q\alpha \vert ^2
+\end{equation}
+which has explicit solution
+
+\[
+\hat{\alpha} =\left(Q^T Q\right)^{-1} Q^Ty.
+\]
+
+It is of interest to notice that $Q$ is simply a row scaling of the original B-spline design matrix, $B$; thus, accommodating a varying slope function equates to the simple basis function regression setting with a modified basis, $UB$. Using the modified basis functions as covariates, estimation of model the varying coefficient model equates to a multiple regression problem. Each of the estimated smooth components are given by 
+\[
+\hat{\beta}_k\left(t \right)= B\hat{\alpha}_k, \qquad k=0,1
+\]
+\noindent
+and the estimate of the smooth mean function is obtained via 
+\begin{align*}
+\hat{\mu} &= Q\hat{\alpha}\\
+&= Hy
+\end{align*}
+where $H = Q\left(Q^T Q\right)^{-1} Q^T$ is the ``hat'' matrix. This will be discussed in further detail in later sections on smoothing parameter selection and model tuning.
+
