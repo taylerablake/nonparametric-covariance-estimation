@@ -1,9 +1,27 @@
 
 Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitative differences between the estimates resulting from each of the eight methods of estimation for the five covariance structures used for simulation. The first row in the grid shows the surface plot of each of the true covariance structures, and each row thereafter corresponds to the five covariance estimates for the given estimation method. The surface plots of the oracle estimate in the second row serve as a point of reference for the `gold standard` in each scenario, since the oracle estimates were constructed assuming that the functional form of the covariance is known (either the full covariance structure or the components of the Cholesky decomposition.) The corresponding estimates of the Cholesky factor $T$ for the estimators based on the modified Cholesky decomposition are shown in Figure~\ref{fig:chol-estimate-lattice}, and the decomposition of the $\hat{T}$ corresponding to the smoothing spline ANOVA estimator $\hat{\Sigma}_{SS}$ into functional components is displayed in Figure~\ref{fig:ssanova-component-lattice}
 
-\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
-\subfile{chapter-4-subfiles/chapter-4-cholesky-lattice-ggplot}
-\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
+%\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
+
+\begin{figure}[H] 
+\centering
+\caption{Covariance Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}
+  \includegraphics[width = 1\textwidth]{../img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\caption{The true lower triangle of Cholesky factor $T$ corresponding to Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} and estimates of the same surface for estimators based on the modified Cholesky decomposition. The true covariance structure is displayed across the top row.}
+  \includegraphics[width = 1\textwidth]{../img/chapter-4/cholesky-estimate-lattice}
+  \label{fig:chol-estimate-lattice}
+\end{figure}
+
+%\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
+
+\begin{figure}[H] 
+\caption{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}
+  \includegraphics[width = \textwidth]{../img/chapter-4/ssanova-estimate-lattice} \label{fig:ssanova-component-lattice}
+\end{figure}
 
 \bigskip
 Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $M$-dimensional multivariate Normal distribution with mean zero and the same covariance.  The results of the simulations for complete data under entropy loss are presented in Tables~\ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}. Risk estimates under quadratic loss, while there is not agreement between results every time, qualitatively, they are similar in nature to those with entropy loss. These are left to the Appendix, Tables~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. Since both loss functions are not standardized, they cannot be compared across dimensions $M$.

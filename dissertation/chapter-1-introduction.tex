@@ -75,16 +75,7 @@
 %\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
 %\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
 %
-%\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-%
-%\makeatletter
-%\renewcommand{\theenumi}{\Roman{enumi}}
-%\renewcommand{\labelenumi}{\theenumi.}
-%\renewcommand{\theenumii}{\Alph{enumii}}
-%\renewcommand{\labelenumii}{\theenumii.}
-%\renewcommand{\p@enumii}{\theenumi.}
-%\makeatother
-%
+
 %\begin{document}
 %
 %%\nocite{*}
@@ -442,22 +433,22 @@ This expression of the weights makes it clear how the selection of $k$ controls 
 \subsubsection{Thresholding the sample covariance matrix}
 
 
-When both $N$ and $M$ are large, it is reasonable to assume that $\Sigma$ is sparse, so that many elements of the covariance matrix are equal to 0. In this case, setting certain elements of sample estimates to zero can improve the quality of estimators. Thresholding was originally a method developed in nonparametric function estimation, but recently \citet{bickel2008covariance} and \citet{rothman2009generalized} have utilized thresholding for estimating large covariance matrices.  For $\lambda > 0$, a thresholding operator $\mathpzc{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
+When both $N$ and $M$ are large, it is reasonable to assume that $\Sigma$ is sparse, so that many elements of the covariance matrix are equal to 0. In this case, setting certain elements of sample estimates to zero can improve the quality of estimators. Thresholding was originally a method developed in nonparametric function estimation, but recently \citet{bickel2008covariance} and \citet{rothman2009generalized} have utilized thresholding for estimating large covariance matrices.  For $\lambda > 0$, a thresholding operator $\mathcal{s}_\lambda\left( z \right): \Re \rightarrow \Re$ satisfies 
 \begin{itemize}
-\item $\mathpzc{s}_\lambda\left( z \right) \le z$;
-\item $\mathpzc{s}_\lambda\left( z \right) = 0 \mbox{ for } \vert z\vert \le \lambda$;
-\item $\vert \mathpzc{s}_\lambda\left( z \right) - z \vert \le \lambda$
+\item $\mathcal{s}_\lambda\left( z \right) \le z$;
+\item $\mathcal{s}_\lambda\left( z \right) = 0 \mbox{ for } \vert z\vert \le \lambda$;
+\item $\vert \mathcal{s}_\lambda\left( z \right) - z \vert \le \lambda$
 \end{itemize}
 
-Shrinkage and thresholding estimators can be viewed as the solution to the problem of minimizing a penalized quadratic loss function, and since the thresholding operator is applied elementwise to the sample covariance $S$,  these optimization problems are univariate. A generalized thresholding estimator $\mathpzc{s}_\lambda\left( z \right)$ is the solution to
+Shrinkage and thresholding estimators can be viewed as the solution to the problem of minimizing a penalized quadratic loss function, and since the thresholding operator is applied elementwise to the sample covariance $S$,  these optimization problems are univariate. A generalized thresholding estimator $\mathcal{s}_\lambda\left( z \right)$ is the solution to
 \begin{equation} \label{eq:general-thresholding-objective-function}
-\mathpzc{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right]
+\mathcal{s}_\lambda\left( z \right)  = \argmin{\sigma} \left[ \frac{1}{2} \left(\sigma - z\right)^2 + J_\lambda\left(\sigma \right)\right]
 \end{equation}
 \noindent
 For detailed discussion of the connection between penalty functions and the resulting thresholding rules, see \citet{antoniadis2001regularization}. Soft thresholding results from minimizing \ref{eq:general-thresholding-objective-function} using the lasso penalty, $J_\lambda = \lambda \vert \sigma \vert$, which corresponds to thresholding rule
 
 \begin{equation} 
-\mathpzc{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
+\mathcal{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
 \end{equation}
 
 \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
@@ -1046,6 +1037,3 @@ Table~\ref{table:ideal-repeated-measurements} shows the ideal, rectangular shape
 Modeling $\phi_{ij} = \phi\left(t_i, t_j\right)$ as a smooth bivariate function, we cast the problem of estimating a covariance matrix as the estimation of a functional varying coefficient model. The existing body of literature surrounding these models is an extensive one; see \citet{csenturk2008generalized}, \citet{csenturk2013modeling}, and \citet{noh2010sparse}. This class of models is both flexible and interpretable, making them a pragmatic modeling choice when understanding the underlying data generating mechanism is of as much importance as strong predictive capability. We employ two representations of the GARPs, which we refer to as the \textit{generalized autoregressive coefficient function} within this frame. Chapter 2 presents a reproducing kernel Hilbert space framework for the estimation of both $\phi$ and $\sigma^2$. In Chapter 3, we discuss an alternative representation the varying coefficient function using the penalized B-splines of \citet{eilers1996flexible}. We properties of the P-splines that establish their connection to the usual spline penalty on the second derivative and demonstrate how their simple construction allows for extremely flexible regularization.
 
 
-
-\bibliography{../Master}
-\end{document}

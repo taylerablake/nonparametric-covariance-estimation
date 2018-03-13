@@ -10,12 +10,12 @@ S^*_\lambda &= \vert y- Q\alpha  \vert^2  + \lambda_0 \vert D_{d_0} \alpha_0 \ve
 	&= \vert y- Q\alpha  \vert^2  + \vert \alpha^T P \alpha \vert^2
 \end{split} \label{eq:S_pen_star}
 \end{align}
-
+\noindent
 where the penalty has form $P = \mbox{block diag}\left(\lambda_0 D_{d_0}^TD_{d_0}, \lambda_1 D_{d_1}^TD_{d_1} \right)$. The minimizer of \ref{eq:S_pen_star} is given by
 \[
 \hat{\alpha} = \left(Q^T Q +  P\right)^{-1}Q^T y.
 \]
-
+\noindent
 The block diagonal structure of the penalty separates the penalization of each individual smooth component. The estimated mean function is then given by 
 \[
 \hat{\mu} = Q \hat{\alpha} = H y
