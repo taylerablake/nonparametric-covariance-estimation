@@ -322,10 +322,10 @@ These models are can permit variance and covariances which exhibit several kinds
 The previous list is far from an exhaustive list of parametric covariance structures - we will later reference structures which we have not discussed here, such as antedependence models. For example, see \cite{jennrich1986unbalanced} for additional models for repeated measures data. While these models are computationally attractive and the choices for parametric model structure are seemingly unlimited, specifying the appropriate parametric covariance structure is a challenge even for the experts, and model misspecification can lead to considerably biased estimates. To strike a balance between the variability of the sample covariance matrix and the bias of the estimated structured covariance matrix, it is prudent to rely on the data to formulate structures for the unknown underlying dependence in the data.
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Shrinking the sample covariance matrix} \label{chapter-1-shrinking-the-sample-cov}
+\section{Shrinking the sample covariance matrix} \label{chapter-1-shrinking-the-sample-cov}
 
 
-\subsubsection{Shrinking the spectrum and the correlation matrix}
+\subsection{Shrinking the spectrum and the correlation matrix}
 
 \cite{stein1975estimation} observed that the sample covariance matrix systematically distorts the eigenstructure of $\Sigma$, especially when $M$ is large. His work spurred efforts in the improvement of $S$, which he did by simply shrinking its eigenvalues.  He considered estimators of the form
 \begin{equation}\label{eq:stein-eigen-estimator}
@@ -341,10 +341,9 @@ where $\lambda = \left(\lambda_1, \dots, \lambda_M\right)'$, $\lambda_1 > \dots 
 \noindent
 The Stein estimators $\phi_j$ differ from the sample eigenvalues when are nearly equal and $N/M$ is not small. The work of \cite{lin1985monte} includes an algorithm to modify any $\phi_j$'s which are negative and or do not not satisfy $\phi_1 < \dots < \phi_M$.
 
-\subsubsection{Ledoit-Wolf shrinkage estimator}
+\subsection{Ledoit-Wolf shrinkage estimator}
 
-
-The estimator proposed by \cite{ledoit2004well} is motivated by the fact that the sample covariance matrix is unbiased but has high variance - the risk associated with $S$ is considerable when $M >> N$, and even in cases when the dimension is close to the sample size. In contrast, very little estimation error is associated with a highly structured estimator of a covariance matrix, like those presented in Section~\ref{parametric-covariance-models}, but when the model is misspecified, these can exhibit severe bias. A natural inclination is to define an estimator as a linear combination of the two extremes, letting
+The estimator proposed by \cite{ledoit2004well} is motivated by the fact that the sample covariance matrix is unbiased but has high variance - the risk associated with $S$ is considerable when $M >> N$, and even in cases when the dimension is close to the sample size. In contrast, very little estimation error is associated with a highly structured estimator of a covariance matrix, like those presented in Section~\ref{chapter-1-parametric-covariance-models}, but when the model is misspecified, these can exhibit severe bias. A natural inclination is to define an estimator as a linear combination of the two extremes, letting
 
 \begin{equation} \label{eq:ledoit-wolf-estimator}
 \hat{\Sigma} = \alpha_1 I + \alpha_2 S,
@@ -446,7 +445,7 @@ Shrinkage and thresholding estimators can be viewed as the solution to the probl
 For detailed discussion of the connection between penalty functions and the resulting thresholding rules, see \cite{antoniadis2001regularization}. Soft thresholding results from minimizing \ref{eq:general-thresholding-objective-function} using the lasso penalty, $J_\lambda = \lambda \vert \sigma \vert$, which corresponds to thresholding rule
 
 \begin{equation} 
-\mathcal{s}_\lambda\left( z \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
+\mathcal{s}_\lambda\left( \sigma \right) = \textup{sign}\left(\sigma\right) \left(\sigma  - \lambda\right)_+.
 \end{equation}
 
 \cite{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
@@ -462,7 +461,7 @@ where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance ma
 
 Alternately, for estimating the covariance of a random vector which is assumed to have a natural (time) ordering, several have proposed applying kernel smoothing methods directly to elements of the sample covariance matrix or a function of the sample covariance matrix. \cite{zeger1994semiparametric} introduced a nonparametric estimator obtained by kernel smoothing the sample variogram and squared residuals.  \cite{yao2005functional} applied a local linear smoother to the sample covariance matrix in the direction of the diagonal and a local quadratic smoother in the direction orthogonal to the diagonal to account for the presence of additional variation due to measurement error. The latter work is one of the few nonparametric methods utilizing smoothing in both dimensions of the covariance matrix, which was an inspiration of sorts for the work we present in Chapter 2. Like other elementwise shrinkage estimators, however, their proposed estimator is not guaranteed to be positive definite. 
 
-\subsubsection{Smoothing parameter selection for element-wise shrinkage estimators} \label{chapter-1-smoothing-parameter-estimation-elementwise-shrinkage-estimators}
+\bigskip
 
 The performance of any regularized estimator depends heavily on the quality of tuning parameter selection. The Frobenius is a natural measure of the accuracy of an estimator; it quantifies the sum over the unique elements of $\Sigma$ of the the first term in \ref{eq:general-thresholding-objective-function}, 
 
@@ -492,11 +491,11 @@ where $\tilde{\Sigma}^{\left(-k\right)}$ is the unregularized estimator based on
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Matrix decompositions} \label{chapter-1-matrix-decompositions}
+\section{Matrix decompositions} \label{chapter-1-matrix-decompositions}
 The most methodic and successful approaches to covariance modeling is to decompose the covariance matrix into its variance and dependence components. The following section demonstrates the role of multiple matrix parameterizations in removing the positive definite constraint that poses a challenge in most covariance estimation settings.
 
 \bigskip
-\subsubsection{The variance-correlation decomposition}
+\subsection{The variance-correlation decomposition}
 
 The variance-correlation decomposition of $\Sigma$ is perhaps the most familiar of the following three parameterizations, which parameterizes the covariance matrix according to
 
@@ -512,7 +511,7 @@ While the diagonal entries of $D$ are constrained to be nonnegative, their logar
 
 \bigskip
 
-\subsubsection{Gaussian graphical models} 
+\subsection{Gaussian graphical models} 
 
 The marginal (pairwise) dependence among the entries of a random vector are captured by the off-diagonal entries of $\Sigma$ or the entries of the correlation matrix $R = \left(\rho_{ij}\right)$. However, the conditional dependencies can be found in the off-diagonal entries of the precision matrix $\Sigma^{-1} = \left( \sigma^{ij} \right)$. More precisely, for $Y$ a mean zero normal random vector with a positive-definite covariance matrix, if the $\left(i,j\right)$ component of the precision matrix is zero, then given the other variables, $y_i$ and $y_j$ are conditionally independent (\cite{Anderson84a}). 
 
@@ -593,7 +592,7 @@ Rewriting the $\beta_{ij}$, we have
 which shows that the sparsity of the inverse covariance matrix mirrors that of the matrix of partial correlations. This parallel motivates estimation of the inverse covariance matrix by fitting a sequence of penalized regression models, notably the  approach taken by \cite{peng2012partial} which imposes a Lasso penalty on the off-diagonal elements of the partial correlation matrix. 
 
 
-\subsubsection{The spectral decomposition}
+\subsection{The spectral decomposition}
 
 The spectral decomposition is the basis of several methods in multivariate statistics, including principal component analysis and factor analysis. See \cite{Anderson84a},  (Hotelling, 1933). The spectral decomposition of a covariance matrix $\Sigma$ is given by
 
@@ -612,7 +611,7 @@ This decomposition is particularly interesting because it highlights a tradeoff 
 
 \bigskip
 
-\subsubsection{The Cholesky decomposition} \label{chapter-1-cholesky-decomposition}
+\subsection{The Cholesky decomposition} \label{chapter-1-cholesky-decomposition}
 
 The Cholesky decomposition of a positive-definite matrix has the form
 
@@ -746,7 +745,7 @@ $\sigma_1^2$ & $\sigma_1^2$ & $\dots$&$\dots$ &$\sigma_{m-1}^2$ &$\sigma_m^2$
 %\cite{yao2005functional} do not utilize the Cholesky parameterization, and their estimates are not guaranteed to be positive definite.  We combine the advantages of bivariate smoothing as in \cite{yao2005functional} with the added utility of the Cholesky parameterization in \cite{huang2007estimation}; in doing so, we present a flexible and coherent approach to covariance estimation, while simultaneously we ensuring positive definiteness of estimates.Rather than shrinking element of the Cholesky factor to zero after a particular value of $l$, we choose to softly enforce monotonicity in $l$ by using a hinge penalty as in the work of \cite{tibshirani2011nearly}. 
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Generalized linear models for covariances}
+\section{Generalized linear models for covariances}
 
 
 Modeling covariance matrices in a systematic, data-driven manner is impeded by the positive-definiteness constraint and high-dimensionality; however, similar (albeit simpler) hurdles in modeling the mean vector $\mu$ of the distribution of a random vector $Y = \left(y_1, \dots , y_M\right)'$ has been successfully handled in the context of regression analysis. The resulting techniques have lead to the framework of generalized linear models (GLM), which enjoys a rich and extensive theoretical foundation. The success of GLMs is in most part due to the use of a  link function $g\left(\cdot\right)$ and a linear predictor $g\left(\cdot\right) = X\beta$, which induces an unconstrained parameterization and reduces the parameter space dimension simultaneously. Since the covariance matrix of a random vector $Y$ , defined by $\Sigma = E\left(Y - \mu\right)\left(Y - \mu\right)$, is a mean-like parameter, one would like to exploit the idea of GLM along with the experience and progress in fitting the mixed-effects and time series models in developing a systematic, data-based procedure for covariance matrices. 
@@ -759,8 +758,8 @@ Approaches to modeling covariances with the explicit use covariates has been ext
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-\subsubsection{Linear models for covariance}
-\cite{gabriel1962ante} was among the first to implicitly parameterize a multivariate normal distribution in terms of entries of the precision matrix $\Omega^{-1}$.  Dempster (1972) who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
+\subsection{Linear models for covariance}
+\cite{gabriel1962ante} was among the first to implicitly parameterize a multivariate normal distribution in terms of entries of the precision matrix $\Omega^{-1}$.  \cite{dempster1972covariance} who recognized the entries of $\Sigma^{-1} = \left(\sigma^{ij} \right)$ as the canonical parameters of the exponential family of normal distributions with mean zero and unknown covariance matrix $\Sigma$:
 
 \[
 \log f\left(Y, \Sigma^{-1}\right) = -\frac{1}{2}\mbox{tr}\Sigma^{-1} \left(Y'Y\right) + \log\vert \Sigma \vert^{-1/2} - M \log\sqrt{\pi}
@@ -797,7 +796,7 @@ Of course, there are the nonstationary analogues to these classes of models, som
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-\subsubsection{Log-linear covariance models} \label{log-linear-glms}
+\subsection{Log-linear covariance models} \label{log-linear-glms}
 
 The constraint on the $\alpha_i$s in (\ref{eq:linear-covariance-model}) was eliminated with the introduction of log-linear covariance models (\cite{chiu1996matrix},  \cite{pinheiro1996unconstrained}.) For a general covariance matrix having spectral decomposition
 \begin{equation}
@@ -872,7 +871,8 @@ y_t = \sum_{j = 1}^{t-1} f_{j,M}\left( t/M \right) y_{t-j} + \sigma_M\left(t/M\r
 Table~\ref{table:ideal-repeated-measurements} shows the ideal, rectangular shape of such data where $N$ units (subjects, stocks, households, financial instruments, etc.) are measured repeatedly on one variable. In most longitudinal studies, the functional trajectories of the involved smooth random processes are not directly observable. Often, the observed data are noisy, sparse and irregularly spaced measurements of these trajectories. In the case that subjects don't share a common set of observation times, the notion of the discrete lag doesn't have a clear definition. In turn, it is not clear then, how one would apply smoothing to each subdiagonal of $T$ since this relies on data observed on a regular grid. Moreover, if one believes that the data used to inform one subdiagonal could inform subdiagonals close to it, failing to smooth in both directions fails to make use of this information. In Chapter 2, we outline a proposed framework for covariance estimation based on the Cholesky decomposition, viewing $T$ as a continuous function in both the lag direction as well as the direction orthogonal to it. Using this approach allows us to also remove any restriction on observation times being regularly spaced and the same across subject. Henceforth, we take $Y_i$ and $\epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{i, m_i} \right)'$ to be continuous processes $Y\left(t\right)$, $\epsilon\left(t\right)$ observed at discrete measurement times $t_1,\dots, t_{m_i}$. Using a likelihood-based estimation approach alongside a functional interpretation of the GARPs permits a natural way to regularize the estimator and allow any functional characterizations of the dependency structure to be entirely data driven. 
  
 
-\begin{table}\centering
+\begin{table}[H]
+\centering
 \caption{Ideal shape of repeated measurements.}
 \begin{tabular}{cc|cccccc}
 \multicolumn{8}{c}{Occasion}\\
@@ -888,8 +888,6 @@ Table~\ref{table:ideal-repeated-measurements} shows the ideal, rectangular shape
 \end{table}
 
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-\bigskip
 %We adopt the approach based on the Cholesky decomposition. The modified Cholesky decomposition (MCD) has received much attention in the covariance estimation literature, as it ensures positive-definite covariance estimates, and, unlike the spectral decomposition whose parameters follow an orthogonality constraint, the Cholesky decomposition are unconstrained and have an attractive statistical interpretation as particular regression coefficients and variances.  
 %{\needsparaphrased{The Cholesky decomposition is similar to the spectral decomposition in that  is diagonalized by a lower triangular matrix T: 
 %
@@ -1029,7 +1027,6 @@ Table~\ref{table:ideal-repeated-measurements} shows the ideal, rectangular shape
 %\end{equation}
 %\noindent
 %where $\phi_{ijk}$ is the autoregressive coefficient corresponding to the pair of measurements observed at time $t_{ij}$ and $t_{ik}$. A vectorized representation of Model~\ref{eq:discrete-unevenly-spaced-ar-model} can be obtained as before by adding the necessary parameters to $T$ and $D$.
-\bigskip
 
 Modeling $\phi_{ij} = \phi\left(t_i, t_j\right)$ as a smooth bivariate function, we cast the problem of estimating a covariance matrix as the estimation of a functional varying coefficient model. The existing body of literature surrounding these models is an extensive one; see \cite{csenturk2008generalized}, \cite{csenturk2013modeling}, and \cite{noh2010sparse}. This class of models is both flexible and interpretable, making them a pragmatic modeling choice when understanding the underlying data generating mechanism is of as much importance as strong predictive capability. We employ two representations of the GARPs, which we refer to as the \textit{generalized autoregressive coefficient function} within this frame. Chapter 2 presents a reproducing kernel Hilbert space framework for the estimation of both $\phi$ and $\sigma^2$. In Chapter 3, we discuss an alternative representation the varying coefficient function using the penalized B-splines of \cite{eilers1996flexible}. We properties of the P-splines that establish their connection to the usual spline penalty on the second derivative and demonstrate how their simple construction allows for extremely flexible regularization.
 

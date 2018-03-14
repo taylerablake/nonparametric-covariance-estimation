@@ -141,11 +141,7 @@ If we consider the Cholesky decomposition of $\Sigma$ within such functional con
 \[
 \tilde{\phi}_{tj} = \tilde{\phi}\left(t_{i},t_{j}\right). 
 \]
-Adopting similar notation for the innovation variance function, denote
-\[
-\sigma_{j}^2 = \sigma^2\left(t_{j}\right),
-\]
-where $0 \le t_{j} < t_{i} \le 1$ for $j < i$. This leads to varying coefficient model
+Adopting similar notation for the innovation variance function, denote $\sigma_{j}^2 = \sigma^2\left(t_{j}\right)$ where $0 \le t_{j} < t_{i} \le 1$ for $j < i$. This leads to varying coefficient model
 
 \begin{equation}  \label{eq:cholesky-regression-model-1} 
 y\left(t_{i} \right)  = \sum_{j=1}^{i-1} \tilde{\phi}\left(t_{i} ,t_{j}\right) y\left(t_{j}\right) + \sigma\left(t_{j}\right)\epsilon\left({t_j}\right) \;\;\;\; i=1,\dots, M, 
@@ -181,7 +177,7 @@ where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional componen
 
 While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \cite{kimeldorf1971some} and \cite{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \cite{gu2013smoothing}, and estimation is achieved through similar computational strategies.
 
-\subsection{Penalized maxiumum likelihood estimation of $\phi$, $\log\sigma^2$}
+\bigskip
 
 Let random vector $Y$ follow a multivariate normal distribution with zero mean vector and covariance $\Sigma$. The loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
 
@@ -501,8 +497,6 @@ Q &= \sum_{\beta=1}^g \theta_\beta Q_\beta,
 \noindent
 where $Q_\beta$ is the RK in $\hilbert_\beta$. The $\left \{ \theta_\beta \right\}$ are additional smoothing parameters, which are implicit in notation to follow for the sake of concise demonstration. 
 
-\bigskip
-
 
 \bigskip
 \noindent
@@ -510,7 +504,7 @@ Let $Y$ denote the vector of length $n_y= \sum_{i} M_i - N$  constructed by stac
 
 \begin{align*}
 Y &= \left( Y'_1, Y'_2, \dots, Y'_{N} \right)'\\
- &= \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N2}, y_{N3},\dots, y_{N,m_N} \right)'
+ &= \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N,2}, y_{N,3},\dots, y_{N,m_N} \right)'
 \end{align*}
 \noindent
 Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}, and stack these on top of one another to obtain
@@ -524,7 +518,7 @@ X_N
 \end{bmatrix},
 \end{equation}
 \noindent
-which has dimension $n_y \times \vert V \vert$. Then the solution $\phi$  minimizing \ref{eq:penalized-least-squares-2}  is the solution to the minimization problem
+which has dimension $n_y \times \vert V \vert$. Then the solution $\phi_\lambda$ minimizing \ref{eq:phi-penalized-sums-of-squares-RK-norm}  is the solution to the minimization problem
 
 \begin{equation} \label{eq:ar-design-matrix-1}
 \vert \vert D^{-1/2}\left( Y - X \left( Bd + Qc \right) \right) \vert \vert^2  + \lambda c^\prime Q c 
@@ -773,8 +767,6 @@ G = \tildeB\left(\tildeB' \tildeB \right)^{-1}\tildeB'.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bigskip
-TO DO: discuss efficient approximation of $\hilbert$ using a low rank smoother technique, as discussed in Gu's book at the end of Chapter 3. \cite{kim2004smoothing}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -788,9 +780,9 @@ TO DO: discuss efficient approximation of $\hilbert$ using a low rank smoother t
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-solution}
 
-By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\phi_\lambda$ of \ref{eq:vectorized-normal-equations} defines a family of potential estimates. In practice, we need to choose a specific estimate from the family, which requires effective methods for smoothing parameter selection. We consider two criteria that are commonly used for smoothing parameter selection in the context of smoothing spline models for longitudinal data. The first score is an unbiased estimate of a relative loss and assumes a known variances $\sigma_t^2$. The unbiased risk estimate has attractive asymptotic properties; see \cite{gu2013smoothing} for a comprehensive examination. The second score, the leave-one-subject-out cross validation (losoCV) score, provides an estimate of the same loss without assuming a known variance function. We review a computationally convenient approximation of the losoCV score proposed by \cite{xu2012asymptotic}, who demonstrates the shortcut score's asymptotic optimality. To simplify notation for the initial presentation, we only make explicit the dependence of estimates and their components on $\lambda$ and conceal any dependence on $\theta_\beta$. 
+By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\phi_\lambda$ of \ref{eq:vectorized-normal-equations} defines a family of potential estimates. In practice, we need to choose a specific estimate from the family, which requires effective methods for smoothing parameter selection. We consider two criteria that are commonly used for smoothing parameter selection in the context of smoothing spline models for longitudinal data. The first score is an unbiased estimate of a relative loss and assumes a known variances $\sigma_t^2$. The unbiased risk estimate has attractive asymptotic properties; see \cite{gu2013smoothing} for a comprehensive examination. The second score, the leave-one-subject-out cross validation (LosoCV) score, provides an estimate of the same loss without assuming a known variance function. We review a computationally convenient approximation of the LosoCV score proposed by \cite{xu2012asymptotic}, who demonstrates the shortcut score's asymptotic optimality. To simplify notation for the initial presentation, we only make explicit the dependence of estimates and their components on $\lambda$ and conceal any dependence on $\theta_\beta$. 
 
-\subsection{Model selection criteria}
+
 \subsubsection{Unbiased risk estimate}
 
 Define  $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeQ = D^{-1/2} X Q$ as before. Let $\tildeepsilon = D^{-1/2} \epsilon$ denote the vector of length  $\sum_{i = 1}^Nm_i - N$ containing the standardized prediction errors $\epsilon_{ij} \sim N\left(0,1\right)$, and write the vector of transformed means 
@@ -839,10 +831,10 @@ U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  
  R\left(\lambda\right) = E\left[L\left(\lambda\right)\right],
  \]
 \noindent
-one can establish that $U$ is also a consistent estimator. See \cite{gu2013smoothing} Chapter 3 for a formal theorem and proof.
+one can establish that $U$ is also a consistent estimator. See \cite{gu2013smoothing}, Chapter 3 for a formal theorem and proof.
 
 
-\subsection{Leave-one-subject-out cross validation}  
+\subsubsection{Leave-one-subject-out cross validation}  
 The conditions under which the the cross validation and generalized cross validation scores traditionally used for smoothing parameter selection yield desirable properties generally do not hold when the data are clustered or longitudinal in nature. Instead, the leave-one-subject-out (LosoCV) cross validation score has been widely used for smoothing parameter selection for semiparametric and nonparametric models for longitudinal or functional data. The LosoCV criterion is defined as
 
 \begin{equation} \label{eq:LOSOCV}
@@ -867,7 +859,11 @@ E\left[V_{loso}\left(\lambda\right) \right] =  \frac{1}{N}\sum_{i=1}^N\left\{ m_
 \noindent
 When $N$ is large, we expect that $\widehat{\tilde{\mu}}_{i}$ should be close to $\widehat{\tilde{\mu}}^{\left[ -i \right]}_{i}$, so $E\left[V_{loso}\left(\lambda\right) \right]$ should be a good approximation to the mean-squared prediction error. For a formal proof of consistency, see \cite{xu2012asymptotic}.
 
-  \subsubsection{Computation of the LosoCV score}
+
+\bigskip
+
+The definition of $V_{loso}$ would lead one to initially believe that calculation of the score requires solving $N$ separate minimization problems, however, \cite{xu2012asymptotic} established a computational shortcut that requires solving only one minimization problem that involves all data. 
+%  \subsubsection{Computation of the LosoCV score}
   
   \begin{lemma}[Shortcut formula for LosoCV] \label{lemma:losocv-shortcut}
   The LosoCV score satisfies the following identity:
@@ -884,7 +880,7 @@ A detailed presentation and proof can be found in \cite{xu2012asymptotic} and su
 V_{loso}^*\left( \lambda \right) = \frac{1}{N} \vert \vert \left(I - \tildeA\right)\tildeY \vert \vert^2 + \frac{2}{N} \sum_{i = 1}^N \hat{\tilde{e}}'_{i}\tildeA_{ii}\hat{\tilde{e}}_i,
 \end{equation}
 \noindent
-where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA\right)\tildeY$ corresponding to subject $i$. They show that under mild conditions, and for fixed, nonrandom $\lambda$, the approximate losoCV score $V^*$ and the true losoCV score $V_{loso}$ are asymptotically equivalent. See Theorem 3.1 of \cite{xu2012asymptotic}.
+where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA\right)\tildeY$ corresponding to subject $i$. They show that under mild conditions, and for fixed, nonrandom $\lambda$, the approximate LosoCV score $V^*$ and the true LosoCV score $V_{loso}$ are asymptotically equivalent. See Theorem 3.1 of \cite{xu2012asymptotic}.
   
 \vspace{0.8in} 
 
@@ -1037,7 +1033,9 @@ is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \ve
 
 For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalized log likelihood (\ref{eq:penalized-joint-loglik-given-phi-3}) is convex in $\eta$, so that the minimizer can be computed via Newton iteration. Let $u_{ij} = -z_{ij} + b'\left( \tilde{\eta}\left(t_{ij}\right) \right) =  -z_{ij} +  \tilde{\mu}\left(t_{ij}\right)$, and $\tilde{\omega}_{ij} = b''\left( \tilde{\eta}\left(t_{ij}\right) \right) = \tilde{v}\left(t_{ij}\right)$. The quadratic approximation of $-z_{ij} \eta\left(t_{ij}\right) + b\left(\eta\left(t_{ij}\right)\right)$ at $\tilde{\eta}\left(t_{ij}\right)$ is given by 
 
-
+\vspace{1in}
+{\textbf{PLACEHOLDER - TO DO}}
+\vspace{1in}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1106,6 +1104,9 @@ where $\omega^*\left(t_{ij}\right) = b''\left(\eta^*\left(t_{ij}\right)\right)$ 
 U_\omega\left( \lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
 \end{equation}
 
+\vspace{1in}
+{\textbf{PLACEHOLDER - TO DO}}
+\vspace{1in}
 
 
 
