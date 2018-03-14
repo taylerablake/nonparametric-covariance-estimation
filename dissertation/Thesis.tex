@@ -8,9 +8,10 @@
 \usepackage{enumitem}
 \usepackage{accents}
 \usepackage{framed}
-
 \usepackage[utf8]{inputenc}
+\usepackage{natbib}
 \usepackage{subcaption}
+%\usepackage{subfig}
 \usepackage{algorithm}
 \usepackage{etoolbox}
 \usepackage{lscape}
@@ -21,7 +22,6 @@
 \usepackage{IEEEtrantools}
 \usepackage{times}
 \usepackage{arydshln}
-\usepackage{cite}
 \usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{rotating}
@@ -124,25 +124,20 @@
 \renewcommand\typesetChapterTitle[1]{#1}
 
 \begin{document}
-
+\bibliographystyle{plainnat}
 %
 % First, declare the parts of your title page 
 %
 
-\author{Bart Simpson}
-\title{Have a Cow, Man (2010 Version)}
-\authordegrees{C.S., D.S.}  % Degrees thus far, not including this one.
-\unit{Department of Cow and Dairy Science}
+\author{Tayler A. Blake}
+\title{Nonparametric Covariance Estimation for Longitudinal Data via Tensor Product Splines}
+\authordegrees{B.A., M.S.}  % Degrees thus far, not including this one.
+\unit{Department of Statistics}
 
-\advisorname{Big Dude}
-\member{Other Dude}
-\member{Some other dude}
+\advisorname{Yoonkyung Lee}
+\member{Katherine A. Calder}
+\member{Sebastian Kurtek}
 %\member{Yet another dude}      % Normally you will have advisor + 2 members
-
-
-%
-% The following creates the title page
-%
 
 \maketitle
 
@@ -233,7 +228,7 @@
 \include{chapter-2-spline-representation} 
 \include{chapter-3-pspline-representation}   
 \include{chapter-4-simulation-studies}       
-%\include{chapter-5-data-analysis} 
+\include{chapter-5-data-analysis} 
 %\include{chapter-6-concluding-remarks}       
 
 %

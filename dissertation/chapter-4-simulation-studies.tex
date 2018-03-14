@@ -122,7 +122,7 @@
 \chapter{Simulation studies} 
 \section{Performance benchmarking with complete data}
 
-In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by citet{pourahmadi1999joint},  \citet{pan2003modelling}, and \citet{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix (\citet{cai2010optimal}) and the soft thresholding estimator (\citet{rothman2009generalized}), which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
+In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by citet{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix (\cite{cai2010optimal}) and the soft thresholding estimator (\cite{rothman2009generalized}), which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
 
 \bigskip
 
@@ -134,19 +134,19 @@ Simulations were carried out for five covariance structures: the diagonal covari
 \begin{figure}[H] \label{fig:true-covariance-heatmaps}
 \centering
 %\subfloat[I]{
-%  \includegraphics[width = .2\textwidth]{../img/chapter-4/true-covariance-1-heat-map}
+%  \includegraphics[width = .2\textwidth]{img/chapter-4/true-covariance-1-heat-map}
 %} 
 %\subfloat[II]{
-%  \includegraphics[width = .2\textwidth]{../img/chapter-4/true-covariance-2-heat-map}
+%  \includegraphics[width = .2\textwidth]{img/chapter-4/true-covariance-2-heat-map}
 %} 
 %\subfloat[III]{
-%  \includegraphics[width = .2\textwidth]{../img/chapter-4/true-covariance-3-heat-map}
+%  \includegraphics[width = .2\textwidth]{img/chapter-4/true-covariance-3-heat-map}
 %} 
 %\subfloat[IV]{
-%   \includegraphics[width = .2\textwidth]{../img/chapter-4/true-covariance-4-heat-map}
+%   \includegraphics[width = .2\textwidth]{img/chapter-4/true-covariance-4-heat-map}
 %   }
 %\subfloat[V]{
-  \includegraphics[width = \textwidth]{../img/chapter-4/cov-cholesky-grid}
+  \includegraphics[width = \textwidth]{img/chapter-4/cov-cholesky-grid}
 %}
 \caption{True covariance surfaces (row 1) under simulation Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} and their corresponding Cholesky factor $T$ (row 2).}
 \end{figure}
@@ -232,7 +232,7 @@ The first loss $\Delta_1$ is commonly referred to as the entropy loss; it gives 
 \vert \vert A \vert \vert^2 = \mbox{tr}\left(A A'\right).
 \]
 \noindent
-The quadratic loss consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \citet{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{nS}{n+p+1}$ is optimal under $\Delta_1$. 
+The quadratic loss consequently penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_2$ than $\Delta_1$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \cite{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{nS}{n+p+1}$ is optimal under $\Delta_1$. 
 
 \bigskip
 
@@ -253,7 +253,7 @@ We prefer one estimator $\hat{\Sigma}_1$ to another $\hat{\Sigma}_2$ if it has s
 
 \subsubsection{Alternative estimators}
 %\subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
-The following estimators serve as benchmarks for performance under the five simulation settings outlined above: the MCD polynomial estimator $\hat{\Sigma}_{poly}$, the sample covariance matrix $S$, the soft thresholding estimator $S^\lambda$, and the tapering estimator $S^\omega$. We will review the general definitions of these, but for detailed discussion of the construction and properties of these estimators, see Chapter 1,  Section~\ref{chapter-1-banding-tapering-estimators}, \ref{section:element-wise-shrinkage-estimators} and \ref{chapter-1-matrix-decompositions}.
+The following estimators serve as benchmarks for performance under the five simulation settings outlined above: the MCD polynomial estimator $\hat{\Sigma}_{poly}$, the sample covariance matrix $S$, the soft thresholding estimator $S^\lambda$, and the tapering estimator $S^\omega$. We will review the general definitions of these, but for detailed discussion of the construction and properties of these estimators, see Sections~\ref{elementwise-shrinkage-estimators} and \ref{chapter-1-matrix-decompositions}.
 
 \bigskip
 
@@ -275,13 +275,13 @@ z'_{i}  &= \left(1, t, \dots, t^{q-1}\right)'.
 \end{split}
 \end{align} \label{eq:mcd-polynomial-model}
 \noindent
-where polynomial orders $p$, $q$ are chosen by BIC. \citet{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
+where the orders of the polynomials, $p$ and $q$, are chosen by BIC. \cite{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
 
 \[
 S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
 \]
 \noindent 
-where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. The tapering estimator proposed by \citet{cai2010optimal} is given by
+where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. The tapering estimator proposed by \cite{cai2010optimal} is given by
 \[
 S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
 \]
@@ -318,13 +318,13 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 \begin{figure}[H] 
 \centering
 \caption{Covariance Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}
-  \includegraphics[width = 1\textwidth]{../img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
+  \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
 \end{figure}
 
 \begin{figure}[H] 
 \centering
 \caption{The true lower triangle of Cholesky factor $T$ corresponding to Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} and estimates of the same surface for estimators based on the modified Cholesky decomposition. The true covariance structure is displayed across the top row.}
-  \includegraphics[width = 1\textwidth]{../img/chapter-4/cholesky-estimate-lattice}
+  \includegraphics[width = 1\textwidth]{img/chapter-4/cholesky-estimate-lattice}
   \label{fig:chol-estimate-lattice}
 \end{figure}
 
@@ -332,7 +332,7 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \begin{figure}[H] 
 \caption{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}
-  \includegraphics[width = \textwidth]{../img/chapter-4/ssanova-estimate-lattice} \label{fig:ssanova-component-lattice}
+  \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} \label{fig:ssanova-component-lattice}
 \end{figure}
 
 \bigskip
@@ -453,7 +453,7 @@ $N = 50$ & 10 & 0.0749 & 0.1261 & 0.0135 & 0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-5}
+%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-5}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:42 2018
 \begin{table}[H]
@@ -482,15 +482,15 @@ Tuning parameter selection for the regularized versions of the sample covariance
 \mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
 \end{equation}
 \noindent
-There is little established about the optimal method for tuning parameter selection in for the class of estimators based on element-wise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \citet{fang2016tuning}, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \citet{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
+There is little established about the optimal method for tuning parameter selection in for the class of estimators based on element-wise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \cite{fang2016tuning}, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \cite{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
 
 \bigskip
 
-As discussed in Chapter 1, in the limit, soft thresholding produces a positive definite estimator with probability tending to 1 (\citet{rothman2009generalized}), however element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite. We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.  In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \citet{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
+As discussed in Chapter 1, in the limit, soft thresholding produces a positive definite estimator with probability tending to 1 (\cite{rothman2009generalized}), however element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite. We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.  In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \cite{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
 \bigskip
 
-\citet{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\lambda$, $\gamma$ of the polynomial model \ref{eq:mcd-polynomial-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is  is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \citet{pan2017jmcm}. 	 
+\cite{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\lambda$, $\gamma$ of the polynomial model \ref{eq:mcd-polynomial-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is  is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \cite{pan2017jmcm}. 	 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -665,8 +665,6 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
    & 0.09 & 0.9141808 & (0.0073) & 0.9212852 & (0.0053) \\ 
   \end{tabular}
 \end{table}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-5}
@@ -699,7 +697,7 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
+%\subfile{chapter-4-subfiles/chapter-4-numerical-discussion-2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -724,29 +722,32 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsubsection{Quadratic risk estimates for simulation study 2}
-\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-1}
-\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-2}
-\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-3}
-\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-4}
-\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-5}
+%\subsubsection{Quadratic risk estimates for simulation study 2}
+%\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-1}
+%\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-2}
+%\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-3}
+%\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-4}
+%\subfile{chapter-4-subfiles/simulation-study-2-quad-risk-model-5}
 
 
-\subfile{chapter-4-subfiles/simulation-study-1-extra-tables}
 
-%%-----------------------------------------------------------------------------------------------------------------------------
 
-\subsubsection{Comprehensive tables for study 1}
-%%-----------------------------------------------------------------------------------------------------------------------------
-\begin{landscape}
-\subfile{chapter-4-subfiles/simulation-study-1-master-entropy-risk-table}
-\end{landscape}
+
+%\subfile{chapter-4-subfiles/simulation-study-1-extra-tables}
 
 %%-----------------------------------------------------------------------------------------------------------------------------
 
-\begin{landscape}
-\subfile{chapter-4-subfiles/simulation-study-1-master-quadratic-risk-table}
-\end{landscape}
+%\subsubsection{Comprehensive tables for study 1}
+%%%-----------------------------------------------------------------------------------------------------------------------------
+%\begin{landscape}
+%\subfile{chapter-4-subfiles/simulation-study-1-master-entropy-risk-table}
+%\end{landscape}
+
+%%-----------------------------------------------------------------------------------------------------------------------------
+
+%\begin{landscape}
+%\subfile{chapter-4-subfiles/simulation-study-1-master-quadratic-risk-table}
+%\end{landscape}
 
 
 %\bibliography{../Master}
