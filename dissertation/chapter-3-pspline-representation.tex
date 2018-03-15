@@ -3,6 +3,8 @@
 
 \chapter{Modeling the Cholesky decomposition via penalized B-splines} \label{chapter-3}
 
+{\needsparaphrased{TO DO: clean this up, omitting all of the non-varying coefficient model discussion; move the pertinant B-spline discussion to the appendix. }}
+
 \subsection{A B-spline representation for pp functions}
 
 %\subfile{chapter-3-subfiles/chapter-3-bspline-representation}
@@ -329,7 +331,7 @@ Consider the varying intercept-only model defined in \ref{eq:varying_intercept_o
 \sum_{i=1}^m \left \{ y_i - \sum_{j=1}^K \beta_j B_j\left(t_i\right) \right \}^2 + \lambda \int_{t_{min}}^{t_{max}} \left\{  \sum_{j=1}^K \beta_j B^{\prime \prime}_j\left(t\right) \right\}^2 \; dt.
 \end{equation}
 
-The integral of the square of the second derivative of a fitted function has become common as a smoothness penalty since the seminal work on smoothing splines by Reinsch (1967), though it is useful to note that there is nothing particularly special about the second derivative. One could easily specify higher or lower order derivatives in smoothness penalties. In the context of smoothing splines, the first derivative leads to simple equations and a piecewise linear fit, while higher derivatives lead to systems of equations with a high bandwidth and a very smooth fit. 
+The integral of the square of the second derivative of a fitted function has become common as a smoothness penalty since the seminal work on smoothing splines by \cite{reinsch1967smoothing}, though it is useful to note that there is nothing particularly special about the second derivative. One could easily specify higher or lower order derivatives in smoothness penalties. In the context of smoothing splines, the first derivative leads to simple equations and a piecewise linear fit, while higher derivatives lead to systems of equations with a high bandwidth and a very smooth fit. 
 
 \bigskip
 
@@ -419,28 +421,21 @@ where
 P = D_d^T D_d
 \]
 \noindent
-and the elements of $B$ are given by $b_{ij} = B_j\left(t_i\right)$, as defined in \ref{eq:S_varying_intercept_model}. Taking derivatives on both sides of \ref{eq:S_pen_varying_intercept_model} with respect to $\alpha$ gives
+and the elements of $B$ are given by $b_{ij} = B_j\left(t_i\right)$, as defined in \ref{eq:S_varying_intercept_model}. Taking derivatives on both sides of \ref{eq:S_pen_varying_intercept_model} with respect to $\alpha$ and setting equal to zero yields normal equations: 
 
-\begin{align}
-\frac{\partial}{\partial \alpha}S_\lambda ={} & \frac{\partial}{\partial \alpha}\left(\alpha^TB^TB \alpha -2y^T B^T\alpha+\lambda \alpha^T D_k^T D_k \alpha  \right) \nonumber \\
-= {} & 2B^TB \alpha - 2B^T y + 2\lambda D_d^TD_d\alpha \nonumber\\
-= {} & \left(B^T B +  \lambda D_d^TD_d\right)\alpha - B^T y \label{eq:dSlambda_dAlpha}
-\end{align} 
-\noindent
-
-and setting equal to zero yields normal equations:
 \begin{equation}\label{eq:S_lambda_normal_eq}
 B^T y = \left(B^T B +  \lambda D_d^TD_k\right)\alpha,
 \end{equation}
 which has explicit solution
 \[
-\hat{\alpha} = \left(B^T B +  \lambda D_d^TD_d\right)^{-1}B^T y
+\hat{\alpha} = \left(B' B +  \lambda D_d'D_d\right)^{-1}B' y
 \]
 \noindent
 The effective hat matrix is now
 \[
-H_\lambda - B\left(B^T B +  \lambda D_k^TD_k\right)^{-1}B^T 
+H_\lambda - B\left(B^T B +  \lambda D_k^TD_k\right)^{-1}B'. 
 \]
+
 
 When $\lambda = 0$, we have the standard normal equations of linear regression with a B-spline basis, and with $k = 0$ \ref{eq:S_lambda_normal_eq} corresponds to the normal equations under the ridge regression penalty. When $\lambda > 0$, the penalty only influences the main diagonal and $k$ sub-diagonals of the system of equations. The compact support and limited overlap of the B-spline basis functions gives this system a banded structure, though exploiting this structure is of little utility since the number of equations is equal to the number of splines, which is generally moderate by design. 
 
@@ -717,7 +712,7 @@ The previous derivations hold regardless of whether we are fitting the varying i
 %%==============================================================================================================================================
 \subsection{The reguarlized MLE for $\phi$ via tensor product P-splines}
 % \subfile{chapter-3-subfiles/chapter-3-tensor-product-pspline-MLE}
-We equip the $l$ and $m$ axes each with a B-spline basis to construct a basis for the varying coefficient function $\phi$ in \ref{eq:phi-star} by taking the tensor product of the two marginal bases. Let 
+To extend the P-spline framework to allow estimation of a bivariate function, $\phi$, we simply need to equip the $l$ and $m$ axes each with a B-spline basis. A basis for the varying coefficient function is constructed taking the tensor product of the two marginal bases. Let 
 \[
 B_{1}\left(l\right),\dots, B_{K}\left(l\right)  \mbox{ and } B_{1}\left(m\right),\dots, B_{L}\left(m\right)
 \]
