@@ -1,120 +1,7 @@
-%\documentclass[12pt]{article}
-%\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
-%\usepackage{arydshln}
-%\usepackage{amsmath}
-%\usepackage{tikz}
-%\usepackage[mathscr]{euscript}
-%\usepackage{enumitem}
-%\usepackage{accents}
-%\usepackage{framed}
-%\usepackage{subfiles}
-%\usepackage{subfig}
-%\usepackage{natbib}
-%\usepackage{mathtools}
-%%\usepackage{IEEEtrantools}
-%\usepackage{times}
-%\usepackage{cite}
-%\usepackage{rotate}
-%\usepackage{amsthm}
-%\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
-%\usepackage{booktabs}
-%\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
-%
-%\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-%\newcommand*\needsparaphrased{\color{red}}
-%\newcommand*\needscited{\color{orange}}
-%\newcommand*\needsproof{\color{blue}}
-%\newcommand*\outlineskeleton{\color{green}}
-%\newcommand{\PP}{\mathcal{P}}
-%\newcommand{\hilbert}{\mathcal{H}}
-%\newcommand{\hilbertl}{\mathcal{H}_{\langle l \rangle}}
-%\newcommand{\hilbertm}{\mathcal{H}_{\langle m \rangle}}
-%\newcommand{\hilbertlnull}{\mathcal{H}_{0\langle l \rangle}}
-%\newcommand{\hilbertmnull}{\mathcal{H}_{0\langle m \rangle}}
-%\newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
-%\newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
-%
-%\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
-%\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
-%\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
-%\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
-%\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
-%\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
-%\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
-%\newcommand{\bfe}{\mbox{\boldmath $e$}}
-%\newcommand{\bff}{\mbox{\boldmath $f$}}
-%\newcommand{\bfone}{\mbox{\boldmath $1$}}
-%\newcommand{\bft}{\mbox{\boldmath $t$}}
-%\newcommand{\bfo}{\mbox{\boldmath $0$}}
-%\newcommand{\bfO}{\mbox{\boldmath $O$}}
-%\newcommand{\bfx}{\mbox{\boldmath $x$}}
-%\newcommand{\bfX}{\mbox{\boldmath $X$}}
-%\newcommand{\bfz}{\mbox{\boldmath $z$}}
-%
-%
-%\newcommand{\bfm}{\mbox{\boldmath $m}}
-%\newcommand{\bfy}{\mbox{\boldmath $y$}}
-%\newcommand{\bfa}{\mbox{\boldmath $a$}}
-%\newcommand{\bfb}{\mbox{\boldmath $b$}}
-%\newcommand{\bfY}{\mbox{\boldmath $Y$}}
-%\newcommand{\bfS}{\mbox{\boldmath $S$}}
-%\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
-%\newcommand{\cardT}{\vert \mathcal{T} \vert}
-%%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{definition}[1][Definition]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%
-%\newtheorem{theorem}{Theorem}[section]
-%\newtheorem{lemma}[theorem]{Lemma}
-%\newtheorem{proposition}[theorem]{Proposition}
-%\newtheorem{corollary}[theorem]{Corollary}
-%
-%\theoremstyle{definition}
-%\newtheorem{definition}{Definition}[section]
-%\newtheorem{example}{Example}[section]
-%\def\bL{\mathbf{L}}
-%
-%\begingroup\lccode`~=`_
-%\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
-%\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
-%
-%\makeatletter
-%\renewcommand{\theenumi}{\Roman{enumi}}
-%\renewcommand{\labelenumi}{\theenumi.}
-%\renewcommand{\theenumii}{\Alph{enumii}}
-%\renewcommand{\labelenumii}{\theenumii.}
-%\renewcommand{\p@enumii}{\theenumi.}
-%\makeatother
-%
-%\begin{document}
-%
-%%\nocite{*}
-%\def\bL{\mathbf{L}}
-%%\usepackage{mathtime}
-%
-%%%UNCOMMENT following line if you have package
-%
-%
-%\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
-%
-%\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
-%
-%\bibliographystyle{plainnat}
-%\maketitle
-%
-%\section{Cattle weights}
-%
-%Fitted models can be found in 
-%/Users/taylerblake/GitRepos/cautious-guacamole/cache/kenward-cattle-analysis.RData
-%
-%See Kenward, Michael G. (1987). A Method for Comparing Profiles of Repeated Measurements. Applied Statistics, 36, 296-308. Table 1. http://doi.org/10.2307/2347788
-%
-%\bigskip
+
+\chapter{Data analysis} \label{chapter-5-data-analysis}
+\subsubsection{Kenward cattle weight data}
+
 
 \cite{kenward1987method} reported an experiment designed to investigate the impact of the control of intestinal parasites in cattle. The grazing season runs from spring to autumn, during which cattle can potentially ingest roundworm larvae which develop from eggs deposited around the pasture from feces of previously infected cattle. Once infected, the animal is deprived of nutrients and immune resistance to disease is suppressed which can significantly impact animal growth. Monitoring the effect of a treatment for the disease requires repeated weight measurements on animals over the grazing season. 
 
@@ -123,10 +10,10 @@
 To compare two methods for controlling the disease, say treatment A and treatment B, each of 60 cattle were assigned randomly to two groups, each of size 30. Animal subjects were put out to pasture at the start of grazing season, with each member of the groups receiving one of the two treatments. Animals were weighed $m = 11$ times over a 133-day period; the first 10 measurements on each animal were made at two-week intervals and the final measurement was made one week later. Weights were recorded to the nearest kilogram. The measurement times were common across animals and were rescaled to $t = 1, 2, \dots, 10, 10.5$. The longitudinal dataset is balanced, as there were no missing observations for any of the experimental units. Observed weights are shown in Figure~\ref{fig:cattle-weights-by-trt}.
   
   
-\begin{figure}[h] \label{fig:cattle-weights-by-trt}
-\caption{Subject-specific weight curves over time for treatment groups A and B.}
+\begin{figure}[h] 
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattle-weights-vs-time-by-trt}
+\caption{Subject-specific weight curves over time for treatment groups A and B.}\label{fig:cattle-weights-by-trt}
 \end{center}
 \end{figure} 
 
@@ -159,28 +46,29 @@ We assume that the subject trajectories share a common mean function $f \in $
 \noindent
 Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight trajectories over time. Figure~\ref{fig:cattleA-smoothed-weights-vs-time} shows the corresponding fitted mean curves.
 
-\begin{figure}[H] \label{fig:cattleA-weights-vs-time}
+\begin{figure}[H] 
 \begin{center}
     \includegraphics[width=\textwidth]{img/cattle/cattleA-weights-vs-time}
 \end{center}
- \caption{Weight trajectories over the observation period for experimental units in treatment group A.}
+ \caption{Weight trajectories over the observation period for experimental units in treatment group A.}\label{fig:cattleA-weights-vs-time}
  \end{figure}
 
-\begin{figure}[H] \label{fig:cattleA-smoothed-weights-vs-time}
+\begin{figure}[H] 
 \caption{Fitted mean weight curve for cattle in treatment group A. }
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattleA-weights-vs-time-mean-fit}
-\end{center}
+\end{center}\label{fig:cattleA-smoothed-weights-vs-time}
 \end{figure} 
 
 The nonstationarity suggested in Figure~\ref{fig:cattle-weights-by-trt} is also supported by the sample correlations given in Table~\ref{table:cattleA-sample-correlations}; correlations within the subdiagonals are not constant and increase over time, a secondary indication that a stationary covariance is not appropriate for the data.  Table~\ref{table:sample-regressogram-garps} gives the sample generalised autoregressive parameters and the innovation variances, which are plotted in Figure~\ref{fig:cattleA-regressogram} and Figure~\ref{fig:cattleA-innovation-variogram} respectively. 
 
-\begin{table}[H] \label{table:cattleA-sample-correlations}
+\begin{table}[H] 
 \begin{center}
 \begin{tabular}{r|rrrrrrrrrrr}
 & \multicolumn{11}{c}{day}\\
- & 0 & 14 & 28 & 42 & 56 & 70 & 84 & 98& 112& 126 &133\\ 
-  \hline
+&&&&&&&&&&\\
+& 0 & 14 & 28 & 42 & 56 & 70 & 84 & 98& 112& 126 &133\\
+  \hline\noalign{\smallskip} 
 0 & 1.00 & 0.82 & 0.76 & 0.65 & 0.63 & 0.58 & 0.51 & 0.52 & 0.51 & 0.46 & 0.46 \\ 
   14 & 0.82 & 1.00 & 0.91 & 0.86 & 0.83 & 0.75 & 0.64 & 0.68 & 0.61 & 0.59 & 0.56 \\ 
   28 & 0.76 & 0.91 & 1.00 & 0.93 & 0.89 & 0.85 & 0.75 & 0.77 & 0.71 & 0.69 & 0.67 \\ 
@@ -194,48 +82,47 @@ The nonstationarity suggested in Figure~\ref{fig:cattle-weights-by-trt} is also 
   133 & 0.46 & 0.56 & 0.67 & 0.67 & 0.74 & 0.81 & 0.84 & 0.91 & 0.95 & 0.98 & 1.00 \\ 
    \hline
 \end{tabular}
-\caption{Cattle data: treatment group A sample correlations.}
+\caption{Cattle data: treatment group A sample correlations.}\label{table:cattleA-sample-correlations}
 \end{center}
 \end{table}
 
 
-\begin{table}[ht] \label{table:sample-regressogram-garps}
+\begin{table}[H] 
 \begin{center}
 \begin{tabular}{lc|ccccccccccc|cr}
-& \multicolumn{11}{c}{s}\\
+ \multicolumn{14}{c}{day} \\
 &&&&&&&&&&&&\\
-& & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 10.5 & \\ 
-  \hline
-&1 & 1 & &&&&&&&&& & 4.673& \\ 
-&  2 & 1.00 & $\ddots$&&&&&&&&&& 3.939 &\\ 
-&  3 & 0.04 & 0.90 &  &&&&&&&&& 3.370&\\ 
-&  4 & -0.25 & 0.25 & 0.88 &  &&&&&&&&3.000& \\ 
-&  5 & -0.02 & 0.07 & 0.12 & 0.90 & &&&&&&& 3.299&\\ 
-t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_t\right)$\\ 
- & 7 & 0.12 & -0.23 & 0.04 & -0.16 & 0.08 & 1.03  &&&&&& 3.610\\ 
- & 8 & -0.06 & 0.05 & 0.02 & -0.27 & 0.23 & 0.61 & 0.42 &&&&& 3.403&\\ 
- & 9 & 0.18 & -0.10 & 0.05 & -0.26 & -0.10 & 0.03 & 0.30 & 0.93&&&& 2.780&  \\ 
- & 10 & -0.26 & 0.15 & 0.45 & -0.33 & -0.19 & 0.01 & -0.18 & 0.37 & 0.94 & $\ddots$&&3.280& \\ 
- & 10.5 & 0.13 & -0.26 & 0.08 & 0.28 & 0.04 & -0.36 & -0.05 & -0.07 & 0.37 & 0.85 & 1  &2.262&\\ 
-\end{tabular}
-\caption{Cattle data: treatment group A sample generalized autoregressive parameters (below the main diagonal) and log sample innovation variances (rightmost column.)}
+& &  0 & 14 & 28 & 42 & 56 & 70 & 84 & 98 & 112 & 126 & 133  \\ 
+  \cline{2-13}\noalign{\smallskip}  
+&0 & 1 & &&&&&&&&& & 4.673& \\ 
+&  14& 1.00 & $\ddots$&&&&&&&&&& 3.939 &\\ 
+&  28 & 0.04 & 0.90 &  &&&&&&&&& 3.370&\\ 
+&  42 & -0.25 & 0.25 & 0.88 &  &&&&&&&&3.000& \\ 
+&  56 & -0.02 & 0.07 & 0.12 & 0.90 & &&&&&&& 3.299&\\ 
+day &  70 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_t\right)$\\ 
+ & 84 & 0.12 & -0.23 & 0.04 & -0.16 & 0.08 & 1.03  &&&&&& 3.610\\ 
+ & 98 & -0.06 & 0.05 & 0.02 & -0.27 & 0.23 & 0.61 & 0.42 &&&&& 3.403&\\ 
+ & 112 & 0.18 & -0.10 & 0.05 & -0.26 & -0.10 & 0.03 & 0.30 & 0.93&&&& 2.780&  \\ 
+ & 126 & -0.26 & 0.15 & 0.45 & -0.33 & -0.19 & 0.01 & -0.18 & 0.37 & 0.94 & $\ddots$&&3.280& \\ 
+ & 133 & 0.13 & -0.26 & 0.08 & 0.28 & 0.04 & -0.36 & -0.05 & -0.07 & 0.37 & 0.85 & 1  &2.262&\\ 
+\end{tabular} 
+\caption{Cattle data: treatment group A sample generalized autoregressive parameters (below the main diagonal) and log sample innovation variances (rightmost column.)}\label{table:sample-regressogram-garps}
 \end{center}
 \end{table}
 
-
 \begin{figure}[H]
- \begin{subfigure}{.48\textwidth}
+ \begin{subfigure}[t]{.48\textwidth}
   \centering
     \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
- \caption{Sample estimates of innovation variances $\sigma_t^2$ obtained by applying the modified Cholesky decomposition to the sample covariance matrix.} \label{fig:cattleA-innovation-variogram}
+ \caption{Sample innovation variances $\hat{\sigma}_t^2$} \label{fig:cattleA-innovation-variogram}
  \end{subfigure}
- \begin{subfigure}{.48\textwidth}
+ \begin{subfigure}[t]{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
- \caption{Sample estimates of the generalized autoregressive parameters $\phi_{ij}$ obtained by applying the modified Cholesky decomposition to the sample covariance}
+ \caption{Sample generalized autoregressive parameters $\hat{\phi}_{ij}$.}
 \label{fig:cattleA-regressogram}
  \end{subfigure}
-% \caption{\textit{Estimated coefficient function} $\hat{\beta}\left(t\right)$ \textit{and mean curve} $\hat{\mu}\left(t\right) = t \sin(2 \pi t)$ \textit{using a 80 B-splines basis functions of order 5 and a difference penalty of order} $k=3$.}
+ \caption{\textit{Empirical estimates of the parameters of the Cholesky decomposition.}} \label{fig:cattleA-innovation-variogram-and-regressogram}
 \end{figure}
 
 %
@@ -254,7 +141,7 @@ t &  6 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma^2_
 %\end{figure} 
 
 
-The analysis of \cite{pourahmadi1999joint} concluded that the regressogram (Figure~\ref{fig:cattleA-regressogram}) and variogram (Figure~\ref{cattleA-innovation-variogram}) suggest that both sample generalised autoregressive parameters and the logarithms of the innovation variances can be characterized in terms of cubic functions of the lag only. They model 
+Analyzing the sample regressogram (Figure~\ref{fig:cattleA-regressogram}) and sample variogram (Figure~\ref{fig:cattleA-innovation-variogram}), \cite{pourahmadi1999joint}suggested that both sample generalised autoregressive parameters and the logarithms of the innovation variances can be characterized in terms of cubic functions of the lag only. They model 
 
 \begin{align}
 \begin{split} \label{eq:pourahmadi-cubic-model}
@@ -269,8 +156,7 @@ for $t = 2,\dots, 11$ where
 x'_{ts} = \begin{bmatrix} 1 & t - s& \left(t - s\right)^2 & \left(t - s\right)^3 \end{bmatrix},\; \mbox{and } z'_{t} = \begin{bmatrix} 1 & t& t^2& t^3 \end{bmatrix}.
 \end{align*}
 \noindent
-They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-smoothed-by-t} shows the estimated cubic polynomials corresponding to Model~\ref{eq:pourahmadi-cubic-model}. 
-
+They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-variogram} shows the estimated cubic polynomials corresponding to Model~\ref{eq:pourahmadi-cubic-model}. 
 
 %\begin{figure}[H]
 %\centering
@@ -288,16 +174,16 @@ They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cat
  \begin{subfigure}{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
- \caption{Cubic polynomial fitted to the sample regressogram for the cattle data from treatment group A.} 
+ \caption{Smoothed sample regressogram.} 
  \label{fig:cattleA-innovariogram-cubic-smooth}
  \end{subfigure}
  \begin{subfigure}{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
- \caption{Cubic polynomial fitted to the sample variogram for the cattle data from treatment group A.} 
+ \caption{Smoothed sample innovation variances.} 
 \label{fig:cattleA-innovariogram-cubic-smooth}
  \end{subfigure}
-% \caption{\textit{Estimated coefficient function} $\hat{\beta}\left(t\right)$ \textit{and mean curve} $\hat{\mu}\left(t\right) = t \sin(2 \pi t)$ \textit{using a 80 B-splines basis functions of order 5 and a difference penalty of order} $k=3$.}
+ \caption{\textit{Cubic polynomomials fitted to the sample regressogram and innovation variances for the cattle data from treatment group A.}} \label{fig:cattleA-smoothed-regressogram-variogram}
 \end{figure}
 
 Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma_2 \right)$. \cite{pan2017jmcm} concluded that the regressogram of empirical estimates of $\phi_{t,t-l}$ show consistent behaviour over $l$ for each value of $t$, indicating a lack of a strong functional component of $m$. To facilitate a making this modeling decision in an entirely data-driven manner, we let $\phi \in \hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}$, where 
@@ -307,27 +193,25 @@ Choice of penalty is critical for convergence of the iterative estimation of $\p
 \hilbert_{\left[2\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int\limits_0^1 \phi \;dx = 0, \;\; \dot{f} \in \mathcal{L}_2\left[0,1\right]  \right\} 
 \end{align*} 
 \noindent
-This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by $\phi$ \cite{pan2017jmcm}, \cite{huang2006covariance}, and \cite{wu2003nonparametric} for the same data set.  Figure~\ref{fig:cattle-fitted-cholesky-decomposition} and Figure~\ref{fig:cattle-fitted-cholesky-ssanova} show the estimated Cholesky surface $\phi\left( t,s\right)$ and innovation variance function $\sigma^2\left(t\right)$ evaluated at $t = 1, 2, \dots, 10, 10.5$ and the corresponding pairs of observation times $\left(t,s\right)$, $1 \le s < t \le 10.5$.
-
-
+This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by $\phi$ \cite{pan2017jmcm}, \cite{huang2006covariance}, and \cite{wu2003nonparametric} for the same data set.  Figure~\ref{fig:fitted-cholesky-decomposition-cattle-date} shows the estimated Cholesky surface $\phi\left( t,s\right)$ and innovation variance function $\sigma^2\left(t\right)$ evaluated at $t = 1, 2, \dots, 10, 10.5$ and the corresponding pairs of observation times $\left(t,s\right)$, $1 \le s < t \le 10.5$. Figure~\ref{fig:cattle-fitted-cholesky-ssanova} shows $\hat{\phi}$ decomposed into the functional components of its ANOVA decomposition.
 
 \begin{figure}[H]
- \begin{subfigure}{.48\textwidth}
+ \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width = .4\textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot}
+  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot}
  \caption{Estimated Cholesky factor $\hat{T}$}
  \end{subfigure}
- \begin{subfigure}{.48\textwidth}
+ \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width = .4\textwidth]{img/chapter-5/cattle-D-estimate-ggplot}
+  \includegraphics[width = \textwidth]{img/chapter-5/cattle-D-estimate-ggplot}
  \caption{Estimated innovation variances \newline $\hat{D} = diag\left( \sigma^2\left(t_1\right),\dots, \sigma^2\left(t_{11}\right) \right)$}
  \end{subfigure}
- \begin{subfigure}{.48\textwidth}
+ \begin{subfigure}{.33\textwidth}
   \centering
-  \includegraphics[width = .6\textwidth]{img/chapter-5/cattle-cov-estimate-ggplot}
+  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cov-estimate-ggplot}
  \caption{Estimated covariance matrix $\hat{\Sigma} = \hat{T}^{-1} \hat{D} {\hat{T}'}^{-1}$}
  \end{subfigure}
-\caption{Components of the fitted modified Cholesky decomposition for the cattle weight data.}
+\caption{Components of the fitted modified Cholesky decomposition for the cattle weight data.} \label{fig:fitted-cholesky-decomposition-cattle-date}
 \end{figure}
 
 %%\subfile{chapter-5-subfiles/cattle-cholesky-cov-ggplot}
@@ -354,6 +238,8 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
 \caption{Components of the SSANOVA decomposition of the estimated generalized autoregressive coefficient function $\phi$ evaluated on the grid defined by the observed time points.}
   \includegraphics[width = 0.6\textwidth]{img/chapter-5/cattle-ssanova-estimate-lattice} \label{fig:cattle-fitted-cholesky-ssanova}
 \end{figure}
+
+{\needsparaphrased{TO DO: compare with the likelihood evaluated at the models suggested in \cite{pan2017jmcm}.}}
 
 Evaluating the normal likelihood at the fitted model gives $\hat{\ell} = -818.5323$.
 
