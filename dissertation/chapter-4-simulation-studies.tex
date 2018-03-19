@@ -462,10 +462,13 @@ $N = 50$ & 10 & 0.0749 & 0.1261 & 0.0135 & 0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 \end{tabular}
 \label{table:simulation-1-entropy-loss-sigma-1}
 \end{table}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:30 2018
+
 \begin{table}[H]
 \centering
 \caption{\textit{Multivariate normal simulations for model II.}}
@@ -482,12 +485,16 @@ $N = 50$ & 10 & 0.0749 & 0.1261 & 0.0135 & 0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 \end{tabular}
 \label{table:simulation-1-entropy-loss-sigma-2}
 \end{table}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-2}
 %\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-3}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:35 2018
+
+
 \begin{table}[H]
 \centering
 \caption{\textit{Multivariate normal simulations for model III.} }
@@ -563,7 +570,7 @@ $N = 50$ & 10 & 0.0749 & 0.1261 & 0.0135 & 0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/chapter-4-missing-data-study-discussion}
 
-Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study-2-entropy-risk-model-1} - \ref{table:simulation-study-2-entropy-risk-model-5}.  Risk estimates under quadratic loss echo in sentiment and are left to the Appendix.  Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case.  Neither model selection criteria appear to perform better than the other, which suggests that when the estimated innovation variances are close to the true variances of the prediction residuals, using the unbiased risk estimate with the working residuals as substitute for the relative error is a reasonable approach to modeling. When the data are missing completely at random, the performance of the estimator remains fairly stable when 5\%, 7\%, and 9\% of the data are missing. 
+Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study-2-entropy-risk-model-1} - \ref{table:simulation-study-2-entropy-risk-model-5}.  Risk estimates under quadratic loss echo in sentiment and are left to the Appendix.  Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For the identity matrix and for the non-truncated linear varying coefficient GARP model, we observe little change in estimated entropy risk for within subject sample sizes $M = 10$ and $M = 20$ with downsampling as compared to the estimated risk for both sample sizes in the complete data case.  Neither model selection criteria appear to perform better than the other, which suggests that when the estimated innovation variances are close to the true variances of the prediction residuals, using the unbiased risk estimate with the working residuals as substitute for the relative error is a reasonable approach to modeling. When the data are missing completely at random, the performance of the estimator remains fairly stable when 10\%, 20\%, and 30\% of the data are missing. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -578,145 +585,255 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 %\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-1}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Fri Mar  9 20:17:59 2018
+%\begin{table}[H]
+%\centering
+%\caption{\textit{Model 1: Entropy risk estimates and corresponding standard errors 
+%                                for the MCD smoothing spline ANOVA estimator via 100 simulated multivariate
+%                                normal sample of size $N = 50$
+%                                when 5\%, 7\%, and 9\% of the data are missing. Risk is reported for the estimator constructed using
+%                                the unbiased risk estimate and leave-one-subject-out cross validation are used for smoothing parameter selection.} }
+%\label{table:simulation-study-2-entropy-risk-model-1}
+%\begin{tabular}{lrrlrl}
+%   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+%10 & 0.00 & 0.05948765 & (0.0040) & 0.07355005 & (0.0053) \\ 
+%   & 0.05 & 0.07526588 & (0.0064) & 0.06118984 & (0.0044) \\ 
+%   & 0.07 & 0.07013988 & (0.0047) & 0.07533206 & (0.0060) \\ 
+%   \hline
+% & 0.09 & 0.08318940 & (0.0056) & 0.06423959 & (0.0051) \\ 
+%  15 & 0.00 & 0.08753938 & (0.0073) & 0.09178231 & (0.0073) \\ 
+%   & 0.05 & 0.08081929 & (0.0052) & 0.09203281 & (0.0063) \\ 
+%   \hline
+% & 0.07 & 0.08584911 & (0.0091) & 0.08708120 & (0.0072) \\ 
+%   & 0.09 & 0.09838363 & (0.0086) & 0.08148412 & (0.0072) \\ 
+%  20 & 0.00 & 0.08742261 & (0.0077) & 0.08676581 & (0.0066) \\ 
+%   \hline
+% & 0.05 & 0.08524652 & (0.0069) & 0.07007607 & (0.0056) \\ 
+%   & 0.07 & 0.07940546 & (0.0061) & 0.07639569 & (0.0062) \\ 
+%   & 0.09 & 0.07629685 & (0.0050) & 0.08846639 & (0.0063) \\ 
+%  \end{tabular}
+%\end{table}
+
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Mon Mar 19 14:41:11 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 1: Entropy risk estimates and corresponding standard errors 
+\caption{\textit{Model 1: Risk estimates and corresponding standard errors 
                                 for the MCD smoothing spline ANOVA estimator via 100 simulated multivariate
                                 normal sample of size $N = 50$
-                                when 5\%, 7\%, and 9\% of the data are missing. Risk is reported for the estimator constructed using
-                                the unbiased risk estimate and leave-one-subject-out cross validation are used for smoothing parameter selection.} }
-\label{table:simulation-study-2-entropy-risk-model-1}
+                                when 10\%, 20\%, and 30\% of the data are missing. Quadratic risk 
+                                $\Delta_1$ and entropy risk $\Delta_2$ are
+                                reported for the estimator constructed using
+                                the unbiased risk estimate for smoothing parameter selection.} }
+\label{table:simulation-study-2-risk-model-1}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
-10 & 0.00 & 0.05948765 & (0.0040) & 0.07355005 & (0.0053) \\ 
-   & 0.05 & 0.07526588 & (0.0064) & 0.06118984 & (0.0044) \\ 
-   & 0.07 & 0.07013988 & (0.0047) & 0.07533206 & (0.0060) \\ 
+   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$}\ & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$}\\ \hline
+10 & 0.0 & 0.00187599 & (4e-040) & 0.0737601 & (0.0073) \\ 
+   & 0.1 & 0.00266749 & (4e-040) & 0.0889576 & (0.0080) \\ 
+   & 0.2 & 0.00339814 & (6e-040) & 0.1037463 & (0.0098) \\ 
+   & 0.3 & 0.00662281 & (0.0011) & 0.1471518 & (0.0121) \\ 
    \hline
- & 0.09 & 0.08318940 & (0.0056) & 0.06423959 & (0.0051) \\ 
-  15 & 0.00 & 0.08753938 & (0.0073) & 0.09178231 & (0.0073) \\ 
-   & 0.05 & 0.08081929 & (0.0052) & 0.09203281 & (0.0063) \\ 
-   \hline
- & 0.07 & 0.08584911 & (0.0091) & 0.08708120 & (0.0072) \\ 
-   & 0.09 & 0.09838363 & (0.0086) & 0.08148412 & (0.0072) \\ 
-  20 & 0.00 & 0.08742261 & (0.0077) & 0.08676581 & (0.0066) \\ 
-   \hline
- & 0.05 & 0.08524652 & (0.0069) & 0.07007607 & (0.0056) \\ 
-   & 0.07 & 0.07940546 & (0.0061) & 0.07639569 & (0.0062) \\ 
-   & 0.09 & 0.07629685 & (0.0050) & 0.08846639 & (0.0063) \\ 
+20 & 0.0 & 0.01846478 & (0.0153) & 0.1699198 & (0.0474) \\ 
+   & 0.1 & 0.22035602 & (0.2137) & 0.3343122 & (0.1691) \\ 
+   & 0.2 & 0.02071463 & (0.0074) & 0.3021184 & (0.0526) \\ 
+   & 0.3 & 0.22000106 & (0.1113) & 0.5327419 & (0.1623) \\ 
   \end{tabular}
 \end{table}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Fri Mar  9 20:17:59 2018
+%\begin{table}[H]
+%\centering
+%\caption{\textit{Model 2: Entropy risk estimates and corresponding standard errors.} }
+%\label{table:simulation-study-2-entropy-risk-model-2}
+%\begin{tabular}{lrrlrl}
+%   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+%10 & 0.00 & 0.3476005 & (0.0080) & 0.3216708 & (0.0069) \\ 
+%   & 0.05 & 0.3232649 & (0.0067) & 0.3505707 & (0.0114) \\ 
+%   & 0.07 & 0.3225538 & (0.0063) & 0.3300389 & (0.0067) \\ 
+%   \hline
+% & 0.09 & 0.3347380 & (0.0072) & 0.3303566 & (0.0056) \\ 
+%  15 & 0.00 & 0.6365878 & (0.0095) & 0.6808690 & (0.0232) \\ 
+%   & 0.05 & 0.6424703 & (0.0130) & 0.6241518 & (0.0105) \\ 
+%   \hline
+% & 0.07 & 0.6433583 & (0.0123) & 0.6362110 & (0.0084) \\ 
+%   & 0.09 & 0.6621593 & (0.0223) & 0.6396626 & (0.0145) \\ 
+%  20 & 0.00 & 1.1147692 & (0.0190) & 1.1078676 & (0.0089) \\ 
+%   \hline
+% & 0.05 & 1.1084520 & (0.0101) & 1.1111880 & (0.0107) \\ 
+%   & 0.07 & 1.1221157 & (0.0088) & 1.1406596 & (0.0117) \\ 
+%   & 0.09 & 1.0973568 & (0.0093) & 1.1105763 & (0.0098) \\ 
+%  \end{tabular}
+%\end{table}
+
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Mon Mar 19 14:41:11 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 2: Entropy risk estimates and corresponding standard errors.} }
-\label{table:simulation-study-2-entropy-risk-model-2}
+\caption{\textit{Model 2: Risk estimates and corresponding standard errors.} }
+\label{table:simulation-study-2-risk-model-2}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
-10 & 0.00 & 0.3476005 & (0.0080) & 0.3216708 & (0.0069) \\ 
-   & 0.05 & 0.3232649 & (0.0067) & 0.3505707 & (0.0114) \\ 
-   & 0.07 & 0.3225538 & (0.0063) & 0.3300389 & (0.0067) \\ 
+   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$}\ & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$}\\ \hline
+10 & 0.0 & 0.0525852 & (0.0108) & 0.0735172 & (0.0064) \\ 
+   & 0.1 & 0.1193846 & (0.0301) & 0.1080945 & (0.0094) \\ 
+   & 0.2 & 0.2625658 & (0.0464) & 0.2146169 & (0.0149) \\ 
+   & 0.3 & 0.7184782 & (0.1534) & 0.3601229 & (0.0351) \\ 
    \hline
- & 0.09 & 0.3347380 & (0.0072) & 0.3303566 & (0.0056) \\ 
-  15 & 0.00 & 0.6365878 & (0.0095) & 0.6808690 & (0.0232) \\ 
-   & 0.05 & 0.6424703 & (0.0130) & 0.6241518 & (0.0105) \\ 
-   \hline
- & 0.07 & 0.6433583 & (0.0123) & 0.6362110 & (0.0084) \\ 
-   & 0.09 & 0.6621593 & (0.0223) & 0.6396626 & (0.0145) \\ 
-  20 & 0.00 & 1.1147692 & (0.0190) & 1.1078676 & (0.0089) \\ 
-   \hline
- & 0.05 & 1.1084520 & (0.0101) & 1.1111880 & (0.0107) \\ 
-   & 0.07 & 1.1221157 & (0.0088) & 1.1406596 & (0.0117) \\ 
-   & 0.09 & 1.0973568 & (0.0093) & 1.1105763 & (0.0098) \\ 
+20 & 0.0 & 0.5477523 & (0.0819) & 0.0672205 & (0.0053) \\ 
+   & 0.1 & 21.6916082 & (2.4816) & 0.6955444 & (0.0509) \\ 
+   & 0.2 & 287.3776278 & (27.6998) & 4.2309218 & (0.2668) \\ 
+   & 0.3 & 176594.9017073 & (93975.3308) & 68.9661337 & (28.3602) \\ 
   \end{tabular}
 \end{table}
 
-%\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-2}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Fri Mar  9 20:17:59 2018
+%\begin{table}[H]
+%\centering
+%\caption{\textit{Model 3: Entropy risk estimates and corresponding standard errors.} }
+%\label{table:simulation-study-2-entropy-risk-model-3}
+%\begin{tabular}{lrrlrl}
+%   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+%10 & 0.00 & 0.07386597 & (0.0070) & 0.07983551 & (0.0072) \\ 
+%   & 0.05 & 0.08774246 & (0.0070) & 0.08925510 & (0.0076) \\ 
+%   & 0.07 & 0.07721772 & (0.0069) & 0.07732465 & (0.0060) \\ 
+%   \hline
+% & 0.09 & 0.06827196 & (0.0058) & 0.06552676 & (0.0058) \\ 
+%  15 & 0.00 & 0.10355612 & (0.0135) & 0.11376299 & (0.0164) \\ 
+%   & 0.05 & 0.08529862 & (0.0066) & 0.09477951 & (0.0080) \\ 
+%   \hline
+% & 0.07 & 0.09054799 & (0.0085) & 0.08137240 & (0.0068) \\ 
+%   & 0.09 & 0.08621508 & (0.0079) & 0.07994681 & (0.0070) \\ 
+%  20 & 0.00 & 0.07030612 & (0.0048) & 0.07252679 & (0.0057) \\ 
+%   \hline
+% & 0.05 & 0.08540962 & (0.0071) & 0.08498065 & (0.0069) \\ 
+%   & 0.07 & 0.07861326 & (0.0058) & 0.07307411 & (0.0060) \\ 
+%   & 0.09 & 0.07978378 & (0.0069) & 0.07698547 & (0.0074) \\ 
+%  \end{tabular}
+%\end{table}
+
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Mon Mar 19 14:41:11 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 3: Entropy risk estimates and corresponding standard errors.} }
-\label{table:simulation-study-2-entropy-risk-model-3}
+\caption{\textit{Model 3: Risk estimates and corresponding standard errors.} }
+\label{table:simulation-study-2-risk-model-3}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
-10 & 0.00 & 0.07386597 & (0.0070) & 0.07983551 & (0.0072) \\ 
-   & 0.05 & 0.08774246 & (0.0070) & 0.08925510 & (0.0076) \\ 
-   & 0.07 & 0.07721772 & (0.0069) & 0.07732465 & (0.0060) \\ 
+   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$}\ & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$}\\ \hline
+10 & 0.0 & 0.0650014 & (0.0055) & 0.3295884 & (0.0063) \\ 
+   & 0.1 & 0.0920377 & (0.0173) & 0.3524205 & (0.0096) \\ 
+   & 0.2 & 0.1511981 & (0.0234) & 0.4100362 & (0.0131) \\ 
+   & 0.3 & 0.5390036 & (0.1192) & 0.5094230 & (0.0290) \\ 
    \hline
- & 0.09 & 0.06827196 & (0.0058) & 0.06552676 & (0.0058) \\ 
-  15 & 0.00 & 0.10355612 & (0.0135) & 0.11376299 & (0.0164) \\ 
-   & 0.05 & 0.08529862 & (0.0066) & 0.09477951 & (0.0080) \\ 
-   \hline
- & 0.07 & 0.09054799 & (0.0085) & 0.08137240 & (0.0068) \\ 
-   & 0.09 & 0.08621508 & (0.0079) & 0.07994681 & (0.0070) \\ 
-  20 & 0.00 & 0.07030612 & (0.0048) & 0.07252679 & (0.0057) \\ 
-   \hline
- & 0.05 & 0.08540962 & (0.0071) & 0.08498065 & (0.0069) \\ 
-   & 0.07 & 0.07861326 & (0.0058) & 0.07307411 & (0.0060) \\ 
-   & 0.09 & 0.07978378 & (0.0069) & 0.07698547 & (0.0074) \\ 
+20 & 0.0 & 1.3728536 & (0.3132) & 1.1519041 & (0.0219) \\ 
+   & 0.1 & 19.6624109 & (2.8590) & 1.5534791 & (0.0602) \\ 
+   & 0.2 & 293.2454363 & (69.4357) & 4.6175848 & (0.4579) \\ 
+   & 0.3 & 1463.2866086 & (179.6868) & 12.4756235 & (0.9042) \\ 
   \end{tabular}
 \end{table}
 
-%\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-3}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-4}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Fri Mar  9 20:17:59 2018
+%\begin{table}[H]
+%\centering
+%\caption{\textit{Model 4: Entropy risk estimates and corresponding standard errors.} }
+%\label{table:simulation-study-2-entropy-risk-model-4}
+%\begin{tabular}{lrrlrl}
+%   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+%10 & 0.00 & 0.3311119 & (0.0057) & 0.3330848 & (0.0053) \\ 
+%   & 0.05 & 0.3370160 & (0.0065) & 0.3255688 & (0.0054) \\ 
+%   & 0.07 & 0.3313550 & (0.0059) & 0.3255281 & (0.0055) \\ 
+%   \hline
+% & 0.09 & 0.3323215 & (0.0045) & 0.3187247 & (0.0047) \\ 
+%  15 & 0.00 & 0.6325137 & (0.0107) & 0.6252928 & (0.0091) \\ 
+%   & 0.05 & 0.6297716 & (0.0096) & 0.6144335 & (0.0076) \\ 
+%   \hline
+% & 0.07 & 0.6254772 & (0.0087) & 0.6241278 & (0.0076) \\ 
+%   & 0.09 & 0.6121933 & (0.0084) & 0.6351603 & (0.0095) \\ 
+%  20 & 0.00 & 0.9334111 & (0.0104) & 0.9082255 & (0.0041) \\ 
+%   \hline
+% & 0.05 & 0.9247592 & (0.0079) & 0.9319686 & (0.0071) \\ 
+%   & 0.07 & 0.9308491 & (0.0104) & 0.9129209 & (0.0055) \\ 
+%   & 0.09 & 0.9141808 & (0.0073) & 0.9212852 & (0.0053) \\ 
+%  \end{tabular}
+%\end{table}
+
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Mon Mar 19 14:41:11 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 4: Entropy risk estimates and corresponding standard errors.} }
-\label{table:simulation-study-2-entropy-risk-model-4}
+\caption{\textit{Model 4: Risk estimates and corresponding standard errors.} }
+\label{table:simulation-study-2-risk-model-4}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
-10 & 0.00 & 0.3311119 & (0.0057) & 0.3330848 & (0.0053) \\ 
-   & 0.05 & 0.3370160 & (0.0065) & 0.3255688 & (0.0054) \\ 
-   & 0.07 & 0.3313550 & (0.0059) & 0.3255281 & (0.0055) \\ 
+   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$}\ & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$}\\ \hline
+10 & 0.0 & 0.01468913 & (7e-040) & 0.3389203 & (0.0062) \\ 
+   & 0.1 & 0.01684656 & (8e-040) & 0.3561451 & (0.0076) \\ 
+   & 0.2 & 0.02506576 & (0.0026) & 0.3940242 & (0.0116) \\ 
+   & 0.3 & 0.03326357 & (0.0030) & 0.4447451 & (0.0147) \\ 
    \hline
- & 0.09 & 0.3323215 & (0.0045) & 0.3187247 & (0.0047) \\ 
-  15 & 0.00 & 0.6325137 & (0.0107) & 0.6252928 & (0.0091) \\ 
-   & 0.05 & 0.6297716 & (0.0096) & 0.6144335 & (0.0076) \\ 
-   \hline
- & 0.07 & 0.6254772 & (0.0087) & 0.6241278 & (0.0076) \\ 
-   & 0.09 & 0.6121933 & (0.0084) & 0.6351603 & (0.0095) \\ 
-  20 & 0.00 & 0.9334111 & (0.0104) & 0.9082255 & (0.0041) \\ 
-   \hline
- & 0.05 & 0.9247592 & (0.0079) & 0.9319686 & (0.0071) \\ 
-   & 0.07 & 0.9308491 & (0.0104) & 0.9129209 & (0.0055) \\ 
-   & 0.09 & 0.9141808 & (0.0073) & 0.9212852 & (0.0053) \\ 
+20 & 0.0 & 0.04539637 & (8e-040) & 0.9225048 & (0.0075) \\ 
+   & 0.1 & 0.04853438 & (0.0011) & 0.9474888 & (0.0091) \\ 
+   & 0.2 & 0.05329962 & (0.0027) & 0.9746469 & (0.0161) \\ 
+   & 0.3 & 0.11689950 & (0.0317) & 1.1588599 & (0.0590) \\ 
   \end{tabular}
 \end{table}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/simulation-study-2-entropy-risk-model-5}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Fri Mar  9 20:17:59 2018
+%\begin{table}[H]
+%\centering
+%\caption{\textit{Model 5: Entropy risk estimates and corresponding standard errors.} }
+%\label{table:simulation-study-2-entropy-risk-model-5}
+%\begin{tabular}{lrrlrl}
+%   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+%10 & 0.00 & 0.2774130 & (0.0057) & 0.2841491 & (0.0061) \\ 
+%   & 0.05 & 0.2911470 & (0.0063) & 0.2764965 & (0.0059) \\ 
+%   & 0.07 & 0.2756559 & (0.0060) & 0.2721747 & (0.0044) \\ 
+%   \hline
+% & 0.09 & 0.2820917 & (0.0057) & 0.2806499 & (0.0056) \\ 
+%  15 & 0.00 & 0.5132241 & (0.0064) & 0.5171960 & (0.0067) \\ 
+%   & 0.05 & 0.5210875 & (0.0081) & 0.5124293 & (0.0068) \\ 
+%   \hline
+% & 0.07 & 0.5239758 & (0.0056) & 0.5171861 & (0.0059) \\ 
+%   & 0.09 & 0.5103058 & (0.0049) & 0.5151156 & (0.0050) \\ 
+%  20 & 0.00 & 0.7626041 & (0.0106) & 0.7536784 & (0.0059) \\ 
+%   \hline
+% & 0.05 & 0.7490586 & (0.0094) & 0.7692628 & (0.0073) \\ 
+%   & 0.07 & 0.7577880 & (0.0068) & 0.7575319 & (0.0050) \\ 
+%   & 0.09 & 0.7662940 & (0.0101) & 0.7578350 & (0.0057) \\ 
+%  \end{tabular}
+%\end{table}
+
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Mon Mar 19 14:41:11 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 5: Entropy risk estimates and corresponding standard errors.} }
-\label{table:simulation-study-2-entropy-risk-model-5}
+\caption{\textit{Model 5: Risk estimates and corresponding standard errors.}} 
+\label{table:simulation-study-2-risk-model-5}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
-10 & 0.00 & 0.2774130 & (0.0057) & 0.2841491 & (0.0061) \\ 
-   & 0.05 & 0.2911470 & (0.0063) & 0.2764965 & (0.0059) \\ 
-   & 0.07 & 0.2756559 & (0.0060) & 0.2721747 & (0.0044) \\ 
+   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$}\ & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$}\\ \hline
+10 & 0.0 & 0.3676572 & (0.0097) & 0.2810308 & (0.0061) \\ 
+   & 0.1 & 0.7557992 & (0.0625) & 0.4394453 & (0.0213) \\ 
+   & 0.2 & 2.2976134 & (0.2322) & 0.9021553 & (0.0547) \\ 
+   & 0.3 & 7.1614373 & (0.7123) & 1.9105480 & (0.1266) \\ 
    \hline
- & 0.09 & 0.2820917 & (0.0057) & 0.2806499 & (0.0056) \\ 
-  15 & 0.00 & 0.5132241 & (0.0064) & 0.5171960 & (0.0067) \\ 
-   & 0.05 & 0.5210875 & (0.0081) & 0.5124293 & (0.0068) \\ 
-   \hline
- & 0.07 & 0.5239758 & (0.0056) & 0.5171861 & (0.0059) \\ 
-   & 0.09 & 0.5103058 & (0.0049) & 0.5151156 & (0.0050) \\ 
-  20 & 0.00 & 0.7626041 & (0.0106) & 0.7536784 & (0.0059) \\ 
-   \hline
- & 0.05 & 0.7490586 & (0.0094) & 0.7692628 & (0.0073) \\ 
-   & 0.07 & 0.7577880 & (0.0068) & 0.7575319 & (0.0050) \\ 
-   & 0.09 & 0.7662940 & (0.0101) & 0.7578350 & (0.0057) \\ 
+20 & 0.0 & 1.4811587 & (0.3460) & 0.9219023 & (0.1164) \\ 
+   & 0.1 & 3.0953653 & (0.9038) & 1.7569609 & (0.3476) \\ 
+   & 0.2 & 166016.7071705 & (103525.8892) & 194.1204914 & (119.3696) \\ 
+   & 0.3 & 45.1656953 & (13.2316) & 7.8858410 & (0.8269) \\ 
   \end{tabular}
 \end{table}
 
