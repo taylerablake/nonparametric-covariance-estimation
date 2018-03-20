@@ -126,7 +126,7 @@ In this section we compare bivariate spline estimators of the Cholesky factor to
 
 \bigskip
 
-Simulations were carried out for five covariance structures: the diagonal covariance with homogenous variances, a heterogenous autoregressive process with linear varying coefficient function, the same heterogeneous process but truncated to zero to band the inverse covariance matrix, the rational quadratic covariance model, and the compound symmetric model. The two-dimensional surfaces corresponding to each of these are shown left to right in Figure~\ref{fig:true-covariance-heatmaps}. The first row of image plots display the surface which coincides with the appropriate discrete covariance matrix, and in the second row are the surface maps of the corresponding Cholesky factors. Precise models used for simulations are defined in Table~\ref{simulation-model-list}. 
+Simulations were carried out for five covariance structures: the diagonal covariance with homogenous variances, a heterogenous autoregressive process with linear varying coefficient function, the same heterogeneous process but truncated to zero to band the inverse covariance matrix, the rational quadratic covariance model, and the compound symmetric model. The two-dimensional surfaces corresponding to each of these are shown left to right in Figure~\ref{fig:true-covariance-heatmaps}. The first row of image plots display the surface which coincides with the appropriate discrete covariance matrix, and in the second row are the surface maps of the corresponding Cholesky factors. Precise models used for simulations are defined in Table~\ref{table:simulation-model-list}. 
 
 
 For each of the general covariance structures outlined in the simulation study description, data were generated according to multivariate normal distributions with the following covariance matrices: 
@@ -224,7 +224,7 @@ Figure~\ref{fig:true-covariance-heatmaps} displays a two dimensional representat
 \begin{figure}[H] 
 \begin{center}
   \includegraphics[width = \textwidth]{img/chapter-4/cov-cholesky-grid}%}
-\caption{\textit{Heatmaps of the true covariance matrices (row 1) under simulation Models~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} and the function $\phi$ defining the corresponding Cholesky factor $T$ (row 2).} } \label{fig:true-covariance-heatmaps}
+\caption{\textit{Heatmaps of the true covariance matrices (row 1) under simulation Model I - Model V (see Table~\ref{table:simulation-model-list}) and the function $\phi$ defining the corresponding Cholesky factor $T$ (row 2).} } \label{fig:true-covariance-heatmaps}
 \end{center}
 \end{figure}
 
@@ -290,8 +290,65 @@ The following estimators serve as benchmarks for performance under the five simu
 
 \bigskip
 
-{\needsparaphrased{TO DO: descriptions of the oracle estimators}}
+In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma^2}$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, m_i$. The oracle estimator for Model II is obtained by fitting the model
 
+\begin{equation} \label{eq:model-2-oracle-model}
+y\left(t_{ij}\right) = \sum_{k < j} \left(\beta_0 + \beta_1 t_{ij}\right) y\left( t_{ik} \right) + \epsilon_{ij},
+\end{equation}
+\noindent 
+where $\epsilon_{ij}$ are independent mean zero Normal random variables with common variance $\sigma^2$. The estimator of $\bfbeta = \left(\beta_0, \beta_1\right)'$, $\hat{\bfbeta}$ is taken to be 
+
+\begin{equation}\label{eq:model-2-oracle-estimator}
+\argmin{\beta} \vert \vert Y - X B \beta \vert \vert^2, 
+\end{equation}
+\noindent
+where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq:ar-design-matrix-1}) and Example~\ref{example:construction-of-X}, and the matrix $B$ contains the basis for a linear function of $t$:
+
+\[
+\begin{bmatrix}
+1 & t_{11} \\
+1 & t_{12} \\
+\vdots & \vdots \\
+1 & t_{1,m_1} \\
+\vdots & \vdots \\
+1 & t_{N,1} \\
+\vdots & \vdots \\
+1 & t_{N,m_N} \\
+\end{bmatrix}.
+\]
+\noindent
+The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
+
+\[
+\hat{\sigma^2\left( t \right)} = \frac{1}{N}\sum_{i = 1}^N\frac{1}{m_i - 1} \sum_{j = 1}^{m_i} e_{ij}^2,
+\]
+\noindent
+where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:
+
+\begin{equation} \label{eq:model-3-oracle-model}
+y\left(t_j\right) = \sum_{ t_j - t_k < 0.5} \left(\beta_0 + \beta_1 t_j\right) y\left( t_k \right) + \epsilon. 
+\end{equation}
+
+The oracle estimator under Model IV, the rational quadratic covariance model, assumes that $Y_1, \dots, Y_N$ is a random sample from a mean zero multivariate normal distribution with covariance matrix $\Sigma = \begin{bmatrix} \sigma_{ij} \end{bmatrix}$, where 
+
+The compound symmetric covariance model (V) can be written as a simple random effects model:
+
+\begin{equation} \label{eq:model-5-oracle-model}
+Y_i = Z_i b_i + \bfepsilon_i,
+\end{equation}
+\noindent
+where $\bfepsilon_i$ is a vector of residuals from a $N\left(0,\sigma_\epsilon^2\right)$ distribution, and the $b_i$ are independent $N\left(0,\sigma_b^2 \mathrm{I}\right)$ random vectors, the elements of which are mutually independent of the elements of $\epsilon_{i}$. The matrix of covariates corresponding to the random effects contains only an intercept term:
+
+\[
+Z_i = \begin{bmatrix}  1 \\ 1 \\ \vdots 1 \end{bmatrix}.
+\]
+\noindent
+Under this model, the within-subject covariance structure is given by
+\[
+Cov\left(Y_i\right) = \sigma_\epsilon^2 \mathrm{I} +  \sigma_b^2 1 1'. 
+\]
+\noindent
+The oracle estimator can be obtained using restricted maximum likelihood estimation under a Normal likelihood with this covariance structure.
 \bigskip
 
 In the spirit of the GLM, the MCD polynomial estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
@@ -408,7 +465,7 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \begin{figure}[H] 
 \centering
-\caption{\textit{Covariance Model~\ref{item:cov-type-1} - Model~\ref{item:cov-type-5} used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}
+\caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}
   \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
 \end{figure}
 
