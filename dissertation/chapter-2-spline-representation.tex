@@ -1,131 +1,6 @@
-%\documentclass[12pt]{article}
-%\usepackage{graphicx,psfrag,amsfonts,float,mathbbol,xcolor,cleveref}
-%\usepackage{arydshln}
-%\usepackage{amsmath}
-%\usepackage{subfiles}
-%\usepackage{tikz}
-%\usepackage[mathscr]{euscript}
-%\usepackage{enumitem}
-%\usepackage{accents}
-%\usepackage{framed}
-%\usepackage[utf8]{inputenc}
-%\usepackage{subcaption}
-%\usepackage{algorithm}
-%\usepackage{etoolbox}
-%\usepackage{lscape}
-%\usepackage{algorithmic}
-%\usepackage{nomencl}
-%\usepackage{natbib}
-%\usepackage{mathtools}
-%\usepackage{IEEEtrantools}
-%\usepackage{times}
-%\usepackage{arydshln}
-%\usepackage{cite}
-%\usepackage{amsthm}
-%\usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
-%\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-%\newcommand*\needsparaphrased{\color{red}}
-%\newcommand*\needscited{\color{orange}}
-%\newcommand*\needsproof{\color{blue}}
-%\newcommand*\outlineskeleton{\color{green}}
-%\newcommand{\ms}{\scriptscriptstyle}
-%\newcommand{\hilbert}{\mathcal{H}}
-%\newcommand{\hilbertl}{\mathcal{H}_{\langle l \rangle}}
-%\newcommand{\hilbertm}{\mathcal{H}_{\langle m \rangle}}
-%\newcommand{\hilbertlnull}{\mathcal{H}_{0\langle l \rangle}}
-%\newcommand{\hilbertmnull}{\mathcal{H}_{0\langle m \rangle}}
-%\newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
-%\newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
-%\newcommand{\PP}{\mathcal{P}}
-%\newcommand{\vphistar}{\mbox{\boldmath $\phi$}}
-%\newcommand{\vsigmasq}{\mbox{\boldmath $\sigma^2$}}
-%\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
-%\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
-%\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
-%\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
-%\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
-%\newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
-%\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
-%\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
-%\newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
-%\newcommand{\bfe}{\mbox{\boldmath $e$}}
-%\newcommand{\bft}{\mbox{\boldmath $t$}}
-%\newcommand{\bfg}{\mbox{\boldmath $g$}}
-%\newcommand{\bfv}{\mbox{\boldmath $v$}}
-%\newcommand{\bff}{\mbox{\boldmath $f$}}
-%\newcommand{\bfone}{\mbox{\boldmath $1$}}
-%\newcommand{\bfo}{\mbox{\boldmath $0$}}
-%\newcommand{\bfO}{\mbox{\boldmath $O$}}
-%\newcommand{\bfx}{\mbox{\boldmath $x$}}
-%\newcommand{\bfX}{\mbox{\boldmath $X$}}
-%\newcommand{\bfz}{\mbox{\boldmath $z$}}
-%\newcommand{\tildeY}{\tilde{Y}}
-%\newcommand{\tildey}{\tilde{y}}
-%\newcommand{\tildeQ}{\tilde{Q}}
-%\newcommand{\tildeR}{\tilde{R}}
-%\newcommand{\tildeA}{\tilde{A}}
-%\newcommand{\tildeepsilon}{\tilde{\epsilon}}
-%\newcommand{\bfepsilon}{\mbox{\boldmath $\epsilon$}}
-%\newcommand{\tildeS}{\tilde{S}}
-%
-%\newcommand{\bfm}{\mbox{\boldmath $m}}
-%\newcommand{\bfy}{\mbox{\boldmath $y$}}
-%\newcommand{\bfa}{\mbox{\boldmath $a$}}
-%\newcommand{\bfb}{\mbox{\boldmath $b$}}
-%\newcommand{\bfY}{\mbox{\boldmath $Y$}}
-%\newcommand{\bfB}{\mbox{\boldmath $B$}}
-%\newcommand{\bfZ}{\mbox{\boldmath $Z$}}
-%\newcommand{\tildeB}{\tilde{B}}
-%
-%\newcommand{\cardT}{\vert \mathcal{T} \vert}
-%%\newenvironment{theorem}[1][Theorem]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{corollary}[1][Corollary]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{proposition}[1][Proposition]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%%\newenvironment{definition}[1][Definition]{\begin{trivlist}
-%%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
-%
-%\newtheorem{theorem}{Theorem}[section]
-%\newtheorem{lemma}[theorem]{Lemma}
-%\newtheorem{proposition}[theorem]{Proposition}
-%\newtheorem{corollary}[theorem]{Corollary}
-%
-%\theoremstyle{definition}
-%\newtheorem{definition}{Definition}[section]
-%\newtheorem{example}{Example}[section]
-%\def\bL{\mathbf{L}}
-%
-%\begingroup\lccode`~=`_
-%\lowercase{\endgroup\def~}#1{_{\scriptscriptstyle#1}}
-%\AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
-%
-%\makeatletter
-%\renewcommand{\theenumi}{\Roman{enumi}}
-%\renewcommand{\labelenumi}{\theenumi.}
-%\renewcommand{\theenumii}{\Alph{enumii}}
-%\renewcommand{\labelenumii}{\theenumii.}
-%\renewcommand{\p@enumii}{\theenumi.}
-%\makeatother
-%
-%\begin{document}
-%\listoftables
-%\nocite{*}
-%\def\bL{\mathbf{L}}
-%\usepackage{mathtime}
-
-%%UNCOMMENT following line if you have package
 
 
-%\title{ Nonparametric Covariance Estimation for Longitudinal Data via Penalized Tensor Product Splines}
-%
-%\author{Tayler A. Blake\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201} \and  Yoonkyung Lee\thanks{The Ohio State University, 1958 Neil Avenue, Columbus, OH 43201}}
-%
-%\bibliographystyle{plainnat}
-%\maketitle
-
-\chapter{Modeling the Cholesky decomposition via smoothing spline ANOVA models} \label{chapter-2}
+\chapter{An RKHS estimation framework for $\Sigma$} \label{chapter-2}
 %
 %A predominant difficulty in the estimation of covariance matrices is the potentially high dimensionality of the problem, as the number of unknown elements in the covariance matrix grows quadratically with the size of the matrix. It is well-known that the sample covariance matrix can be unstable in high dimensions; ways for controlling the complexity of estimates is highly desirable for improving stability of estimates. In the longitudinal-data literature, it is a common practice to use parametric models for the covariance structure.  Many have specified parsimonious parametric models for $\phi_{ijk}$ to overcome the issue of dimensionality.  
 %
@@ -248,7 +123,7 @@ which corresponds to the usual penalized least squares functional encountered  i
 where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(\bfv_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
 \bigskip
 
-The remainder of the chapter is reserved for presenting two functional representations of $\left(\phi, \sigma^2\right)$. The first leverages the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \cite{aronszajn1950theory}, \cite{wahba1990spline}, and \cite{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. The second approach is based on the penalized B-splines, or P-splines, of \cite{eilers1996flexible}; these models exhibit many of the attractive numerical properties of the basis functions on which they are built. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization.
+The remainder of the chapter presents a functional representation for $\left(\phi, \sigma^2\right)$ which allows us to leverage the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \cite{aronszajn1950theory}, \cite{wahba1990spline}, and \cite{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -262,7 +137,7 @@ The remainder of the chapter is reserved for presenting two functional represent
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Smoothing spline representation of $\phi$, $\sigma$}
+\section{A smoothing spline ANOVA model for the generalized autoregressive coefficients}\label{RKHS-framework-for-phi}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -280,7 +155,7 @@ The remainder of the chapter is reserved for presenting two functional represent
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{An RKHS framework for estimating $\phi$, $\sigma^2$} \label{RKHS-framework-for-phi}
+%\subsection{An RKHS framework for estimating $\phi$, $\sigma^2$} \label{RKHS-framework-for-phi}
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
 This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \cite{gu2013smoothing} Theorem 2.2.
 
@@ -343,8 +218,8 @@ where $P_J$ is the projection operator which projects $\phi$ onto the subspace $
 where $\xi_i = P_J \psi_i$ is the projection of $L_i$, the representer for the evaluation functional corresponding to the $i^{th}$ element of $V$, onto $\hilbert_J$.
 \end{theorem}
 \vspace{0.5cm}
-
-The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wahba1990spline} can be found in the Appendix, Chapter~\ref{appendix}.
+\noindent
+The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wahba1990spline} can be found in Appendix~\ref{chapter-2-appendix}.
 
 \bigskip
 
@@ -886,7 +761,7 @@ where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\le
 \vspace{0.8in} 
 
 
-\subsection{Selection of multiple smoothing parameters}
+\subsubsection{Selection of multiple smoothing parameters}
 
 With the definition of the unbiased risk estimate and the leave-one-subject-out criteria, the expression of the smoothing matrix in Equation~\ref{eq:smoothing-matrix-A-tilde} permits the straightforward evaluation of both scores $U\left(\lambda, \bftheta \right)$ and $V_{loso}^*\left(\lambda, \bftheta \right)$, where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.  In this section, we discuss a algorithm to minimize the unbiased risk estimate $U\left(\lambda, \bftheta\right)$ with respect to $\lambda$ and $\bftheta$ hidden in $Q = \sum_{\beta = 1}^q \theta_\beta Q_\beta$, where the $\left(i,j\right)$ entry of $Q_\beta$ is given by $R_\beta\left(\bfv_i,\bfv_j\right)$.  We present minimization of the unbiased risk estimate explicitly, but the mechanics of the optimization are very similar to those necessary for optimizing the leave-one-subject-out cross validation criterion. The details of a procedue for explicitly minimizing the alternative criterion are presented in \cite{xu2012asymptotic}, which is based on the algorithms of \cite{gu1991minimizing}, \cite{kim2004smoothing} (which is the basis for the algorithm which follows) and \cite{wood2004stable}. The key difference between the minimization of $U$ and the minimization of $V^*_{loso}$ lies in the calculation of the gradient and the Hessian matrix in the Newton update. To minimize the unbiased risk estimate,
 
@@ -895,7 +770,7 @@ With the definition of the unbiased risk estimate and the leave-one-subject-out 
 \item Update $\bftheta$ using the current estimate of $\lambda$.
 \end{enumerate}
 \noindent
-Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $U\left( \bftheta \vert \lambda \right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $U$ and $V^*$ and \ref{eq:cholesky-tildeA}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $U\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $U\left( \bftheta \vert \lambda \right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $U$ and $V^*$ and \ref{eq:smoothing-matrix-A-tilde}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $U\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
 
 \subsubsection{Algorithms}
 
@@ -969,9 +844,8 @@ After the first pass, the initial fit $\breve{\phi}$ reveals where the structure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{An RKHS framework for estimating $\log \sigma^2$}
+\section{A smoothing spline model for the innovation variances}
 %\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-spline-representation}
-
 
 Once we have an initial estimate of the generalized autoregressive coefficient function, $\phi$, we can use the model residuals to estimate the innovation variance function $\sigma^2\left(t\right)$. We use the same estimation approach as outlined in Section~\ref{RKHS-framework-for-phi}. Fixing $\phi = \phi^*$ for given estimate $\phi^*$, the negative log likelihood of the data $Y_1,\dots, Y_N$ is satisfies
 
