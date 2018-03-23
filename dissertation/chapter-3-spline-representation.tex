@@ -1,0 +1,991 @@
+
+
+\chapter{An RKHS estimation framework for $\Sigma$} \label{SSANOVA-chapter}
+%
+%A predominant difficulty in the estimation of covariance matrices is the potentially high dimensionality of the problem, as the number of unknown elements in the covariance matrix grows quadratically with the size of the matrix. It is well-known that the sample covariance matrix can be unstable in high dimensions; ways for controlling the complexity of estimates is highly desirable for improving stability of estimates. In the longitudinal-data literature, it is a common practice to use parametric models for the covariance structure.  Many have specified parsimonious parametric models for $\phi_{ijk}$ to overcome the issue of dimensionality.  
+%
+%\bigskip
+%
+%We naturally accommodate irregularly spaced data and unequal sample sizes between subjects by defining the autoregressive parameters as the values of a smooth function evaluated at within-subject pairs of observed time points.  Furthermore, by viewing $\phi\left(t,s\right)$ as a smooth \emph{bivariate} function, we can utilize the information across the subdiagonals of $T$ to inform the fit, rather than treating each subdiagonal separately.  As in the classical nonparametric function estimation setting, we assume $\phi$ to vary in a high-dimensional (possibly infinite) function space. We propose two representations of $\phi\left(\cdot, \cdot\right)$ and $\sigma\left(\cdot, \cdot\right)$: approximation by smoothing splines and approximation by B-spline basis expansion. 
+%
+%We assume $Y\left(t\right)$ has covariance function $G\left(t,s\right)$ and that $\epsilon\left(t\right)$ follows a zero mean Gaussian white noise process with unit variance. Under mild assumptions regarding the behaviour of $Y$, then $G\left(t,s\right)$ satisfies some smoothness conditions, where smoothness is defined in terms of square integrability of certain derivatives. We view the entries of $\Sigma$ as values of $G$ evaluated at the distinct pairs of within-subject observed time points. 
+%\bigskip
+
+
+If we consider the Cholesky decomposition of $\Sigma$ within such functional context, it is natural to extent the same notion to the elements of $T$ and $D$. We take the GARPs $\lbrace \phi_{tj} \rbrace$ and innovation variances to be the evaluation of the smooth functions $\tilde{\phi}\left(t,s\right)$ and $\sigma^2\left(t\right)$ at observed time points, which we assume  are drawn from some distribution having compact domain $\mathcal{T}$. Without loss of generality, we take $\mathcal{T} = \left[0,1\right]$. Henceforth, we view $\tilde{\phi}$ and $\sigma^2$ as a smooth continuous functions, but for ease of exposition, we let $\tilde{\phi}_{ij}$ denote the varying coefficient function evalutated at $\left(t_i,t_j\right)$: 
+\[
+\tilde{\phi}_{tj} = \tilde{\phi}\left(t_{i},t_{j}\right). 
+\]
+Adopting similar notation for the innovation variance function, denote $\sigma_{j}^2 = \sigma^2\left(t_{j}\right)$ where $0 \le t_{j} < t_{i} \le 1$ for $j < i$. This leads to varying coefficient model
+
+\begin{equation}  \label{eq:cholesky-regression-model-1} 
+y\left(t_{i} \right)  = \sum_{j=1}^{i-1} \tilde{\phi}\left(t_{i} ,t_{j}\right) y\left(t_{j}\right) + \sigma\left(t_{j}\right)\epsilon\left({t_j}\right) \;\;\;\; i=1,\dots, M, 
+\end{equation}
+\noindent
+
+Our goal is now to estimate the above model, utilizing bivariate smoothing to estimate $\tilde{\phi}\left(t,s\right)$ for $0 \le s < t \le 1$,  and one-dimensional smoothing to estimate $\sigma\left(t \right)$, $0 \le t \le 1$. Our proposed method for covariance estimation defines a flexible, general framework which makes all of the existing techniques for penalized regression accessible for the seemingly far different task of estimating a covariance matrix.
+
+\bigskip
+
+Our approach to estimation is constructed to provide a fully data-driven methodology for selecting the optimal covariance model (given some optimization criterion) from a expansive class of estimators ranging in complexity from that of the previously aforementioned parametric models to that of completely unstructured estimators, like the sample covariance matrix. We leverage the collection of regularization techniques that are accessible in the usual function estimation setting. By properly specifying the roughness penalty, our optimization procedure results in null models which correspond to the parametric and semiparametric models for $\phi$ and $\sigma^2$ discussed in Chapter~\ref{background-review-chapter}. To facilitate the penalty specification that achieves this, we consider modeling the varying coefficient function which takes inputs
+
+\begin{align} 
+\begin{split}\label{eq:l-m-transformation}
+l &= t - s \\
+m &= \frac{t + s}{2}, \\
+\end{split}
+\end{align}
+\noindent
+ where $l$ is the continuous analogue of the usual ``lag'' between time points $t$ and $s$, and $m$ is simply its orthogonal direction. We have discussed many parsimonious covariance structures which model $y\left(t\right)$ as a stationary process with covariance function which depends on time points $t_i$ and $t_j$ only through the Euclidean distance $\vert \vert t_i - t_j \vert \vert$ between them. Covariance functions taking the form $Cov\left(y\left( t_i \right),y\left( t_j \right)\right) =G\left(t_i,t_j\right) = G\left(\vert \vert t_i - t_j \vert \vert \right)$ can then be written as 
+
+\begin{equation*}
+Cov\left(y\left( t_i \right),y\left( t_j \right)\right) = G\left( l_{ij}  \right)
+\end{equation*}
+\noindent
+where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional components of the Cholesky decomposition so that functions incurring large penalty correspond to functions which vary in only $l$ and are constant in $m$ allows us to model nonstationarity in a fully data-driven way.  Our goal is to estimate
+
+\begin{equation} 
+\phi\left(l,m\right) = \phi\left(s-t, \frac{1}{2}\left(s+t\right)\right) = \tilde{\phi}\left(t,s\right).
+\end{equation}
+
+\bigskip
+
+While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \cite{kimeldorf1971some} and \cite{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \cite{gu2013smoothing}, and estimation is achieved through similar computational strategies.
+
+\bigskip
+
+Let random vector $Y$ follow a multivariate normal distribution with zero mean vector and covariance $\Sigma$. The loglikelihood function $\ell \left( Y, \Sigma \right)$ satisfies
+
+\begin{equation} \label{eq:loglik-general-form}
+-2\ell\left( Y, \Sigma \right) = \log \vert \Sigma \vert + Y' \Sigma Y
+\end{equation}
+\noindent
+Using $T \Sigma T' = D$, we can write 
+\[
+\vert \Sigma\vert = \vert D \vert = \prod_{i = 1}^m \sigma_i^2
+\]
+and 
+\[
+\Sigma^{-1} = T' D^{-1} T.
+\]
+Writing \ref{eq:loglik-general-form} in terms of the prediction errors and their variances of the non-redundant entries of $\left(T , D\right)$, we have
+
+\begin{align}
+\begin{split} \label{eq:loglik-cholesky-form}
+-2\ell\left( Y, \Sigma \right) &= \log \vert D \vert + Y' T' D^{-1} T Y \\
+&= \sum_{i = 1}^m \log \sigma_i^2  + \sum_{i = 1}^m \frac {\epsilon_i^2}{\sigma_i^2},
+\end{split}
+\end{align}
+\noindent
+where 
+\begin{equation} \label{eq:loglik-cholesky-form}
+\epsilon_i = \left\{\begin{array}{lr}y\left(t_1\right), & i = 1, \\
+y\left(t_i\right) - \sum_{j = 1}^{i-1} \phi\left(\bfv_{ij}\right) y_j, & i= 2, \dots, M, \\
+\end{array} \right.
+\end{equation}
+\noindent
+where $\phi\left(\bfv_{ij}\right) = \phi\left(l_{ij},m_{ij}\right) = \tilde{\phi}\left(t_i,t_j\right)$.  Accommodating subject-specific sample sizes and measurement times merely requires appending an additional index to observation times. Let  $Y_1, \dots, Y_N$ denote a sample of $N$ independent mean zero random trajectories from a  multivariate normal distribution with common covariance $\Sigma$. We associate with each trajectory $Y_i = \left(y_{i1}, \dots, y_{i,m_i}\right)'$ with a vector of potentially subject-specific observation times $\left(t_{i1}, \dots, t_{i,m_i}\right)'$, so that the $j^{th}$ measurement of trajectory $i$ is modeled
+
+\begin{align}
+\begin{split} \label{eq:cholesky-regression-model-2} 
+y\left(t_{ij} \right)  &= \sum_{k=1}^{j-1} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)  \\
+&= \sum_{k=1}^{j-1} \phi\left(\bfv_{ijk}\right) y\left(t_{ik}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right)
+\end{split}
+\end{align}
+\noindent
+for $i = 1,\dots, N$, $j = 2,\dots, m_i$.
+\noindent
+Making similar ammendments to indexing, the joint log likelihood for the sample $Y_1, \dots, Y_N$ is given by  
+
+\begin{equation} \label{eq:joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) = \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma_{ij}^2  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma_{ij}^2},
+\end{equation}
+
+\bigskip
+
+With this, we can estimate $\phi$ and $\log\sigma^2$ using maximum likelihood or any of its penalized variants by appending a roughness penalty (penalties) to \ref{eq:joint-loglik}. Employing regularization, we take $\phi$, $\sigma^2$ to minimize 
+
+\begin{equation} \label{eq:penalized-joint-loglik}
+-2\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) +    \lambda J\left( \phi \right) +  \breve{\lambda}\breve{J}\left( \sigma^2 \right),
+\end{equation}
+\noindent
+where $J$ and $\breve{J}$ are roughness penalties on $\phi$ and $\sigma^2$, and $\lambda$, $\breve{\lambda}$ are non-negative smoothing parameters.  To jointly estimate the GARP function and the IV function, we adopt an iterative approach in the spirit of \cite{huang2006covariance}, \cite{huang2007estimation}, and \cite{pourahmadi2000maximum}. A procedure for minimizing \ref{eq:joint-loglik} starts with initializing $\left\{\sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, m_i$.  For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-sigma}
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+\end{equation}
+\noindent
+which corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. Given $\phi^*$ the minimizer of \ref{eq:penalized-joint-loglik-given-sigma} and setting $\phi = \phi^*$, we update our estimate of $\sigma^2$ by minimizing 
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi}
+-2\ell_{\sigma^2} + \breve{\lambda} \breve{J}\left(\sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {r_{ij}^*}^2 + \breve{\lambda} \breve{J}\left(\sigma^2 \right),
+\end{equation}
+where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(\bfv_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
+\bigskip
+
+The remainder of the chapter presents a functional representation for $\left(\phi, \sigma^2\right)$ which allows us to leverage the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \cite{aronszajn1950theory}, \cite{wahba1990spline}, and \cite{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{A smoothing spline ANOVA model for the generalized autoregressive coefficients}\label{RKHS-framework-for-phi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\subsection{An RKHS framework for estimating $\phi$, $\sigma^2$} \label{RKHS-framework-for-phi}
+%\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
+This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \cite{gu2013smoothing} Theorem 2.2.
+
+\bigskip
+
+The symmetric, bivariate function $Q\left(\bfv_1, \bfv_2 \right) = Q_{\bfv_2 }\left(\bfv_1\right) = \langle Q_{\bfv_1}, Q_{\bfv_2} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $v \in \mathcal{V}$ and $f \in \mathcal{H}$,
+
+\begin{enumerate}
+\item $Q\left(\cdot, \bfv \right) \in \hilbert$ 
+\item $f\left(\bfv\right) = \langle f, Q\left(\cdot, v\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
+\end{enumerate}
+\noindent
+The first property is called the reproducing property of $Q$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See \cite{gu2013smoothing}, Theorem 2.3. The kernel satisfies that for any $\left\{\bfv_1,\dots, \bfv_{n_1}\right\}$, $\left\{\breve{\bfv}_1,\dots, \breve{\bfv}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{a_1,\dots, a'_{n_2}\right\} \in \Re$,
+
+\begin{equation}
+ \langle\sum_{i = 1}^{n_1} a_i Q\left(\cdot, \bfv_i\right), \sum_{j = 1}^{n_2} a'_j Q\left(\cdot, \breve{\bfv}_j\right) \rangle_\hilbert.
+\end{equation}
+
+\bigskip
+
+
+Let $\mathcal{N}_J = \left\{ \phi:\; J\left(\phi\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition
+
+\[
+\hilbert = \mathcal{N}_J \oplus \hilbert_J.
+\]
+\noindent
+The space $\hilbert_J$ is a RKHS having $J\left(\phi\right)$ as the squared norm. The representer of any bounded linear functional can be obtained from the reproducing kernel $Q$. Let $\psi_{ij}$ denote the representer for the evaluation functional, $L_{ij}$, i.e. $\psi_{ij}$ satisfies
+
+\[
+\langle \psi_{ij}, \phi \rangle = L_{ij} \phi, \quad \phi \in \hilbert.
+\]
+\noindent
+Then one may write $\psi\left( \bfv_{ij} \right)$ as the inner product of itself with the reproducing kernel:
+
+\begin{equation} \label{eq:representer-as-inner-product}
+\psi_{ij}\left( \bfv \right) = \langle \psi_{ij}, Q_{\bfv} \rangle = L_{ij} Q_{\bfv} = L_{ij\left(\cdot\right)} Q \left(\bfv,\cdot\right)
+\end{equation}
+ \noindent
+ where the notation $L_{ij\left(\cdot\right)}$ indicates that $L_{ij}$ is applied to what immediately follows as a function of $\left( \cdot \right)$, so that one can obtain $\psi_{ij}\left(\bfv\right)$ by applying $L_{ij}$ to $Q\left(\bfv, \bfv^*\right)$, considered as a function of $\bfv^*$. \cite{wahba1990spline} established an explicit form for the minimizer of the penalized sums of squares
+ 
+ \begin{equation} \label{eq:phi-penalized-sums-of-squares}
+ -2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+ \end{equation}
+ \noindent
+ which can now be written
+ \begin{equation} \label{eq:phi-penalized-sums-of-squares-RK-norm}
+-2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_J \phi \vert \vert_\hilbert^2, 
+\end{equation} 
+\noindent
+where $P_J$ is the projection operator which projects $\phi$ onto the subspace $\hilbert_J$, and $L_{ijk}$ denotes the evaluation functional $\left[\bfv_{ijk}\right] \phi$. 
+ 
+ \begin{theorem} \label{theorem:finite-dimensional-minimizer}
+ Let $\left\{\eta_1,\dots, \eta_{d_0}\right\}$ span the null space of $P_J$, $\hilbert_0$. Let  $V = \bigcup\limits_{i,j,k} \bfv_{ijk} \equiv \left\{ \bfv_1,\dots,\bfv_{\vert V \vert} \right\}$ denote the set of unique within-subject pairs of observation times. Let $B$ denote the $\vert V \vert \times d_0$ matrix having $i^{th}$ column equal to $\eta_i$ evaluated at the vector of observed $\bfv \in V$, and assume that $B$ has full column rank. Then the minimizer $\phi_\lambda$ of \ref{eq:phi-penalized-sums-of-squares-RK-norm} is given by
+ 
+\begin{equation} \label{eq:form-of-the-minimizer-phi}
+\phi_\lambda = \sum_{\nu = 1}^{d_0} d_\nu \eta_nu + \sum_{\bfv_i \in V} c_i \xi_i,
+\end{equation}
+\noindent
+where $\xi_i = P_J \psi_i$ is the projection of $L_i$, the representer for the evaluation functional corresponding to the $i^{th}$ element of $V$, onto $\hilbert_J$.
+\end{theorem}
+\vspace{0.5cm}
+\noindent
+The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wahba1990spline} can be found in Appendix~\ref{chapter-2-appendix}.
+
+\bigskip
+
+%\subfile{chapter-2-subfiles/tensor-product-hilbert-space-construction}
+
+Convenient construction of a reproducing kernel Hilbert space on a domain
+\[
+\mathcal{V} = \mathcal{V}_1 \otimes \mathcal{V}_2
+\]
+\noindent
+which can be written as a product domain, is available through the tensor product of the RKHS for each of the marginal domains $\mathcal{V}_1$ and $\mathcal{V}_2$. Without loss of generality, we can let $l,\;m \in \left[0,1\right] = \mathcal{V}_1 = \mathcal{V}_2$. Given Hilbert space for the domain of $l$, $\hilbert_{\left[1\right]}$ with reproducing kernel $Q_1$ and Hilbert space on the domain of $m$, $\hilbert_{\left[2\right]}$ with reproducing kernel $Q_2$, the reproducing kernel $Q = Q_{\left[1\right]}Q_{\left[2\right]}$ corresponds to that of the tensor product space of $\hilbert_{\left[1\right]}$ and $\hilbert_{\left[2\right]}$, denoted
+\[
+\hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}.
+\]
+\noindent
+See \cite{gu2002smoothing}, Theorem 2.6. Let $\mathcal{A}_1$, $\mathcal{A}_2$ denote the averaging operators defining ANOVA decompositions on $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$, respectively, where $\hilbert_{0\left[i\right]}$ has RK $Q_{0\left[i\right]}$, $i = 1, 2$ and $\hilbert_{1\left[i\right]}$ has RK $Q_{1\left[i\right]}$ satisfying $\mathcal{A}_1Q_{\left[1\right]}\left(l,\cdot\right) = \mathcal{A}_2Q_{\left[2\right]}\left(m,\cdot\right) = 0$. Then the tensor product space $\hilbert$ has tensor sum decomposition
+
+\begin{align} 
+\begin{split} \label{eq:tensor-sum-decomposition}
+\hilbert &= \left[\hilbert_{0\left[1\right]} \oplus \hilbert_{1\left[1\right]} \right] \otimes \left[\hilbert_{0\left[2\right]} \oplus \hilbert_{1\left[2\right]} \right] \\
+&= \left[\hilbert_{0\left[1\right]} \otimes  \hilbert_{0\left[2\right]}\right] \oplus \left[\hilbert_{0\left[1\right]} \otimes \hilbert_{1\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes  \hilbert_{0\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes  \hilbert_{1\left[2\right]}\right] 
+\end{split}
+\end{align}
+\noindent
+If $Q_{0\left[i\right]} \propto 1$ for $i = 1,2$, then $\hilbert$ can be further simplified:
+\begin{equation}
+\hilbert = \hilbert_1 \oplus \hilbert_2,
+\end{equation}
+\noindent
+which has reproducing kernel $Q = Q_{\left[1\right]}Q_{\left[2\right]}$.
+
+\begin{example}{\textbf {Tensor product cubic spline}}\\
+\vspace{0.5cm}
+Let the marginal domains of $l$ and $m$ correspond to $\hilbert_1$ and $\hilbert_2$ respectively, where
+\[
+\hilbert_i = \mathcal{C}^{\left(m_i\right)} = \left\{ \phi: \int \limits_{0}^1 \phi^{\left(m_i\right)}\;dv < \infty  \right\},
+\]
+\noindent
+which are equipped with inner product
+\begin{align}
+\begin{split}
+\langle f,g\rangle &= \langle f,g\rangle_0 + \langle f,g\rangle_1\\
+ &= \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g + \int_0^1 f^{\left( m_i \right)}\left(v\right)g^{\left( m_i \right)}\left(v\right)dv, \quad i = 1,2
+\end{split}
+\end{align}
+\noindent
+where the order $i$ differential operator $M_\nu$ is defined $M_\nu \phi = \int_0^1 \phi^{\left( m \right)}\left(v\right) dv\;,\;\; \nu = 1, \dots, m_i$, $i = 1,2$. Denote the norm corresponding to this inner product by
+
+\[
+\vert \vert f \vert \vert^2 = \left< f,f\right> = \left< f,f\right>_0 + \left< f,f\right>_1 = \vert \vert P_0 f \vert \vert^2 + \vert \vert P_1 f \vert \vert^2
+\]
+\noindent
+The reproducing kernel $Q$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(v\right) = \frac{1}{j!}B_j\left(v\right) \right\}$, $v \in \left[0,1\right]$, where $B_j$ is defined according to:
+
+\begin{align*}
+B_0\left(x\right) &= 1\\
+\frac{d}{dx} B_j\left(x\right) &= jB_{j-1}\left(x\right), \;j = 1, 2, \dots
+\end{align*}
+\noindent
+One can verify that $\int \limits_0^1 k_\mu^\nu dv = \delta_{\mu,\nu}$ for $\nu, \mu= 0,\dots, m_i -1$, where $\delta_{\mu,\nu}$ is the Kronecker delta. This implies that the $k_\nu$, $\nu = 0,\dots, m_i-1$ for an orthonormal basis for $\hilbert_{0\left[i\right]} = \left\{ \phi: \phi^{\left( m_i \right)} = 0 \right\}$ under the inner product
+\[
+\langle f,g\rangle_0 =  \sum_{\nu=0}^{m_i-1}M_{\nu} f M_{\nu} g, \quad i = 1, 2, 
+\]
+\noindent
+and that 
+\[
+Q_{0\left[i\right]}\left(v,v'\right) = \sum_{\nu=0}^{m_i-1}  k_\nu\left(v\right)  k_\nu\left(v'\right) 
+\]
+\noindent
+is the reproducing kernel for $\hilbert_{0\left[i\right]}$. The subspaces of $\hilbert_{\left[i\right]}$ which are orthogonal to $\hilbert_{0\left[i\right]}$ are comprised of functions $\phi$ satisfying 
+\[
+\hilbert_{1\left[i\right]} = \lbrace \phi: M_\nu f = 0,\;\; \nu = 0,1,\dots, m_i-1,\int\limits_{0}^1 \phi^{\left(m_i\right)}\;dv < \infty \rbrace, \quad i = 1,2.
+\]
+One can show that the representer for the evaluation functional $\left[v\right] \phi$ in $\hilbert_{1\left[i\right]}$ with squared norm $\langle f,g\rangle_1= \int_0^1 f^{\left(m_i\right)}g^{\left(m_i\right)}\;dv$ is given by the function
+
+\begin{equation}
+{Q_{\left[i\right]} }_v'\left(v\right) = k_{m_i}\left(v\right)k_{m_i}\left(v'\right) + \left(-1\right)^{m_i-1}k_{2m_i}\left(v' - v\right)
+\end{equation}
+\noindent
+See \cite{gu2002smoothing} Example 2.3.3 for proof. The tensor product smoothing spline results from letting $m_1 = m_2 = 2$, so that the marginal subspaces can be written
+
+\begin{align} \label{eq:cubic-spline-hilbert-space}
+\left\{ \phi: \phi'' \in \mathcal{L}_2\left[0,1\right] \right\} = &\left\{ \phi: \phi \propto 1 \right\} \oplus  \left\{ \phi: \phi \propto k_1 \right\} \oplus \left\{ \phi: \int_0^1 \phi dv = \int_0^1 \phi' dv = 0,\; \phi'' \in \mathcal{L}_2\left[0,1\right]  \right\} \\
+&= \hilbert_{00} \oplus \hilbert_{01} \oplus \hilbert_1,
+\end{align}
+\noindent
+where $ \hilbert_{01} \oplus \hilbert_1$ forms the contrast in a one-way ANOVA decomposition with averaging operator $\mathcal{A}\phi = \int_0^1 \phi\;dv$. The corresponding reproducing kernels are
+\begin{align} \label{eq:cubic-spline-hilbert-space-rks}
+Q_{00}\left(v,v'\right) &= 1\\
+Q_{01}\left(v,v'\right) &= k_1\left(v\right)k_1\left(v'\right)\\
+Q_{1}\left(v,v'\right) &= k_2\left(v\right)k_2\left(v'\right) - k_4\left(v-v'\right).
+\end{align}
+\noindent
+The tensor product space can be constructed with nine tensor sum terms; the construction of the tensor product space from the terms of the tensor sum. The corresponding reproducing kernels and inner products are given in Table~\ref{table:tensor-product-cubic-spline-RKHS-table} and Table~\ref{table:tensor-product-cubic-spline-RK-table}, respectively.
+
+\begin{table}[H]
+\centering % used for centering table
+\begin{tabular}{r|c|c|c|} % centered columns (4 columns)
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{	$\hilbert_{00\left[2\right]}$}	&	\multicolumn{1}{c}{$\hilbert_{01\left[2\right]}$}	&\multicolumn{1}{c}{ $\hilbert_{1\left[2\right]}$}\\ [1.5ex] 
+\cline{2-4}  % inserts single horizontal line\\
+$\hilbert_{00\left[1\right]}$		& $\hilbert_{00\left[1\right]}\otimes \hilbert_{00\left[2\right]}$ 	&	$\hilbert_{00\left[1\right]}	\otimes \hilbert_{01\left[2\right]} $	&	$\hilbert_{00\left[1\right]}	\otimes \hilbert_{1\left[2\right]}$   \\ [1.5ex] 
+$\hilbert_{01\left[1\right]}$		& $\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]}$			& 	$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$   &   $\hilbert_{01\left[1\right]} \otimes \hilbert_{1\left[2\right]}$\\ [1.5ex] 
+ $\hilbert_{1\left[1\right]}$	& 	 $\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$	&	$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	&	$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$ \\ [1.5ex] 
+\cline{2-4}
+\end{tabular}
+\caption{\textit{Construction of the tensor product cubic spline subspace from marginal subspaces $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$}} % title of Table
+\label{table:tensor-product-cubic-spline-RKHS-table}
+\end{table}
+
+\begin{landscape}
+\begin{table}[H]
+\caption{\textit{Tensor product cubic spline subspace reproducing kernels and inner products}} % title of Table
+\centering % used for centering table
+\begin{tabular}{lll} % centered columns (4 columns)
+\hline \\
+\hline %inserts double horizontal lines
+Subspace 	& 		Reproducing kernel 		& 	Inner product \\
+\hline % inserts single horizontal line
+$\hilbert_{00\left[1\right]} \otimes \hilbert_{00\left[2\right]}$ & 	$1$								     & 	$\left( \int_0^1 \int_0^1 f \right) \left( \int_0^1 \int_0^1 g \right)$ \\ [1ex] 
+$\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]} $& 	$k_1\left(l\right)k_1\left(l'\right)$						     & 	$\left( \int_0^1 \int_0^1 f'_{\left[1\right]} \right) \left( \int_0^1 \int_0^1 g'_{\left[1\right]} \right)$ \\ [1ex] 
+$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(l\right)k_1\left(l'\right)k_1\left(m\right)k_1\left(m'\right)$ & $\left( \int_0^1 \int_0^1 f''_{\left[12\right]} \right) \left( \int_0^1 \int_0^1 g''_{\left[12\right]} \right)$ \\ [1ex] 
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$  	& 	$k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)$	      & $\int_0^1 \left( \int_0^1 f''_{\left[12\right]}\;dl' \right) \left(  \int_0^1 g''_{\left[12\right]} \;dl'\right)\;dl $\\ [1ex] 
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	& 	$\left[k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)\right]k_1\left(m\right)k_1\left(m'\right)$ & $\int_0^1 \left( \int_0^1 f^{\left(3\right)}_{\left[112\right]}\;dl' \right) \left(  \int_0^1 g^{\left(3\right)}_{\left[112\right]} \;dl'\right)\;dl$ \\ [1ex]  
+$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  		& $\left[k_2\left(l\right)k_2\left(l'\right) - k_4\left(l - l'\right)\right]\left[k_2\left(m\right)k_2\left(m'\right) - k_4\left(m - m'\right)\right]$ & $\int_0^1  \int_0^1 f^{\left(4\right)}_{\left[1122\right]}g^{\left(4\right)}_{\left[1122\right]}$ \\ [1ex]  
+\hline %inserts single line
+\end{tabular}
+\label{table:tensor-product-cubic-spline-RK-table}
+\end{table}
+\end{landscape}
+\end{example}
+
+\bigskip
+
+For $\bfv \in V$ where $V$ is a product domain, ANOVA decompositions can be characterized by 
+\begin{equation}\label{eq:ssanova-decomposition-of-RKHS}
+\hilbert = \bigoplus\limits_{\beta=0}^{g} \hilbert_\beta
+\end{equation}
+\noindent
+and
+\begin{equation}\label{eq:ssanova-decomposition-of-penalty}
+J\left(\phi\right) = \sum_{\beta=0}^{g} \theta^{-1}_\beta J_\beta \left( \phi_\beta \right),
+\end{equation}
+\noindent
+where $\phi_\beta \in \hilbert_\beta$, $J_\beta$ is the square norm in $\hilbert_\beta$, and $0 < \theta_\beta < \infty$. This gives 
+
+\begin{align*}
+\hilbert_0 &= \mathcal{N}_J \\
+\hilbert_J &= \bigoplus\limits_{\beta=1}^{g} \hilbert_\beta, \mbox{ and} \\
+Q &= \sum_{\beta=1}^g \theta_\beta Q_\beta,
+\end{align*}
+\noindent
+where $Q_\beta$ is the RK in $\hilbert_\beta$. The $\left \{ \theta_\beta \right\}$ are additional smoothing parameters, which are implicit in notation to follow for the sake of concise demonstration. 
+
+
+\bigskip
+\noindent
+Let $Y$ denote the vector of length $n_y= \sum_{i} M_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other:
+
+\begin{align*}
+Y &= \left( Y'_1, Y'_2, \dots, Y'_{N} \right)'\\
+ &= \left( y_{12}, y_{13},\dots, y_{1,m_1}, \dots, y_{N,2}, y_{N,3},\dots, y_{N,m_N} \right)'
+\end{align*}
+\noindent
+Define $X_i$ to be the $m_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,m_i}$ on its predecessors as in model~\ref{eq:cholesky-regression-model-2}, and stack these on top of one another to obtain
+
+\begin{equation} \label{eq:ar-design-matrix-1}
+X = \begin{bmatrix}
+X_1 \\
+X_2\\
+\vdots \\
+X_N
+\end{bmatrix},
+\end{equation}
+\noindent
+which has dimension $n_y \times \vert V \vert$. Then the solution $\phi_\lambda$ minimizing \ref{eq:phi-penalized-sums-of-squares-RK-norm}  is the solution to the minimization problem
+
+\begin{equation} \label{eq:ar-design-matrix-1}
+\vert \vert D^{-1/2}\left( Y - X \left( Bd + Qc \right) \right) \vert \vert^2  + \lambda c^\prime Q c 
+\end{equation}
+\noindent
+where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $Q$ is given by $\langle P_1 \xi_i,  P_1 \xi_j \rangle_\hilbert$, and $B$ is the $\vert V \vert \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank.  The diagonal matrix $D$ holds the $n_y \times n_y$  innovation variances $\sigma^2_{ijk}$. 
+
+\bigskip
+
+\begin{example}{Construction of $X_i$ with complete data} \label{example:construction-of-X}
+\\
+\vspace{.5cm} 
+\\
+Straightforward construction of the autoregressive design matrix $X_i$ is straight forward in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_M$. When complete data are available for measurement times $t_1, \dots, t_M$, 
+
+\begin{equation}
+X_i =  \begin{bmatrix} 
+y_{i, t_1} & 0 & 0 &0&& \dots & 0 \\
+ 0 & y_{i, t_1} &  y_{i, t_2}&0 &0& \dots & 0 \\
+ \vdots &&&&&&\\
+ 0 & \dots &0 & \dots& y_{i,t_1} & \dots &  y_{i, t_{M-1}}
+\end{bmatrix}
+\end{equation}
+\noindent
+for all $i = 1,\dots, N$. Note that this design matrix specification does not require that measurement times be regularly spaced.  
+\end{example}
+
+\begin{example}{Construction of $X_i$ with incomplete data}
+\\
+We demonstrate the construction of the autoregressive design matrices when subjects do not share a universal set of observation times for $N = 2$; the construction extends naturally for an arbitrary number of trajectories. Let subjects have corresponding sample sizes $m_1 = 4$, $m_2 = 4$, with measurements on subject 1 taken at $t_{11} = 0, t_{12} = 0.2, t_{13} = 0.5, t_{14} = 0.9$ and on subject 2 taken at $t_{21} = 0, t_{22} = 0.1, t_{23} = 0.5, t_{24} = 0.7$.  Then the unique within-subject pairs of observation times $\left(t,s\right)$ such that $0 \le s < t \le 1$ are
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+t & 0.1 & 0.2 & 0.5 & 0.5 & 0.5 & 0.7 & 0.7 & 0.7 & 0.9 & 0.9 & 0.9 \\ 
+ s & 0.0 & 0.0 & 0.0 & 0.1 & 0.2 & 0.0 & 0.1 & 0.5 & 0.0 & 0.2 & 0.5 \\
+\end{tabular}
+\end{table}
+\noindent
+This gives that $V =  \left\{\bfv_{121},\dots, \bfv_{143}  \right\} \bigcup \left\{\bfv_{221},\dots, \bfv_{243}  \right\} = \left\{\bfv_1,\dots, \bfv_{11} \right\}$, where the distinct observed $v = \left(l, m\right)$ are 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r;{2pt/2pt}r}
+l & 0.10 & 0.20 & 0.50 & 0.40 & 0.30 & 0.70 & 0.60 & 0.20 & 0.90 & 0.70 & 0.40 \\ 
+  m & 0.05 & 0.10 & 0.25 & 0.30 & 0.35 & 0.35 & 0.40 & 0.60 & 0.45 & 0.55 & 0.70 \\ 
+\end{tabular}
+\end{table}
+\noindent
+Then a potential construction of the autoregressive design matrix for subject is given by:
+\begin{equation}
+X_1 =  \begin{bmatrix} 
+0   & y_{1, 1}  &	0            &    0   &    0           & 0 & 0 & 0 & 0 & 0  \\
+0   &	0  	      &	y_{1, 1}  &    0   & y_{1, 2}   &  0 & 0 & 0 & 0 & 0 \\
+ 0   &    0         & 0           &    0   &    0          & 0  & 0	&  y_{1, 1}    & y_{1, 2}& y_{1, 3} 
+\end{bmatrix}
+\end{equation}
+\noindent
+and similarly, for subject 2:
+
+\begin{equation}
+X_2 =  \begin{bmatrix} 
+y_{2, 1}  & 	0  &	  0           &    0            &    0   & 0 & 0 & 0 & 0 & 0  \\
+0   	      &  	0  &	y_{2, 1}  &    y_{2,2}   &    0   &  0 & 0 & 0 & 0 & 0 \\
+ 0   	      &        0  &    0           &    0            &  y_{2, 1}    & y_{2, 2}& y_{2, 3} &    0   & 0  & 0
+\end{bmatrix}
+\end{equation}
+\end{example}
+
+\subsubsection{Construction of the solution $\hat{\phi}$}
+
+Differentiating $-2\ell_\phi + \lambda J\left(\phi\right)$ with respect to $c$ and $d$ and setting equal to zero, we have that 
+
+\begin{align}
+\frac{\partial}{\partial c}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = Q X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] + \lambda Qc &= 0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff    X'D^{-1} X \bigg[ Bd + Qc \bigg] + \lambda c  &= X' D^{-1}Y \label{eq:normal-eq-1}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial d}\left[-2\ell_\phi + \lambda J\left(\phi\right)\right] = B^\prime X^\prime D^{-1}\left[ X\left(Bd + Qc\right) - Y  \right] &=0 \nonumber \\
+%\Longleftrightarrow    W^\prime D^{-1} W \left( Bd + Kc\right) + \lambda c &= W^\prime D^{-1} Y \\
+\iff   - \lambda B' c  &= 0  
+\end{align}
+\bigskip
+\noindent
+For fixed smoothing parameter, the solution $\phi$ is obtained by finding $c$ and $d$ which satisfy
+\begin{align} 
+Y &= X \bigg[ Bd + \left(Q  + \lambda \left(X^\prime D^{-1} X \right)^{-1} \right) c \bigg] \label{eq:ssanova-normal-eq-1} \\
+B' c  &= 0  \label{eq:ssanova-normal-eq-2}
+\end{align}
+\noindent
+
+
+Letting $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeQ = D^{-1/2} X Q$, the penalized log likelihood \ref{eq:penalized-likelihood-vectorized} may be written
+
+\begin{equation}\label{eq:penalized-loglik-tilde-vectorized}
+-2\ell_\lambda \left(c, d \right) + \lambda J\left( \phi \right) = \bigg[ \tildeY - \tildeB d - \tildeQ c\bigg]'\bigg[ \tildeY - \tildeB d - \tildeQ c\bigg] + \lambda c'Qc.
+\end{equation}
+\noindent
+Taking partial derivatives with respect to $d$ and $c$ and setting equal to zero yields normal equations 
+
+\begin{align}
+\begin{split}
+\tildeB'\tildeB d + \tildeB'\tildeQ c &= \tildeB' \tildeY \\
+\tildeQ'\tildeB d + \tildeQ'\tildeQ c + \lambda Q c &= \tildeQ' \tildeY, 
+\end{split}
+\end{align}
+
+\noindent
+Some algebra yields that this is equivalent to solving the system
+
+\begin{equation} \label{eq:vectorized-normal-equations}
+\begin{bmatrix}
+\tildeB'\tildeB & \tildeB'\tildeQ \\
+\tildeQ'\tildeB & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+\begin{bmatrix}
+d\\
+c\\
+\end{bmatrix}
+= \begin{bmatrix}
+\tildeB'\tildeY \\
+ \tildeQ'\tildeY\\
+\end{bmatrix}
+\end{equation}
+
+
+Fixing smoothing parameters $\lambda$ and $\theta_\beta$ (hidden in $Q$ and $\tildeQ$ if present), assuming that $\tildeQ$ is full column rank, \ref{eq:vectorized-normal-equations} can be solved by the Cholesky decomposition of the $\left( n + d_0 \right) \times \left( n + d_0 \right)$ matrix followed by forward and backward substitution. See \cite{golub2012matrix}. Singularity of $\tildeQ$ demands special consideration. Write the Cholesky decomposition
+
+\begin{equation} \label{eq:normal-equation-cholesky}
+\begin{bmatrix}
+\tildeB'\tildeB & \tildeB'\tildeQ \\
+\tildeQ'\tildeB & \tildeQ'\tildeQ + \lambda Q\\
+\end{bmatrix}
+= \begin{bmatrix}
+C'_1 & 0 \\
+C'_2  & C'_3 
+\end{bmatrix}
+\begin{bmatrix}
+C_1 & C_2 \\
+0  & C_3 
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = C_1^{-T} \tildeB' \tildeQ$, and $C'_3 C_3 = \lambda Q +  \tildeQ'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeQ$. Using an exchange of indices known as pivoting, one may write 
+
+\begin{equation*}
+C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
+\end{equation*}
+\noindent
+where $H_1$ is nonsingular. Define
+\begin{equation} \label{eq:cholesky-factor-mod}
+\tilde{C}_3 = \begin{bmatrix}
+H_1 & H_2 \\
+0  & \delta I 
+\end{bmatrix}, \;\;
+\tilde{C} = \begin{bmatrix}
+C_1 & C_2 \\
+0  & \tilde{C}_3 
+\end{bmatrix};
+\end{equation}
+\noindent
+then
+\begin{equation} \label{eq:cholesky-factor-mod-inverse}
+\tilde{C}^{-1} = \begin{bmatrix}
+C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
+0  & \tilde{C}_3^{-1}
+\end{bmatrix}.
+\end{equation}
+
+Premultiplying \ref{eq:normal-equation-cholesky} by $\tilde{C}^{-T}$, straightforward algebra gives 
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky}
+\begin{bmatrix}
+I & 0 \\
+0 & \tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1}\\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}\\
+\end{bmatrix}
+= \begin{bmatrix}
+C_1^{-T} \tildeB'\tildeY \\
+\tilde{C}_3^{-T} \tildeQ'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY\\
+\end{bmatrix}
+\end{equation}
+\noindent
+where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \right)'$. Partition $\tilde{C}_3 = \begin{bmatrix} K &  L\end{bmatrix}$; then $HK = I$ and $HL = 0$. So
+
+\begin{align*}
+\tilde{C}_3^{-T} C_3^{T} C_3 \tilde{C}_3^{-1} &= \begin{bmatrix} K' \\ L' \end{bmatrix} C'_3C_3 \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} K' \\ L' \end{bmatrix} H'H \begin{bmatrix} K &  L\end{bmatrix} \\
+&= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
+\end{align*}
+\noindent
+If $L'C_3^{T} C_3 L = 0$, then $L'\tildeQ'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeQ L = 0$, so $L'\tildeQ'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY = 0$. Thus, the linear system has form
+
+\begin{equation} \label{eq:vectorized-normal-equations-cholesky-2}
+\begin{bmatrix}
+I & 0 & 0\\
+0 & I & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+\tilde{d}\\
+\tilde{c}_1\\
+\tilde{c}_2
+\end{bmatrix}
+= \begin{bmatrix}
+* \\
+* \\
+0
+\end{bmatrix},
+\end{equation}
+\noindent
+which can be solved, but with $c_2$ arbitrary. One may perform the Cholesky decomposition of \ref{eq:vectorized-normal-equations} with pivoting, replace the trailing $0$ with $\delta I$ for appropriate value of $\delta$, and proceed as if $\tildeQ$ were of full rank. 
+\bigskip
+
+It follows that
+
+\begin{equation} \label{eq:tildeY-hat-equals-tildeA-tildeY}
+\widehat{\tildeY} = \tildeB d + \tildeQ c = \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda, \bftheta\right) \tildeY.
+\end{equation} 
+\noindent
+where
+\begin{align}
+\begin{split} \label{eq:smoothing-matrix-A-tilde}
+\tildeA\left(\lambda, \bftheta \right) =& \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix}  \\
+&= G + \left(I - G\right) \tildeQ \left[\tildeQ'\left( I - G \right)\tildeQ + \lambda Q\right]^{-1} \tildeQ'\left(I - G\right),
+\end{split}
+\end{align} 
+\noindent
+for
+\[
+G = \tildeB\left(\tildeB' \tildeB \right)^{-1}\tildeB'.
+\]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Smoothing parameter selection}
+%\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}
+%\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-solution}
+
+By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\phi_\lambda$ of \ref{eq:vectorized-normal-equations} defines a family of potential estimates. In practice, we need to choose a specific estimate from the family, which requires effective methods for smoothing parameter selection. We consider two criteria that are commonly used for smoothing parameter selection in the context of smoothing spline models for longitudinal data. The first score is an unbiased estimate of a relative loss and assumes a known variances $\sigma_t^2$. The unbiased risk estimate has attractive asymptotic properties; see \cite{gu2013smoothing} for a comprehensive examination. The second score, the leave-one-subject-out cross validation (LosoCV) score, provides an estimate of the same loss without assuming a known variance function. We review a computationally convenient approximation of the LosoCV score proposed by \cite{xu2012asymptotic}, who demonstrates the shortcut score's asymptotic optimality. To simplify notation for the initial presentation, we only make explicit the dependence of estimates and their components on $\lambda$ and conceal any dependence on $\theta_\beta$. 
+
+
+\subsubsection{Unbiased risk estimate}
+
+Define  $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeQ = D^{-1/2} X Q$ as before. Let $\tildeepsilon = D^{-1/2} \epsilon$ denote the vector of length  $\sum_{i = 1}^Nm_i - N$ containing the standardized prediction errors $\epsilon_{ij} \sim N\left(0,1\right)$, and write the vector of transformed means 
+
+\begin{equation} 
+\Phi = D^{-1/2} X \left[ Bd + Qc \right].
+\end{equation}
+\noindent
+We can assess $\hat{\tildeY}_\lambda$, an estimate of the mean of $\tildeY$ based on observed data $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, m_i$, using the loss function
+
+\begin{align}
+\begin{split}
+L\left(\lambda\right) &= \sum_{i = 1}^N \sum_{j = 1}^{m_i} \left(\hat{\tildey}_{ij} - E\left[\tildey_{ij}\right] \right)^2\\
+&= \vert \vert \tildeY - \tilde{\mu} \vert \vert^2
+\end{split}
+\end{align}
+\noindent
+where $\mu = D^{-1/2}W \Phi^*$ denotes the $\left( \sum \limits_{i} m_i - N\right) \times 1$ with $i^{th}$ element equal to the expected value of the  $i^{th}$ element of $\tildeY$.  Then straightforward algebra yields that 
+
+\begin{align} 
+L\left(\lambda\right) = \mu'\left( I - \tildeA \right)^2\mu - 2\mu'\left( I - \tildeA \right)^2 \tildeA \tildeepsilon + \tildeepsilon' \tildeA^2 \tildeepsilon
+\end{align}
+
+Define the unbiased risk estimate
+\begin{equation} 
+U\left(\lambda\right) = \frac{1}{N}\tildeY'\left( I - \tildeA \right)^2\tildeY + \frac{2}{N}\mbox{tr}\tildeA
+\end{equation}
+ \noindent
+Adding and substracting $\mu$ to the quadratic terms, one can verify with straightforward algebra that
+
+\begin{align}
+\begin{split}
+U\left(\lambda\right) &= \left( \tildeY - \mu + \mu - \tildeA \tildeY \right)'\left( \tildeY - \mu + \mu - \tildeA \tildeY \right) + 2\mbox{tr}\tildeA \\
+&= \left(\tildeA \tildeY - \mu \right)'\left( \tildeA \tildeY - \mu \right) + \tildeepsilon'\tildeepsilon + 2\tildeepsilon' \left( I- \tildeA\right)\mu- 2\left( \tildeepsilon'\tildeA \tildeepsilon -  \mbox{tr}\tildeA\right)
+\end{split}
+\end{align}
+\noindent
+This gives
+\begin{equation} 
+U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  2\tildeepsilon' \left( I- \tildeA\right)\mu- 2\left( \tildeepsilon'\tildeA \tildeepsilon -  \mbox{tr}\tildeA\right), 
+\end{equation}
+ \noindent
+ which allows one to easily see that $U\left(\lambda\right)$ is unbiased for the relative loss $L\left(\lambda\right) + \tildeepsilon'\tildeepsilon$.  Under mild conditions on the risk function
+ 
+ \[
+ R\left(\lambda\right) = E\left[L\left(\lambda\right)\right],
+ \]
+\noindent
+one can establish that $U$ is also a consistent estimator. See \cite{gu2013smoothing}, Chapter 3 for a formal theorem and proof.
+
+
+\subsubsection{Leave-one-subject-out cross validation}  
+The conditions under which the the cross validation and generalized cross validation scores traditionally used for smoothing parameter selection yield desirable properties generally do not hold when the data are clustered or longitudinal in nature. Instead, the leave-one-subject-out (LosoCV) cross validation score has been widely used for smoothing parameter selection for semiparametric and nonparametric models for longitudinal or functional data. The LosoCV criterion is defined as
+
+\begin{equation} \label{eq:LOSOCV}
+V_{loso}\left(\lambda\right) = \frac{1}{N}\sum_{i=1}^N \left( \tildeY_i - \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)'\left( \tildeY_i -  \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)
+\end{equation}
+\noindent
+where $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ is the estimate of $E\left[ \tildeY_i \right]$ based on the data when $\tildeY_i$ is omitted. Intuitively, the LosoCV score is appealing because it preserves any within-subject dependence by leaving out all observations from the same subject together in the cross-validation.  However, despite its prevalent use, theoretical justifications for its use have not been established. In their seminal work, \cite{rice1991estimating} were the first to present a heuristic justification of LosoCV by demonstrating that it mimics the mean squared prediction error: consider new observations $\tildeY^*_i = \left(\tilde{y}_{i1}^*, \tilde{y}_{i1}^*, \dots, \tilde{y}_{i, m_i}^*\right)$. We may write the mean squared prediction error for the new observations as follows:  
+\bigskip 
+
+\begin{align}
+\begin{split}\label{eq:MSPE}
+MSPE &= \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - \widehat{\tilde{\mu}}_{i} \vert \vert^2 \right]\\
+&=  \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - D_i^{-1/2}W_i \Phi^* + D_i^{-1/2}W_i \Phi^* - D_i^{-1/2}W_i \hat{\Phi}^*\vert \vert^2 \right]\\
+&=  \frac{1}{N}\sum_{i=1}^N \left\{m_i + E\left[ \vert \vert \tilde{\mu}_{i} - \widehat{\tilde{\mu}}^{\left[ -i \right]}_{i} \vert \vert^2 \right] \right\}
+\end{split}
+\end{align}
+\noindent
+where $\tilde{\epsilon}_i = \tildeY^*_i - D_i^{-1/2}W_i \Phi^*$. When $\left\{ \sigma^2\left(t\right)\right\}$ is known, $\tilde{\epsilon}_i$ is a mean zero multivariate normal vector with $Cov\left(\tilde{\epsilon}_i\right) = I_{m_i}$, which gives the last equality. Since $\tildeY_i$ and $ \widehat{\tilde{\mu}}_{i} $ are independent, the expected LosoCV score can be written
+\begin{equation} \label{eq:MSPE_LOSOCV}
+E\left[V_{loso}\left(\lambda\right) \right] =  \frac{1}{N}\sum_{i=1}^N\left\{ m_i +  E\left[ \vert \vert \widehat{\tilde{\mu}}_{i} - \tilde{\mu}_{i} \vert \vert^2 \right] \right\}. 
+\end{equation}
+\noindent
+When $N$ is large, we expect that $\widehat{\tilde{\mu}}_{i}$ should be close to $\widehat{\tilde{\mu}}^{\left[ -i \right]}_{i}$, so $E\left[V_{loso}\left(\lambda\right) \right]$ should be a good approximation to the mean-squared prediction error. For a formal proof of consistency, see \cite{xu2012asymptotic}.
+
+
+\bigskip
+
+The definition of $V_{loso}$ would lead one to initially believe that calculation of the score requires solving $N$ separate minimization problems, however, \cite{xu2012asymptotic} established a computational shortcut that requires solving only one minimization problem that involves all data. 
+%  \subsubsection{Computation of the LosoCV score}
+  
+  \begin{lemma}[Shortcut formula for LosoCV] \label{lemma:losocv-shortcut}
+  The LosoCV score satisfies the following identity:
+  \begin{equation*}
+ V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(I_{ii} - \tildeA_{ii}\right)^{-T}\left(I_{ii} - \tildeA_{ii}\right)^{-1}\left(\tildeY_i - \widehat{\tildeY_i}\right),
+  \end{equation*}
+  \noindent
+  where $\tildeA_{ii}$ is the diagonal block of smoothing matrix $\tildeA$ corresponding to the observations on subject $i$, and $I_{ii}$ is a $m_i \times m_i$ identity matrix.
+\end{lemma}
+
+A detailed presentation and proof can be found in \cite{xu2012asymptotic} and supplementary materials \cite{xuasymptotic}.  The authors additionally proposed an approximation to the LosoCV score to further reduce the computational cost of evaluating $V_{loso}$, which can be expensive due to the inversion of the $I_{ii} - \tildeA_{ii}$. Using the Taylor expansion of $\left(I_{ii} - \tildeA_{ii}\right)^{-1} \approx I_{ii} + \tildeA_{ii}$, we can use the following to approximate $V_{loso}$:
+
+\begin{equation} \label{eq:approx-losocv}
+V_{loso}^*\left( \lambda \right) = \frac{1}{N} \vert \vert \left(I - \tildeA\right)\tildeY \vert \vert^2 + \frac{2}{N} \sum_{i = 1}^N \hat{\tilde{e}}'_{i}\tildeA_{ii}\hat{\tilde{e}}_i,
+\end{equation}
+\noindent
+where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA\right)\tildeY$ corresponding to subject $i$. They show that under mild conditions, and for fixed, nonrandom $\lambda$, the approximate LosoCV score $V^*$ and the true LosoCV score $V_{loso}$ are asymptotically equivalent. See Theorem 3.1 of \cite{xu2012asymptotic}.
+  
+\vspace{0.8in} 
+
+
+\subsubsection{Selection of multiple smoothing parameters}
+
+With the definition of the unbiased risk estimate and the leave-one-subject-out criteria, the expression of the smoothing matrix in Equation~\ref{eq:smoothing-matrix-A-tilde} permits the straightforward evaluation of both scores $U\left(\lambda, \bftheta \right)$ and $V_{loso}^*\left(\lambda, \bftheta \right)$, where $\bftheta = \left(\theta_1,\dots, \theta_g\right)'$ denotes the vector of smoothing parameters associated with each RK.  In this section, we discuss a algorithm to minimize the unbiased risk estimate $U\left(\lambda, \bftheta\right)$ with respect to $\lambda$ and $\bftheta$ hidden in $Q = \sum_{\beta = 1}^q \theta_\beta Q_\beta$, where the $\left(i,j\right)$ entry of $Q_\beta$ is given by $R_\beta\left(\bfv_i,\bfv_j\right)$.  We present minimization of the unbiased risk estimate explicitly, but the mechanics of the optimization are very similar to those necessary for optimizing the leave-one-subject-out cross validation criterion. The details of a procedue for explicitly minimizing the alternative criterion are presented in \cite{xu2012asymptotic}, which is based on the algorithms of \cite{gu1991minimizing}, \cite{kim2004smoothing} (which is the basis for the algorithm which follows) and \cite{wood2004stable}. The key difference between the minimization of $U$ and the minimization of $V^*_{loso}$ lies in the calculation of the gradient and the Hessian matrix in the Newton update. To minimize the unbiased risk estimate,
+
+\begin{enumerate}
+\item Fix $\bftheta$; minimize $U\left(\lambda \vert \bftheta\right)$ with respect to $\lambda$.
+\item Update $\bftheta$ using the current estimate of $\lambda$.
+\end{enumerate}
+\noindent
+Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $U\left( \bftheta \vert \lambda \right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $U$ and $V^*$ and \ref{eq:smoothing-matrix-A-tilde}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $U\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
+
+\subsubsection{Algorithms}
+
+The following presents the main algorithm for minimizing $U\left(\lambda, \bftheta \right)$ and its key components are presented in the section to follow. The minimization of $U$ is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $U$ with respect to smoothing parameters via quasi-Newton iteration of \cite{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
+
+\begin{algorithm}[H]
+\caption{ }
+\begin{algorithmic}
+\STATE \textbf{Initialization:} 
+	\STATE Set $\Delta \bfkappa := 0$; \;$\bfkappa_{-}:=\bfkappa_{0}$; \;$V_- = \infty$; \;( or $M_- = \infty$)
+
+\STATE \textbf{Iteration:} 
+	\WHILE{not converged}
+		\STATE For current value $\bfkappa^* = \bfkappa_- + \Delta \bfkappa$, compute $Q^*_\theta = \sum_{\beta = 1}^g \theta^*_\beta Q_\beta$ and scale so that $\mbox{tr}\left(Q_\beta\right)$ is fixed. 
+		\STATE Compute $\tildeA\left(\lambda \vert \bftheta^* \right) = \tildeA\left(\lambda, \exp\left({\bfkappa^*} \right)\right)$.
+		\STATE Minimize $U\left(\lambda \vert \bfkappa^* \right) =  \tildeY'\left( I - \tildeA \right)^2\tildeY + 2\mbox{tr}\tildeA $
+		\STATE Set $U_* := \min \limits_\lambda Y\left( \lambda \vert \bfkappa^* \right) $
+		\IF{$U^* > U_-$ }
+		 		\STATE Set $\Delta \bfkappa := \Delta \bfkappa/2$
+		 		\STATE Go to (1).
+		\ELSE
+		\STATE Continue
+		\ENDIF
+		\STATE Evaluate gradient $\mathbf{g} = \left(\partial /\partial \bfkappa\right) U\left(\bfkappa \vert \lambda\right)$
+		\STATE Evaluate Hessian $H = \left(\partial^2 /\partial \bfkappa\partial \bfkappa' \right) U\left(\bfkappa \vert \lambda\right)$.
+		\STATE Calculate step $\Delta \bfkappa$:
+			\IF{$H$ positive definite}  
+				\STATE $\Delta \bfkappa := -H^{-1} \mathbf{g}$
+			\ELSE
+				\STATE $\Delta \bfkappa := -\tilde{H}^{-1} \mathbf{g}$, where $\tilde{H} = \textup{diag}\left(\bfeps\right)$ is positive definite. \label{ensure-hessian-PD}
+			\ENDIF
+	\ENDWHILE
+\STATE \textbf{Calculate optimal model:} 
+	\IF{$\Delta \kappa_\beta < -\gamma$, for $\gamma$ large}
+		\STATE Set $\kappa_{*\beta} := -\infty$
+	\ENDIF
+	\STATE Compute $Q^*_\theta = \sum_{\beta = 1}^g \theta^*{\beta} Q_\beta$;
+	\STATE Calculate $\begin{bmatrix} d \\ c \end{bmatrix} = \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ {\tildeQ_*^\theta}' \end{bmatrix} \tildeY$
+\end{algorithmic}
+\end{algorithm}
+
+Calculation of the gradient $\bfg$ and Hessian $H$ mirror the details in \cite{gu1991minimizing}, replacing the null basis matrix $B$ and representer matrix $Q$ with $D^{-1}XB$ and $D^{-1}XB$, respectively. They also present details on convergence criteria based on those suggested in \cite{gill1981practical}, who also present detailed discussion of the Newton method based on the Cholesky decomposition necessary for calculating the update direction for $\bfkappa$. The step in \ref{ensure-hessian-PD} returns a descent direction even when $H$ is not positive definite by adding positive mass to the diagonal elements of $H$ if necessary to produce $\tilde{H} = G'G$ where $G$ is upper triangular. See \cite{gill1981practical} 4.4.2.2 for details. 
+\bigskip
+
+The unbiased risk estimate $U\left(\lambda, \bftheta\right)$ is fully parameterized by 
+
+\begin{equation}
+\left(\lambda_1, \dots, \lambda_q\right) = \left(\lambda \theta^{-1}_1, \dots, \lambda \theta^{-1}_q\right),
+\end{equation}
+\noindent
+so the smoothing parameters $\left(\lambda, \theta_1, \dots, \theta_q\right)$ over-parameterize the score, which is the reason for scaling the trace of $Q_\beta$. The starting values for the $\theta$ quasi-Newton iteration are obtained with two passes of the fixed-$\theta$ outer loop as follows:
+
+\begin{enumerate}
+\item Set $\breve{\theta}_\beta^{-1} \propto \mbox{tr}\left( \tildeQ_\beta \right)$, minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\breve{\phi}$. \label{theta-starting-values-1}
+\item Set $\check{\theta}_\beta^{-1} \propto  J_\beta\left(\breve{\phi}_\beta \right)$, minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\check{\phi}$. \label{theta-starting-values-2}
+\end{enumerate}
+\noindent
+The first pass allows equal opportunity for each penalty to contribute to the GCV score, allowing for arbitrary scaling of $J_\beta \left(\phi_\beta\right)$. The second pass grants greater allowance to terms exhibiting strength in the first pass. The following $\theta$ iteration fixes $\lambda$ and starts from $\check{\theta}_\beta$. These are the starting values adopted by \cite{gu1991minimizing}; the starting values for the first pass loop are arbitrary, but are invariant to scalings of the $\theta_\beta$. The starting values in \ref{theta-starting-values-2} for the second pass of the outer are based on more involved assumptions derived from the background formulation of the smoothing problem: the penalty is of the form
+
+\[
+J\left(\right)= \sum_{\beta = 1}^q \theta^{-1}_\beta \langle \phi, \phi\rangle_\beta
+\]
+\noindent
+After the first pass, the initial fit $\breve{\phi}$ reveals where the structure in the true $\phi$ lie in terms of the components of the subspaces $\hilbert_\beta$. Less penalty should be applied to terms exhibiting strong signal.  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{A smoothing spline model for the innovation variances}
+%\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-spline-representation}
+
+Once we have an initial estimate of the generalized autoregressive coefficient function, $\phi$, we can use the model residuals to estimate the innovation variance function $\sigma^2\left(t\right)$. We use the same estimation approach as outlined in Section~\ref{RKHS-framework-for-phi}. Fixing $\phi = \phi^*$ for given estimate $\phi^*$, the negative log likelihood of the data $Y_1,\dots, Y_N$ is satisfies
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi-2}
+-\ell\left( Y_1,\dots, Y_N, \phi, \sigma^2 \right) =  \frac{1}{2}\sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \sigma^2_{ij}  + \frac{1}{2}\sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {\epsilon_{ij}^2}{\sigma^2_{ij}};
+\end{equation}
+\noindent
+where $\epsilon_{ij} =  y_{ij} - \sum_{k<j} \phi^*_{ijk} y_{ik}$. Let 
+
+\begin{equation}
+\mbox{RSS}\left( t \right) = \sum_{i,j:t_{ij}= t} \left( y_{ij} - \sum_{k<j} \phi_{ijk} y_{ik}\right)^2
+\end{equation}
+\noindent
+denote the squared residuals for the observations $y_{ij}$ having corresponding measurement time $t_{ij} - t$. Then $\mbox{RSS}\left( t \right)/\sigma^2\left(t\right) \sim \chi^2_{df_t}$, where the degrees of freedom $df_{t}$ corresponds to the number of observations $y_{ij}$ having corresponding measurement time $t$. In this light, for fixed $\phi$, the penalized likelihood \ref{eq:penalized-joint-loglik-given-phi-2} is that of a variance model with the $\epsilon_{ij}^2$ serving as the response.  This corresponds to a generalized linear model with gamma errors and known scale parameter equal to 2. Let $z_{ij} = \epsilon_{ij}^2$, and let $Z_{i} = \left(z_{i1},z_{i,m_i} \right)'$ denote the vector of residuals for the $i^{th}$ observed trajectory. The Gamma distribution is parameterized by shape parameter$\alpha$ and scale parameter $\beta$, where the mean of the distribution given by $\mu = \alpha \beta$. Reparameterizing the Gamma likelihood in terms of $\left(\alpha, \mu \right)$ and dropping terms that don't involve $\mu\left(\cdot\right)$ gives  
+\begin{align}
+-\ell\left(z,\mu, \alpha \right) &\propto \alpha\left[\frac{z}{\mu} + \log \mu\right]  \label{eq:gamma-iv-likelihood} \\ 
+&= \alpha\left[ze^{-\eta} + \eta\right],\label{eq:gamma-iv-likelihood-canonical-link}
+\end{align}
+\noindent
+where $\alpha^{-1}$ is the dispersion parameter and $\eta = \log \mu$. Letting $\mu_{ij}$ denote $E\left[ z_{ij} \right] = \sigma_{ij}^2$, the log likelihood of the working residuals becomes 
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
+-\ell\left( Z_1,\dots, Z_N, \phi, \sigma^2 \right) =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \mu_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {z_{ij}}{\mu_{ij}},
+\end{equation}
+\noindent
+which we can see coincides with a Gamma dsitribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential familes have been studied extensively (\cite{wahba1995smoothing}, \cite{wang1997grkpack}, \cite{gu2013smoothing}). Parallel to the penalized sums of squares for $\phi$ (\ref{eq:penalized-least-squares-2}), we can append a smoothness penalty to obtain the penalized likelihood for $\eta\left(t\right) = \log\sigma^2\left(t\right)$:
+
+\begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
+-\ell\left( Z_1,\dots, Z_N, \phi, \sigma^2 \right) + =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \eta_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} z_{ij} e^{-\eta_{ij}} + \lambda J\left(\eta\right),  
+\end{equation}
+noindent
+for $\eta \in \hilbert = \oplus_{\beta = 0}^q \hilbert_\beta$, where the penalty $J$ can be written as a square norm and decomposed as in (\ref{eq:ssanova-decomposition-of-penalty}), with
+
+\begin{equation*} 
+J\left(\kappa \right) = \langle \eta,\eta \rangle = \sum_{\beta = 1}^q \theta_\beta^{-1}\langle \eta,\eta \rangle_{\beta}.
+\end{equation*}
+\noindent 
+The $\langle \cdot, \cdot \rangle_{\beta}$ are inner products in $\hilbert_\beta$ having reproducing kernels $Q_\beta\left(t,t'\right)$. The penalty $J\left(\kappa\right)$ is an inner product in $\oplus_{\beta = 0}^q \hilbert_\beta$ with reproducing kernel $\sum_{\beta=1}^q \theta_\beta Q_\beta\left(t, t'\right)$ and null space $\mathcal{N}_J = \hilbert_0$. The first term in (\ref{eq:penalized-joint-loglik-given-phi-3}) serves as a measure of the goodness of fit of $\kappa$ to the data, and only depends on $\kappa$ through the evaluation functional $\left[t_{ij}\right]\kappa$. So the argument justifying the form of the minimizer in (\ref{eq:form-of-smoothing-spline-solution}) applies, and the minimizer of the penalized likelihood has the form 
+
+\begin{equation} \label{eq:form-of-smoothing-spline-solution-kappa}
+\eta\left( t \right) = \sum_{\nu = 1}^{d_0} d_\nu\kappa_\nu\left( t \right) + \sum_{i = 1}^{\vert \mathcal{T} \vert} c_i Q_J\left( t, t_i \right),
+\end{equation}  
+\noindent
+where $\mathcal{T} = \bigcup_{j=1}^N\bigcup_{k=1}^{m_i} t_{jk}$ denotes the unique values of the observations times pooled across subjects, where $\left\{\kappa_\nu \right\}_{\nu=1}^{d_0}$ is a basis for the null space $\mathcal{N}_J = \hilbert_0$. 
+
+\bigskip
+
+Standard theory for exponential families gives us that the functional 
+
+\begin{align}
+\begin{split}
+L\left( \eta \right) &= -\sum_{i=1}^N \sum_{j=1}^{m_i} \left[ z_{ij} \eta\left(t_{ij}\right) - b\left(\eta\left(t_{ij}\right)\right) \right] \\
+&= -\sum_{i=1}^N \sum_{j=1}^{m_i} \left[ z_{ij} \eta\left(t_{ij}\right) - b\left(\eta\left(t_{ij}\right)\right) \right]
+\end{split}
+\end{align}
+\noindent
+is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times d_0$ matrix $B$ which has $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$ is full column rank, so that $L\left(f\right)$ is strictly convex in $\hilbert$ and the minimizer of (\ref{eq:penalized-joint-loglik-given-phi-3}) uniquely exists. See \cite{wahba1995smoothing}. 
+
+\bigskip
+
+For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalized log likelihood (\ref{eq:penalized-joint-loglik-given-phi-3}) is convex in $\eta$, so that the minimizer can be computed via Newton iteration. Let $u_{ij} = -z_{ij} + b'\left( \tilde{\eta}\left(t_{ij}\right) \right) =  -z_{ij} +  \tilde{\mu}\left(t_{ij}\right)$, and $\tilde{\omega}_{ij} = b''\left( \tilde{\eta}\left(t_{ij}\right) \right) = \tilde{v}\left(t_{ij}\right)$. The quadratic approximation of $-z_{ij} \eta\left(t_{ij}\right) + b\left(\eta\left(t_{ij}\right)\right)$ at $\tilde{\eta}\left(t_{ij}\right)$ is given by 
+
+\vspace{1in}
+{\textbf{PLACEHOLDER - TO DO}}
+\vspace{1in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Smoothing parameter selection for exponential familes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-parameter-selection}
+
+The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameter. Performance-oriented iteration and generalized approximate cross validation (GACV) are the most common approaches to selecting the smoothing parameter for penalized regression with exponential families. As in our discussion of model selection for $\phi$, we omit dependence of any components on the $\theta_\beta$ and only explicitly express dependence on smoothing parameters through $\lambda$.
+
+\subsubsection{Performance-oriented iteration} 
+
+A measure of the discrepancy between distributions belonging to an exponential family with density $p_Z\left(z\right) = exp\left\{\left(y \eta\left(t\right) - b\left(\eta\left(t\right)\right)\right)/a\left(\phi\right) + c\left(y,\phi\right) \right\}$ is the Kullback-Leibler distance
+
+\begin{align}
+\begin{split} \label{eq:kl-distance-definition}
+\mbox{KL}\left(\eta, \eta_\lambda\right) &= E_\lambda\left[Z \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right)\\
+&=\left[ b'\left(\eta\right) \left(\eta - \eta_\lambda \right) - \left(b\left(\eta\right)- b\left(\eta_\lambda\right) \right)\right]/a\left(\phi\right),
+\end{split}
+\end{align}
+\noindent
+which simplifies to
+\[
+-\mu\left( e^{-\eta} - e^{-\tilde{\eta}}\right) - \left(\eta-\tilde{\eta}\right)
+\]
+\noindent
+for the Gamma distribution. The KL distance is not symmetric, so sometimes people opt for its symmetrized version:
+
+\begin{align}
+\begin{split} \label{eq:skl-distance-definition}
+\mbox{SKL}\left(\eta, \eta_\lambda\right) &= \mbox{KL}\left(\eta, \eta_\lambda\right) + \mbox{KL}\left(\eta_\lambda, \eta \right)\\
+&= \left(b'\left(\eta\right) - b'\left(\eta_\lambda\right) \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right), \\
+&= \left(\mu - \mu_\lambda \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right),
+\end{split}
+\end{align}
+\noindent
+A natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmetrized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots , t_{1,m_1},\dots,t_{N1}, \dots , t_{N,m_N}$:
+
+\begin{equation}\label{eq:SKL-loss-function}
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+\end{equation}
+\noindent
+which reduces to 
+\begin{equation}\label{eq:gamma-SKL-loss-function}
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+\end{equation}
+\noindent
+for the Gamma distribution. The ideal smoothing parameters are those which minimize (\ref{eq:gamma-SKL-loss-function}). The performance-oriented iteration operates on a alternative expression of the symmetrized Kullback-Leibler loss. The mean value theorem gives us that (\ref{eq:gamma-SKL-loss-function}) can be written
+\begin{equation}\label{eq:gamma-SKL-loss-function-mvt}
+L_\omega\left( \eta,\eta_\lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
+\end{equation}
+\noindent
+where $\omega^*\left(t_{ij}\right) = b''\left(\eta^*\left(t_{ij}\right)\right)$ and $\eta^*\left(t_{ij}\right)$ is a convex combination of  $\eta\left(t_{ij}\right)$ and $\eta_\lambda\left(t_{ij}\right)$. One can construct an unbiased risk estimate under the weighted loss, $L_\omega$, using re-weighted observations. Letting ${Z_{i}}_\omega = W_i Z_i$, where $W_i$ ist he $m_i \times m_i$ diagonal matrix having diagonal entries $\omega^*\left(t_{i1}\right), \dots, \omega^*\left(t_{i,m_i}\right)$, an unbiased estimate of relative loss is given by 
+
+\begin{equation}\label{eq:weighted-unbiased-risk-estimate}
+U_\omega\left( \lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
+\end{equation}
+
+\vspace{1in}
+{\textbf{PLACEHOLDER - TO DO}}
+\vspace{1in}
+
+
+
+
+%\bibliography{../Master}
+%
+%\end{document}
