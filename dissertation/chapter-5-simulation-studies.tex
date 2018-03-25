@@ -1,7 +1,7 @@
 \chapter{Simulation studies} \label{simulation-studies-chapter}
 
 
-In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by \cite{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix (\cite{cai2010optimal}) and the soft thresholding estimator (\cite{rothman2009generalized}), which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
+In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by \cite{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix \citep{cai2010optimal} and the soft thresholding estimator \citep{rothman2009generalized}, which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
 
 \bigskip
 
@@ -486,11 +486,11 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{Model 1: Entropy risk estimates and corresponding standard errors 
+\caption{\textit{Model 1: Entropy risk estimates and corresponding standard errors 
                             for the MCD smoothing spline ANOVA estimator via 100 simulated multivariate
                             normal samples of size $N = 50$
                             when 0\%, 10\%, 20\%, and 30\% of the data are missing for each subject. Risk is reported for the estimator constructed using
-                            the unbiased risk estimate and leave-one-subject-out cross validation for smoothing parameter selection.} 
+                            the unbiased risk estimate and leave-one-subject-out cross validation for smoothing parameter selection.} }
 \label{table:simulation-study-2-entropy-risk-model-1}
 \begin{tabular}{lrrlrl}
    $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -514,7 +514,7 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{Model 2: Entropy risk estimates and corresponding standard errors.} 
+\caption{\textit{Model 2: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-2}
 \begin{tabular}{lrrlrl}
    $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -538,7 +538,7 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{Model 3: Entropy risk estimates and corresponding standard errors.} 
+\caption{\textit{Model 3: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-3}
 \begin{tabular}{lrrlrl}
    $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -561,7 +561,7 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{Model 4: Entropy risk estimates and corresponding standard errors.} 
+\caption{\textit{Model 4: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-4}
 \begin{tabular}{lrrlrl}
    $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -585,7 +585,7 @@ Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{Model 5: Entropy risk estimates and corresponding standard errors.} 
+\caption{\textit{Model 5: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-5}
 \begin{tabular}{lrrlrl}
    $M$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline

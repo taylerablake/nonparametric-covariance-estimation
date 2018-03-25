@@ -871,7 +871,7 @@ where $\alpha^{-1}$ is the dispersion parameter and $\eta = \log \mu$. Letting $
 -\ell\left( Z_1,\dots, Z_N, \phi, \sigma^2 \right) =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \log \mu_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} \frac {z_{ij}}{\mu_{ij}},
 \end{equation}
 \noindent
-which we can see coincides with a Gamma dsitribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential familes have been studied extensively (\cite{wahba1995smoothing}, \cite{wang1997grkpack}, \cite{gu2013smoothing}). Parallel to the penalized sums of squares for $\phi$ (\ref{eq:penalized-least-squares-2}), we can append a smoothness penalty to obtain the penalized likelihood for $\eta\left(t\right) = \log\sigma^2\left(t\right)$:
+which we can see coincides with a Gamma dsitribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential families have been studied extensively (\cite{wahba1995smoothing}, \cite{wang1997grkpack}, \cite{gu2013smoothing}). Parallel to the penalized sums of squares for $\phi$ (\ref{eq:penalized-least-squares-2}), we can append a smoothness penalty to obtain the penalized likelihood for $\eta\left(t\right) = \log\sigma^2\left(t\right)$:
 
 \begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
 -\ell\left( Z_1,\dots, Z_N, \phi, \sigma^2 \right) + =  \sum_{i = 1}^N \sum_{j = 1}^{m_i} \eta_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{m_i} z_{ij} e^{-\eta_{ij}} + \lambda J\left(\eta\right),  
@@ -918,7 +918,7 @@ For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalize
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Smoothing parameter selection for exponential familes}
+\subsection{Smoothing parameter selection for exponential families}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -957,7 +957,7 @@ for the Gamma distribution. The KL distance is not symmetric, so sometimes peopl
 \end{split}
 \end{align}
 \noindent
-A natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmetrized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots , t_{1,m_1},\dots,t_{N1}, \dots , t_{N,m_N}$:
+A natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmetrized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots ,  t_{N,m_N}$:
 
 \begin{equation}\label{eq:SKL-loss-function}
 L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),

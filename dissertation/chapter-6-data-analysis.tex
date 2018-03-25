@@ -11,7 +11,7 @@ To compare two methods for controlling the disease, say treatment A and treatmen
 \begin{figure}[h] 
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattle-weights-vs-time-by-trt}
-\caption{Subject-specific weight curves over time for treatment groups A and B.}\label{fig:cattle-weights-by-trt}
+\caption{\textit{Subject-specific weight curves over time for treatment groups A and B.}}\label{fig:cattle-weights-by-trt}
 \end{center}
 \end{figure} 
 
@@ -48,11 +48,11 @@ Figure~\ref{fig:cattleA-weights-vs-time} displays the he observed weight traject
 \begin{center}
     \includegraphics[width=\textwidth]{img/cattle/cattleA-weights-vs-time}
 \end{center}
- \caption{Weight trajectories over the observation period for experimental units in treatment group A.}\label{fig:cattleA-weights-vs-time}
+ \caption{\textit{Weight trajectories over the observation period for experimental units in treatment group A.}}\label{fig:cattleA-weights-vs-time}
  \end{figure}
 
 \begin{figure}[H] 
-\caption{Fitted mean weight curve for cattle in treatment group A. }
+\caption{\textit{Fitted mean weight curve for cattle in treatment group A. }}
 \begin{center}
 \includegraphics[width = \textwidth]{img/cattle/cattleA-weights-vs-time-mean-fit}
 \end{center}\label{fig:cattleA-smoothed-weights-vs-time}
@@ -80,7 +80,7 @@ The nonstationarity suggested in Figure~\ref{fig:cattle-weights-by-trt} is also 
   133 & 0.46 & 0.56 & 0.67 & 0.67 & 0.74 & 0.81 & 0.84 & 0.91 & 0.95 & 0.98 & 1.00 \\ 
    \hline
 \end{tabular}
-\caption{Cattle data: treatment group A sample correlations.}\label{table:cattleA-sample-correlations}
+\caption{\textit{Cattle data: treatment group A sample correlations.}}\label{table:cattleA-sample-correlations}
 \end{center}
 \end{table}
 
@@ -104,7 +104,7 @@ day &  70 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma
  & 126 & -0.26 & 0.15 & 0.45 & -0.33 & -0.19 & 0.01 & -0.18 & 0.37 & 0.94 & $\ddots$&&3.280& \\ 
  & 133 & 0.13 & -0.26 & 0.08 & 0.28 & 0.04 & -0.36 & -0.05 & -0.07 & 0.37 & 0.85 & 1  &2.262&\\ 
 \end{tabular} 
-\caption{Cattle data: treatment group A sample generalized autoregressive parameters (below the main diagonal) and log sample innovation variances (rightmost column.)}\label{table:sample-regressogram-garps}
+\caption{\textit{Cattle data: treatment group A sample generalized autoregressive parameters (below the main diagonal) and log sample innovation variances (rightmost column.)}}\label{table:sample-regressogram-garps}
 \end{center}
 \end{table}
 
@@ -112,12 +112,12 @@ day &  70 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &&&&&&& 3.363 & $\log\left(\sigma
  \begin{subfigure}[t]{.48\textwidth}
   \centering
     \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
- \caption{Sample innovation variances $\hat{\sigma}_t^2$} \label{fig:cattleA-innovation-variogram}
+ \caption{\textit{Sample innovation variances $\hat{\sigma}_t^2$}} \label{fig:cattleA-innovation-variogram}
  \end{subfigure}
  \begin{subfigure}[t]{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
- \caption{Sample generalized autoregressive parameters $\hat{\phi}_{ij}$.}
+ \caption{\textit{Sample generalized autoregressive parameters $\hat{\phi}_{ij}$.}}
 \label{fig:cattleA-regressogram}
  \end{subfigure}
  \caption{\textit{Empirical estimates of the parameters of the Cholesky decomposition.}} \label{fig:cattleA-innovation-variogram-and-regressogram}
@@ -172,13 +172,13 @@ They estimate of $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cat
  \begin{subfigure}{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
- \caption{Smoothed sample regressogram.} 
+ \caption{\textit{Smoothed sample regressogram.} }
  \label{fig:cattleA-innovariogram-cubic-smooth}
  \end{subfigure}
  \begin{subfigure}{.48\textwidth}
   \centering
 \includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
- \caption{Smoothed sample innovation variances.} 
+ \caption{\textit{Smoothed sample innovation variances.} }
 \label{fig:cattleA-innovariogram-cubic-smooth}
  \end{subfigure}
  \caption{\textit{Cubic polynomomials fitted to the sample regressogram and innovation variances for the cattle data from treatment group A.}} \label{fig:cattleA-smoothed-regressogram-variogram}
@@ -216,14 +216,14 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
 \begin{figure}[H]
   \centering
   \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot}
-\caption{Components of the fitted modified Cholesky decomposition for the cattle weight data.} \label{fig:fitted-cholesky-decomposition-cattle-date}
+\caption{\textit{Components of the fitted modified Cholesky decomposition for the cattle weight data.}} \label{fig:fitted-cholesky-decomposition-cattle-date}
 \end{figure}
 
 
 %\subfile{chapter-5-subfiles/cattle-cholesky-ssanova-ggplot}
 \begin{figure}[H] 
 \centering
-\caption{Components of the SSANOVA decomposition of the estimated generalized autoregressive coefficient function $\phi$ evaluated on the grid defined by the observed time points.}
+\caption{\textit{Components of the SSANOVA decomposition of the estimated generalized autoregressive coefficient function $\phi$ evaluated on the grid defined by the observed time points.}}
   \includegraphics[width = 0.6\textwidth]{img/chapter-5/cattle-ssanova-estimate-lattice} \label{fig:cattle-fitted-cholesky-ssanova}
 \end{figure}
 
