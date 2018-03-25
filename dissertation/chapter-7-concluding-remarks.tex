@@ -1,0 +1,14 @@
+
+\chapter{Concluding remarks and future work}\label{concluding-remarks-chapter}
+
+\begin{itemize}
+\item investigate robustness to the assumption of Normality; if the underlying distribution is fat-tailed, how much does our estimator suffer?
+\item functional component selection via the non-negative garrote
+\item In the case with P-splines, explore the performance of generalized additive models analogous to the SSANOVA models without an interaction term.
+	\begin{itemize}
+	\item Under a tensor-product model $B = B_l \otimes B_m$, because the support of $\phi$ lies on the triangle $0 \le s < t \le 1$ rather than on a rectangle, the tensor product basis must be trimmed to omit any pairs of knots outside the domain. Without doing this, estimation of the basis coefficients becomes very unstable. But trimming the basis removes components necessary for each of the marginal bases to possess the properties of a B-spline basis, so functional components corresponding to $l$ and $m$ are unidentifiable. 
+	\item Omission of the interaction term permits estimation by restricted maximum likelihood, where the tuning parameters can be interpreted as variances of random effects.
+	\item Three-dimensional B-splines for smoothing over non-rectangular domains has been utilized in the field of graphics and computer vision, but hasn't received much attention in nonparametric statistical modeling - presumably due to how nasty the associated math is. 
+	\end{itemize}
+\end{itemize}
+

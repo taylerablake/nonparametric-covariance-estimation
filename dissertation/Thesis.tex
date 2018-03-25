@@ -27,6 +27,7 @@
 \usepackage{booktabs}
 \usepackage{rotating}
 \usepackage{algorithm}
+%\usepackage{chicago}
 \usepackage{lscape}
 
 \usepackage[letterpaper, left=1in, top=1in, right=1in, bottom=1in,nohead,includefoot, verbose, ignoremp]{geometry}
@@ -115,6 +116,9 @@
 \renewcommand{\theenumii}{\Alph{enumii}}
 \renewcommand{\labelenumii}{\theenumii.}
 \renewcommand{\p@enumii}{\theenumi.}
+
+
+
 \makeatother
 
 
@@ -124,14 +128,16 @@
 
 \renewcommand\typesetChapterTitle[1]{#1}
 
+
+
 \begin{document}
-\bibliographystyle{plainnat}
+%\bibliographystyle{plainnat}
 %
 % First, declare the parts of your title page 
 %
 
 \author{Tayler A. Blake}
-\title{Nonparametric Covariance Estimation for Longitudinal Data via Tensor Product Splines}
+\title{Nonparametric Covariance Estimation for Longitudinal Data}
 \authordegrees{B.A., M.S.}  % Degrees thus far, not including this one.
 \unit{Department of Statistics}
 
@@ -211,26 +217,17 @@
 \include{vita}
 
 
-%
-% Make the Table of Contents and other good stuff
-%
-
 \tableofcontents
 \listoftables
 \listoffigures
 
-
-%
-% The following is a list of chapters.  Each is brought in from a
-% separate file using the \include{} command.
-%
-
 \include{chapter-1-introduction}     
-\include{chapter-2-spline-representation} 
-\include{chapter-3-pspline-representation}   
-\include{chapter-4-simulation-studies}       
-\include{chapter-5-data-analysis} 
-%\include{chapter-6-concluding-remarks}       
+\include{chapter-2-background}
+\include{chapter-3-spline-representation} 
+\include{chapter-4-pspline-representation}   
+\include{chapter-5-simulation-studies}       
+\include{chapter-6-data-analysis} 
+\include{chapter-7-concluding-remarks}       
 
 %
 % If you have appendices in your dissertation, you will need the
@@ -240,8 +237,9 @@
 %
 
 \appendix
-\include{app1}
-
+\include{SSANOVA-appendix}
+\include{psplines-appendix}
+\include{simulation-studies-appendix}
 %
 % The all important bibliography file at the end of your document!! Use
 % the bibstyle you (your department) like in the \bibliographystyle{}
@@ -251,8 +249,9 @@
 % about the bibliography database and BibTeX.
 %
 
-\bibliographystyle{plain}
+\bibliographystyle{chicago}
 \bibliography{Master}
+
 
 \end{document}
 
