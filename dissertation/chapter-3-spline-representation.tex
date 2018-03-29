@@ -50,7 +50,7 @@ where $l_{ij} =  \vert  t_i - t_j  \vert $. Regularizing the functional componen
 
 \bigskip
 
-While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \cite{kimeldorf1971some} and \cite{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by Gu \cite{gu2013smoothing}, and estimation is achieved through similar computational strategies.
+While our framework allows for estimation of the autoregressive coefficient function and the innovation variance function via any nonparametric regression setup, we focus on two primary approaches for representing $\phi$ and $\sigma$. First, we assume that $\phi$ belongs to a reproducing kernel Hilbert space, $\mathcal{H}$ and employ the smoothing spline methods of Kimeldorf and Wahba (see \cite{kimeldorf1971some} and \cite{wahba1990spline} for comprehensive presentation.)  To enhance the statistical interpretability of model parameters, we decompose $\phi$ into functional components similar to the notion of the main effect and the interaction terms in classical analysis of variance. We adopt the smoothing spline analogue of the classical ANOVA model proposed by \cite{gu2013smoothing}, and estimation is achieved through similar computational strategies.
 
 \bigskip
 
@@ -112,18 +112,17 @@ With this, we can estimate $\phi$ and $\log\sigma^2$ using maximum likelihood or
 where $J$ and $\breve{J}$ are roughness penalties on $\phi$ and $\sigma^2$, and $\lambda$, $\breve{\lambda}$ are non-negative smoothing parameters.  To jointly estimate the GARP function and the IV function, we adopt an iterative approach in the spirit of \cite{huang2006covariance}, \cite{huang2007estimation}, and \cite{pourahmadi2000maximum}. A procedure for minimizing \ref{eq:joint-loglik} starts with initializing $\left\{\sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, m_i$.  For fixed $\sigma^2$, the penalized likelihood (as a function of $\phi$) is given by
 
 \begin{equation} \label{eq:penalized-joint-loglik-given-sigma}
--2\ell_\phi + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
+-2\ell\left( Y_1,\dots, Y_N, \phi \vert \sigma^2\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
 \end{equation}
 \noindent
 which corresponds to the usual penalized least squares functional encountered  in the nonparametric function estimation literature. The first term, the residual sums of squares, encourages the fitted function's fidelity to the data. The second term penalizes the roughness of $\phi$, and $\lambda$ is a smoothing parameter which controls the tradeoff between the two conflicting concerns. Given $\phi^*$ the minimizer of \ref{eq:penalized-joint-loglik-given-sigma} and setting $\phi = \phi^*$, we update our estimate of $\sigma^2$ by minimizing 
 
 \begin{equation} \label{eq:penalized-joint-loglik-given-phi}
--2\ell_{\sigma^2} + \breve{\lambda} \breve{J}\left(\sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {r_{ij}^*}^2 + \breve{\lambda} \breve{J}\left(\sigma^2 \right),
+-2\ell\left( Y_1,\dots, Y_N, \sigma^2 \vert \phi \right) + \breve{\lambda} \breve{J}\left(\sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \log \sigma^2_{ij} + \sum_{i=1}^N \sum_{j=1}^{m_i} \sigma_{ij}^{-2} {r_{ij}^*}^2 + \breve{\lambda} \breve{J}\left(\sigma^2 \right),
 \end{equation}
 where the $\left\{{r_{ij}^*}^2  =\left( y_{ij} - \sum_{k<j} \phi^*\left(\bfv_{ijk}\right) y_{ik}  \right)\right\}$ denote the working residuals based on the current estimate of $\phi$. This process of iteratively updating $\phi^*$ and ${\sigma^2}^*$ is repeated until convergence is achieved. 
 \bigskip
 
-The remainder of the chapter presents a functional representation for $\left(\phi, \sigma^2\right)$ which allows us to leverage the rich theoretical foundation of reproducing kernel Hilbert space techniques for function estimation. This framework has been studied extensively for the problem of estimating a function nonparametrically (see \cite{aronszajn1950theory}, \cite{wahba1990spline}, and \cite{berlinet2011reproducing} for detailed examinations), but to our knowledge has received little attention in the context of covariance models. We use a smoothing spline ANOVA decomposition of the varying coefficient function $\phi$ to construct a flexible class of covariance models while simultaneously maintaining interpretability. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,7 +156,11 @@ The remainder of the chapter presents a functional representation for $\left(\ph
 
 %\subsection{An RKHS framework for estimating $\phi$, $\sigma^2$} \label{RKHS-framework-for-phi}
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-representation}
-This section presents a method for regularized estimation of the varying coefficient function $\phi$ using a reproducing kernel Hilbert space (RKHS) framework. To do so, we first must establish some notation and review the relevant mathematical details of the surrounding framework. A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \cite{gu2013smoothing} Theorem 2.2.
+This section presents a reproducing kernel Hilbert space (RKHS) framework for estimating the generalized autoregressive coefficient function $\phi$, and in later sections we apply the same approach for estimating the innovation variance function, $\sigma^2$. Specifically, we adopt the smoothing spline ANOVA models developed by \cite{gu2002smoothing} to connect fitted models to parsimonious models proposed in the literature for the components of the Cholesky decomposition. The flexibility of this framework permits an entirely data-driven modeling approach through careful penalty specification and the use of already well-developed model selection methods. Though RKHS methods, and in particular smoothing spline ANOVA models, have been studied extensively for nonparametric function estimation (see \cite{aronszajn1950theory}, \cite{wahba1990spline}, and \cite{berlinet2011reproducing} for detailed examinations), to our knowledge they have received little attention in the context of covariance models. To demonstrate our framework, we first must establish some notation and review the relevant mathematical details of reproducing kernel Hilbert spaces. 
+
+\bigskip
+
+A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $Q \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle Q_\bfv, \phi \rangle_\hilbert = \phi\left(\bfv\right)$ for all $\phi \in \mathcal{H}$. See \cite{gu2013smoothing}, Theorem 2.2.
 
 \bigskip
 
@@ -400,7 +403,7 @@ which has dimension $n_y \times \vert V \vert$. Then the solution $\phi_\lambda$
 \vert \vert D^{-1/2}\left( Y - X \left( Bd + Qc \right) \right) \vert \vert^2  + \lambda c^\prime Q c 
 \end{equation}
 \noindent
-where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $Q$ is given by $\langle P_1 \xi_i,  P_1 \xi_j \rangle_\hilbert$, and $B$ is the $\vert V \vert \times d_0$ matrix with $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$, which we assume to be full column rank.  The diagonal matrix $D$ holds the $n_y \times n_y$  innovation variances $\sigma^2_{ijk}$. 
+where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $Q$ is given by $\langle P_1 \xi_i,  P_1 \xi_j \rangle_\hilbert$. The $\vert V \vert \times d_0$ matrix $B$ has $i$-$\nu^{th}$ element equal to $\eta_\nu\left(v_i\right)$, and we assume $B$ to be full column rank.  The diagonal matrix $D$ holds the $n_y \times n_y$  innovation variances $\sigma^2_{ijk}$. 
 
 \bigskip
 
@@ -617,13 +620,13 @@ which can be solved, but with $c_2$ arbitrary. One may perform the Cholesky deco
 It follows that
 
 \begin{equation} \label{eq:tildeY-hat-equals-tildeA-tildeY}
-\widehat{\tildeY} = \tildeB d + \tildeQ c = \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA\left(\lambda, \bftheta\right) \tildeY.
+\widehat{\tildeY} = \tildeB d + \tildeQ c = \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix} \tildeY = \tildeA_{\lambda,\bftheta} \tildeY.
 \end{equation} 
 \noindent
 where
 \begin{align}
 \begin{split} \label{eq:smoothing-matrix-A-tilde}
-\tildeA\left(\lambda, \bftheta \right) =& \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix}  \\
+\tildeA_{\lambda,\bftheta} =& \begin{bmatrix} \tildeB & \tildeQ \end{bmatrix} \tilde{C}^{-1} \tilde{C}^{-T} \begin{bmatrix} \tildeB' \\ \tildeQ' \end{bmatrix}  \\
 &= G + \left(I - G\right) \tildeQ \left[\tildeQ'\left( I - G \right)\tildeQ + \lambda Q\right]^{-1} \tildeQ'\left(I - G\right),
 \end{split}
 \end{align} 
@@ -652,7 +655,7 @@ G = \tildeB\left(\tildeB' \tildeB \right)^{-1}\tildeB'.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Smoothing parameter selection}
+\subsection{Smoothing parameter selection} \label{SSANOVA-smoothing-parameter-selection}
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-model-selection}
 %\subfile{chapter-2-subfiles/chapter-2-smoothing-spline-solution}
 
@@ -679,19 +682,19 @@ L\left(\lambda\right) &= \sum_{i = 1}^N \sum_{j = 1}^{m_i} \left(\hat{\tildey}_{
 where $\mu = D^{-1/2}W \Phi^*$ denotes the $\left( \sum \limits_{i} m_i - N\right) \times 1$ with $i^{th}$ element equal to the expected value of the  $i^{th}$ element of $\tildeY$.  Then straightforward algebra yields that 
 
 \begin{align} 
-L\left(\lambda\right) = \mu'\left( I - \tildeA \right)^2\mu - 2\mu'\left( I - \tildeA \right)^2 \tildeA \tildeepsilon + \tildeepsilon' \tildeA^2 \tildeepsilon
+L\left(\lambda\right) = \mu'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\mu - 2\mu'\left( I - \tildeA_{\lambda,\bftheta} \right)^2 \tildeA_{\lambda,\bftheta} \tildeepsilon + \tildeepsilon' \tildeA_{\lambda,\bftheta}^2 \tildeepsilon
 \end{align}
 
 Define the unbiased risk estimate
 \begin{equation} 
-U\left(\lambda\right) = \frac{1}{N}\tildeY'\left( I - \tildeA \right)^2\tildeY + \frac{2}{N}\mbox{tr}\tildeA
+U\left(\lambda\right) = \frac{1}{N}\tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + \frac{2}{N}\mbox{tr}\tildeA_{\lambda,\bftheta}
 \end{equation}
  \noindent
-Adding and substracting $\mu$ to the quadratic terms, one can verify with straightforward algebra that
+Adding and subtracting $\mu$ to the quadratic terms, one can verify with straightforward algebra that
 
 \begin{align}
 \begin{split}
-U\left(\lambda\right) &= \left( \tildeY - \mu + \mu - \tildeA \tildeY \right)'\left( \tildeY - \mu + \mu - \tildeA \tildeY \right) + 2\mbox{tr}\tildeA \\
+U\left(\lambda\right) &= \left( \tildeY - \mu + \mu - \tildeA_{\lambda,\bftheta} \tildeY \right)'\left( \tildeY - \mu + \mu - \tildeA_{\lambda,\bftheta} \tildeY \right) + 2\mbox{tr}\tildeA \\
 &= \left(\tildeA \tildeY - \mu \right)'\left( \tildeA \tildeY - \mu \right) + \tildeepsilon'\tildeepsilon + 2\tildeepsilon' \left( I- \tildeA\right)\mu- 2\left( \tildeepsilon'\tildeA \tildeepsilon -  \mbox{tr}\tildeA\right)
 \end{split}
 \end{align}
@@ -747,16 +750,17 @@ The definition of $V_{loso}$ would lead one to initially believe that calculatio
  V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(I_{ii} - \tildeA_{ii}\right)^{-T}\left(I_{ii} - \tildeA_{ii}\right)^{-1}\left(\tildeY_i - \widehat{\tildeY_i}\right),
   \end{equation*}
   \noindent
-  where $\tildeA_{ii}$ is the diagonal block of smoothing matrix $\tildeA$ corresponding to the observations on subject $i$, and $I_{ii}$ is a $m_i \times m_i$ identity matrix.
+  where $\tildeA_{ii}$ is the diagonal block of smoothing matrix $\tildeA_{\lambda,\bftheta}$ corresponding to the observations on subject $i$, and $I_{ii}$ is a $m_i \times m_i$ identity matrix.
 \end{lemma}
 
 A detailed presentation and proof can be found in \cite{xu2012asymptotic} and supplementary materials \cite{xuasymptotic}.  The authors additionally proposed an approximation to the LosoCV score to further reduce the computational cost of evaluating $V_{loso}$, which can be expensive due to the inversion of the $I_{ii} - \tildeA_{ii}$. Using the Taylor expansion of $\left(I_{ii} - \tildeA_{ii}\right)^{-1} \approx I_{ii} + \tildeA_{ii}$, we can use the following to approximate $V_{loso}$:
 
 \begin{equation} \label{eq:approx-losocv}
-V_{loso}^*\left( \lambda \right) = \frac{1}{N} \vert \vert \left(I - \tildeA\right)\tildeY \vert \vert^2 + \frac{2}{N} \sum_{i = 1}^N \hat{\tilde{e}}'_{i}\tildeA_{ii}\hat{\tilde{e}}_i,
+V_{loso}^*\left( \lambda \right) = \frac{1}{N} \vert \vert \left(I - \tildeA_{\lambda,\bftheta}\right)\tildeY \vert \vert^2 + \frac{2}{N} \sum_{i = 1}^N \hat{\tilde{e}}'_{i}\tildeA_{ii}\hat{\tilde{e}}_i,
 \end{equation}
+
 \noindent
-where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA\right)\tildeY$ corresponding to subject $i$. They show that under mild conditions, and for fixed, nonrandom $\lambda$, the approximate LosoCV score $V^*$ and the true LosoCV score $V_{loso}$ are asymptotically equivalent. See Theorem 3.1 of \cite{xu2012asymptotic}.
+where $\hat{\tilde{e}}_i$ is the portion of the vector of prediction errors $\left(I - \tildeA_{\lambda,\bftheta}\right)\tildeY$ corresponding to subject $i$. They show that under mild conditions, and for fixed, nonrandom $\lambda$, the approximate LosoCV score $V_{loso}^*$ and the true LosoCV score $V_{loso}$ are asymptotically equivalent. See Theorem 3.1 of \cite{xu2012asymptotic}.
   
 \vspace{0.8in} 
 
@@ -769,12 +773,13 @@ With the definition of the unbiased risk estimate and the leave-one-subject-out 
 \item Fix $\bftheta$; minimize $U\left(\lambda \vert \bftheta\right)$ with respect to $\lambda$.
 \item Update $\bftheta$ using the current estimate of $\lambda$.
 \end{enumerate}
+
 \noindent
 Executing step 1 follows immediately from the expression for the smoothing matrix. Step 2 requires evaluating the gradient and the Hessian of $U\left( \bftheta \vert \lambda \right)$ with respect to $\bfkappa = \log\left(\bftheta\right)$. Optimizing with respect to $\bfkappa$ rather than on the original scale is motivated by two driving factors: first, $\bfkappa$ is invariant to scale transformations. With examination of $U$ and $V^*$ and \ref{eq:smoothing-matrix-A-tilde}, it is immediate that the $\theta_\beta \tildeQ_\beta$ are what matter in determining the minimum. Multiplying the $\tildeQ_\beta$ by any positive constant leaves the $\theta_\beta$ subject to rescaling, though the problem itself is unchanged by scale transformations. The derivatives of $U\left(\cdot\right)$ with respect to $\bfkappa$ are invariant to such transformations, while the derivatives with respect to $\bftheta$ are not. In addition, optimizing with respect to $\bfkappa$ converts a constrained optimization ($\theta_\beta \ge 0$) problem to an unconstrained one.
 
 \subsubsection{Algorithms}
 
-The following presents the main algorithm for minimizing $U\left(\lambda, \bftheta \right)$ and its key components are presented in the section to follow. The minimization of $U$ is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $U$ with respect to smoothing parameters via quasi-Newton iteration of \cite{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is a straightforward task. 
+The following presents the main algorithm for minimizing $U\left(\lambda, \bftheta \right)$ and its key components are presented in the section to follow. The minimization of $U$ is done via two nested loops. Fixing tuning parameters, the outer loop minimizes $U$ with respect to smoothing parameters via quasi-Newton iteration of \cite{dennis1996numerical}, as implemented in the \texttt{nlm} function in \texttt{R}. The inner loop then minimizes $\ell_\lambda$ with fixed tuning parameters via Newton iteration. Fixing the $\theta_\beta$s in $J \left(\phi^*\right) = \sum_\beta \theta^{-1}_\beta J_\beta \left(\phi_\beta^*\right)$, the outer loop with a single $\lambda$ is straightforward. 
 
 \begin{algorithm}[H]
 \caption{ }
@@ -785,8 +790,8 @@ The following presents the main algorithm for minimizing $U\left(\lambda, \bfthe
 \STATE \textbf{Iteration:} 
 	\WHILE{not converged}
 		\STATE For current value $\bfkappa^* = \bfkappa_- + \Delta \bfkappa$, compute $Q^*_\theta = \sum_{\beta = 1}^g \theta^*_\beta Q_\beta$ and scale so that $\mbox{tr}\left(Q_\beta\right)$ is fixed. 
-		\STATE Compute $\tildeA\left(\lambda \vert \bftheta^* \right) = \tildeA\left(\lambda, \exp\left({\bfkappa^*} \right)\right)$.
-		\STATE Minimize $U\left(\lambda \vert \bfkappa^* \right) =  \tildeY'\left( I - \tildeA \right)^2\tildeY + 2\mbox{tr}\tildeA $
+		\STATE Compute $\tildeA_{\lambda,\bftheta}\left(\lambda \vert \bftheta^* \right) = \tildeA_{\lambda,\bftheta}\left(\lambda, \exp\left({\bfkappa^*} \right)\right)$.
+		\STATE Minimize $U\left(\lambda \vert \bfkappa^* \right) =  \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + 2\mbox{tr}\tildeA_{\lambda,\bftheta} $
 		\STATE Set $U_* := \min \limits_\lambda Y\left( \lambda \vert \bfkappa^* \right) $
 		\IF{$U^* > U_-$ }
 		 		\STATE Set $\Delta \bfkappa := \Delta \bfkappa/2$
@@ -888,6 +893,7 @@ The $\langle \cdot, \cdot \rangle_{\beta}$ are inner products in $\hilbert_\beta
 \begin{equation} \label{eq:form-of-smoothing-spline-solution-kappa}
 \eta\left( t \right) = \sum_{\nu = 1}^{d_0} d_\nu\kappa_\nu\left( t \right) + \sum_{i = 1}^{\vert \mathcal{T} \vert} c_i Q_J\left( t, t_i \right),
 \end{equation}  
+
 \noindent
 where $\mathcal{T} = \bigcup_{j=1}^N\bigcup_{k=1}^{m_i} t_{jk}$ denotes the unique values of the observations times pooled across subjects, where $\left\{\kappa_\nu \right\}_{\nu=1}^{d_0}$ is a basis for the null space $\mathcal{N}_J = \hilbert_0$. 
 
@@ -899,18 +905,40 @@ Standard theory for exponential families gives us that the functional
 \begin{split}
 L\left( \eta \right) &= -\sum_{i=1}^N \sum_{j=1}^{m_i} \left[ z_{ij} \eta\left(t_{ij}\right) - b\left(\eta\left(t_{ij}\right)\right) \right] \\
 &= -\sum_{i=1}^N \sum_{j=1}^{m_i} \left[ z_{ij} \eta\left(t_{ij}\right) - b\left(\eta\left(t_{ij}\right)\right) \right]
-\end{split}
+\end{split} \label{eq:penalized-likelihood-functional}
 \end{align}
+
 \noindent
 is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times d_0$ matrix $B$ which has $i$-$\nu^{th}$ element $\eta_\nu\left(v_i\right)$ is full column rank, so that $L\left(f\right)$ is strictly convex in $\hilbert$ and the minimizer of (\ref{eq:penalized-joint-loglik-given-phi-3}) uniquely exists. See \cite{wahba1995smoothing}. 
 
 \bigskip
 
-For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalized log likelihood (\ref{eq:penalized-joint-loglik-given-phi-3}) is convex in $\eta$, so that the minimizer can be computed via Newton iteration. Let $u_{ij} = -z_{ij} + b'\left( \tilde{\eta}\left(t_{ij}\right) \right) =  -z_{ij} +  \tilde{\mu}\left(t_{ij}\right)$, and $\tilde{\omega}_{ij} = b''\left( \tilde{\eta}\left(t_{ij}\right) \right) = \tilde{v}\left(t_{ij}\right)$. The quadratic approximation of $-z_{ij} \eta\left(t_{ij}\right) + b\left(\eta\left(t_{ij}\right)\right)$ at $\tilde{\eta}\left(t_{ij}\right)$ is given by 
+For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalized log likelihood (\ref{eq:penalized-joint-loglik-given-phi-3}) is convex in $\eta$, so that the minimizer can be computed via Newton iteration. Let 
 
-\vspace{1in}
-{\textbf{PLACEHOLDER - TO DO}}
-\vspace{1in}
+\begin{align*}
+u_{ij} = -z_{ij} + b'\left( \tilde{\eta}\left(t_{ij}\right) \right) =  -z_{ij} +  \tilde{\mu}\left(t_{ij}\right), \mbox{ and}\\
+\tilde{\omega}_{ij} = b''\left( \tilde{\eta}\left(t_{ij}\right) \right) = \tilde{v}\left(t_{ij}\right).
+\end{align*}
+The quadratic approximation of $-z_{ij} \eta\left(t_{ij}\right) + b\left(\eta\left(t_{ij}\right)\right)$ at $\tilde{\eta}\left(t_{ij}\right)$ is given by 
+
+\begin{align*}
+\begin{split}
+-y_{ij}\tilde{\eta}\left(t_{ij}\right) + b\left(\tilde{\eta}\left(t_{ij}\right)\right) + \tilde{u}_{ij} \left[  \eta\left(t_{ij}\right) - \tilde{\eta}\left(t_{ij}\right)  \right] + \frac{1}{2} \tilde{\omega}_{ij} \left[ \eta\left(t_{ij}\right) - \tilde{\eta}\left(t_{ij}\right)  \right]^2 \\
+ =  \frac{1}{2} \tilde{\omega}_{ij} \left[ \eta\left(t_{ij}\right) - \tilde{\eta}\left(t_{ij}\right) + \frac{\tilde{u}_{ij}}{\tilde{\omega}_{ij}} \right]^2 + C_{ij},
+ \end{split}
+\end{align*}
+
+\noindent
+where $C_{ij}$ is independent of $\tilde{\eta}\left(t_{ij}\right)$.  The Newton iteration uses the minimizer of the penalized weights sums of squares
+
+\begin{equation} \label{eq:penalized-weighted-sums-of-squares}
+\sum_{i=1}^N\sum_{j=1}^{m_i} \tilde{\omega}_{ij}\left(\tilde{y}_{ij} - \eta\left(t_{ij}\right)  \right)^2 + \lambda J\left(\eta\right)
+\end{equation}
+
+\noindent
+to update $\tilde{\eta}$, where $\tilde{y}_{ij} = \tilde{\eta}\left(t_{ij}\right) - \tilde{u}_{ij}/\tilde{\omega}_{ij}$.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -929,11 +957,11 @@ For fixed $\lambda$ and $\theta_\beta$, which may be hidden in $J$, the penalize
 
 %\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-parameter-selection}
 
-The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameter. Performance-oriented iteration and generalized approximate cross validation (GACV) are the most common approaches to selecting the smoothing parameter for penalized regression with exponential families. As in our discussion of model selection for $\phi$, we omit dependence of any components on the $\theta_\beta$ and only explicitly express dependence on smoothing parameters through $\lambda$.
+Performance-oriented iteration and generalized approximate cross validation (GACV) are the most common approaches to selecting the smoothing parameter for penalized regression with exponential families. The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameter. The follow section provides a brief overview of approaches model selection for $\sigma^2$, which is by no means an exhaustive inventory of model selection for data generated from distributions belonging to exponential families. We refer the reader desiring detailed examination to \cite{zhang2006component}, \cite{xiang1996generalized}, \cite{wahba1995smoothing},  \cite{wood2004stable}, and \cite{wood2017generalized}. For ease of exposition, we henceforth omit dependence of any components on the $\theta_\beta$ and only explicitly express dependence on smoothing parameters through $\lambda$. 
 
 \subsubsection{Performance-oriented iteration} 
 
-A measure of the discrepancy between distributions belonging to an exponential family with density $p_Z\left(z\right) = exp\left\{\left(y \eta\left(t\right) - b\left(\eta\left(t\right)\right)\right)/a\left(\phi\right) + c\left(y,\phi\right) \right\}$ is the Kullback-Leibler distance
+A measure of the discrepancy between distributions belonging to an exponential family having densities of the form $p\left(z\right) = exp\left\{\left(z \eta - b\left(\eta\right)\right)/a\left(\phi\right) + c\left(z,\phi\right) \right\}$ is the Kullback-Leibler distance
 
 \begin{align}
 \begin{split} \label{eq:kl-distance-definition}
@@ -942,42 +970,95 @@ A measure of the discrepancy between distributions belonging to an exponential f
 \end{split}
 \end{align}
 \noindent
-which simplifies to
+For the gamma dsitribution, letting $\eta = \log \mu$, the KL distance simplifies to
 \[
--\mu\left( e^{-\eta} - e^{-\tilde{\eta}}\right) - \left(\eta-\tilde{\eta}\right)
+-\mu\left( e^{-\eta} - e^{-\tilde{\eta}}\right) - \left(\eta-\tilde{\eta}\right).
 \]
+
 \noindent
-for the Gamma distribution. The KL distance is not symmetric, so sometimes people opt for its symmetrized version:
+The KL distance is not symmetric, so sometimes people opt for its symmetrized version:
 
 \begin{align}
 \begin{split} \label{eq:skl-distance-definition}
 \mbox{SKL}\left(\eta, \eta_\lambda\right) &= \mbox{KL}\left(\eta, \eta_\lambda\right) + \mbox{KL}\left(\eta_\lambda, \eta \right)\\
-&= \left(b'\left(\eta\right) - b'\left(\eta_\lambda\right) \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right), \\
-&= \left(\mu - \mu_\lambda \right)\left( \nu - \nu_\lambda\right)/a\left(\phi\right),
+&= \left(b'\left(\eta\right) - b'\left(\eta_\lambda\right) \right)\left( \eta - \eta_\lambda\right)/a\left(\phi\right), \\
+&= \left(\mu - \mu_\lambda \right)\left( \eta - \eta_\lambda\right)/a\left(\phi\right),
 \end{split}
 \end{align}
+
 \noindent
 A natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmetrized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots ,  t_{N,m_N}$:
 
 \begin{equation}\label{eq:SKL-loss-function}
-L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{m_i}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \eta\left(t_{ij}\right) - \eta_\lambda\left(t_{ij}\right)\right),
 \end{equation}
+
 \noindent
-which reduces to 
+For the Gamma distribution, this reduces to 
+
 \begin{equation}\label{eq:gamma-SKL-loss-function}
-L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left(\mu\left(t_{ij}\right) - \mu_\lambda \left(t_{ij}\right)\right)\left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right),
+L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i}  \left( \frac{\mu\left(t_{ij}\right)}{\mu_\lambda\left(t_{ij}\right)} - \frac{\mu_\lambda \left(t_{ij}\right)}{\mu\left(t_{ij}\right)} - 2\right).
 \end{equation}
-\noindent
-for the Gamma distribution. The ideal smoothing parameters are those which minimize (\ref{eq:gamma-SKL-loss-function}). The performance-oriented iteration operates on a alternative expression of the symmetrized Kullback-Leibler loss. The mean value theorem gives us that (\ref{eq:gamma-SKL-loss-function}) can be written
+
+
+\noindent The ideal smoothing parameters are those which minimize (\ref{eq:gamma-SKL-loss-function}). The performance-oriented iteration operates on a alternative expression of the symmetrized Kullback-Leibler loss. The mean value theorem gives us that (\ref{eq:gamma-SKL-loss-function}) can be written
+
 \begin{equation}\label{eq:gamma-SKL-loss-function-mvt}
 L_\omega\left( \eta,\eta_\lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
 \end{equation}
+
 \noindent
-where $\omega^*\left(t_{ij}\right) = b''\left(\eta^*\left(t_{ij}\right)\right)$ and $\eta^*\left(t_{ij}\right)$ is a convex combination of  $\eta\left(t_{ij}\right)$ and $\eta_\lambda\left(t_{ij}\right)$. One can construct an unbiased risk estimate under the weighted loss, $L_\omega$, using re-weighted observations. Letting ${Z_{i}}_\omega = W_i Z_i$, where $W_i$ ist he $m_i \times m_i$ diagonal matrix having diagonal entries $\omega^*\left(t_{i1}\right), \dots, \omega^*\left(t_{i,m_i}\right)$, an unbiased estimate of relative loss is given by 
+where $\omega^*\left(t_{ij}\right) = b''\left(\eta^*\left(t_{ij}\right)\right)$ and $\eta^*\left(t_{ij}\right)$ is a convex combination of  $\eta\left(t_{ij}\right)$ and $\eta_\lambda\left(t_{ij}\right)$. One can construct an unbiased risk estimate under the weighted loss, $L_\omega$, using re-weighted observations. Letting ${Z_{i}}_\omega = W_i Z_i$, where $W_i$ is the $m_i \times m_i$ diagonal matrix having diagonal entries $\omega^*\left(t_{i1}\right), \dots, \omega^*\left(t_{i,m_i}\right)$, an unbiased estimate of relative loss is given by 
 
 \begin{equation}\label{eq:weighted-unbiased-risk-estimate}
-U_\omega\left( \lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2,
+U_\omega\left( \lambda \right) = L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \frac{1}{N}\sum_{j=1}^{m_i} \omega^*\left(t_{ij}\right)  \left( \nu\left(t_{ij}\right) - \nu_\lambda\left(t_{ij}\right)\right)^2.
 \end{equation}
+
+\noindent
+See \cite{gu2013smoothing}, Theorem 5.2. To find the optimal value of the smoothing parameter, the performance-oriented iteration tracks loss $L\left(\eta, \eta_\lambda \right)$ indirectly, simultaneously updating $\lambda, \theta_\beta$. Since it does not explicitly keep track of $L\left(\eta, \eta\lambda\right)$ itself, it may not be the most effective way to search for the optimal smoothing parameters, but it is numerically efficient. The performance-oriented iteration works on (\ref{eq:gamma-SKL-loss-function}) and updates the smoothing parameters updated according to $U_\omega\left( \lambda \right)$. Instead of fixing smoothing parameters and moving according to a particular Newton update, one chooses an update from among a family of Newton updates that is perceived to be better performing according to $U_\omega\left(\lambda\right)$. If the smoothing parameters stabilize at, say, $\left(\lambda^*,\theta^*_\beta\right)$ and the corresponding Newton iteration converges at $\eta^*$, then it is clear that $\eta^* = \eta_{\lambda^*}$ is the minimizer. In a neighborhood of $\eta^*$ where the corresponding values of (\ref{eq:penalized-weighted-sums-of-squares}) closely approximate the penalized likelihood functional (\ref{eq:penalized-likelihood-functional}) for smoothing parameters close to $\left( \lambda^*, \theta^*_\beta \right)$, then the $\eta_{\lambda, \eta^*}$s are, in turn, hopefully close approximations to the $\eta_\lambda$s. Thus, through indirect comparison $\eta^*$ is perceived to be better performing among the other $\eta_\lambda$s in the neighborhood.
+
+\bigskip
+
+
+\subsubsection{Generalized approximate cross validation}
+
+An alternative to the performance-oriented iteration is to compare candidate $\eta_\lambda$s directly, which requires a score that keeps track of $L\left(\right)$. \cite{xiang1996generalized} proposed 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \vspace{1in}
 {\textbf{PLACEHOLDER - TO DO}}

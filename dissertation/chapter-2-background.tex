@@ -523,7 +523,12 @@ are i.i.d. mean zero random variables with unit variance.  The connection betwee
 Cov\left(\epsilon\right) = D = diag\left(\sigma_1^2,\dots, \sigma_M^2\right)'.
 \]
 \noindent
-Then model (\ref{eq:mcd-ar-model}) can be written in vector form $\epsilon = TY$,  where the $\left(t, j\right)$ entry of $T$ is $-\phi_{tj}$ , and the $(t, t)$ entry of $D$ is the $t^{th}$ prediction variance $\sigma_t^2 = var\left(\epsilon_t\right)$. 
+Then model (\ref{eq:mcd-ar-model}) can be written 
+\begin{equation} \label{eq:e-equals-T-Y}
+\epsilon = TY,
+\end{equation}
+\noindent
+where the $\left(t, j\right)$ entry of $T$ is $-\phi_{tj}$ , and the $(t, t)$ entry of $D$ is the $t^{th}$ prediction variance $\sigma_t^2 = var\left(\epsilon_t\right)$. 
 
 \begin{align}
 \begin{bmatrix}
