@@ -202,7 +202,7 @@ where $\Delta \theta_j = \theta_j - \theta_{j-1}$, and $\Delta^2 \theta_j = \Del
 \end{equation*} 
 
 \noindent
-Then, \ref{eq:bspline-difference-penalty-1} can be written in terms of the squared norm of the difference operator applied to the vector of B-spline coefficients:
+Then, (\ref{eq:bspline-difference-penalty-1}) can be written in terms of the squared norm of the difference operator applied to the vector of B-spline coefficients:
 
 \begin{align} 
 \begin{split} \label{eq:bspline-difference-penalty-2}
@@ -260,7 +260,7 @@ c_2 & = \int_0^1 B_{j,1}B_{j-1,1}.
 \end{equation}
 
 
-This establishes that traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \ref{eq:bspline-difference-penalty} and the sum of the cross products of neighboring second differences. The second term in \ref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \ref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. We can seamlessly augment the likelihood with the difference penalty to achieve smooth fitted functions without the complexity posed by the derivative-based penalty.
+This establishes that traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \ref{eq:bspline-difference-penalty-1} and the sum of the cross products of neighboring second differences. The second term in \ref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \ref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. We can seamlessly augment the likelihood with the difference penalty to achieve smooth fitted functions without the complexity posed by the derivative-based penalty.
 
 \bigskip
 
@@ -402,14 +402,14 @@ B = B_2 \square B_1 = \left( B_2 \otimes 1^\prime_{k_2} \right) \odot \left(1^\p
 \end{equation}
 
 \noindent
-The operator $\odot$ denotes the element-wise matrix product; $1_{k_1}$ ($1_{k_2}$) denotes the column vector of ones having length $k_1$ ($k_2$.) The operations in \ref{eq:rowwise-kronecker-product} construct $B$ such that the $i^{th}$ row of $B_2\square B_1$ is the Kronecker product of the corresponding rows of $B_2$ and $B_1$. The penalty in \ref{eq:folded-difference-penalty-log-likelihood} can also be compactly expressed:
+The operator $\odot$ denotes the element-wise matrix product; $1_{k_1}$ ($1_{k_2}$) denotes the column vector of ones having length $k_1$ ($k_2$.) The operations in (\ref{eq:rowwise-kronecker-product}) construct $B$ such that the $i^{th}$ row of $B_2\square B_1$ is the Kronecker product of the corresponding rows of $B_2$ and $B_1$. The penalty in (\ref{eq:folded-difference-penalty-log-likelihood}) can also be compactly expressed:
 
 \begin{equation*} \label{eq:tensor-product-penalty}
 \lambda_1 \vert \vert P_1 \theta \vert \vert^2 + \lambda_2 \vert \vert P_2 \theta \vert\vert^2
 \end{equation*}
 
 \noindent
-where $P_1 = I_{k_2} \otimes D'_{d_{\ms l}} D_{d_{\ms l}} $ and $P_2 =  D'_{d_{\ms m}} D_{d_{\ms m}} \otimes I_{k_1}$. We define $Y$, the vector of stacked subject-specific vectors,  as before, and the matrix $X$ of autoregressive covariates as previously (\ref{eq:ar-design-matrix-1}) so that \ref{eq:folded-difference-penalty-log-likelihood} can be written in matrix form as
+where $P_1 = I_{k_2} \otimes D'_{d_{\ms l}} D_{d_{\ms l}} $ and $P_2 =  D'_{d_{\ms m}} D_{d_{\ms m}} \otimes I_{k_1}$. We define $Y$, the vector of stacked subject-specific vectors,  as before, and the matrix $X$ of autoregressive covariates as previously (\ref{eq:ar-design-matrix-1}) so that (\ref{eq:folded-difference-penalty-log-likelihood}) can be written in matrix form as
 
 \begin{equation} \label{eq:tensor-pspline-objective-function}
 -2L + J_\theta\left(\phi\right) = \left( Y - XB\theta\right)^\prime D^{-1}\left( Y - XB\theta\right)  + \lambda_1\vert\vert P_1 \theta \vert\vert^2 + \lambda_2 \vert\vert P_2 \theta\vert \vert^2,
@@ -422,7 +422,7 @@ with $\hat{\theta}$ solving the system of equations
 \end{equation}
 
 \noindent
-From \ref{eq:tensor-pspline-normal-equations}, we note that the system of equations depends on basis coefficients remains fixed at $k_1 k_2$, even as the number of observations increases. The grid of regression coefficients can be recovered by arranging the elements of $\hat{\theta}$ into a matrix of $k_1$ columns having length $k_2$. The vector of fitted values is given by 
+From (\ref{eq:tensor-pspline-normal-equations}), we note that the system of equations depends on basis coefficients remains fixed at $k_1 k_2$, even as the number of observations increases. The grid of regression coefficients can be recovered by arranging the elements of $\hat{\theta}$ into a matrix of $k_1$ columns having length $k_2$. The vector of fitted values is given by 
 
 \begin{align}
 \begin{split} \label{eq:pspline-smoothing-matrix}

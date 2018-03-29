@@ -957,9 +957,9 @@ to update $\tilde{\eta}$, where $\tilde{y}_{ij} = \tilde{\eta}\left(t_{ij}\right
 
 %\subfile{chapter-2-subfiles/chapter-2-iv-smoothing-parameter-selection}
 
-Performance-oriented iteration and generalized approximate cross validation (GACV) are the most common approaches to selecting the smoothing parameter for penalized regression with exponential families. The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameter. The follow section provides a brief overview of approaches model selection for $\sigma^2$, which is by no means an exhaustive inventory of model selection for data generated from distributions belonging to exponential families. We refer the reader desiring detailed examination to \cite{zhang2006component}, \cite{xiang1996generalized}, \cite{wahba1995smoothing},  \cite{wood2004stable}, and \cite{wood2017generalized}. For ease of exposition, we henceforth omit dependence of any components on the $\theta_\beta$ and only explicitly express dependence on smoothing parameters through $\lambda$. 
+The gamma penalized log likelihood (\ref{eq:form-of-smoothing-spline-solution-kappa}) is non-quadratic, so $\eta_\lambda$ must be computed using iteration even for fixed smoothing parameters. A typical choice for method of smoothing parameter selection when data are generated from a distribution belonging to exponential families is performance-oriented. The follow section provides a brief overview of the the performance-oriented iteration, specifically for selecting the optimal degree of smoothing for $\sigma^2$. This approach is just one of many in the inventory of model selection techniques for penalized regression with exponential families. We refer the reader desiring detailed examination to \cite{zhang2006component}, \cite{xiang1996generalized}, \cite{wahba1995smoothing},  \cite{wood2004stable}, and \cite{wood2017generalized}. 
 
-\subsubsection{Performance-oriented iteration} 
+\bigskip
 
 A measure of the discrepancy between distributions belonging to an exponential family having densities of the form $p\left(z\right) = exp\left\{\left(z \eta - b\left(\eta\right)\right)/a\left(\phi\right) + c\left(z,\phi\right) \right\}$ is the Kullback-Leibler distance
 
@@ -972,7 +972,7 @@ A measure of the discrepancy between distributions belonging to an exponential f
 \noindent
 For the gamma dsitribution, letting $\eta = \log \mu$, the KL distance simplifies to
 \[
--\mu\left( e^{-\eta} - e^{-\tilde{\eta}}\right) - \left(\eta-\tilde{\eta}\right).
+-\mu\left( e^{-\eta} - e^{-{\eta_\lambda}}\right) - \left(\eta-{\eta_\lambda}\right).
 \]
 
 \noindent
@@ -1019,52 +1019,7 @@ See \cite{gu2013smoothing}, Theorem 5.2. To find the optimal value of the smooth
 
 \bigskip
 
-
-\subsubsection{Generalized approximate cross validation}
-
-An alternative to the performance-oriented iteration is to compare candidate $\eta_\lambda$s directly, which requires a score that keeps track of $L\left(\right)$. \cite{xiang1996generalized} proposed 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\vspace{1in}
-{\textbf{PLACEHOLDER - TO DO}}
-\vspace{1in}
-
-
+An alternative to the performance-oriented iteration is to choose the optimal smoothing parameters by comparing candidate $\eta_\lambda$s directly; the generalized approximate cross validation (GACV) score \cite{xiang1996generalized} keeps track of $L\left(\eta, \eta_\lambda\right)$, approximating the score which is analogous to the generalized cross validation score (GCV) in the usual penalized regression setting (see \citep{wahba1990spline}). We refer the reader to the aforementioned sources for extensive discussion; for the same reason that we utilized the LosoCV criterion rather than leave-one-out or generalized cross validation for smoothing parameter selection when estimating $\phi$, we did not explore using GACV for model selection for the innovation variance function.
 
 
 %\bibliography{../Master}
