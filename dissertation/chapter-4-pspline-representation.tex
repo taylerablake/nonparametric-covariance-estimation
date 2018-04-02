@@ -3,7 +3,7 @@
 
 \chapter{A P-spline model for the Cholesky decomposition} \label{psplines-chapter}
 
-\subsubsection{A tensor product P-spline model for the generalized autoregressive coefficients}
+%\subsubsection{A tensor product P-spline model for the generalized autoregressive coefficients}
 
 
 The reproducing kernel Hilbert space methods presented in Chapter~\ref{SSANOVA-chapter} comprise a small slice of the existing methods for smoothing noisy data. In addition to smoothing splines, regression splines \cite{eubank1999nonparametric} and B-splines \cite{de1978practical}  have been widely used for nonparametric function estimation. We consider a second approach to smoothing $\phi$ and $\sigma^2$ which is based on the penalized B-splines, or P-splines, of \cite{eilers1996flexible}. P-splines exploit the attractive properties of the B-spline basis along with the use of computationally convenient difference penalties. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization. In addition to this flexibility, P-splines, which are a straightforward extension of (generalized) linear regression models, exhibit a number of attractive properties. Fitted P-splines exhibit no boundary effects, conserve moments of the data, and in the limit, approach polynomial curves. Perhaps equally important is the relatively inexpensive computation necessary for model fitting, including smoothing parameter selection.
@@ -42,7 +42,7 @@ Figure~\ref{fig:overlapping-linear-cubic-bsplines} shows two sets of B-splines; 
 \item At a given point in the domain, $v$, $k + 1$ B-splines take nonzero values.
 \end{itemize}
 
-Figure~\ref{fig:parabolic-Bspline-basis} shows a degree 2. It consists of three quadratic pieces, joined at two knots. At the joining points not only the ordinates of the polynomial pieces match, but also their first derivatives are equal (but not their second derivatives).  \cite{de1978practical} presented an algorithm to compute B-splines of any degree from B-splines of lower degree.  A formal definition of the $i^{th}$ B-spline of order $k$ for a fixed knot sequence is given in Appendix~\ref{psplines-appendix} Definition~\ref{definition:order_k_Bspline}. Additional mathematical properties of B-splines which are pertinent to the presentation of P-spline smoothing can also be found in Appendix~\ref{psplines-appendix}.
+Figure~\ref{fig:parabolic-Bspline-basis} shows a set of B-spline basis functions of degree 2. Each basis function consists of three quadratic pieces, joined at two knots. At the joining points, not only the ordinates of the polynomial pieces match, but their first derivatives are also equal (but not their second derivatives).  \cite{de1978practical} presented an algorithm to compute B-splines of any degree from B-splines of lower degree.  A formal definition of the $i^{th}$ B-spline of order $k$ for a fixed knot sequence is given in Appendix~\ref{psplines-appendix} Definition~\ref{definition:order_k_Bspline}. Additional mathematical properties of B-splines which are pertinent to the presentation of P-spline smoothing can also be found in Appendix~\ref{psplines-appendix}.
 
 \begin{figure}[H]
   \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
@@ -264,7 +264,7 @@ This establishes that traditional smoothness penalty on the squared second deriv
 
 \bigskip
 
-A smoother sequence of coefficients leads to a smoother curve, as illustrated in Figure~\ref{fig:increasing-lambda-pspline-fits}.  The relationship between P-spline curves and their coefficients is easily characterized if we consider the coefficients as the skeleton of the function, and draping the B-splines over them puts the flesh on the bones, so to speak. As long as the coefficient sequence is smooth, the number of basis functions (and coefficients) is unimportant since the penalty ensures the smoothness of the skeleton and that the fitting procedure is well-conditioned.  Figure~\ref{fig:overcomplete-pspline-basis} illustrates this utility of the penalty for simulated data; there are $M=10$ observations and $60$ cubic B-splines. Unless computational constraints are of concern, which is possible with large models, it is prudent to use even more B-splines.  
+A smoother sequence of coefficients leads to a smoother curve, as illustrated in Figure~\ref{fig:increasing-lambda-pspline-fits}.  The relationship between P-spline curves and their coefficients is easily characterized if we consider the coefficients as the skeleton of the function, and draping the B-splines over them puts the flesh on the bones, so to speak. As long as the coefficient sequence is smooth, the number of basis functions (and coefficients) is unimportant since the penalty ensures the smoothness of the skeleton and that the fitting procedure is well-conditioned.  Figure~\ref{fig:overcomplete-pspline-basis} illustrates this utility of the penalty for simulated data; there are $p=10$ observations and $60$ cubic B-splines. Unless computational constraints are of concern, which is possible with large models, it is prudent to use even more B-splines.  
 
 \begin{figure}[H] 
 \begin{subfigure}{.5\textwidth}
@@ -670,7 +670,7 @@ When the tensor product basis is constructed on the regular grid defined by the 
 
 %%====================================================================================
 
-\subsection{Smoothing parameter selection}
+\section{Smoothing parameter selection}
 
 %\subfile{chapter-3-subfiles/chapter-3-tensor-product-pspline-model-selection}
 \subsubsection{The limiting behaviour of $H_\lambda$}

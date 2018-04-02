@@ -1,8 +1,20 @@
 
 \chapter{Concluding remarks and future work}\label{concluding-remarks-chapter}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Our formulation of covariance estimation supplies a flexible framework which free of the impediment presented by the positive definite constraint and a statistically intuitive interpretation of the elements of a covariance matrix. Modeling the Cholesky decomposition rather than the covariance matrix itself allows us to reframe covariance estimation as a regression problem. By estimating the parameters of the corresponding regression model using bivariate smoothing, we naturally accommodate irregularly-spaced longitudinal data of varying within-subject sample sizes by without the need for data imputation methods. 
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We propose two representations of $\left(\phi, \log\sigma^2\right)$ the functional components of the Cholesky decomposition. The first leverages reproducing kernel Hilbert space methods to model the functional component corresponding to the generalized autoregressive
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{itemize}
-\item investigate robustness to the assumption of Normality; if the underlying distribution is fat-tailed, how much does our estimator suffer?
 \item functional component selection via the non-negative garrote
 \item In the case with P-splines, explore the performance of generalized additive models analogous to the SSANOVA models without an interaction term.
 	\begin{itemize}
