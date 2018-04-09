@@ -3,7 +3,7 @@
 \chapter{A Reproducing Kernel Hilbert Space Framework for Covariance Estimation} \label{SSANOVA-chapter}
 
 
-We propose an alternate route for estimating the Cholesky decomposition of a covariance matrix when the data are unbalanced. In this chapter, we present a functional varying coefficient model to extend model \eqref{eq:mcd-ar-model}. The functional coefficient model accommodates unbalanced data without the need for imputation and serves as a flexible alternative to parametric models for the GARPs. We propose a general blueprint for the construction of an estimator of a covariance matrix for longitudinal data by modeling $T$ as smooth two-dimensional surface. We present a reproducing kernel Hilbert space framework for estimating the functional components of the Cholesky decomposition. Chapter~\ref{psplines-chapter} demonstrates multidimensional smoothing with penalized B-splines as a flexible and computationally convenient alternative to the Hilbert space methods.
+We propose an alternate route for estimating the Cholesky decomposition of a covariance matrix when the data are unbalanced. In this chapter, we present a functional varying coefficient model to extend model \eqref{eq:mcd-ar-model}. The functional varying coefficient model serves as a flexible alternative to parametric models for the GARPs and accommodates unbalanced data without the need for imputation. We propose a general blueprint for the construction of an estimator of a covariance matrix for longitudinal data by modeling $T$ as smooth two-dimensional surface. We present a reproducing kernel Hilbert space framework for estimating the functional components of the Cholesky decomposition. Chapter~\ref{psplines-chapter} demonstrates multidimensional smoothing with penalized B-splines as a flexible and computationally convenient alternative to the Hilbert space methods.
 
 \bigskip
 %A predominant difficulty in the estimation of covariance matrices is the potentially high dimensionality of the problem, as the number of unknown elements in the covariance matrix grows quadratically with the size of the matrix. It is well-known that the sample covariance matrix can be unstable in high dimensions; ways for controlling the complexity of estimates is highly desirable for improving stability of estimates. In the longitudinal-data literature, it is a common practice to use parametric models for the covariance structure.  Many have specified parsimonious parametric models for $\phi_{ijk}$ to overcome the issue of dimensionality.  
@@ -43,7 +43,7 @@ m &= \frac{t + s}{2}, \\
 \noindent
 and model 
 \begin{equation} \label{eq:} 
-\phi\left(l,m\right) = \phi\left(t-s, \frac{1}{2}\left(s+t\right)\right) = \tilde{\phi}\left(t,s\right),
+\phi\left(l,m\right) = \tilde{\phi}\left(t-s, \frac{1}{2}\left(s+t\right)\right) = \tilde{\phi}\left(t,s\right),
 \end{equation}
 \noindent
 where $l$ is the continuous analogue of the usual discrete lag between time points $t$ and $s$, and $m$ is its orthogonal direction. Stationary covariance models specify that the covariance between a pair of measurements taken at times $t$ and $s$ can be written as a function which depends only on $\vert t - s\vert $, so that

@@ -732,7 +732,7 @@ Modeling the covariance in such a way reduces a potentially high dimensional pro
 
 With the entries of $T$ unconstrained, the Cholesky decomposition is ideal for nonparametric estimation and regularization methods. Many have alternatively proposed nonparametric and semiparametric techniques  to reduce dimensionality without the risk of model misspecification often accompanying parametric models.  \cite{wu2003nonparametric} proposed local polynomial smoothers to individually estimate the subdiagonals of $T$. The idea of smoothing along the subdiagonals rather than down the rows or columns, or viewing $T$ as a bivariate function is analogous to the successive regressions in \eqref{eq:mcd-ar-model}. A similar procedure by \cite{dahlhaus1997fitting} uses varying coefficient regression models for each subdiagonal of $T$:
 \begin{equation} \label{eq:one-dimensional-mcd-vc-model}
-y_t = \sum_{j = 1}^{t-1} f_{jp}\left( t \right) y_{t-j} + \sigma\left(t\right)
+y_t = \sum_{j = 1}^{t-1} f_{j}\left( t \right) y_{t-j} + \sigma\left(t\right)
 \end{equation}
 \cite{wu2003nonparametric} give details of smoothing and selection of the order $k$ of the autoregression under the assumption that the $N$ subjects share common observation times.  In the first step, they derive a raw estimate of the covariance matrix and the estimated covariance matrix is subject to the modified Cholesky decomposition. In the second step, they apply local polynomial smoothing to the diagonal elements of $D$ and the subdiagonals of $T$.  
 
