@@ -10,13 +10,16 @@
 \usepackage{framed}
 \usepackage[utf8]{inputenc}
 \usepackage{natbib}
+
+\usepackage{caption}
 \usepackage{subcaption}
 %\usepackage{subfig}
 \usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{etoolbox}
 \usepackage{lscape}
-\usepackage{algorithmic}
 \usepackage{nomencl}
+\usepackage{setspace}
 \usepackage{natbib}
 \usepackage{mathtools}
 \usepackage{IEEEtrantools}
@@ -26,7 +29,7 @@
 \usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{rotating}
-\usepackage{algorithm}
+%\usepackage{algorithm}
 %\usepackage{chicago}
 \usepackage{lscape}
 \usepackage{etoolbox}
@@ -63,16 +66,19 @@
 \newcommand{\bft}{\mbox{\boldmath $t$}}
 \newcommand{\bfg}{\mbox{\boldmath $g$}}
 \newcommand{\bfv}{\mbox{\boldmath $v$}}
+\newcommand{\bfu}{\mbox{\boldmath $u$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
 \newcommand{\bff}{\mbox{\boldmath $f$}}
 \newcommand{\bfone}{\mbox{\boldmath $1$}}
 \newcommand{\bfo}{\mbox{\boldmath $0$}}
 \newcommand{\bfO}{\mbox{\boldmath $O$}}
-\newcommand{\bfx}{\mbox{\boldmath $x$}}
 \newcommand{\bfX}{\mbox{\boldmath $X$}}
 \newcommand{\bfz}{\mbox{\boldmath $z$}}
 \newcommand{\tildeY}{\tilde{Y}}
 \newcommand{\tildey}{\tilde{y}}
 \newcommand{\tildeQ}{\tilde{Q}}
+\newcommand{\tildeK}{\tilde{K}}
 \newcommand{\tildeR}{\tilde{R}}
 \newcommand{\tildeA}{\tilde{A}}
 \newcommand{\tildeepsilon}{\tilde{\epsilon}}
@@ -80,7 +86,6 @@
 \newcommand{\tildeS}{\tilde{S}}
 
 \newcommand{\bfm}{\mbox{\boldmath $m}}
-\newcommand{\bfy}{\mbox{\boldmath $y$}}
 \newcommand{\bfa}{\mbox{\boldmath $a$}}
 \newcommand{\bfb}{\mbox{\boldmath $b$}}
 \newcommand{\bfY}{\mbox{\boldmath $Y$}}
@@ -105,7 +110,7 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
-\newtheorem{example}{Example}[section]
+\newtheorem{example}{Example}[]
 \def\bL{\mathbf{L}}
 
 \begingroup\lccode`~=`_
@@ -113,15 +118,14 @@
 \AtBeginDocument{\mathcode`_="8000 \catcode`_=12 }
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
+\captionsetup[figure]{font=small,skip=1pt}
+
 \makeatletter
 \renewcommand{\theenumi}{\Roman{enumi}}
 \renewcommand{\labelenumi}{\theenumi.}
 \renewcommand{\theenumii}{\Alph{enumii}}
 \renewcommand{\labelenumii}{\theenumii.}
 \renewcommand{\p@enumii}{\theenumi.}
-
-
-
 \makeatother
 
 
@@ -131,7 +135,7 @@
 
 \renewcommand\typesetChapterTitle[1]{#1}
 
-
+\setcounter{MaxMatrixCols}{20}
 
 \begin{document}
 %\bibliographystyle{plainnat}
@@ -200,15 +204,15 @@
 %  independent of the rest of the thesis
 %
 
- \begin{externalabstract}
-   \input{abstract}
- \end{externalabstract}
+% \begin{externalabstract}
+%   \input{abstract}
+% \end{externalabstract}
 
 %
 %  My Dedication
 %
 
-%\dedication{This is dedicated to the one I love \ldots\ la la la \ldots}
+\dedication{PLACEHOLDER}
 
 
 %
@@ -216,7 +220,7 @@
 % and ``vita.tex''.
 %
 
-%\include{ack}
+\include{ack}
 \include{vita}
 
 
@@ -226,7 +230,8 @@
 
 \include{chapter-1-introduction}     
 \include{chapter-2-background}
-\include{chapter-3-spline-representation} 
+%\include{chapter-3-spline-representation}
+\include{chapter-3-smoothing-spline-v2} 
 \include{chapter-4-pspline-representation}   
 \include{chapter-5-simulation-studies}       
 \include{chapter-6-data-analysis} 

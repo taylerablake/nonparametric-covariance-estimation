@@ -14,7 +14,7 @@
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\section{Quadratic risk estimates for simulation study 1}
+\section{Quadratic Risk Estimates for Simulation with Complete Data}
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 \caption{\textit{Multivariate normal simulations for model I. Estimated quadratic risk is reported for our smoothing spline ANOVA estimator and P-spline estimator, the oracle estimator for each covariance structure, the parametric polynomial estimator of Pan and MacKenzie (2003), the sample covariance matrix, the tapered sample covariance matrix,
                                     and the soft thresholding estimator.}}
 \begin{tabular}{lrrrrrrrr}
-& $M$ &$\hat{\Sigma}_{oracle}$&  $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ &$\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
+& $p$ &$\hat{\Sigma}_{oracle}$&  $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ &$\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
   $N = 50$ & $10$ &0.00267 & 0.0016 & 0.0052 &  0.0912 & 0.3901 & 0.3864 & 0.3874 \\ 
    		& $20$ &0.00459 & 0.0010 & 0.0043 &  0.0757 & 0.8371 & 0.7710 & 0.7716 \\ 
@@ -47,7 +47,7 @@
 \centering
 \caption{\textit{Multivariate normal simulation-estimated quadratic risk  for model II.} }
 \begin{tabular}{lrrrrrrrr}
-& $M$ &$\hat{\Sigma}_{oracle}$&$\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
+& $p$ &$\hat{\Sigma}_{oracle}$&$\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
 $N = 50$ & $10$ & 0.0483 & 0.0623 & 0.0792 & 7.0137 & 0.6269 & 0.8108 & 0.5770 \\ 
     & $20$ & 0.4317 & 0.7972 & 1.2456 &  852.2787 & 2.7659 & 30.8197 & 36.1492 \\ 
@@ -71,7 +71,7 @@ $N = 50$ & $10$ & 0.0483 & 0.0623 & 0.0792 & 7.0137 & 0.6269 & 0.8108 & 0.5770 \
 \centering
 \caption{\textit{Multivariate normal simulation-estimated quadratic risk  for model III.} }
 \begin{tabular}{lrrrrrrrr}
-  & $M$ &$\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
+  & $p$ &$\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
 $N = 50$ & $10$ & 0.0697 &0.0656 & 0.0665 &  3.4849 & 0.4977 & 0.6678 & 0.5858 \\ 
     &    $20$ & 0.4706 &1.0095 & 0.9146 &  426.0848 & 2.0716 & 4.8213 & 8.4099 \\ 
@@ -93,7 +93,7 @@ $N = 50$ & $10$ & 0.0697 &0.0656 & 0.0665 &  3.4849 & 0.4977 & 0.6678 & 0.5858 \
 \centering
 \caption{\textit{Multivariate normal simulation-estimated quadratic risk  for model IV.} }
 \begin{tabular}{lrrrrrrrr}
-  & $M$ &$\hat{\Sigma}_{oracle}$ &$\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
+  & $p$ &$\hat{\Sigma}_{oracle}$ &$\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
 $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\ 
   & $20$ & 0.0073 & 0.0449 & 0.0154 & 0.4384 & 0.7951 & 0.9184 & 0.9177 \\ 
@@ -114,7 +114,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \centering
 \caption{\textit{Multivariate normal simulation-estimated quadratic risk  for model V.} }
 \begin{tabular}{lrrrrrrrr}
- $N$ & $M$ &$\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
+ $N$ & $p$ &$\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
    $N = 50$ & 10   0.1610 & & 0.3621 & 0.2456 & 1.3738 & 0.8484 & 1.6174 & 0.8963 \\ 
      		& $20$ & 0.5236 & 0.9911 & 0.8206 &  2.8419 & 1.7324 & 3.0233 & 1.6375 \\ 
@@ -135,7 +135,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-\section{Quadratic risk estimates for simulation study 2}
+\section{Quadratic Risk Estimates for Simulation with Irregularly Sampled Data}
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
                             the unbiased risk estimate and leave-one-subject-out cross validation for smoothing parameter selection.} }
 \label{table:simulation-study-2-quad-risk-model-1}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+   $p$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
 10 & 0.0 & 0.001625283 & (3e-040) & 0.00242142 & (5e-040) \\ 
    & 0.1 & 0.002667487 & (4e-040) & 0.00340902 & (6e-040) \\ 
    & 0.2 & 0.002203362 & (4e-040) & 0.00481581 & (7e-040) \\ 
@@ -177,7 +177,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \caption{\textit{Model 2: Quadratic risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-quad-risk-model-2}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+   $p$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
 10 & 0.0 & 0.0450916 & (0.0082) & 0.0601659 & (0.0096) \\ 
    & 0.1 & 0.0696728 & (0.0100) & 0.1512636 & (0.0289) \\ 
    & 0.2 & 0.2300287 & (0.0335) & 0.2343197 & (0.0398) \\ 
@@ -203,7 +203,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \caption{\textit{Model 3: Quadratic risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-quad-risk-model-3}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+   $p$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
 10 & 0.0 & 0.0650014 & (0.0055) & 0.0682312 & (0.0059) \\ 
    & 0.1 & 0.0770316 & (0.0081) & 0.0892940 & (0.0118) \\ 
    & 0.2 & 0.1140654 & (0.0142) & 0.2008099 & (0.0280) \\ 
@@ -230,7 +230,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \caption{\textit{Model 4: Quadratic risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-quad-risk-model-4}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+   $p$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
 10 & 0.0 & 0.01436606 & (7e-040) & 0.01655013 & (0.0013) \\ 
    & 0.1 & 0.01684656 & (8e-040) & 0.01893500 & (0.0022) \\ 
    & 0.2 & 0.02374962 & (0.0023) & 0.02433408 & (0.0020) \\ 
@@ -257,7 +257,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \caption{\textit{Model 5: Quadratic risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-quad-risk-model-5}
 \begin{tabular}{lrrlrl}
-   $M$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
+   $p$ & \% missing & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_1(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
 10 & 0.0 & 0.3621065 & (0.0091) & 0.3623509 & (0.0128) \\ 
    & 0.1 & 0.6778957 & (0.0457) & 0.7067101 & (0.0426) \\ 
    & 0.2 & 2.1262957 & (0.1590) & 2.4381408 & (0.2292) \\ 
@@ -278,7 +278,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 %%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %%-----------------------------------------------------------------------------------------------------------------------------
 
-\section{Comprehensive tables for study 1}
+\section{Comprehensive Tables for Simulations with Complete Data}
 %%-----------------------------------------------------------------------------------------------------------------------------
 \begin{landscape}
 %\subfile{chapter-4-subfiles/simulation-study-1-master-entropy-risk-table}
@@ -286,7 +286,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 %\centering
 %\begin{footnotesize}
 %\begin{tabular}{lllllllllllllllll}
-%\Model & $N$ & $M$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$}   &  \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$}  &  \multicolumn{2}{c}{$S$}   &  \multicolumn{2}{c}{$S^\omega$}   &  \multicolumn{2}{c}{$S^\lambda$}   \\ 
+%\Model & $N$ & $p$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$}   &  \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$}  &  \multicolumn{2}{c}{$S$}   &  \multicolumn{2}{c}{$S^\omega$}   &  \multicolumn{2}{c}{$S^\lambda$}   \\ 
 %  \hline
 %I &  & $10$ & 0.0749 & (0.0072) & 0.1261 & (0.0107) & 0.0135 & (0.0023) & 0.1102 & (0.0083) & 1.2047 & (0.0286) & 0.5369 & (0.0563) & 1.1742 & (0.0366) \\ 
 %    & 50  & $20$ & 0.0872 & (0.0081) & 0.1713 & (0.0095) & 0.0229 & (0.0041) & 0.1096 & (0.0087) & 4.9850 & (0.0644) & 1.3957 & (0.1859) & 4.7796 & (0.1206) \\ 
@@ -334,7 +334,7 @@ $N = 50$ & 10 &0.0053 & 0.0144 & 0.0196 &  0.2575 & 0.4420 & 0.4628 & 0.4620 \\
 \caption{\textit{Multivariate normal simulations for model V. Estimated entropy risk and standard errors of the loss are reported for our smoothing spline ANOVA estimator and P-spline estimator, the oracle estimator for each covariance structure, the parametric polynomial estimator of Pan and MacKenzie (2003), the sample covariance matrix, the tapered sample covariance matrix, and the soft thresholding estimator.}} 
 \label{table:master-entropy-risk-table}
 \begin{tabular}{lrrrlrlrlrlrlrlrl}
-   Model & $N$ & $M$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$} & \multicolumn{2}{c}{$S$} & \multicolumn{2}{c}{$S^\omega$} & \multicolumn{2}{c}{$S^\lambda$}\\ \hline
+   Model & $N$ & $p$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$} & \multicolumn{2}{c}{$S$} & \multicolumn{2}{c}{$S^\omega$} & \multicolumn{2}{c}{$S^\lambda$}\\ \hline
 I & 50 & 10 & 0.0685 & (0.0072) & 0.1261 & (0.0107) & 0.0135 & (0.0023) & 0.1102 & (0.0083) & 1.2047 & (0.0286) & 0.5369 & (0.0563) & 1.1742 & (0.0366) \\ 
     & 50 & 20 & 0.0834 & (0.0081) & 0.1713 & (0.0095) & 0.0229 & (0.0041) & 0.1096 & (0.0087) & 4.9850 & (0.0644) & 1.3957 & (0.1859) & 4.7796 & (0.1206) \\ 
     & 50 & 30 & 0.1102 & (0.0229) & 0.1969 & (0.0118) & 0.0196 & (0.0034) & 0.1127 & (0.0108) & 12.5517 & (0.1322) & 2.8019 & (0.4332) & 11.3175 & (0.3556) \\ 
@@ -383,7 +383,7 @@ V & 50 & 10 & 0.2769 & (0.0068) & 0.2464 & (0.0108) & 0.0986 & (0.0200) & 1.2420
 %\centering
 %\begin{footnotesize}
 %\begin{tabular}{lllllllllllllllll}
-%$Model$ & $N$ & $M$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$}   &  \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$}  &  \multicolumn{2}{c}{$S$}   &  \multicolumn{2}{c}{$S^\omega$}   &  \multicolumn{2}{c}{$S^\lambda$}   \\ 
+%$Model$ & $N$ & $p$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} &  \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$}   &  \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$}  &  \multicolumn{2}{c}{$S$}   &  \multicolumn{2}{c}{$S^\omega$}   &  \multicolumn{2}{c}{$S^\lambda$}   \\ 
 %  \hline
 %I & $50$ & $10$ & 0.0015 & (3e-040) & 0.0052 & (0.0010) & 0.0267 & (0.0045) & 0.0912 & (0.0103) & 0.3901 & (0.0247) & 0.3864 & (0.0221) & 0.3874 & (0.0224) \\ 
 %    &  50 & $20$ & 0.0010 & (2e-040) & 0.0043 & (6e-040) & 0.0459 & (0.0083) & 0.0757 & (0.0098) & 0.8371 & (0.0325) & 0.7710 & (0.0392) & 0.7716 & (0.0386) \\ 
@@ -431,7 +431,7 @@ V & 50 & 10 & 0.2769 & (0.0068) & 0.2464 & (0.0108) & 0.0986 & (0.0200) & 1.2420
                         and the soft thresholding estimator.}} 
 \label{table:master-quad-risk-table}
 \begin{tabular}{lrrrlrlrlrlrlrlrl}
-   Model & $N$ & $M$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$} & \multicolumn{2}{c}{$S$} & \multicolumn{2}{c}{$S^\omega$} & \multicolumn{2}{c}{$S^\lambda$}\\ \hline
+   Model & $N$ & $p$ & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{SS}$} & \multicolumn{2}{c}{$\hat{\Sigma}^{ure}_{PS}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{oracle}$} & \multicolumn{2}{c}{$\hat{\Sigma}_{poly}$} & \multicolumn{2}{c}{$S$} & \multicolumn{2}{c}{$S^\omega$} & \multicolumn{2}{c}{$S^\lambda$}\\ \hline
 I & 50 & 10 & 0.0016 & (3e-040) & 0.0052 & (0.0010) & 0.0267 & (0.0045) & 0.0912 & (0.0103) & 0.3901 & (0.0247) & 0.3864 & (0.0221) & 0.3874 & (0.0224) \\ 
     & 50 & 20 & 0.0010 & (2e-040) & 0.0043 & (6e-040) & 0.0459 & (0.0083) & 0.0757 & (0.0098) & 0.8371 & (0.0325) & 0.7710 & (0.0392) & 0.7716 & (0.0386) \\ 
     & 50 & 30 & 0.0026 & (0.0018) & 0.0036 & (6e-040) & 0.0386 & (0.0065) & 0.1109 & (0.0152) & 1.2857 & (0.0498) & 1.1937 & (0.0472) & 1.2074 & (0.0472) \\ 

@@ -555,7 +555,7 @@ $\phi_{31}$& $\phi_{32}$& 1 &&& \\
 $\vdots$ & $\vdots$ & & $\ddots$&& \\
 $\vdots$ & $\vdots$ & && $\ddots$& \\
 $\phi_{p1}$& $\phi_{p2}$&$\dots$ &$\dots$ &$\phi_{p,p-1}$ & 1\\ \midrule
-$\sigma_1^2$ & $\sigma_1^2$ & $\dots$&$\dots$ &$\sigma_{p-1}^2$ &$\sigma_p^2$
+$\sigma_1^2$ & $\sigma_2^2$ & $\dots$&$\dots$ &$\sigma_{p-1}^2$ &$\sigma_p^2$
 \end{tabular} \label{table:cholesky-decomposition-successive-regressions}
 \end{table}
 
@@ -693,10 +693,10 @@ The Cholesky decomposition leads to unconstrained and statistically meaningful r
 %\end{equation}
 %
 %\noindent
-The nonredundant entries of $\left(T, \log D\right)$ are unconstrained, allowing them to be modeled using any desired technique, including parametric, semi- and nonparametric, and Bayesian approaches. For a random sample of mean zero $p$-dimensional vectors $Y_1,\dots , Y_N$  from a normal density with covariance matrix $\Sigma$, the form of the likelihood allows for relatively simple computation of the MLE of the parameters. Up to a constant, the log likelihood is given by 
+The nonredundant entries of $\left(T, \log D\right)$ are unconstrained, allowing them to be modeled using any desired technique, including parametric, semi- and nonparametric, and Bayesian approaches. For a random sample of mean zero $p$-dimensional vectors $Y_1,\dots , Y_N$  from a normal density with covariance matrix $\Sigma$, the form of the likelihood allows for relatively simple computation of the MLE of the parameters. Up to a constant, the log likelihood satisfies
 \begin{align}
 \begin{split} \label{eq:regular-cholesky-log-likelihood}
--2\ell\left(Y_1,\dots, Y_N, \Sigma\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y'_i\right) \\
+-2\ell\left(\Sigma \vert Y_1,\dots, Y_N\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y'_i\right) \\
 &= N \log \vert D \vert + N \mbox{tr}\left(\Sigma^{-1}S\right) \\
 & = N \log \vert D \vert + N \mbox{tr}\left(D^{-1}TST'\right), 
 \end{split}
