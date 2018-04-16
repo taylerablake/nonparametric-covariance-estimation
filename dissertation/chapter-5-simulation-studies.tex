@@ -201,7 +201,7 @@ As discussed in Chapter 1, in the limit, soft thresholding produces a positive d
 
 \bigskip
 
-In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}, which serves as a practical lower bound for the risk under each generating model. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma^2}$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, m_i$. The oracle estimator for Model II is obtained by fitting the model
+In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}, which serves as a practical lower bound for the risk under each generating model. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma^2}$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, p_i$. The oracle estimator for Model II is obtained by fitting the model
 
 \begin{equation} \label{eq:model-2-oracle-model}
 y\left(t_{ij}\right) = \sum_{k < j} \left(\beta_0 + \beta_1 t_{ij}\right) y\left( t_{ik} \right) + \epsilon_{ij},
@@ -220,18 +220,18 @@ where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq
 1 & t_{11} \\
 1 & t_{12} \\
 \vdots & \vdots \\
-1 & t_{1,m_1} \\
+1 & t_{1,p_1} \\
 \vdots & \vdots \\
 1 & t_{N,1} \\
 \vdots & \vdots \\
-1 & t_{N,m_N} \\
+1 & t_{N,p_N} \\
 \end{bmatrix}.
 \]
 \noindent
 The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
 
 \[
-\hat{\sigma^2\left( t \right)} = \frac{1}{N}\sum_{i = 1}^N\frac{1}{m_i - 1} \sum_{j = 1}^{m_i} e_{ij}^2,
+\hat{\sigma^2\left( t \right)} = \frac{1}{N}\sum_{i = 1}^N\frac{1}{p_i - 1} \sum_{j = 1}^{p_i} e_{ij}^2,
 \]
 \noindent
 where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:

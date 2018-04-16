@@ -18,16 +18,16 @@ Instead, \cite{eilers1996flexible} propose alternative an approach to nonparamet
 
 \bigskip
 
-Analogous to the smoothing spline representation \ref{eq:form-of-the-minimizer-phi}, we can represent $\phi$ using a B-spline basis. But first, in order to illustrate the ideas in the sections to follow, it is pragmatic to first review some basic properties of B-splines. For an exhaustive and more formal mathematical review, see  \cite{de1978practical}, \cite{dierckx1995curve}. A B-spline is a function constructed from piecewise polynomial functions which are connected in a very particular way. Their values can be computed recursively; for a non-decreasing sequence of knots $\left\{t_i\right\}$, the value of the $i^{th}$ B-spline of order $k$ can be defined using
+Analogous to the smoothing spline representation \eqref{eq:form-of-the-minimizer-phi}, we can represent $\phi$ using a B-spline basis. But first, in order to illustrate the ideas in the sections to follow, it is pragmatic to first review some basic properties of B-splines. For an exhaustive and more formal mathematical review, see  \cite{de1978practical}, \cite{dierckx1995curve}. A B-spline is a function constructed from piecewise polynomial functions which are connected in a very particular way. Their values can be computed recursively; for a non-decreasing sequence of knots $\left\{t_i\right\}$, the value of the $i^{th}$ B-spline of order $k$ can be defined using
 
 \begin{align} 
 \begin{split} \label{eq:bspline-recursive-relation}
-B_{i,1}\left(x\right) &= \left\{ \begin{array}{ll}
+B_{i1}\left(x\right) &= \left\{ \begin{array}{ll}
 1, & t_i \le x < t_{i+1}\\
 0, & otherwise
 \end{array} \right.
 \\
-B_{i,k}\left(x\right) &= \frac{x-t_i}{t_{i+k-1}-t_i}B_{i,k-1}\left(x\right) + \frac{t_{i+k}-x}{t_{i+k}-t_{i+1}}B_{i+1,k-1}\left(x\right). 
+B_{ik}\left(x\right) &= \frac{x-t_i}{t_{i+k-1}-t_i}B_{i,k-1}\left(x\right) + \frac{t_{i+k}-x}{t_{i+k}-t_{i+1}}B_{i+1,k-1}\left(x\right). 
 \end{split}
 \end{align}
 
@@ -55,24 +55,25 @@ Figure~\ref{fig:overlapping-linear-cubic-bsplines} shows two sets of B-splines; 
 B-splines make attractive basis functions for nonparametric regression; a linear combination of B-spline basis functions gives a smooth curve. Once a B-spline basis is computed, their application is no more difficult than polynomial regression, and extension to two-dimensional smoothing is available with the use of tensor products. To construct a B-spline representation for $\phi$, we need to equip the $l$ and $m$ axes each with a B-spline basis: let
 
 \[
-B_{l,1}\left(l\right),\dots, B_{l,K_1}\left(l\right)  \mbox{ and } B_{m,1}\left(m\right),\dots, B_{m,K_2}\left(m\right)
+{B_l}_{_1}\left(l\right),\dots, {B_l}_{_{k_l}}\left(l\right)  \mbox{ and } {B_m}_{_1}\left(m\right),\dots, {B_m}_{_{k_m}}\left(m\right)
 \]
 \noindent
-denote the B-spline bases for $l$ and $m$, each having a set of equally spaced knots along their respective domain. It is worth noting that one is free to specify a different basis for each dimension either by using different order B-spline or, of course, using different numbers of knots. The tensor product basis functions
+denote the B-spline bases for $l$ and $m$, each having a set of equally spaced knots along their respective domain. It is worth noting that one is free to specify a different basis for each dimension either by using different order B-spline or using different numbers of knots. Order of the basis will be indicated only when necessary and otherwise suppressed to maintain simplicity of notation. The tensor product basis functions
 \begin{equation*}
-T_{kk'}\left(l,m\right) = B_{l,k}\left(l\right){B}_{m,k'}\left(m\right)
+T_{kk'}\left(l,m\right) = {B_l}_{_k}\left(l\right){B_m}_{_{k'}}\left(m\right)
 \end{equation*}
 \noindent
-carve the $l$-$m$ domain into rectangles. Figure~\ref{fig:bicubic-bspline-function} shows a single $T_{kk'}$, where the marginal B-spline bases are of degree 2. For a given knot grid, we can approximate a surface, $\phi$, by
-
+carve the $l$-$m$ domain into rectangles. Figure~\ref{fig:bicubic-bspline-function} shows a single $T_{kk'}$, where the marginal B-spline bases are of degree 2. For a given knot grid, we can approximate $\phi$ by
 \begin{equation} \label{eq:tensor-product-bspline-expansion-phi}
-\phi\left(l,m\right) = \sum_{i=1}^{k_1} \sum_{j=1}^{k_2} \theta_{ij} B_{l,i}\left(l\right) B_{m,j}\left(m\right). 
+\phi\left(l,m\right) = \sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \theta_{rc} {B_l}_{_r}\left(l\right) {B_m}_{_c}\left(m\right). 
 \end{equation}
 \noindent
-Substituting this expression for $\phi$ in the negative log likelihood \eqref{eq:full-joint-likelihood} gives
-\begin{equation} \label{eq:full-joint-likelihood-BS}
--2\ell\left(\theta_{11},\dots, \theta_{k_1,k_2} \vert Y_1,\dots, Y_N, \sigma^2\right)  = \sum_{i=1}^N \sum_{j=2}^{p_i} \log\sigma_{ij}^2 +  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\left[ \sum_{i'=1}^{k_1} \sum_{j'=1}^{k_2} \theta_{i'j'} B_{l,i'}\left(l_{ijk}\right) B_{m,j'}\left(m_{ijk}\right)\right] y_{ik}  \right)^2.
-\end{equation}
+%Substituting this expression for $\phi$ in the negative log likelihood \eqref{eq:full-joint-likelihood} gives
+%\begin{align}
+%\begin{split} \label{eq:full-joint-likelihood-BS}
+%-2\ell\left(\theta_{11},\dots, \theta_{k_l,k_m} \vert Y_1,\dots, Y_N, \sigma^2\right)  = \sum_{i=1}^N \sum_{j=2}^{p_i} \log\sigma_{ij}^2 +  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\left[ \sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \theta_{i'j'} {B_l}_{_{r}}\left(l_{ijk}\right) {B_m}_{_{c}}\left(m_{ijk}\right)\right] y_{ik}  \right)^2.
+%\end{split}
+%\end{align}
 % For fixed $\sigma^2$ as in \eqref{eq:penalized-joint-loglik-given-sigma}, we define the estimator of $\phi$ as the minimizer of 
 %\begin{equation} 
 %-2\ell\left(\phi \vert Y_1,\dots, Y_N\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2 + \lambda J\left( \phi \right),
@@ -95,8 +96,6 @@ Substituting this expression for $\phi$ in the negative log likelihood \eqref{eq
  \end{center}
 \end{figure}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,56 +103,44 @@ Substituting this expression for $\phi$ in the negative log likelihood \eqref{eq
 
 \section{Difference penalties}
 
-By using rich B-spline bases for $l$ and $m$ alongside discrete difference penalties on the spline coefficients, we can achieve as much smoothness of the fitted function in the $l$ and $m$ dimensions as desired. \cite{o1986statistical} was the first to propose using a rich B-spline basis alongside a penalty to restrict the flexibility of the fitted curve. He proposed the curvature penalty as defined for the cubic smoothing spline:
-\begin{equation} \label{eq:second-derivative-penalty}
-J = \int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2.
-\end{equation}
-
-\noindent
-For a function that can be written as linear combination of B-spline basis functions, $\phi\left(v\right) = \sum\limits_{j=1}^k \theta_i B_j\left(v\right)$, one can derive a banded matrix $P$ using the properties of B-splines such that 
+The specification of a P-spline model provides a simple way to avoid the issue of optimal knot selection for the $l$ and $m$ bases. This is done by constructing the marginal B-spline bases with a large number of knots - more than necessary. Application of a smoothness penalty prevents overfitting. A penalty based on discrete differences of the B-spline coefficients controls the fit in a way much like the classical second derivative penalty \eqref{eq:SS-penalty-functional} does. However, its construction is trivial even when the number of basis functions is very large. Using the properties of B-splines, it is straightforward to show that the difference penalty of order $d$ approximates the integrated square of the $d^{th}$ derivative well, sol ittle is lost by using it in place of the derivative-based penalty. \cite{o1986statistical} established that for $f\left(x\right) = \sum\limits_{j=1}^k \theta_j B_j\left(x\right)$, one can derive a banded matrix $P$ using the properties of B-splines such that $J\left(f\right) = \int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2$ can be written
  \[
- J = \theta^\prime P \theta
+J\left(f\right) = \theta^\prime P \theta
  \] 
-  \noindent
- where $\theta = \left(\theta_1,\dots, \theta_k\right)$ denotes the vector of B-spline basis coefficients. The $i$-$j^{th}$ element of the penalty matrix $P$ is given by
- 
+\noindent
+where $\theta = \left(\theta_1,\dots, \theta_k\right)$ denotes the vector of B-spline basis coefficients. The $\left(i,j\right)$ element of the penalty matrix $P$ is given by
  \[
  p_{ij} = \int_0^1 B_i^{\prime \prime}\left(x\right) B_j^{\prime \prime}\left(x\right).
  \]
-\cite{wand2008semiparametric} extend O'Sullivan's work to higher order derivatives for general degree B-splines and derive an exact matrix algebraic expression for the penalty matrices.  The computation of $P$ is nontrivial and becomes very tedious when the third and fourth derivative are used as the roughness measure. In the cubic case, the expression is a result of the application of Simpson's Rule applied to the inter-knot differences since each $B_i^{\prime \prime} B_j^{\prime \prime}$ is a piecewise quadratic function. The penalty may be written
+\cite{wand2008semiparametric} extend the work in \cite{o1986statistical} to higher order derivatives for general degree B-splines and derive an exact matrix algebraic expression for the penalty matrices.  The computation of $P$ is nontrivial and becomes very tedious when the third and fourth derivative are used as the roughness measure. In the cubic case, the expression is a result of the application of Simpson's Rule applied to the inter-knot differences since each $B_i^{\prime \prime} B_j^{\prime \prime}$ is a piecewise quadratic function. The penalty may be written
  \[
  P = \left(B^{\prime \prime}\right)^\prime \textup{diag}\left(\omega \right) B^{\prime \prime}, 
  \]
  \noindent
  where $B^{\prime \prime}$ is the $3\left( k + 7 \right) \times \left( k + 4 \right)$ matrix with $i$-$j^{th}$ entry given by $B_j^{\prime \prime} \left(x_i^*\right)$, $x^*_i$ is the $i^{th}$ element of 
 \[
-\left( \phi_1,\frac{\phi_1+\phi_2}{2},\phi_2,\phi_2,\frac{\phi_2+\phi_3}{2},\phi_3,\dots,\phi_{k+7},\frac{\phi_{k+7}+\phi_{k+8}}{2},\phi_{k+8} \right),
+\left( \theta_1,\frac{\theta_1+\theta_2}{2},\theta_2,\theta_2,\frac{\theta_2+\theta_3}{2},\theta_3,\dots,\theta_{k+7},\frac{\theta_{k+7}+\theta_{k+8}}{2},\theta_{k+8} \right),
 \]
  \noindent
  and $\omega$ is the $3\left(k+7\right) \times 1$ vector given by
 \begin{align*}
-\omega &= \left( \frac{1}{6}\left(\Delta \phi \right)_1,\frac{4}{6}\left(\Delta \phi \right)_1, \frac{1}{6}\left(\Delta \phi \right)_1,\frac{1}{6}\left(\Delta \phi \right)_2, \frac{4}{6}\left(\Delta \phi \right)_2,  \right. \\
-&\qquad   \left. {} \frac{1}{6}\left(\Delta \phi \right)_2 , \dots , \frac{1}{6}\left(\Delta \phi \right)_{n+7}, \frac{4}{6}\left(\Delta \phi \right)_{k+7}, \frac{1}{6}\left(\Delta \phi \right)_{k+7}  \right) \\
+\omega &= \left( \frac{1}{6}\left(\Delta \theta \right)_1,\frac{4}{6}\left(\Delta \theta \right)_1, \frac{1}{6}\left(\Delta \theta \right)_1,\frac{1}{6}\left(\Delta \theta \right)_2, \frac{4}{6}\left(\Delta \theta \right)_2,  \right. \\
+&\qquad   \left. {} \frac{1}{6}\left(\Delta \theta \right)_2 , \dots , \frac{1}{6}\left(\Delta \theta \right)_{n+7}, \frac{4}{6}\left(\Delta \theta \right)_{k+7}, \frac{1}{6}\left(\Delta \theta \right)_{k+7}  \right) \\
 \end{align*}
 \noindent
-where $\left(\Delta \phi \right)_j = \phi_{j+1}-\phi_j$. They generalize this to the case of any order penalty and present a table of formulas for constructing any arbitrary penalty matrix, $P$.  
+where $\left(\Delta \theta \right)_j = \theta_{j+1}-\theta_j$. They generalize this to the case of any order penalty and present a table of formulas for constructing any arbitrary penalty matrix, $P$.  
 
 \bigskip
 
-Alternatively, \cite{eilers1996flexible} proposed replacing the derivative-based penalty \eqref{eq:second-derivative-penalty} with a finite difference penalty on the B-spline coefficients. Using the properties of B-splines, it is straightforward to show that the difference penalty of order $d$ is a good discrete approximation to the integrated square of the $d^{th}$ derivative, so little is lost by using it in place of the derivative-based penalty. The $d^{th}$ order difference penalty is given by 
+Alternatively, \cite{eilers1996flexible} replace the curvature penalty \eqref{eq:SS-penalty-functional} with a finite difference penalty on the B-spline coefficients. They suggest enforcing smoothness of fitted functions $f\left(x\right) = \sum\limits_{j=1}^k \theta_i B_j\left(x\right)$ using the $d^{th}$ order difference penalty:
 \begin{equation} \label{eq:bspline-difference-penalty-1}
-J_d\left( \phi \right) = \sum_{j=d}^n \left(\Delta^d \theta_j\right)^2,
+J_d\left( f \right) = \sum_{j=d}^k \left(\Delta^d \theta_j\right)^2.
 \end{equation} 
 \noindent
-Let $D_d$ denote the matrix difference operator:
+where $\Delta \theta_j = \theta_j - \theta_{j-1}$, and $\Delta^2 \theta_j = \Delta\left(\Delta \theta_j\right) = \theta_j - 2\theta_{j-1} + \theta_{j-2}$. In general, $\Delta^d \theta_j = \Delta\left(\Delta^{d-1} \theta_j \right)$. Let $D_d$ denote the matrix difference operator:
 \[
 D_d\theta = \Delta^d \theta,
 \]
-\noindent
-where $\Delta \theta_j = \theta_j - \theta_{j-1}$, and $\Delta^2 \theta_j = \Delta\left(\Delta \theta_j\right) = \theta_j - 2\theta_{j-1} + \theta_{j-2}$. In general,
-\begin{equation*}
-\Delta^d \theta_j = \Delta\left(\Delta^{d-1} \theta_j \right).
-\end{equation*} 
 \noindent
 Then, \eqref{eq:bspline-difference-penalty-1} can be written in terms of the squared norm of the difference operator applied to the vector of B-spline coefficients:
 \begin{align} 
@@ -163,41 +150,36 @@ J_d\left( f \right) &= \vert \vert D_d\theta \vert \vert^2 \\
 \end{split}
 \end{align}
 \noindent
-where $P_d = D_d^\prime D_d$.  To examine the connection between the second-derivative penalty to the penalty on second-order differences of the B-spline coefficients, we only need to employ straightforward calculus and exploit the recursive property of the B-spline basis functions. Consider a cubic B-spline 
-\[
-f = \sum_{i = 1}^k \theta_i B_{i,3}.
-\]
-The traditional smoothness penalty applied to $f$ is given by
-\begin{equation*} 
-\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2\ = \int_{0}^{1} \left\{ \sum\limits_{j=1}^k  \theta_j B_{j,3}^{\prime \prime}\left(x\right) \right\}^2.
-\end{equation*}
-\noindent
-The derivative properties of B-splines permits this to be written as 
+where $P_d = D_d^\prime D_d$.  The connection between the second-derivative penalty to the penalty on second-order differences of the B-spline coefficients can be established with straightforward calculus and the recursive property of the B-spline basis functions.  The derivative properties of B-splines permits the traditional smoothness penalty applied to $f$ to be written 
+%\begin{equation*} 
+%\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2\;dx = \int_{0}^{1} \left\{ \sum\limits_{j=1}^k  \theta_j B_{j3}^{\prime \prime}\left(x\right) \right\}^2\; dx.
+%\end{equation*}
+%\noindent
 \begin{equation*} \label{eq:second-derivative-bspline-penalty}
-\int_0^1 \left[ f^{\prime \prime}\right]^2\ =  \int_{0}^{1}  \bigg[ \sum\limits_{i=1}^k \sum\limits_{j=1}^k \Delta^2 \theta_i \Delta^2 \theta_j B_{i,1}B_{j,1}\bigg]. 
+\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2\;dx =  \int_{0}^{1}  \bigg[ \sum\limits_{i=1}^k \sum\limits_{j=1}^k \Delta^2 \theta_i \Delta^2 \theta_j B_{i,1}\left(x\right)B_{j,1}\left(x\right) \;dx\bigg]. 
 \end{equation*}
 \noindent
-Most of the cross products of $B_{i,1}$ and $B_{j,1}$ vanish since B-splines of degree 1 only overlap when $j$ is $i-1$, $i$, or $i+1$. Thus, we have that
+where $B_{j,1}\left(x\right)$ is the $j^{th}$ B-spline of order 1. Most of the cross products of $B_{i,1}$ and $B_{j,1}$ vanish since B-splines of degree 1 only overlap when $j$ is $i-1$, $i$, or $i+1$. Thus, we have that
 \begin{align}
 \begin{split}
-\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2  = {} &  \int_0^1 \bigg[ \left( \sum\limits_{j=1}^k \Delta^2 \theta_j  B_j \right)^2  + 2 \sum_{j}\Delta^2 \theta_j\Delta^2 \theta_{j-1}B_{j,1}B_{j-1,1} \bigg]\\ 
-= {} & \sum \limits_{j=1}^k  \left( \Delta^2\theta_j \right)^2 \int_0^1 B_{j,1}^2\ + 2 \sum\limits_{j=1}^k \Delta^2 \theta_j\Delta^2 \theta_{j-1} \int_0^1 B_{j,1}B_{j-1,1} 
+\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2\;dx  = {} &  \int_0^1 \bigg[ \left( \sum\limits_{j} \Delta^2 \theta_j  B_{j,1}\left(x\right) \right)^2  + 2 \sum_{j}\Delta^2 \theta_j\Delta^2 \theta_{j-1}B_{j,1}B_{j-1,1}\left(x\right) \bigg]\;dx\\ 
+= {} & \sum \limits_{j}  \left( \Delta^2\theta_j \right)^2 \int_0^1 B_{j,1}^2\left(x\right)\ + 2 \sum\limits_{j} \Delta^2 \theta_j\Delta^2 \theta_{j-1,1} \int_0^1 B_{j,1}\left(x\right)B_{j-1,1}\left(x\right)\;dx. 
 \end{split}
 \end{align}
 \noindent
-which can be written as
+This can be written as
 \begin{equation} \label{eq:derivative-penalty-difference-penalty-connection}
-\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2  = c_1 \sum\limits_{j=2}^k \left( \Delta^2 \theta_j\right)^2 + c_2 \sum\limits_{j=3}^n \Delta^2 \theta_j\Delta^2 \theta_{j-1}
+\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2  = c_1 \sum\limits_{j} \left( \Delta^2 \theta_j\right)^2 + c_2 \sum\limits_{j} \Delta^2 \theta_j\Delta^2 \theta_{j-1}.
 \end{equation}
 \noindent
 Given a set of equidistant knots, the constants $c_1$ and $c_2$ are given by
 \begin{equation}
 \begin{split}
-c_1 & =   \int_0^1 B_{j,1}^2\\
-c_2 & = \int_0^1 B_{j,1}B_{j-1,1}.
+c_1 & =   \int_0^1 \left(B_{j,1}\left(x\right)\right)^2\;dx \mbox{ and}\\
+c_2 & = \int_0^1 B_{j,1}\left(x\right)B_{j-1,1}\left(x\right) \;dx.
 \end{split}
 \end{equation}
-This establishes that traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \ref{eq:bspline-difference-penalty-1} and the sum of the cross products of neighboring second differences. The second term in \ref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \ref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. We can seamlessly augment the likelihood with the difference penalty to achieve smooth fitted functions without the complexity posed by the derivative-based penalty.
+This establishes that traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \eqref{eq:bspline-difference-penalty-1} and the sum of the cross products of neighboring second differences. The second term in \eqref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \eqref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. 
 
 \bigskip
 
@@ -231,7 +213,7 @@ A smoother sequence of coefficients leads to a smoother curve, as illustrated in
 \caption{\textit{Illustration of the impact of the second order difference penalty. The number of B-splines used is the same in each plot, with the value of the penalty parameter increasing from left to right and top to bottom across each plot. The red circles are the values of each of the B-spline coefficients; as the penalty increases, they form as smoother sequence as we move across the four plots, which results in a smoother fitted function. As the penalty parameter approaches infinity, the fit approaches a linear function as shown in the bottom right plot.}}
 \label{fig:increasing-lambda-pspline-fits}
 \end{figure}
-P-splines can fit polynomial data exactly. If the true underlying function to be estimation is a polynomial in $l$ of degree $k$, then B-splines of degree $k$ or higher will fit the data perfectly. The proof of this requires a bit of mathematical labor and is left to Appendix~\ref{psplines-appendix}. Additionally, the limiting P-spline fit approaches a polynomial as the smoothing parameter tends to infinity.  As $\lambda \rightarrow \infty$, under a difference penalty of order $d$, the fitted function will approach a polynomial of degree $d-1$ as long as the degree of the B-splines is greater than or equal to $k$. Figure~\ref{fig:PS-difference-order-demo} demonstrates the impact of the order of the penalty on the fitted function as the smoothing parameter increases. To verify this mathematically, we need to use the relationship between the differenced coefficient sequence and the derivative of a B-spline - see Appendix~\ref{psplines-appendix}. Consider using the second-order difference penalty; when $\lambda$ is large, the penalty dominates the penalized likelihood, so that the minimizer $\theta$ must be such that $\sum_{j=3}^k\left(\Delta^2\theta_j\right)^2$ is close to zero. Consequently, each of the individual second differences must also be nearly zero, and thus the second derivative of the fitted function must be close to zero over the entire domain.
+The limiting P-spline fit approaches a polynomial as the smoothing parameter tends to infinity. Under a difference penalty of order $d$, the fitted function will approach a polynomial of degree $\left(d-1\right)$ for large values of the smoothing parameter as long as the degree of the B-splines is greater than or equal to $k$. Figure~\ref{fig:PS-difference-order-demo} demonstrates the impact of the order of the penalty on the fitted function as the smoothing parameter increases. To verify this mathematically, we need to use the relationship between the differenced coefficient sequence and the derivative of a B-spline. See Appendix~\ref{psplines-appendix}. Consider using the second-order difference penalty; when $\lambda$ is large, the penalty dominates the penalized likelihood, so that the minimizer $\theta$ must be such that $\sum\limits_{j}\left(\Delta^2\theta_j\right)^2$ is close to zero. Consequently, each of the individual second differences must also be nearly zero, and thus the second derivative of the fitted function must be close to zero over the entire domain.
 \begin{figure}[H]
 \begin{subfigure}{.5\textwidth}
   \centering
@@ -276,73 +258,77 @@ P-splines can fit polynomial data exactly. If the true underlying function to be
 
 \section{The P-spline Estimator of the Generalized Autoregressive Varying Coefficient}
 
-To extend the use of the difference penalty \eqref{eq:bspline-difference-penalty-1} to the bivariate setting, the only necessary modification to the one-dimensional differencing procedure is the addition of a second difference penalty, one for each variable $l$ and $m$. The explicit form of the minimizer of the penalized log likelihood is available, but for exposition, we first need to establish some notation. The smooth varying coefficient function $\phi$ evaluated at a $n_1 \times n_2$ grid of points over the $l \times m$ plane may be written 
-\begin{equation*} 
-\vphistar = B_2 \Theta B'_1
-\end{equation*}
-\noindent 
-where $B_1$ is the $n_1 \times k_1$ matrix with $i^{th}$ column equal to the $i^{th}$ B-spline basis function for $l$ evaluated at the grid points $l_1,\dots l_{n_1}$,  $B_2$ is the $n_2 \times k_2$ matrix with $j^{th}$ column equal to the $j^{th}$ B-spline basis function for $m$ evaluated at the grid points $m_1,\dots m_{n_2}$. The matrix $\Theta$ denotes the $k_1 \times k_2$ matrix of tensor product coefficients, with elements $\theta_{ij}$. Smoothing $\phi$ in the $l$ direction can be achieved by applying a difference penalty to the rows of $\Theta$, and similarly in the $m$ direction by applying a difference penalty to the columns. We take $\phi_\lambda$ to be the minimizer of 
+To extend the use of the difference penalty \eqref{eq:bspline-difference-penalty-1} to the bivariate setting, the only necessary modification to the one-dimensional differencing procedure is the addition of a second difference penalty so that there is a penalty for each variable, $l$ and $m$. matrix of coefficients. Let $\Theta$ denote the $k_l \times k_m$ matrix of basis coefficients $\left\{\theta_{rc}\right\}$. For given $\Theta$, the fitted value $\phi\left(l,m\right)$ may be written 
+\[
+\sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \theta_{rc} {B_l}_{_{r}}\left(l\right){B_m}_{_{c}}\left(m\right).
+\]
+\noindent
+We take $\phi_\lambda$ to be the minimizer of 
 \begin{align} 
 \begin{split}\label{eq:folded-difference-penalty-log-likelihood}
-&-2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \sigma^{-2}\left({t_{ij}}\right) \left(y_{ij} - \sum_{k=1}^{j-1} \left( \sum_{r=1}^{k_1} \sum_{c=1}^{k_2} \theta_{rc} B_r\left(l_{ijk}\right)B_c\left(m_{ijk}\right)\right)y_{ik} \right)^2 \\ 
-&\phantom{{}-2\ell\left(\phi \vert Y_1,\dots, Y_N\right) + J\left(\phi\right) = {}} + \lambda_l \sum_{r=1}^{k_1} \vert D_{d_{\ms l}} \theta_{r \cdot} \vert^2 + \lambda_m \sum_{c=1}^{k_2} \vert D_{d_{\ms m}} \theta_{\cdot c} \vert^2.
+&-2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}\left({t_{ij}}\right)} \left(y_{ij} - \sum_{k=1}^{j-1} \left( \sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \theta_{rc} B_r\left(l_{ijk}\right)B_c\left(m_{ijk}\right)\right)y_{ik} \right)^2 \\ 
+&\phantom{{} - 2\ell\left(\phi \vert Y_1,\dots, Y_N\right) + J\left(\phi\right) =  } + \lambda_l \sum_{r=1}^{k_l} \vert\vert \theta_{r \cdot}  D_{d_{\ms l}} \vert\vert^2 + \lambda_m \sum_{c=1}^{k_m}\vert \vert  D_{d_{\ms m}} \theta_{\cdot c} \vert\vert^2,
 \end{split}
 \end{align}
 \noindent
-where $\theta_{r \cdot}$ and $\theta_{\cdot c}$ denote the $r^{th}$ row and $c^{th}$ column of $\Theta$, respectively. The first term in \ref{eq:folded-difference-penalty-log-likelihood} imposes a difference penalty of order $d_{\ms l}$ on the rows of the coefficient matrix while the second term places a difference penalty (of possible different order $d_{\ms m}$) on the columns. We give each direction its own smoothing parameter to permit anisotropic smoothing; however, one could opt to use a single smoothing parameter for both directions and dodge the added work of optimizing the amount of smoothing with two separate parameters. 
+where $\theta_{r \cdot}$ and $\theta_{\cdot c}$ denote the $r^{th}$ row and $c^{th}$ column of $\Theta$, respectively. The second term in \eqref{eq:folded-difference-penalty-log-likelihood} imposes a difference penalty of order $d_{\ms l}$ on the rows of the coefficient matrix, while the third term places a difference penalty of order $d_{\ms m}$ on the columns. 
 
 \bigskip
 
-The penalized log likelihood is quadratic in $\theta = \left(\theta_{11}, \dots, \theta_{k_1, k_2} \right)'$, and computation is quite simple if we express the coefficient matrix in ``unfolded'' notation. This allows us to express the varying coefficient function at the observed within-subject pairs of observation times as in the usual multiple regression form:
+The penalized log likelihood is quadratic in $\theta = \left(\theta_{11}, \dots, \theta_{k_l, k_m} \right)'$. Demonstration of computation is simple if we express the coefficient matrix $\Theta$ in ``unfolded'' notation so that we can write the mean of the stacked response vector $Y$ as defined in \eqref{eq:stacked-response-vector} as in the usual multiple regression form
 \begin{equation*}
-\mbox{vec}\left\{\phi\left( \bfv \right)\right\} = B \theta
+E\left[Y \right] = X\mbox{vec}\left\{\phi\left( \bfv \right)\right\} = X B \theta,
 \end{equation*}
 \noindent
-Stacking the columns of $\Theta$ gives the vectorized coefficient matrix $\theta = \mbox{vec}\left( \Theta \right)$. The $\vert V \vert \times k_1 k_2$ tensor product basis $B$ is constructed from the tensor product of the marginal B-spline bases defined in \citet{eilers2006fast} as the \textit{row-wise Kronecker product} of the individual bases:
+where $\theta = \mbox{vec}\left( \Theta \right)$ denotes the vectorized coefficient matrix constructed by stacking the columns of $\Theta$. The $\vert V \vert \times k_l k_m$ tensor product basis $B$ is constructed from the tensor product of the marginal B-spline bases defined in \citet{eilers2006fast} as the \textit{row-wise Kronecker product} of the individual bases:
 \begin{equation} \label{eq:rowwise-kronecker-product}
-B = B_2 \square B_1 = \left( B_2 \otimes 1^\prime_{k_2} \right) \odot \left(1^\prime_{k_1} \otimes  B_1  \right).
+B = B_m \square B_l = \left( B_m \otimes 1^\prime_{k_m} \right) \odot \left(1^\prime_{k_l} \otimes  B_l  \right).
 \end{equation}
 \noindent
-The operator $\odot$ denotes the element-wise matrix product; $1_{k_1}$ ($1_{k_2}$) denotes the column vector of ones having length $k_1$ ($k_2$.) The operations in \eqref{eq:rowwise-kronecker-product} construct $B$ such that the $i^{th}$ row of $B_2\square B_1$ is the Kronecker product of the corresponding rows of $B_2$ and $B_1$. The penalty in \eqref{eq:folded-difference-penalty-log-likelihood} can also be compactly expressed:
+The operator $\odot$ denotes the element-wise matrix product; $1_{k_l}$ ($1_{k_m}$) denotes the column vector of ones having length $k_l$ ($k_m$.) The operations in \eqref{eq:rowwise-kronecker-product} construct $B$ such that the $i^{th}$ row of $B_m\square B_l$ is the Kronecker product of the corresponding rows of $B_m$ and $B_l$. We can compactly express the penalty in \eqref{eq:folded-difference-penalty-log-likelihood} by writing
 \begin{equation*} \label{eq:tensor-product-penalty}
 \lambda_l \vert \vert P_l \theta \vert \vert^2 + \lambda_m \vert \vert P_m \theta \vert\vert^2
 \end{equation*}
 \noindent
-where $P_l = I_{k_2} \otimes D'_{d_{\ms l}} D_{d_{\ms l}} $ and $P_m =  D'_{d_{\ms m}} D_{d_{\ms m}} \otimes I_{k_1}$. We define $Y$, the vector of stacked subject-specific vectors,  as before, and the matrix $X$ of autoregressive covariates as previously \eqref{eq:ar-design-matrix-1} so that \eqref{eq:folded-difference-penalty-log-likelihood} can be written in matrix form as
+where $P_l = I_{k_m} \otimes D'_{d_{\ms l}} D_{d_{\ms l}} $ and $P_m =  D'_{d_{\ms m}} D_{d_{\ms m}} \otimes I_{k_l}$. The $n_Y \times k_lk_m$  matrix $X$ is defined as before \eqref{eq:ar-design-matrix-1}. Then the log likelihood \eqref{eq:folded-difference-penalty-log-likelihood} can be written as
 \begin{equation} \label{eq:tensor-pspline-objective-function}
--2\ell\left(\phi \vert Y_1,\dots, Y_N\right) + J\left(\phi\right) = \left( Y - XB\theta\right)^\prime D^{-1}\left( Y - XB\theta\right)  + \lambda_l\vert\vert P_l \theta \vert\vert^2 + \lambda_m \vert\vert P_m \theta\vert \vert^2,
+-2\ell\left(\phi \vert Y_1,\dots, Y_N\right) + J\left(\phi\right) = \left( Y - XB\theta\right)^\prime D^{-1}\left( Y - XB\theta\right)  + \lambda_l\vert\vert P_l \theta \vert\vert^2 + \lambda_m \vert\vert P_m \theta\vert \vert^2.
 \end{equation}
 \noindent
-with $\hat{\theta}$ solving the system of equations 
+Taking derivatives and setting equal to zero gives normal equations:
 \begin{equation} \label{eq:tensor-pspline-normal-equations}
 \left[ \left(XB\right)^\prime D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m\right]\theta = \left(X B\right)^\prime D^{-1}Y.
 \end{equation}
-
 \noindent
-From \eqref{eq:tensor-pspline-normal-equations}, we note that the system of equations depends on basis coefficients remains fixed at $k_1 k_2$, even as the number of observations increases. The grid of regression coefficients can be recovered by arranging the elements of $\hat{\theta}$ into a matrix of $k_1$ columns having length $k_2$. The vector of fitted values is given by 
-
+The solution $\phi_\lambda$ is given by $\phi_\lambda\left(\bfv\right) = \sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \hat{\theta}_{rc} {B_l}_{_{r}}\left(l\right){B_m}_{_{c}}\left(m\right)$, where
+\begin{equation} 
+\hat{\theta} = \left[ \left(XB\right)^\prime D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m\right]^{-1} \left(X B\right)^\prime D^{-1}Y.
+\end{equation}
+\noindent
+From \eqref{eq:tensor-pspline-normal-equations}, we note that the system of equations depends on basis coefficients remains fixed at $k_l k_m$, even as the number of observations increases. The grid of regression coefficients can be recovered by arranging the elements of $\hat{\theta}$ into a matrix of $k_l$ columns having length $k_m$. The vector of fitted values is given by 
 \begin{align}
 \begin{split} \label{eq:pspline-smoothing-matrix}
-\hat{Y} &= X \left[ \left(XB\right)^\prime D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m\right] \left(X B\right)^\prime D^{-1}Y\\
-&= AY
+\hat{Y} = AY  = X \left[ \left(XB\right)^\prime D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m\right]^{-1} \left(X B\right)^\prime D^{-1}Y,
 \end{split}
 \end{align}
-
 \noindent
 where $A = X \left[ \left(XB\right)' D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m\right] \left(X B\right)' D^{-1}$ is the ``smoothing'' matrix, analogous to the smoothing matrix $\tilde{A}$ \eqref{eq:smoothing-matrix-A-tilde} for the smoothing spline estimator in Chapter~\ref{SSANOVA-chapter}. Its use in smoothing parameter selection and model tuning is similar to the reproducing kernel Hilbert space framework, which we will discuss in the next section.
 
 \bigskip
 
-This recipe for constructing a tensor product basis for $\phi$ is an easy and convenient way to construct a two-dimensional basis for a bivariate function with domain corresponding to the unit square. However, the domain autoregressive coefficient function, $\phi$, lies on the lower triangle of the unit square $0 < s < t < 1$:
+It is important to note that the construction of the tensor product basis $B$ and penalty matrix $P$ requires special care in this setting, where the domain of ${\phi}\left(l,m\right)$ is restricted to the region satisfying $0 \le s < t \le 1$, which is shown in Figure~\ref{fig:triangle-domain}.
 
-\begin{figure}[H] \label{fig:triangle-domain}
+\begin{figure}[H]
     \graphicspath{{img/}}
  \includegraphics[scale=0.2]{knot-removal-on-triangle-domain.png}
- \caption{$\frac{l}{2} < m < 1 - \frac{l}{2}, \quad 0 < l < 1.$}
+ \caption{$\frac{l}{2} < m < 1 - \frac{l}{2}, \quad 0 < l < 1.$} \label{fig:triangle-domain}
  \end{figure}
 
+When the tensor product basis is constructed on the regular grid defined by the cartesian product of the knots of the marginal bases $B_l$ and $B_m$, a large number of basis functions anchored are at knots near which we have no data, so there is little information about the corresponding basis coefficient. As a result, the resulting tensor product matrix can be ill-conditioned and solving \eqref{eq:tensor-pspline-normal-equations} results in singularities. In this case, the quality of the estimator can suffer terribly. To correct for this instability, one can simply remove the knots corresponding to tensor products functions which do not overlap with the function domain from the basis, $B$, and trimming the penalty matrices $P_l$ and $P_m$ as needed. With the trimmed basis and penalties, optimization can be carried out as previously discussed. 
 
-When the tensor product basis is constructed on the regular grid defined by the cartesian product of the knots of the marginal bases $B_1$ and $B_2$, a large number of basis functions anchored are at knots near which we have no data, so there is little information about the corresponding basis coefficient. As a result, the resulting tensor product matrix can be ill-conditioned and solving \eqref{eq:tensor-pspline-normal-equations} results in singularities. In this case, the quality of the estimator can suffer terribly. To correct for this instability, one can simply remove the knots corresponding to tensor products functions which do not overlap with the function domain from the basis, $B$, and trimming the penalty matrices $P_l$ and $P_m$ as needed. With the trimmed basis and penalties, optimization can be carried out as previously discussed. Alternatively, one could employ the use of multidimensional B-splines for the construction of the basis for $\bfv = \left(l,m\right)$. There is little about multidimensional splines in the Statistics literature - likely because the computational complexity associated with these methods, however, some in the field of computer graphics have proposed the use of their use for smoothing over arbitrary function domains, which are approximated by triangulations. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. 
+\bigskip
+
+Alternatively, one could employ the use of multidimensional B-splines for the construction of the basis for $\bfv = \left(l,m\right)$. There is little about multidimensional splines in the Statistics literature - likely because the computational complexity associated with these methods, however, some in the field of computer graphics have proposed the use of their use for smoothing over arbitrary function domains, which are approximated by triangulations. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,7 +394,7 @@ When the tensor product basis is constructed on the regular grid defined by the 
 %% 
 % \subsection{Regularization with difference penalties} \label{subsection:univariate-psplines}
 %
-%The minimizer of \ref{eq:loglikelihood} honors the fidelity to the data, so to balance the complexity of the fitted function with the goodness of fit to the data, we can append a penalty to the negative log likelihood to control the fitted function. By using rich B-spline bases for $l$ and $m$ alongside discrete difference penalties on the spline coefficients, we can achieve as much smoothness of the fitted function in both the $l$ and $m$ dimensions as desired. \cite{o1986statistical} was the first to propose using a rich B-spline basis and using a penalty to restrict the flexibility of the fitted curve, like \cite{wahba1990spline} applying a penalty to the second derivative of the fitted curve:
+%The minimizer of \eqref{eq:loglikelihood} honors the fidelity to the data, so to balance the complexity of the fitted function with the goodness of fit to the data, we can append a penalty to the negative log likelihood to control the fitted function. By using rich B-spline bases for $l$ and $m$ alongside discrete difference penalties on the spline coefficients, we can achieve as much smoothness of the fitted function in both the $l$ and $m$ dimensions as desired. \cite{o1986statistical} was the first to propose using a rich B-spline basis and using a penalty to restrict the flexibility of the fitted curve, like \cite{wahba1990spline} applying a penalty to the second derivative of the fitted curve:
 %\[
 %J = \int_0^1 \left[ f^{\prime \prime}\left(l\right)\right]^2\;dx.
 %\]
@@ -452,7 +438,7 @@ When the tensor product basis is constructed on the regular grid defined by the 
 %\Delta^d \theta_j = \Delta\left(\Delta^{d-1} \theta_j \right).
 %\end{equation*} 
 %\noindent
-%Then, \ref{eq:bspline-difference-penalty} can be written in terms of the squared norm of the difference operator applied to the vector of B-spline coefficients:
+%Then, \eqref{eq:bspline-difference-penalty} can be written in terms of the squared norm of the difference operator applied to the vector of B-spline coefficients:
 %\begin{align} 
 %\begin{split} \label{eq:bspline-difference-penalty-vector-form}
 %J_d\left( f \right) &= \vert \vert D_d\theta \vert \vert^2 \\
@@ -463,15 +449,15 @@ When the tensor product basis is constructed on the regular grid defined by the 
 %where $P_d = D_d^\prime D_d$.  To examine the connection between the second-derivative penalty to the penalty on second-order differences of the B-spline coefficients, we only need to employ straightforward calculus and exploit the recursive property of the B-spline basis functions:
 %
 %\begin{equation*} 
-%\int_0^1 \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx = \int_{0}^{1} \left\{ \sum\limits_{j=1}^n  \theta_j B_{j,3}^{\prime \prime} \left(l\right) \right\}^2\; dl.
+%\int_0^1 \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx = \int_{0}^{1} \left\{ \sum\limits_{j=1}^n  \theta_j B_{j3}^{\prime \prime} \left(l\right) \right\}^2\; dl.
 %\end{equation*}
 %\noindent
 %The derivative properties of B-splines permits this to be written as 
 %\begin{equation*} \label{eq:second-derivative-bspline-penalty}
-%\int_0^1 \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx =  \int_{0}^{1}  \bigg[ \sum\limits_{j=1}^n \sum\limits_{k=1}^n \Delta^2 \theta_j \Delta^2 \theta_k B_{j,1}\left(l\right)B_{k,1}\left(l\right)\bigg]\; dl  . 
+%\int_0^1 \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx =  \int_{0}^{1}  \bigg[ \sum\limits_{j=1}^n \sum\limits_{k=1}^n \Delta^2 \theta_j \Delta^2 \theta_k B_{j1}\left(l\right)B_{k,1}\left(l\right)\bigg]\; dl  . 
 %\end{equation*}
 %\noindent
-%Most of the cross products of $B_{j,1}\left(x\right)$ and $B_{k,1}\left( x \right)$ vanish since B-splines of degree 1 only overlap when $j$ is $k-1$, $k$, or $k+1$. Thus, we have that
+%Most of the cross products of $B_{j1}\left(x\right)$ and $B_{k,1}\left( x \right)$ vanish since B-splines of degree 1 only overlap when $j$ is $k-1$, $k$, or $k+1$. Thus, we have that
 %\begin{align}
 %\begin{split}
 %\int_0^1 \left[ f^{\prime \prime}\left(x\right)\right]^2\;dx  = {} &  \int_0^1 \bigg[ \left\{ \sum\limits_{j=1}^n   \Delta^2 \theta_j  B_j\left(l,1\right)  \right\}^2  + 2 \sum_{j}\Delta^2 \theta_j\Delta^2 \theta_{j-1}B_j\left(l,1\right)B_{j-1}\left(l,1\right) \bigg]\; dl \\ 
@@ -488,12 +474,12 @@ When the tensor product basis is constructed on the regular grid defined by the 
 %Given a set of equidistant knots, the constants $c_1$ and $c_2$ are given by
 %\begin{equation}
 %\begin{split}
-%c_1 & =   \int_0^1 B_{j,1}^2\left(x\right) dx\\
-%c_2 & = \int_0^1 B_{j,1}\left(x\right)B_{j-1,1}\left(x\right) dx.
+%c_1 & =   \int_0^1 B_{j1}^2\left(x\right) dx\\
+%c_2 & = \int_0^1 B_{j1}\left(x\right)B_{j-1,1}\left(x\right) dx.
 %\end{split}
 %\end{equation}
 %
-%This gives us that the traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \ref{eq:bspline-difference-penalty} and the sum of the cross products of neighboring second differences. The second term in \ref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \ref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. We can seamlessly augment the likelihood with the difference penalty to achieve smooth fitted functions without the complexity posed by the derivative-based penalty.
+%This gives us that the traditional smoothness penalty on the squared second derivative can be written as a linear combination of a penalty on the second-order differences of the B-spline coefficients \eqref{eq:bspline-difference-penalty} and the sum of the cross products of neighboring second differences. The second term in \eqref{eq:derivative-penalty-difference-penalty-connection} leads to a complex objective function when minimizing the penalized likelihood, where seven adjacent spline coefficients occur, as opposed to five if only the first term in \eqref{eq:derivative-penalty-difference-penalty-connection} is used in the penalty. The added complexity is a consequence of overlapping B-splines, which quickly increases when using higher order differences and higher order B-splines. We can seamlessly augment the likelihood with the difference penalty to achieve smooth fitted functions without the complexity posed by the derivative-based penalty.
 %%citet{chen2011efficient}, citet{pourahmadi1999joint}, and citet{pourahmadi2002dynamic} have elicited parametric models for the generalized autoregressive coefficients, letting the GARPs depend only on the distance between two time points.
 %
 %A smoother sequence of coefficients leads to a smoother curve, as illustrated in Figure~\ref{fig:second_ord_PS_pen_SML_lambda}.  The relationship between P-spline curves and their coefficients is easily characterized if we consider the coefficients as the skeleton of the function, and draping the B-splines over them puts the flesh on the bones. As long as the coefficient sequence is smooth, the number of basis functions (and coefficients) is unimportant since the penalty ensures the smoothness of the skeleton and that the fitting procedure is well-conditioned. Figure~\ref{fig:overcomplete_basis_pspline} illustrates this utility of the penalty for simulated data; there are $m=10$ observations and $60$ cubic B-splines. This property of P-splines cannot be overly appreciated because it frees us from the concern of choosing the optimal set of knots. Unless computational constraints are of concern, which is possible with large models, it is prudent to use even more B-splines. Figure~\ref{fig:PS_penalty_section_figure_2} shows how the fitted function changes as the tuning parameter varies when the data are sparsely sampled. P-splines enjoy a number of additional advantageous properties, many of which are inherited from the attractive properties of B-splines. See \cite{eilers1996flexible}  for a detailed presentation. 
@@ -561,7 +547,7 @@ When the tensor product basis is constructed on the regular grid defined by the 
 %\end{equation*}
 %
  
-%The parameters of the functional autoregressive model given by \ref{eq:MyModel} define the elements of the precision matrix $\Omega$, rather than the elements of $\Sigma$ itself. It is well known that if we let $Y = \left(Y_1, \dots, Y_m\right)^\prime$ denote the random vector having joint distribution with mean zero and covariance matrix $\Sigma$, then the elements of $\Sigma^{-1}=\Omega$, $\left\{ \omega_{ij} \right\}$ may be interpreted as partial covariances between the elements of $Y$. This suggests shrinking $\phi$ to zero for large values of $l$. One can show that if $T$ has $k$ non-zero diagonals, then the middle $k$ diagonals of $\Sigma^{-1}$ are non-zero.  
+%The parameters of the functional autoregressive model given by \eqref{eq:MyModel} define the elements of the precision matrix $\Omega$, rather than the elements of $\Sigma$ itself. It is well known that if we let $Y = \left(Y_1, \dots, Y_m\right)^\prime$ denote the random vector having joint distribution with mean zero and covariance matrix $\Sigma$, then the elements of $\Sigma^{-1}=\Omega$, $\left\{ \omega_{ij} \right\}$ may be interpreted as partial covariances between the elements of $Y$. This suggests shrinking $\phi$ to zero for large values of $l$. One can show that if $T$ has $k$ non-zero diagonals, then the middle $k$ diagonals of $\Sigma^{-1}$ are non-zero.  
 
 %For ease of exposition, we first focus our attention on the estimation of $\phi$ assume that $\sigma^2\left(t\right)$ is fixed and known. Estimation of the innovation variance function is presented in Section~\ref{section:variance-estimation}. In the case that subjects share a common set of observation times $t_1 < \dots < t_m$,  it is well known that the MLE for $\Sigma$, $S = \sum_{i=1}^N y_i y_i^\prime$ is highly unstable in high dimensions, a condition that is potentially worsened when one or more subjects has at least one observation time that is unique from the set of observation times common across subjects. To mitigate instability due to high dimensionality and simultaneously permit the estimation of $\phi\left(\cdot,\cdot\right)$ as a smooth bivariate function, we obtain a covariance estimator by applying bivariate smoothing of the elements of the Cholesky factor. 
 
@@ -570,16 +556,13 @@ When the tensor product basis is constructed on the regular grid defined by the 
 \section{Smoothing parameter selection}
 
 %\subfile{chapter-3-subfiles/chapter-3-tensor-product-pspline-model-selection}
-\subsubsection{The limiting behaviour of $H_\lambda$}
-
 As with the RKHS framework and accompanying smoothing spline representation, the smoothing matrix  
 
-\begin{equation}\label{eq:pspline-smoothing-matrix}
+\begin{equation*}\label{eq:pspline-smoothing-matrix}
 A_\lambda = X \big( \left(X B\right)' D^{-1} XB +  \lambda_l P_l+ \lambda_m P_m \big)^{-1}\left(X B\right)' D^{-1}
-\end{equation}
-
+\end{equation*}
 \noindent
-and its properties play an integral role in selecting the optimal smoothing parameter in any regularized regression, including the P-spline framework. We discussed the leave-one-subject-out cross validation score \eqref{eq:LOSOCV} and its computationally efficient approximation \eqref{eq:approx-losocv} in Chapter~\ref{SSANOVA-chapter}, which rely directly on the smoothing matrix for calculation. The results in \cite{xu2012asymptotic} are basis agnostic, so we can employ the losoCV criterion for selecting P-spline smoothing parameters as in the smoothing spline setting by replacing $\tildeA_{\lambda,\bftheta}$ with $A_\lambda$. 
+and its properties play an integral role in selecting the optimal smoothing parameter in any regularized regression, including the P-spline framework. We discussed the leave-one-subject-out cross validation score \eqref{eq:LOSOCV} and its computationally efficient approximation \eqref{eq:approx-losocv} in Chapter~\ref{SSANOVA-chapter}, which rely directly on the smoothing matrix for calculation. The model selection criteria discussed in Section~\ref{gaussian-unbiased-risk-estimate}  can be calculated as in the smoothing spline setting by replacing $\tildeA_{\lambda,\bftheta}$ with $A_\lambda$. For detailed discussion of P-spline model selection with respect to multiple smoothing parameters, see \cite{wood2017generalized}.
 
 \bigskip
 
@@ -600,7 +583,7 @@ and its properties play an integral role in selecting the optimal smoothing para
 %\end{align*}
 %
 %\noindent
-%which requires computing the trace of a $k_1k_2 \times k_1k_2$ matrix, which is computationally more economical when the total number of basis functions is smaller than the total number of observations. This approach to approximating the effective model dimension is also consistent with \cite{ye1998measuring}, who constructed a generalization of the concept of a model's degrees of freedom using the idea that the degrees of freedom can also be interpreted as the sum of the sensitivity of each fitted value with respect to the corresponding observed value.
+%which requires computing the trace of a $k_lk_m \times k_lk_m$ matrix, which is computationally more economical when the total number of basis functions is smaller than the total number of observations. This approach to approximating the effective model dimension is also consistent with \cite{ye1998measuring}, who constructed a generalization of the concept of a model's degrees of freedom using the idea that the degrees of freedom can also be interpreted as the sum of the sensitivity of each fitted value with respect to the corresponding observed value.
 %
 %\bigskip
 %
@@ -622,17 +605,17 @@ and its properties play an integral role in selecting the optimal smoothing para
 %\noindent
 %Finally we have that
 %\begin{equation*}
-%\mbox{tr}\left(A_\lambda \right) = \mbox{tr}\bigg[\left(I + \lambda Q^{-{1/2}}Q_\lambda Q^{-{1/2}}  \right)^{-1} \bigg] = \sum_{j=1}^{k_1k_2} \frac{1}{1 + \lambda \gamma_j},
+%\mbox{tr}\left(A_\lambda \right) = \mbox{tr}\bigg[\left(I + \lambda Q^{-{1/2}}Q_\lambda Q^{-{1/2}}  \right)^{-1} \bigg] = \sum_{j=1}^{k_lk_m} \frac{1}{1 + \lambda \gamma_j},
 %\end{equation*}
 %
 %\noindent
-%where $\gamma_j$, $j=1,\dots,k_1k_2$ are the eigenvalues of $Q^{-{1/2}}Q_\lambda Q^{-{1/2}}$. The matrix constructed from the sum of the penalty terms, $Q_\lambda$, has exactly $d_l + d_m$ eigenvalues equal to zero. Hence, $Q^{-{1/2}}Q_\lambda Q^{-{1/2}} $ has $d_l + d_m$ eigenvalues equal to zero, so for large $\lambda$, only the $d_l + d_m$ terms with $\gamma_j=0$ contribute to the sum which gives the trace of $A_\lambda$. Then
+%where $\gamma_j$, $j=1,\dots,k_lk_m$ are the eigenvalues of $Q^{-{1/2}}Q_\lambda Q^{-{1/2}}$. The matrix constructed from the sum of the penalty terms, $Q_\lambda$, has exactly $d_l + d_m$ eigenvalues equal to zero. Hence, $Q^{-{1/2}}Q_\lambda Q^{-{1/2}} $ has $d_l + d_m$ eigenvalues equal to zero, so for large $\lambda$, only the $d_l + d_m$ terms with $\gamma_j=0$ contribute to the sum which gives the trace of $A_\lambda$. Then
 % 
 % \[
 %\lim_{\lambda \rightarrow \infty  } \mbox{tr}\left(A_\lambda\right) = d_l + d_m.
 % \]
 %
-%%A further simplification of \ref{eq:hat-matrix-trace}
+%%A further simplification of \eqref{eq:hat-matrix-trace}
 %%
 %%\begin{align*} 
 %%\left(B^T B + \lambda D^T D \right)^{-1} B^T B &= \left(B^T B + \lambda D^T D \right)^{-1} \left( B^T B + \lambda D^T D - \lambda D^T D\right) \nonumber \\
@@ -645,7 +628,7 @@ and its properties play an integral role in selecting the optimal smoothing para
 %%&= I - \lambda\left(B^T B + \lambda D^T D \right)^{-1} D^T D \label{eq:cyclic_hat_matrix_simplification}
 %%\end{align*}
 %
-%This clearly shows that the effective dimension is always less than $k_1k_2$, the number of B-spline used in the regression basis; further, the effective dimension is always smaller than $\min\left(\sum_{i=1}^N p_i - N, k_1k_2\right)$. This is visually demonstrated in Figure~\ref{fig:pspline-limiting-effective-dimension}, which displays impact of the smoothing parameter on the effective dimension of the P-spline fit to the simulated data shown in Figure~\ref{fig:overcomplete-pspline-basis}. As $\lambda$ increases, the effective dimension approaches the order of the difference penalty. Even for small $\lambda$, the effective dimension never exceeds the number of observations, so there are no issues when fitting P-splines with many more basis functions than observations. 
+%This clearly shows that the effective dimension is always less than $k_lk_m$, the number of B-spline used in the regression basis; further, the effective dimension is always smaller than $\min\left(\sum_{i=1}^N p_i - N, k_lk_m\right)$. This is visually demonstrated in Figure~\ref{fig:pspline-limiting-effective-dimension}, which displays impact of the smoothing parameter on the effective dimension of the P-spline fit to the simulated data shown in Figure~\ref{fig:overcomplete-pspline-basis}. As $\lambda$ increases, the effective dimension approaches the order of the difference penalty. Even for small $\lambda$, the effective dimension never exceeds the number of observations, so there are no issues when fitting P-splines with many more basis functions than observations. 
 %
 %\begin{figure}[H]
 %\begin{center}
@@ -654,23 +637,21 @@ and its properties play an integral role in selecting the optimal smoothing para
 %\caption{\textit{The limiting behaviour of the trace of the smoothing matrix $A_\lambda$ as the smoothing parameter increases for the P-spline fit to the 10 observations using 60 B-spline basis functions, shown in Figure~\ref{fig:overcomplete-pspline-basis}. For weakly enforced smoothing, the effective dimension is equal to the number of observations, and as $\lambda \rightarrow \infty$, the effective dimension approaches the order of the difference penalty.}} \label{fig:pspline-limiting-effective-dimension}
 %\end{center}
 %\end{figure}
-
-The effective model dimension is closely connected to model selection criteria; \cite{eilers1996flexible} propose the use of the Akaike information criterion (AIC) for selecting the optimal value of the smoothing parameters $\lambda = \left(\lambda_l, \lambda_m\right)$, which is equivalent to the unbiased risk estimator discussed in Chapter~\ref{SSANOVA-chapter} under a Gaussian likelihood. For a detailed discussion of the connection between the unbiased risk estimate and AIC in the non-gaussian case, see \cite{wood2017generalized}, Chapter 4, Section 5. The same reference provides a detailed discussion of computational methods for minimizing the unbiased risk estimate with respect to multiple smoothing parameters. The algorithm shares the same basic structure as the one outlined in Section~\ref{gaussian-unbiased-risk-estimate}, with modifications on the derivatives and the Hessians to account for the fact that the P-spline basis and penalty are constructed independently of one another.
-
+%
+%The effective model dimension is closely connected to model selection criteria; \cite{eilers1996flexible} propose the use of the Akaike information criterion (AIC) for selecting the optimal value of the smoothing parameters $\lambda = \left(\lambda_l, \lambda_m\right)$, which is equivalent to the unbiased risk estimator discussed in Chapter~\ref{SSANOVA-chapter} under a Gaussian likelihood. For a detailed discussion of the connection between the unbiased risk estimate and AIC in the non-gaussian case, see \cite{wood2017generalized}, Chapter 4, Section 5. The same reference provides a detailed discussion of computational methods for minimizing the unbiased risk estimate with respect to multiple smoothing parameters. The algorithm shares the same basic structure as the one outlined in Section~\ref{gaussian-unbiased-risk-estimate}, with modifications on the derivatives and the Hessians to account for the fact that the P-spline basis and penalty are constructed independently of one another.
+%
 
 
 \section{The P-spline estimator for the innovation variance function}
 
-The P-spline estimator for the log innovation variance function is constructed via penalized similarly to the smoothing spline estimator in Section~\ref{chapter-3-IV-modeling-section}.  As before, given an estimate $\phi^*$ of $\phi$, fixing $\phi = \phi^*$, the the log likelihood of the squared working residuals is given by 
-
-\begin{equation} \label{eq:penalized-joint-loglik-given-phi-3}
--\ell\left( \sigma^2  \vert Z_1,\dots, Z_N, \phi,  \right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \log \sigma^2_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} \frac {z_{ij}}{\sigma^2_{ij}},
-\end{equation}
-\noindent
-
-where $\epsilon_{ij} =  y_{ij} - \sum\limits_{k<j} \phi^*_{ijk} y_{ik}$, and $z_{ij} = \epsilon_{ij}^2$. We can approximate $\eta \left(t\right) = \log \sigma^2\left(t\right)$ using a B-spline basis expansion, modeling
+The P-spline estimator for the log innovation variance function is constructed via penalized similarly to the smoothing spline estimator in Section~\ref{chapter-3-IV-modeling-section}.  Fixing $\phi = \phi^*$ at an estimate $\phi^*$ of $\phi$, the the log likelihood of the squared working residuals can be written as in \eqref{eq:penalized-joint-loglik-given-phi-2}
 \[
-\eta\left(t\right) = \sum\limits_{j = 1}^K \theta_j B_{j}\left(t\right).
+-\ell\left( \sigma^2  \vert Z_1,\dots, Z_N, \phi,  \right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \log \sigma^2_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} \frac {z_{ij}}{\sigma^2_{ij}},
+\]
+\noindent
+where $\epsilon_{ij} =  y_{ij} - \sum\limits_{k<j} \phi^*_{ijk} y_{ik}$, and $z_{ij} = \epsilon_{ij}^2$. We can approximate $\eta \left(t\right) = \log \sigma^2\left(t\right)$ using a B-spline basis expansion, letting
+\[
+\eta\left(t\right) = \sum\limits_{j = 1}^{k_t} \theta_j B_{j}\left(t\right).
 \] 
 \noindent
 Model estimation and smoothing parameter selection can be carried out using performance-oriented iteration as described in Section~\ref{smoothing-parameter-selection-exponential-families}, substituting the above expansion for $\eta$ and trading the smoothing spline penalty for the discrete difference penalty \eqref{eq:bspline-difference-penalty-1}. For detailed presentation of optimization procedures, see \cite{marx1999generalized}. 
