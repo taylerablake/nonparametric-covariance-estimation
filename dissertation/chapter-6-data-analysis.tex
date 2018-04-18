@@ -6,7 +6,7 @@
 
 \bigskip
 
-To compare two methods for controlling the disease, say treatment A and treatment B, each of 60 cattle were assigned randomly to two groups, each of size 30. Animal subjects were put out to pasture at the start of grazing season, with each member of the groups receiving one of the two treatments. Animals were weighed $m = 11$ times over a 133-day period; the first 10 measurements on each animal were made at two-week intervals and the final measurement was made one week later. Weights were recorded to the nearest kilogram, and measurement times were common across animals. The longitudinal dataset is balanced, as there were no missing observations for any of the experimental units. Observed weights are shown in Figure~\ref{fig:cattle-weights-by-trt}.
+To compare two methods for controlling the disease, say treatment A and treatment B, each of 60 cattle were assigned randomly to two groups, each of size 30. Animal subjects were put out to pasture at the start of grazing season, with each member of the groups receiving one of the two treatments. Animals were weighed $p = 11$ times over a 133-day period; the first 10 measurements on each animal were made at two-week intervals and the final measurement was made one week later. Weights were recorded to the nearest kilogram, and measurement times were common across animals. The longitudinal dataset is balanced, as there were no missing observations for any of the experimental units. Observed weights are shown in Figure~\ref{fig:cattle-weights-by-trt}.
 
 \begin{center}  
 \begin{figure}[H] 
@@ -146,14 +146,14 @@ Y_i = f\left(t_i  \right) + Z_i b_i + \epsilon^*_i,
 \end{equation} 
 
 \noindent
-where $Y_i$ is the $m_i \times 1$ response vector for the $i^{th}$ subject, $b_i$ is a $q \times 1$ vector of unknown random effects parameters, and $Z_i$ is a known $m_i \times q$ design matrix.  $f$ is the smooth function of $t$, and $t_i = \left(t_{i1}, \dots, t_{i,m_i}\right)'$ is the $m_i \times 1$ vector of measurement times for subject $i$. We specify the random term $Z_i b_i$ as an intercept only, letting $Z_i = \left(1 , \dots, 1\right)'$ so that 
+where $Y_i$ is the $p_i \times 1$ response vector for the $i^{th}$ subject, $b_i$ is a $q \times 1$ vector of unknown random effects parameters, and $Z_i$ is a known $p_i \times q$ design matrix.  $f$ is the smooth function of $t$, and $t_i = \left(t_{i1}, \dots, t_{i,p_i}\right)'$ is the $p_i \times 1$ vector of measurement times for subject $i$. We specify the random term $Z_i b_i$ as an intercept only, letting $Z_i = \left(1 , \dots, 1\right)'$ so that 
 
 \[
- Z_i b_i = \alpha_i 1_{m_i}, 
+ Z_i b_i = \alpha_i 1_{p_i}, 
 \] 
 
 \noindent
-so that the random effect corresponds to a subject-specific shift $\alpha_i$, which are assumed to be independent and identically distributed $N\left(0,\sigma_\alpha^2\right)$ random variables. We assume that the $m_i \times 1$ vector of residuals
+so that the random effect corresponds to a subject-specific shift $\alpha_i$, which are assumed to be independent and identically distributed $N\left(0,\sigma_\alpha^2\right)$ random variables. We assume that the $p_i \times 1$ vector of residuals
 
 \[
 \epsilon^*_i \sim N\left(0, \Sigma_i\right).
@@ -170,7 +170,7 @@ are mutually independent of the random intercepts $\alpha_i$, $i = 1,\dots, N$. 
 We take the estimators of $f$, $\alpha = \left(\alpha_1,\dots, \alpha_N\right)'$ to minimize the penalized joint log likelihood
 
 \begin{equation}
-\sum_{i = 1}^N \sum_{i = 1}^{m_i} \left(y_{ij} - f\left(t_{ij} \right) - \alpha_i \right)^2 + \alpha' \Sigma_\alpha^{-1} \alpha + \lambda J \left(f\right)
+\sum_{i = 1}^N \sum_{i = 1}^{p_i} \left(y_{ij} - f\left(t_{ij} \right) - \alpha_i \right)^2 + \alpha' \Sigma_\alpha^{-1} \alpha + \lambda J \left(f\right)
 \end{equation}
 
 \noindent
