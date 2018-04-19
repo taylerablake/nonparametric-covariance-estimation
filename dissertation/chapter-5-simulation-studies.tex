@@ -1,4 +1,4 @@
-\chapter{Simulation studies} \label{simulation-studies-chapter}
+\chapter{Simulation Studies} \label{simulation-studies-chapter}
 
 
 In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by \cite{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix \citep{cai2010optimal} and the soft thresholding estimator \citep{rothman2009generalized}, which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
@@ -127,7 +127,7 @@ We prefer an estimator $\hat{\Sigma}$ with smaller risk.  Given $\Sigma$, we can
 
 \section{Alternative Estimators}
 %\subfile{chapter-4-subfiles/chapter-4-benchmark-estimators}
-The following estimators serve as benchmarks for performance under the five simulation settings outlined above: the MCD polynomial estimator $\hat{\Sigma}_{poly}$, the sample covariance matrix $S$, the soft thresholding estimator $S^\lambda$, and the tapering estimator $S^\omega$. We will review the general definitions of these, but for detailed discussion of the construction and properties of these estimators, see Sections~\ref{elementwise-shrinkage-estimators} and \ref{chapter-1-matrix-decompositions}.
+The following estimators serve as benchmarks for performance under the five simulation settings outlined above: the MCD polynomial estimator $\hat{\Sigma}_{poly}$, the sample covariance matrix $S$, the soft thresholding estimator $S^\lambda$, and the tapering estimator $S^\omega$. We will review the general definitions of these, but for detailed discussion of the construction and properties of these estimators, see Sections~\ref{chapter-1-shrinking-the-sample-cov} and \ref{chapter-1-matrix-decompositions}.
 
 \bigskip
 
@@ -231,7 +231,7 @@ where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq
 The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
 
 \[
-\hat{\sigma^2\left( t \right)} = \frac{1}{N}\sum_{i = 1}^N\frac{1}{p_i - 1} \sum_{j = 1}^{p_i} e_{ij}^2,
+\hat{\sigma^2\left( t \right)} = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
 \]
 \noindent
 where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:
@@ -308,22 +308,23 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \begin{figure}[H] 
 \centering
-\caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}
   \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
+  \vspace*{-10mm}
+  \caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}
 \end{figure}
 
 \begin{figure}[H] 
 \centering
-\caption{\textit{The generalized autoregressive coefficient function $\phi$ which defines the elements of the true lower triangle of Cholesky factor $T$ corresponding to Model I - Model V and estimates of the same surface for estimators based on the modified Cholesky decomposition. The true covariance structure is displayed across the top row.}}
-  \includegraphics[width = 1\textwidth]{img/chapter-4/cholesky-estimate-lattice}
-  \label{fig:chol-estimate-lattice}
+  \includegraphics[width = \textwidth]{img/chapter-4/cholesky-estimate-lattice}
+  \vspace*{3mm}
+  \caption{\textit{The generalized autoregressive coefficient function $\phi$ which defines the elements of the true lower triangle of Cholesky factor $T$ corresponding to Model I - Model V and estimates of the same surface for estimators based on the modified Cholesky decomposition. The true covariance structure is displayed across the top row.}}  \label{fig:chol-estimate-lattice}
 \end{figure}
 
 %\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
 
 \begin{figure}[H] 
-\caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}}
   \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} \label{fig:ssanova-component-lattice}
+  \caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}}
 \end{figure}
 
 \bigskip

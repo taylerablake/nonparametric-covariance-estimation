@@ -1,0 +1,810 @@
+\documentclass[12pt]{beamer}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{units}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage{changepage}
+
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
+\hypersetup{pdfpagemode=UseNone} 
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
+\hypersetup{pdfpagemode=UseNone} % don't show bookmarks on initial view
+
+
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\fontfamily{sans}
+\setbeamerfont{note page}{family*=pplx,size=\footnotesize} % Palatin
+
+\definecolor{foreground}{RGB}{245,245,245}
+\definecolor{white}{RGB}{255,255,255}
+\definecolor{background}{RGB}{24,24,24}
+\definecolor{title}{RGB}{107,174,214}
+\definecolor{gray}{RGB}{135,135,135}
+\definecolor{subtitle}{RGB}{102,255,204}
+\definecolor{hilight}{RGB}{102,255,204}
+\definecolor{vhilight}{RGB}{255,111,207}
+\definecolor{carrotorange}{rgb}{240,145,50}
+\definecolor{yuppiered}{RGB}{230,79,43}
+\setbeamercovered{transparent}
+
+\setbeamercolor{titlelike}{fg=title}
+\setbeamercolor{subtitle}{fg=subtitle}
+\setbeamercolor{institute}{fg=gray}
+\setbeamercolor{normal text}{fg=foreground,bg=background}
+
+\setbeamercolor{item}{fg=foreground} % color of bullets
+\setbeamercolor{subitem}{fg=gray}
+\setbeamercolor{itemize/enumerate subbody}{fg=gray}
+\setbeamertemplate{itemize subitem}{{\textendash}}
+\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+\setbeamerfont{itemize/enumerate subitem}{size=\footnotesize}
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{gray}
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+\addtobeamertemplate{note page}{\setlength{\parskip}{12pt}}
+
+\title{Nonparametric Covariance Estimation for Longitudinal Data}
+\author{Tayler Blake}
+\institute{The Ohio State University, Department of Statistics}
+
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{gray}
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\ig}{\includegraphics}
+\newcommand{\subt}[1]{{\footnotesize \color{subtitle} {#1}}}
+\newcommand{\nt}[1]{{\small \color{hilight} {#1}}}
+\newcommand{\newmaththought}[1]{{ \color{foreground} {#1}}}
+\newcommand{\carrotorangemath}[1]{{ \color{carrotorange} {#1}}}
+\newcommand{\mixedmodelmath}[1]{{ \color{yuppiered} {#1}}}
+\newcommand{\makegrey}[1]{{ \color{gray} {#1}}}
+\newcommand{\makewhite}[1]{{ \color{white} {#1}}}
+\newcommand{\ms}{\scriptscriptstyle}
+
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\newcommand\myfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\begin{document}
+
+%1
+{
+\setbeamertemplate{footline}{} % no page number here
+\frame{
+  \titlepage
+%  \note{These are slides for a talk I will give on 24 Oct 2013, at a
+ %   symposium on open access publishing, organized by the Ebling
+   % Library, UW{\textendash}Madison.}
+}
+}
+
+
+\begin{frame}
+\frametitle{\emph{Background}}
+Let 
+\[
+Y = \left(y_1,\dots, y_p\right)', \quad \left(t_1,\dots, t_p\right)'
+\]
+denote the random vector of observations and their associated measurement times, where 
+\begin{align*}
+ Cov\left(Y\right) = \Sigma = \left[ \sigma_{ij} \right] 
+\end{align*}
+
+\bi
+\item \nt{Dimensionality: the number of parameters $\sigma_{ij}$ is quadratic in $p$.} \pause
+\item \nt{The positive definite constraint:} \\
+  \[
+ 		c'\Sigma c = \sum_{i,j = 1}^p c_i c_j \sigma_{ij} \ge 0
+		\]\pause
+\item \nt{Observation times may be irregular or subject-specific.} 
+\ei
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{\emph{Outline}}
+
+\bi
+\item \nt{Problem Motivation}
+\item \nt{Background: A Review of Covariance Estimation for Longitudinal Data}
+\item \nt{Unconstrained Covariance Estimation via the Cholesky Decomposition}
+\item \nt{Two Models for the Cholesky Decomposition}
+\item \nt{Simulation Studies}
+\item \nt{Data Analysis: Cattle Weights}
+\ei 
+\end{frame}
+
+
+%2
+%\begin{frame}
+%\frametitle{\emph{}}
+%\nt{The data:}
+%\begin{equation*}
+%Y_i = \left( Y_{i1}, Y_{i2}, \dots, Y_{ip_i} \right)^\prime, \qquad i=1,\dots, N
+%\end{equation*}
+%\noindent
+%associated with measurement times 
+%\[
+%t_{1} < t_{2} < \dots< t_{p_i}.
+%\]
+%
+%\nt{Goal:} estimate
+%\[
+%Cov\left(Y\right) = \Sigma
+%\]
+%\end{frame}
+
+
+
+\begin{frame}
+\frametitle{\emph{The flaming hoops:}}
+\begin{table}[H] 
+\centering
+\caption{\textit{Ideal shape of repeated measurements.}}
+\begin{tabular}{cc|cccccc}
+\multicolumn{8}{c}{Time}\\
+& & $1$&$2$ &  $\dots$ & $t$ & $\dots$ & $p$ \\ \midrule
+& 1 & $y_{11}$&$y_{12}$ &$\dots$ & $y_{1t}$ & $\dots$& $y_{1p}$ \\
+& 2 & $y_{21}$&$y_{22}$ &$\dots$ & $y_{2t}$ & $\dots$& $y_{2p}$ \\
+\begin{rotate}{90}%
+\mbox{Unit}\end{rotate} & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+& $i$ & $y_{i1}$&$y_{i2}$ &$\dots$ & $y_{it}$ & $\dots$& $y_{ip}$ \\
+ & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+ & $N$ & $y_{N1}$&$y_{N2}$ &$\dots$ & $y_{Nt}$ & $\dots$& $y_{Np}$ \\
+\end{tabular} \label{table:ideal-repeated-measurements}
+\end{table}
+
+\end{frame}
+
+
+
+
+
+%3
+%3
+%3
+%\begin{frame}
+%\frametitle{\emph{The flaming hoops:}}
+%\bi
+%\item Covariance matrices (and their estimates) should be positive definite.
+%	\begin{itemize}
+%	\item Constrained optimization is a headache.
+%	\end{itemize} \pause
+%\item The $\left\{t_{ij} \right\}$ may be suboptimal. 
+%\begin{itemize}
+%	\item Observation times may not fall on a regular grid, may vary across subjects.
+%	\end{itemize} \pause
+%\item More dimensions, more problems (maybe.)
+%\begin{itemize}
+%	\item Sample covariance matrix falls apart when $m$ is large.
+%	\end{itemize} 
+%\ei
+%\end{frame}
+
+
+
+
+%4
+%4
+%4
+
+%\begin{frame}
+%\frametitle{\emph{The flaming hoops:}}
+%\bi
+%\item<4>Covariance matrices (and their estimates) should be positive definite.
+%	\nt{A cute little reparameterization } $\color{hilight} \Longrightarrow$ \nt{unconstrained estimation, meaningful interpretation} 
+%\item<5> The $\left\{t_{ij} \right\}$ may be messy. \\
+%	\nt{Frame covariance estimation as function estimation.} 
+%\item<6>  More dimensions, more problems (maybe.) \\
+%\begin{figure}
+%\graphicspath{{img/}}
+%  \includegraphics<6>[height=3cm]{ripnatedogg}
+%  \only<6>{\caption{\color{hilight}\small Regulate like Nate Dogg.}}
+%\end{figure}
+%\ei
+%\end{frame}
+
+%\begin{frame}
+%\frametitle{\emph{The flaming hoops:}}
+%\bi
+%\item Covariance matrices (and their estimates) should be positive definite.
+%	\nt{A cute little reparameterization } $\color{hilight} \Longrightarrow$ \nt{unconstrained estimation, meaningful interpretation} 
+%\item The $\left\{t_{ij} \right\}$ may be messy. \\
+%	\nt{Frame covariance estimation as function estimation.} 
+%\item  More dimensions, more problems (maybe.) \\
+%%\begin{figure}
+%%\graphicspath{{img/}}
+%%  \includegraphics[height=3cm]{ripnatedogg}
+%%  \only{\caption{\color{hilight}\small Regulate like Nate Dogg.}}
+%%\end{figure}
+%\ei
+%\end{frame}
+%
+
+%5
+
+\begin{frame}
+\frametitle{\emph{Covariance dress-up: the modified Cholesky decomposition}}
+
+\begin{equation*}
+Y = \left(Y_1, \dots, Y_p \right)^\prime \sim \mathcal{N}\left(0,\Sigma\right).
+\end{equation*}
+
+\nt{For any positive definite} $\color{hilight}{\Sigma}$, \nt{we can find $T$ which diagonalizes} $\color{hilight}{\Sigma}$:
+
+\begin{equation*}
+D = T \Sigma T^\prime, \quad T = \begin{bmatrix} 1 & 0 & \dots & & \\
+ -\phi_{21} & 1 & & & \\ -\phi_{31}& -\phi_{32} &  1 & & \\
+  \vdots & & & \ddots & \\ -\phi_{p1} &-\phi_{p2} & \dots & -\phi_{p,p-1}& 1  \end{bmatrix}
+\end{equation*}
+%\myfootnote{The matrix $T$ is the \emph{Cholesy factor}  of the precision matrix.}
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{}
+
+\vfill
+  \begin{beamercolorbox}[center]{title}
+\Large Now, for the cutest part:
+  \end{beamercolorbox}
+  \vfill
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{}
+%\begin{figure}
+%\graphicspath{{img/}}
+%  \includegraphics[height=9cm]{cutest-kitten-ever}
+%\end{figure}
+
+\end{frame}
+
+%6
+\begin{frame}
+\frametitle{\emph{Okay, really:}}
+
+Regress $Y_j$ on $Y_{\ms{\left(1:j-1\right)}} = \left(Y_1, \dots, Y_{\ms{j-1}}\right)^\prime$:
+
+\begin{align} \label{eq:ARmodel}
+y_{j}  = \left\{  \begin{array}{ll} 
+		e_1 &j=1, \\
+  \sum \limits_{k=1}^{j-1} \phi_{jk} y_{k} + \sigma_{j}e_{j} &  j=2,\dots,p
+\end{array}\right.
+\end{align}
+\noindent
+In matrix form:
+\begin{align}
+%\begin{split}
+\newmaththought{ e = TY,}
+%\end{split}
+\end{align}
+\noindent
+ and taking covariances on both sides:
+\begin{equation}
+\newmaththought{ D = diag\left( \sigma_1^2,\dots, \sigma_p^2 \right) = T \Sigma T^\prime.}
+\end{equation}
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{No constraints on the} $\phi_{jk}$s!}
+
+\begin{adjustwidth}{-3cm}{-3cm}
+\begin{center}
+%\begin{figure}
+%\graphicspath{{img/}}
+%  \includegraphics[height=7.5cm]{nude-beach}
+%\end{figure}
+\end{center}
+  \end{adjustwidth}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{The regression model tool box is a deep, luxurious toolbox.}}
+
+\begin{align*}
+\makegrey{Y_j}  	&\longrightarrow \makewhite{Y\left( t_j \right) }		&	 \makegrey{e_j} 		&\longrightarrow \makewhite{e\left( t_j \right)}\\
+\makegrey{\phi_{jk}} &\longrightarrow \makewhite{\phi\left(t_j,t_k\right)} 	& 	\makegrey{\sigma^2_{j}} &\longrightarrow \makewhite{\sigma^2\left(t_j\right)}
+\end{align*}
+\noindent
+
+
+\begin{equation}  \label{eq:MyModel}  
+\makewhite{y\left(t_j \right)}  \makewhite{= \sum_{k=1}^{j-1} \phi\left(t_j ,t_k\right) y\left(t_k\right) + \sigma\left(t_j\right)e\left({t_j}\right)},
+\end{equation}
+\noindent
+where
+\begin{equation*} 
+\makewhite{e\left(s\right)} \makewhite{ \sim  \mathcal{WN}\left(0,1\right)}
+\end{equation*}
+
+
+%\myfootnote{The $\left\{ \phi_{jk} \right\}$ are called \emph{generalized autoregressive parameters}.}
+%\myfootnote{The $\left\{ \sigma^2_{j} \right\}$ are called the \emph{innovation variances}.}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Regularization of $\phi\left(s,t\right)$ is more intuitive if we transform the $s$-$t$ axis. }}
+
+\begin{align*}
+\newmaththought{l} &\newmaththought{= s-t} \\
+\newmaththought{m} &\newmaththought{= \frac{1}{2}\left(s+t\right)}
+\end{align*}
+\noindent
+Reparameterize $\phi$:
+\begin{align*}
+\newmaththought{\phi\left(s,t\right) =\phi^*\left(l,m\right)= \phi^*\left(s-t, \frac{1}{2}\left(s+t\right)\right)}
+\end{align*}
+
+Take $\hat{\phi}^*$ to be the minimizer of 
+%\[
+%\underbracket[0.2pt]{-2L}_{\text{\parbox{3cm}{\centering \mbox{ \;}\\ goodness \\[-4pt] of fit}}} + \underbracket[0.2pt]{\lambda J\left(\phi^*\right)}_{\text{\parbox{3cm}{\centering \mbox{ \;}\\ %flexibility of the \\[-4pt] fitted curve}}}
+%\]
+\begin{adjustwidth}{-2cm}{-2cm}
+\begin{equation}
+-2 L_\phi\left(\phi, y_1, \dots,y_N \right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma_{ij0}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \label{loglikelihood}
+\end{equation}
+\end{adjustwidth}
+
+\end{frame}
+
+
+
+
+
+
+%\begin{frame}
+%\frametitle{\emph{Penalized maximum likelihood estimation}}
+%
+%\begin{enumerate}
+%\item Fix $\sigma_{ij}^2 = \sigma_{ij0}^2$, $i=1,\dots,N$ ,$j=1,\dots,M$.
+%\item Find $\phi_0 = \underset{\phi}{arg \; min} -2L_\phi\left(\phi, y_1,\dots, y_N \right) + \lambda J\left( \phi \right)$
+%\item Fix $\phi = \phi_{0}$.
+%\item Find  $\sigma_{0}^2 = \underset{\sigma^2}{arg\; min} -2L_\sigma^2\left(\sigma^2, y_1,\dots, y_N \right) + \lambda J\left( \sigma^2 \right)$
+%\end{enumerate}
+%
+%\begin{adjustwidth}{-2cm}{-2cm}
+%\begin{equation}
+%-2 L_\phi\left(\phi, y_1, \dots,y_N \right) = \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma_{ij0}^{-2} \left(y_{ij} - \sum_{k=1}^{j-1}\phi\left({t_{ij},t_{ik}}\right)y_{ik} \right)^2 \label{loglikelihood}
+%\end{equation}
+%\end{adjustwidth}
+%\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Smooth ANOVA models}}
+Decompose
+\begin{equation} \label{eq:SANOVA-model}
+\carrotorangemath{
+\phi^*\left(l,m\right) = \mu + \phi_1\left(l\right) + \phi_2\left(m\right) + \phi_{12}\left(l,m\right)},
+\end{equation} 
+so Model~\ref{eq:MyModel} becomes
+
+\begin{align*}  
+\begin{split}% \label{eq:expanded-ps-anova-vc-model}
+ y\left(t_j \right)  = \sum_{k=1}^{j-1} \bigg[\mu + \phi_1\left(l_{jk}\right) +  &\phi_2\left(m_{jk}\right) \bigg.\\[-2ex]
+\bigg. &+ \phi_{12}\left(l_{jk},m_{jk}\right) \bigg]y\left(t_k\right)+ \sigma\left(t_j\right)e\left({t_j}\right)
+\end{split}
+\end{align*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\emph{Approximate $\phi_1$, $\phi_2$, $\phi_{12}$ with B-splines.}}
+
+\begin{align}  
+\begin{split}\label{eq:l-m-marginal-basis}
+\phi_1\left(l\right)  &=\sum_{c=1}^{c_l} B_{\ms c}\left(l;q_l\right) \theta_{lc } = B_{\ms l} \theta_l, \\
+\phi_2\left(m\right)  &= \sum_{c^\prime=1}^{c_m} B_{\ms{c^\prime}}  \left(  m;q_m  \right)  \theta_{\ms{mc^\prime }}  = B_{\ms m} \theta_{\ms m} \\
+\phi_{12}\left(l,m\right)  &= \sum_{c=1}^{c_l} \sum_{{c^\prime}=1}^{c_m} B_{\ms c}\left(l;q_l\right) B_{\ms{c^\prime } }\left(m;q_m\right)\theta_{\ms{c c^\prime} } = B_{\ms{lm}}\theta_{\ms{lm}}
+\end{split}
+\end{align}
+\begin{align*}
+B_{\ms{lm}} &= B_m \; \square \; B_l \\   
+&\equiv \left( B_m \otimes 1^\prime_{c_l} \right) \odot \left(1^\prime_{c_m} \otimes  B_l  \right)    
+\end{align*}
+\end{frame}
+
+%
+%\begin{frame}
+%\frametitle{\emph{PS-ANOVA model basis}}
+%
+%In matrix notation, Model \ref{eq:expanded-ps-anova-vc-model} becomes
+%
+%\begin{equation*}  
+%E \left[ Y | W \right] = WB \theta,
+%\end{equation*}
+%\noindent
+%where $W$ is the matrix of covariates holding the past values of $Y$, and $B$ is the $B$-spline regression basis:
+%\begin{equation} \label{eq:SANOVA-basis-matrix}
+%B = \left[\; 1_p \; \vert \;  B_l  \; \vert \;   B_m \; \vert B_{lm} \; \right]
+%\end{equation}
+%\noindent
+%where 
+%\begin{align*} \label{eq:rowwise-kronecker-product}
+%B_{lm} &= B_m \; \square \; B_l \\
+%&\equiv \left( B_m \otimes 1^\prime_{c_l} \right) \odot \left(1^\prime_{c_m} \otimes  B_l  \right).
+%\end{align*}
+%\end{frame}
+%
+%
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Difference penalty had to regulate.}}
+
+For $f\left(x\right)=\sum \limits_{i=1}^{p} B_{i}\left(x\right) \theta_{i}$, approximate
+
+\begin{align}
+\begin{split}
+\int_0^1 \left(f^{\prime \prime}\left(x\right)\right)^{\ms 2} \;dx &= \int_0^1 \bigg\{ \sum \limits_{i=1}^{p} B^{\prime \prime}_{i}\left(x\right) \theta_{i} \bigg\}^{\ms 2} \;dx \\ 
+&= k_1 \newmaththought{\sum_i \left( \Delta^{\ms 2} \theta_i \right)^{\ms 2}} + k_2, 
+\end{split}
+\end{align}
+\noindent
+by
+\[
+\newmaththought{\vert \vert D_{\ms 2} \theta \vert \vert^{\ms 2}, \qquad  D_{\ms 2} \theta= \left( \Delta^{\ms 2}\theta_{\ms 1},\dots,\Delta^{\ms 2}\theta_{\ms{p-2}} \right)^\prime }
+\]
+In general, 
+\framebox{\nt{approximate} $\newmaththought{\int \limits_{\ms 0}^{\ms 1} \big(f^{\ms{\left(d\right)}}\big)^{\ms 2}\;dx}$ \nt{with} $\newmaththought{\vert \vert D_{\ms d} \theta \vert \vert^{\ms 2} }$ }
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\emph{PS-ANOVA Penalty}}
+
+\[
+B \equiv \left[\; 1_p \; \vert \;  B_l  \; \vert \;   B_m \; \vert B_{\ms{lm}} \; \right] ,   \qquad  \theta \equiv \left(\theta_{\ms{l}},\theta_{\ms{m}},\theta_{\ms{lm}}\right)^\prime            
+\]
+
+Find $\theta$ minimizing
+\begin{equation*}
+\left(Y-WB\theta\right)^\prime \left(Y-WB\theta\right) + \theta^\prime P \theta
+\end{equation*}
+\begin{equation*}
+P  = \begin{bmatrix}
+\underbracket[0.2pt]{\lambda_l D_{\ms{d_l}}^\prime D_{\ms{d_l}}}_{\text{$P_{\ms l}$}}	& 	& \\
+&& \\
+	&	\underbracket[0.2pt]{\lambda_l D_{\ms{d_l}}^\prime D_{\ms{d_l}}}_{\text{$P_{\ms m}$}}	& 	\\
+&&\\
+&&	\underbracket[0.2pt]{\tau_l D_{\ms{d_l}}^\prime D_{\ms{d_l}} \otimes I_{\ms{c_m}} + \tau_m I_{\ms{c_l}} \otimes D_{\ms{d_m}}^\prime D_{\ms{d_m}}}_{\text{$P_{\ms lm}$}}
+\end{bmatrix}
+\end{equation*}
+
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{PS-ANOVA Penalty}}
+
+\[
+B \equiv \left[\; 1_p \; \vert \;  B_l  \; \vert \;   B_m \; \vert B_{\ms{lm}} \; \right] ,   \qquad  \theta \equiv \left(\theta_{\ms{l}},\theta_{\ms{m}},\theta_{\ms{lm}}\right)^\prime            
+\]
+
+Find $\theta$ minimizing
+\begin{equation} \label{eq:PS-ANOVA}
+\left(Y-WB\theta\right)^\prime D^{-1} \left(Y-WB\theta\right) + \theta^\prime P \theta
+\end{equation}
+\begin{equation*}
+P  = \begin{bmatrix}
+\underbracket[0.2pt]{\lambda_l D_{\ms{d_l}}^\prime D_{\ms{d_l}}}_{\text{$P_{\ms l}$}}	& 	& \\
+&& \\
+	&	\underbracket[0.2pt]{\lambda_l D_{\ms{d_l}}^\prime D_{\ms{d_l}}}_{\text{$P_{\ms m}$}}	& 	\\
+&&\\
+&&	\underbracket[0.2pt]{\tau_l D_{\ms{d_l}}^\prime D_{\ms{d_l}} \otimes I_{\ms{c_m}} + \tau_m I_{\ms{c_l}} \otimes D_{\ms{d_m}}^\prime D_{\ms{d_m}}}_{\text{$P_{\ms lm}$}}
+\end{bmatrix}
+\end{equation*}
+
+\end{frame}
+
+
+
+
+
+%% NEEDS CORRECTED TO ACCOUNT FOR REPLACING \sigma^2 I with D
+
+\begin{frame}
+\frametitle{\emph{Mixed model representation}}
+
+Find transformation $\mathrm{Q} = \left[\begin{array}{c|c} \mathrm{Q}_n & \mathrm{Q}_s \end{array}\right]$ to map
+%\begin{equation*}
+%\newmaththought{B} \longrightarrow \mixedmodelmath{ \big[ \begin{array}{c|c} X & Z \end{array}  \big]}, \qquad \newmaththought{\theta} \longrightarrow \mixedmodelmath{\left( \beta^\prime, \alpha^\prime \right)^\prime}
+%\end{equation*}
+%\noindent
+%such that 
+
+\begin{align*}
+BQ &=\mixedmodelmath{ \big[ \begin{array}{c|c} BQ_{\ms n} &  BQ_{\ms s} \end{array}  \big]}		&	Q^\prime \theta &=\mixedmodelmath{\left( \beta^\prime, \alpha^\prime \right)^\prime} \\
+&=  \mixedmodelmath{ \big[ \begin{array}{c|c} X & Z \end{array}  \big]}		& 	&= \mixedmodelmath{\left(  \left(Q_{\ms n}^\prime \theta\right)^\prime,\;\left(Q_{\ms s}^\prime \theta\right)^\prime \right)^\prime}
+\end{align*}
+
+\noindent
+to reparameterize the ill-posed Model~\ref{eq:PS-ANOVA} as
+\begin{align} 
+\begin{split} \label{eq:vc-mixed-effects-model}
+Y &= W\left(X \beta + Z \alpha\right) + e \\
+ \alpha &\sim \mathcal{N}\left(0,G \right), \\
+ e&\sim\mathcal{N}\left(0, D \right)
+\end{split}
+\end{align} 
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Mixed model representation}}
+
+%\begin{equation*}
+%\newmaththought{G }\longrightarrow \mixedmodelmath{ F^{-1}},\qquad \newmaththought{\theta^\prime P \theta} \longrightarrow \mixedmodelmath{\alpha^\prime F \alpha}
+%\end{equation*}
+%\begin{align*}
+%\mixedmodelmath{F} = \mbox{blockdiag}\left(&\underbrace{F_l},\quad &\underbrace{F_m},\quad {F_{lm}} \right)\\
+%&{\lambda_l \tilde{\Delta}_l}	&{\lambda_m \tilde{\Delta}_m}
+%\end{align*}
+%
+\begin{equation*}
+\left[\begin{array}{ccc}
+&&\\
+\lambda_l \tilde{\Delta}_l &&\\
+&&\\
+&\lambda_m \tilde{\Delta}_m&\\
+&&\\
+&&\left[\begin{array}{ccc}
+\tau_l \tilde{\Delta}_l &&\\
+&\tau_m \tilde{\Delta}_m&\\
+&&\tau_m \tilde{\Delta}_m \otimes I_{\ms{c_l-d_l}} +  I_{\ms{c_m-d_m}} \otimes \tau_l \tilde{\Delta}_l \end{array}\right]\\
+&&\\
+\end{array}\right]
+\end{equation*}
+%
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Decomposition of} $\phi^*$ \emph{for} $d_l = d_m = 2$}
+
+%This slide will decompose the function into its parametric and nonparametric components [add a (d_l + 1) x (d_m + 1) two way table with the decompositions of the marginal bases across the margins ]
+
+\begin{table}[h]
+%\caption{Decomposition of \phi^* for $d_l = d_m = 2$} %title of the table
+\centering % centering table
+\begin{tabular}{c|ccccc}
+	&    $\left\{ 1 \right\}$	&&	$\left\{m \right\}$	 	&& 	$\left\{ B_{\ms{j^\prime}}\left(m\right) \right\} $ \\ [0.5ex]
+\hline % inserts single-line
+\\
+$\left\{ 1 \right\}$ 				&  $\left\{ 1 \right\}$   	& &	$\left\{m \right\}$	 	&& 	$\left\{ B_{\ms{j^\prime}}\left(m\right) \right\} $	\\  [2.5ex] % Entering row contents
+$\left\{l \right\}$		 		&  $\left\{ l \right\}$  	 &&	$l \times m$	 	&& 	$l \times \left\{   B_{\ms{j^\prime}}\left(m\right) \right\} $\\  [2.5ex]
+$\left\{ B_j\left(l\right) \right\} $	 	&    $\left\{ B_j\left(l\right) \right\}$	&&	$ m \times \left\{ B_j\left(l\right) \right\}$	& &	$\left\{ B_j\left(l\right) B_{\ms{j^\prime}}\left(m\right) \right\}$ 
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{\emph{Nested PS-ANOVA}}
+
+Re-express $\phi_{\ms{12}}$:
+
+\begin{align*}
+\newmaththought{ \phi_{\ms{12}}\left(l,m\right)  =} \carrotorangemath{\; g_{\ms 1}\left(l\right) \Big[ \sum_{r=1}^{\ms{d_m-1}} m^{\ms r}\Big] + \Big[ \sum_{r=1}^{\ms{d_l-1}} l^{\ms r} \Big] g_{\ms 2}\left(m\right)\;}  \newmaththought{+ h\left( l,m \right), } 
+\end{align*}
+\noindent
+For $d_l = d_m = 2$,
+\[
+\newmaththought{ \phi_{\ms{12}}\left(l,m\right)  =} \carrotorangemath{\; g_{\ms 1}\left(l\right) \; m+ l \; g_{\ms 2}\left(m\right)\;}\newmaththought{ + \; h\left( l,m \right) } 
+\]
+with basis:
+\begin{equation} \label{eq:nested-SANOVA-basis-matrix}
+\color{hilight}{B = \big[ } \; 1_p \; \vert \;  B_1  \; \vert \;   B_2 \; \vert \carrotorangemath{ B_3 \; \vert B_4 }\;\newmaththought{ \vert B_5 \; \big]},
+\end{equation}
+\noindent
+where
+\begin{align*}
+\carrotorangemath{B_{\ms 3}\;} &\carrotorangemath{= \;m \;} \carrotorangemath{ \square \;  B_{\ms 1}}  &  \newmaththought{B_{\ms 5}\;}\newmaththought{=\; B_{\ms 2} \;} \newmaththought{ \square \; B_{\ms 1} } \\
+ \carrotorangemath{B_{\ms 4}\;}&\carrotorangemath{=\; B_{\ms 2} \;} \carrotorangemath{ \square \; l } &
+\end{align*}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Nested PS-ANOVA}}
+
+\begin{equation} \label{eq:PSANOVA-penalty}
+P = \mbox{blockdiag}\left(0,\; P_1, \; P_2, \; P_{3},\; P_4, \; P_{5} \right),
+\end{equation}
+%\begin{align*}
+%P_{\ms i} &= \lambda_i D_{\ms{d_i}}^\prime D_{\ms{d_i}}\\
+%P_{\ms{12}} &= \lambda_3 D_{\ms{d_1}}^\prime D_{\ms{d_1}} \otimes I_{\ms{c_m}} + \lambda_4 I_{\ms{c_l}} \otimes D_{\ms{d_2}}^\prime D_{\ms{d_2}} 
+%\end{align*}
+
+
+\end{frame}
+
+
+
+
+
+%% this slide should be annotated in power point
+
+
+\begin{frame}
+\frametitle{\emph{Nested PS-ANOVA}}
+
+Re-express $\phi_{\ms{12}}$:
+
+\begin{align*}
+\newmaththought{ \phi_{\ms{12}}\left(l,m\right)  =} \carrotorangemath{\; g_{\ms lr}\left(l\right) \Big[ \sum_{r=1}^{\ms{d_m-1}} m^{\ms r}\Big] + \Big[ \sum_{r=1}^{\ms{d_l-1}} l^{\ms r^\prime} \Big] g_{\ms mr^\prime}\left(m\right)\;}  \newmaththought{+ h\left( l,m \right), } 
+\end{align*}
+\noindent
+For $d_l = d_m = 2$,
+\[
+\newmaththought{ \phi_{\ms{12}}\left(l,m\right)  =} \carrotorangemath{\; g_{\ms l1}\left(l\right) \; m+ l \; g_{\ms m1}\left(m\right)\;}\newmaththought{ + \; h\left( l,m \right) } 
+\]
+with basis:
+\begin{equation} \label{eq:nested-SANOVA-basis-matrix}
+\color{hilight}{B = \big[ } \; 1_p \; \vert \;  B_1  \; \vert \;   B_2 \; \vert \carrotorangemath{ B_3 \; \vert B_4 }\;\newmaththought{ \vert B_5 \; \big]},
+\end{equation}
+\noindent
+where
+\begin{align*}
+\carrotorangemath{B_{\ms 3}\;} &\carrotorangemath{= \;m \;} \carrotorangemath{ \square \;  B_{\ms 1}}  &  \newmaththought{B_{\ms 5}\;}\newmaththought{=\; B_{\ms 2} \;} \newmaththought{ \square \; B_{\ms 1} } \\
+ \carrotorangemath{B_{\ms 4}\;}&\carrotorangemath{=\; B_{\ms 2} \;} \carrotorangemath{ \square \; l } &
+\end{align*}
+
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\emph{Nested PS-ANOVA}}
+
+\begin{equation*}
+P = \mbox{blockdiag}\left(0,\;P_1,\;P_2,\;P_3,\;P_4,\;P_5\right)
+\end{equation*}
+
+
+Remove the redundant columns, and give each penalized component its own random effect:
+\begin{align*}
+B
+\end{align*}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

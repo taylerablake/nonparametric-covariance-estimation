@@ -43,7 +43,7 @@ L_{ijk} \phi &= \langle \phi\left(\cdot\right), Q\left(\bfv_{ijk}, \cdot\right) 
 &\phantom{=} + \langle  \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) ,  Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert +  \langle   \sum_{\bfv_{i} \in V} c_i \xi_i  ,  Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert + \langle \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert, 
 \end{align*}
 \noindent
-where $\langle \rho\left(\cdot\right), Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = \langle \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = 0$. Thus, substituting (\ref{eq:form-of-the-minimizer-phi-plus-rho}) for $\phi$ into the penalized sums of squares, the objective function (\ref{eq:phi-penalized-sums-of-squares-RK-norm}) becomes
+where $\langle \rho\left(\cdot\right), Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = \langle \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = 0$. Thus, substituting \eqref{eq:form-of-the-minimizer-phi-plus-rho} for $\phi$ into \eqref{eq:phi-penalized-sums-of-squares}, the penalized sums of squares, becomes
 
 \begin{equation*} 
 \sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \left(\vert \vert \sum_{\bfv_i \in V} c_i \xi_i \vert \vert_\hilbert^2 + \vert \vert \rho \vert \vert_\hilbert^2\right),
