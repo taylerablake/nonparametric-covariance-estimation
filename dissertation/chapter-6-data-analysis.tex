@@ -162,9 +162,9 @@ so that the random effect corresponds to a subject-specific shift $\alpha_i$, wh
 are mutually independent of the random intercepts $\alpha_i$, $i = 1,\dots, N$. Given that the animals belong to the same treatment group and share a common set of observation times, we assume each subject shares common covariance matrix $\Sigma_i = \Sigma$. We let $f$ belong to the Hilbert space
 
 \[
-\mathcal{C}^2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}. 
+\mathcal{C}^2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}, 
 \]
-
+equipped with the inner product which corresponds to $J\left(f\right) = \int_0^1 \left(f''\left(x\right)\right)^2\;dx$.
 \noindent
 We take the estimators of $f$, $\alpha = \left(\alpha_1,\dots, \alpha_N\right)'$ to minimize the penalized joint log likelihood
 
@@ -197,26 +197,21 @@ Centering the data using the fitted mean, the residuals
 \begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-2}
 \epsilon^*\left(t_{ij}\right) = y\left(t_{ij}\right) - \left(f\left(t_{ij} \right) + \alpha_{i}\right).
 \end{equation}
-
 \noindent
 serve as the data for estimating the functions defining the Cholesky factor and innovation variances. We model
-
 \begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-1}
-\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ij}\right) + \sigma\left(t_{ij}\right)\epsilon\left(t_{ij}\right).
+\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ij}\right) + \epsilon\left(t_{ij}\right)
 \end{equation}
-
 \noindent
-where $\epsilon$ is a mean zero gaussian process with unit variance.
+where $\epsilon$ is a mean zero gaussian process with variance $\sigma\left(t\right)$.
 
 \bigskip
 
-Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma^2 \right)$. \cite{pan2017jmcm} concluded that the regressogram of empirical estimates of $\phi_{t,s}$ show consistent behaviour over $l = t - s$ for each value of $t$, indicating a lack of a strong functional component of $m$. This is consistent Pourahmadi's choice in the specification of model (\ref{eq:pourahmadi-cubic-model}) in terms of lag only. To balance the consideration of previous analyses with the interest of entirely data-driven model specification, we let $\phi \in \hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}$, where 
-
+Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma^2 \right)$. \cite{pan2017jmcm} concluded that the regressogram of empirical estimates of $\phi_{t,s}$ show consistent behaviour over $l = t - s$ for each value of $t$, indicating a lack of a strong functional component of $m$. This is consistent Pourahmadi's choice in the specification of model (\ref{eq:pourahmadi-cubic-model}) in terms of lag only. To balance the consideration of previous analyses with the interest of entirely data-driven model specification, we let $\phi \in \hilbert = \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]}$, where 
 \begin{align*} 
-\hilbert_{\left[1\right]} &= \bigg\{ \phi: \ddot{\phi} = 0 \bigg\} \oplus \left\{\phi: \phi\left(0\right) = \dot{\phi}\left(0\right) = 0; \;\; \int\limits_0^1 \ddot{\phi}^2 \;dx < \infty \right\} \\
-\hilbert_{\left[2\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int\limits_0^1 \phi \;dx = 0, \;\; \dot{\phi} \in \mathcal{L}_2\left[0,1\right]  \right\} 
+\hilbert_{\left[l\right]} &= \bigg\{ \phi: \ddot{\phi} = 0 \bigg\} \oplus \left\{\phi: \phi\left(0\right) = \dot{\phi}\left(0\right) = 0; \;\;\ddot{\phi} \in \mathcal{L}_2\left[0,1\right]   \right\} \\
+\hilbert_{\left[m\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int\limits_0^1 \phi \;dx = 0, \;\; \dot{\phi} \in \mathcal{L}_2\left[0,1\right]  \right\} 
 \end{align*} 
-
 This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by $\phi$ \cite{pan2017jmcm}, \cite{huang2006covariance}, and \cite{wu2003nonparametric} for the same data set.  Figure~\ref{fig:fitted-cholesky-decomposition-cattle-date} shows the estimated Cholesky surface and innovation variance function evaluated at $t =  0,14, 28,\dots,112, 126,133$ and the corresponding pairs of observation times $\left(t,s\right)$, $0 \le s < t \le 133$. Figure~\ref{fig:cattle-fitted-cholesky-ssanova} shows $\hat{\phi}$ decomposed into the functional components of its ANOVA decomposition.
 
 
@@ -281,7 +276,7 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
  \begin{subfigure}[t]{.35\textwidth}
  % \centering
   \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-log-sigma2}
- \caption{\textit{$\hat{\sigma}^2\left(t\right)$}}
+ \caption{\textit{$\log\hat{\sigma}^2\left(t\right)$}}
 \label{fig:fitted-cholesky-decomposition-cattle-date-log-sigma2}
  \end{subfigure}
  \end{center}
@@ -292,9 +287,8 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
 %\subfile{chapter-5-subfiles/cattle-cholesky-ssanova-ggplot}
 \begin{figure}[H] 
 \centering
-  \includegraphics[width = 0.6\textwidth]{img/chapter-5/cattle-ssanova-estimate-lattice} \label{fig:cattle-fitted-cholesky-ssanova}
-  \caption{\textit{Components of the SSANOVA decomposition of the estimated generalized autoregressive coefficient function $\phi$ evaluated on the grid defined by the observed time points.}}
-
+  \includegraphics[width = 0.6\textwidth]{img/chapter-5/cattle-ssanova-estimate-lattice} 
+  \caption{\textit{Components of the SSANOVA decomposition of the estimated generalized autoregressive coefficient function $\phi$ evaluated on the grid defined by the observed time points.}}\label{fig:cattle-fitted-cholesky-ssanova}
 \end{figure}
 
 

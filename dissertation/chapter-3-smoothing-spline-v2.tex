@@ -32,7 +32,8 @@ where the prediction errors $\epsilon\left(t\right)$ follow a mean zero Gaussian
 
 Under Model~\eqref{eq:cholesky-regression-model-1}, the negative log likelihood satisfies 
 \begin{equation} \label{eq:full-joint-likelihood}
--2\ell\left(\phi, \sigma^2 \vert Y_1,\dots, Y_N \right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \log \sigma_{ij}^2+  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2,
+-2\ell\left(\phi, \sigma^2 \vert Y_1,\dots, Y_N \right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \log \sigma_{ij}^2+  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} \tilde{\phi}\left(t_{ij}, t_{ik}\right) y_{ik}  \right)^2,
+%-2\ell\left(\phi, \sigma^2 \vert Y_1,\dots, Y_N \right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \log \sigma_{ij}^2+  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} %\phi\left(l_{ijk},m_{ijk}\right) y_{ik}  \right)^2,
 \end{equation}
 \noindent
 where $\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right)$.
@@ -76,50 +77,50 @@ Smoothing spline ANOVA models \citep{gu2002smoothing} are a versatile family of 
 
 \subsection{Properties of Reproducing Kernel Hilbert Spaces}
 
-A Hilbert space $\hilbert$ of functions on a set $\mathcal{V}$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. For each $\bfv \in \mathcal{V}$, let $\left[\bfv \right]$ map $f \in \hilbert$ to $f\left(\bfv\right) \in \Re$, which is known as the evaluation functional at $\bfv$. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[\bfv\right]f = f\left(\bfv\right)$ is continuous in $\hilbert$ for all $\bfv \in \mathcal{V}$. The Reisz Representation Theorem gives that there exists $K_{_\bfv} \in \hilbert$, the representer of the evaluation functional $\left[\bfv\right]\left(\cdot\right)$, such that $\langle K_{_\bfv}, f \rangle_\hilbert = f\left(\bfv\right)$ for all $f \in \mathcal{H}$. See Theorem 2.2 in \cite{gu2013smoothing}.
+A Hilbert space $\hilbert$ of functions on a set $\chi$ with inner product $\langle \cdot, \cdot\rangle_\hilbert$ is defined as a complete inner product linear space. For each $x \in \chi$, let $\left[x \right]$ map $f \in \hilbert$ to $f\left(x\right) \in \Re$, which is known as the evaluation functional at $x$. A Hilbert space is called a reproducing kernel Hilbert space if the evaluation functional $\left[x\right]f = f\left(x\right)$ is continuous in $\hilbert$ for all $x \in \chi$. The Reisz Representation Theorem gives that there exists $K_{_x} \in \hilbert$, the representer of the evaluation functional $\left[x\right]\left(\cdot\right)$, such that $\langle K_{_x}, f \rangle_\hilbert = f\left(x\right)$ for all $f \in \mathcal{H}$. See Theorem 2.2 in \cite{gu2013smoothing}.
 
 \bigskip
 
-The symmetric, bivariate function $K\left(\bfv_1, \bfv_2 \right) = K_{_{\bfv_2 }}\left(\bfv_1\right) = \langle K_{_{\bfv_1}}, K_{_{\bfv_2}} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $\bfv \in \mathcal{V}$ and $f \in \mathcal{H}$,
+The symmetric, bivariate function $K\left(x_1, x_2 \right) = K_{_{x_2 }}\left(x_1\right) = \langle K_{_{x_1}}, K_{_{x_2}} \rangle_\hilbert$ is called the reproducing kernel (RK) of $\hilbert$. The RK satisfies that for every $x \in \chi$ and $f \in \mathcal{H}$,
 
 \begin{enumerate}
-\item $K\left(\cdot, \bfv \right) \in \hilbert$ 
-\item $f\left(\bfv\right) = \langle f, K\left(\cdot, \bfv\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
+\item $K\left(\cdot, x \right) \in \hilbert$ 
+\item $f\left(x\right) = \langle f, K\left(\cdot, x\right)\rangle_\hilbert$\label{rkhs-reproducing-property}
 \end{enumerate}
 \noindent
-The second property is called the reproducing property of $K$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See Theorem 2.3 in \cite{gu2013smoothing}. The kernel satisfies that for any $\left\{\bfv_1,\dots, \bfv_{n_1}\right\}$, $\left\{{\bfu}_1,\dots, {\bfu}_{n_2}\right\} \in \mathcal{V}$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{b_1,\dots, b_{n_2}\right\} \in \Re$,
+The second property is called the reproducing property of $K$. Every reproducing kernel uniquely determines the RKHS, and in turn, every RKHS has unique reproducing kernel. See Theorem 2.3 in \cite{gu2013smoothing}. The kernel satisfies that for any $\left\{x_1,\dots, x_{n_1}\right\}$, $\left\{{u}_1,\dots, {u}_{n_2}\right\} \in \chi$ and $\left\{a_1,\dots, a_{n_1}\right\}$, $\left\{b_1,\dots, b_{n_2}\right\} \in \Re$,
 \begin{equation}
- \langle\sum_{i = 1}^{n_1} a_i K\left(\cdot, \bfv_i\right), \sum_{j = 1}^{n_2} b_j K\left(\cdot, {\bfu}_j\right) \rangle_\hilbert = \sum_i \sum_j a_ib_j K\left(\bfv_i ,\bfu_j\right).
+ \langle\sum_{i = 1}^{n_1} a_i K\left(\cdot, x_i\right), \sum_{j = 1}^{n_2} b_j K\left(\cdot, {u}_j\right) \rangle_\hilbert = \sum_i \sum_j a_ib_j K\left(x_i ,u_j\right).
 \end{equation}
 \noindent
 The representer of any bounded linear functional can be obtained from the reproducing kernel $K$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{The Smoothing Spline Model Space}
+\subsection{The Smoothing Spline Model Space}
 
-Suppose that $J\left(f\right)$ is a penalty functional defined on $\hilbert$ measuring the roughness of $f$. When $J\left(f\right)$ is in the form of a squared semi-norm, it induces an orthogonal decomposition of $\hilbert$. Let $\mathcal{N}_J = \left\{ f:\; J\left(f\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition
+Suppose that $J\left(f\right)$ is a penalty functional defined on $\hilbert$ measuring the roughness of $f$. When $J\left(f\right)$ is in the form of a squared semi-norm, it induces an orthogonal decomposition of $\hilbert$. Let $\mathcal{H}_0 = \left\{ f:\; J\left(f\right) = 0\right\}$ denote the null space of $J$, and consider the decomposition
 \[
 \hilbert = \hilbert_0 \oplus \hilbert_1,
 \]
 
 \noindent
-where $\hilbert_1$ is the subspace of $\hilbert$ with $J\left(f\right)$ as its squared norm. For the cubic smoothing spline, the roughness penalty corresponds to 
+where $\hilbert_1$ is the subspace of $\hilbert$ with $J\left(f\right)$ as its squared norm. For the cubic smoothing spline defined on $\chi = \left[0,1\right]$, the roughness penalty corresponds to 
 \begin{equation} \label{eq:SS-penalty-functional}
-J\left(f\right) = \int_0^1  \left(f^{\left(2\right)}\left(x\right)\right)^2\;dx.
+J\left(f\right) = \int_0^1  \left(f''\left(x\right)\right)^2\;dx.
 \end{equation}
 \noindent
 The penalty on the squared second derivative induces a decomposition of the function space
-\[
-C^{\left(2\right)}\left[0,1\right] = \left\{f: \int \limits_{0}^1 \left(f^{\left(2\right)}\left(x\right)\right)^2\;dx < \infty \right\}
-\]
-\noindent %with $d_\Upsilon = 2$, 
+\begin{equation*}
+C^{\left(2\right)}\left[0,1\right] = \left\{f: \int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \right\}
+\end{equation*}
+\noindent %with $\mathcal{N}_0 = 2$, 
 which is a Hilbert space if equipped with inner product
 \begin{align} \label{eq:SS-RKHS-inner-product}
 %\begin{split}
 %\langle f,g\rangle &= \langle f,g\rangle_0 + \langle f,g\rangle_1\\
 %\langle f,g \rangle= \sum_{i=0}^{1}M_{i} f M_{i} g + \int_0^1 f^{\left( 2 \right)}\left(x\right)g^{\left( 2 \right)}\left(x\right)dx,% \quad i = 1,2
-\langle f,g \rangle_\hilbert=M_{0} f M_{0} g + M_{1} f M_{1} g + \int_0^1 f^{\left( 2 \right)}\left(x\right)g^{\left( 2 \right)}\left(x\right)dx,% \quad i = 1,2
+\langle f,g \rangle_\hilbert=\left(M_{0} f \right)\left(M_{0} g\right) + \left(M_{1} f\right) \left(M_{1} g\right) + \int_0^1 f''\left(x\right)g''\left(x\right)dx,% \quad i = 1,2
 %\end{split}
 \end{align}
 \noindent
@@ -134,18 +135,13 @@ where the $i^{th}$ order differential operator $M_i$ is given by $M_i f = \int_0
 
 \bigskip
  
-Given inner product \eqref{eq:SS-RKHS-inner-product}, the reproducing kernel $K$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(v\right) = \frac{1}{j!}B_j\left(x\right) \right\}$, $x \in \left[0,1\right]$, where $B_j$ is defined according to:
+Given inner product \eqref{eq:SS-RKHS-inner-product}, the reproducing kernel $K$ can be expressed in terms of the scaled Bernoulli polynomials $\left\{ k_j\left(x\right) = \frac{1}{j!}B_j\left(x\right) \right\}$ for $x \in \left[0,1\right]$, where $B_j$ is defined according to:
 \begin{align*}
-B_0\left(v\right) &= 1\\
-\frac{d}{dv} B_j\left(v\right) &= jB_{j-1}\left(v\right), \;j = 1, 2, \dots
+B_0\left(x\right) &= 1\\
+\frac{d}{dx} B_j\left(x\right) &= jB_{j-1}\left(x\right), \;j = 1, 2, \dots
 \end{align*}
 \noindent
-One can verify that $\int \limits_0^1 k_i^j\left(x \right)dx = \delta_{ij}$ for $i,j= 0,1$, where $\delta_{ij}$ is the Kronecker delta. This implies that  $\left\{k_0, k_1\right\}$ form an orthonormal basis for 
-\[
-\hilbert_{0} = \left\{ f: f^{\left( 2 \right)} = 0 \right\}
-\] 
-\noindent %\sum_{i=0}^{1}M_{i} f M_{i} g,% \quad i = 1, 2,  
-under the inner product $\langle f,g\rangle_0 =  M_0 f M_0 g + M_1 f M_1 g$ and that 
+One can verify that $\int \limits_0^1 k_i^{\left(j\right)}\left(x \right)dx = \delta_{ij}$ for $i,j= 0,1$, where $\delta_{ij}$ is the Kronecker delta. This implies that  $\left\{k_0, k_1\right\}$ form an orthonormal basis for $\hilbert_{0} = \left\{ f \in C^{\left(2\right)}\left[0,1\right]: f'' = 0 \right\}$ under the inner product $\langle f,g\rangle_0 =  \left(M_0 f \right)\left(M_0 g\right) + \left(M_1 f\right) \left(M_1 g\right)$ and that 
 \[
 K_{0}\left(x,y\right) =  k_0\left(x\right)  k_0\left(y\right) +  k_1\left(x\right)  k_1\left(y\right) 
 \]
@@ -159,9 +155,9 @@ is the reproducing kernel for $\hilbert_{0}$. One can further decompose $\hilber
 \noindent
 where the corresponding reproducing kernels for each subspace are given by $1$ and $k_1\left(x\right)k_1\left(y\right)$, respectively. The subspaces of $\hilbert$ which are orthogonal to $\hilbert_0$ are comprised of functions $f$ satisfying 
 \[
-\hilbert_{1} = \lbrace f: M_0 f = M_1 f =  0,\;\;\;\int\limits_{0}^1 \left(f''\left(x\right)\right)^2;dx < \infty \rbrace, %\quad i = 1,2.
+\hilbert_{1} = \lbrace f: M_0 f = M_1 f =  0,\;\;\;\int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \rbrace. %\quad i = 1,2.
 \]
-One can show that the representer for the evaluation functional $\left[x\right] \left(\cdot\right)$ in $\hilbert_{1}$ with squared norm $\langle f,g\rangle_{\hilbert1}= \int_0^1 f^{\left(2\right)}\left(x\right)g^{\left(2\right)}\left(x\right)\;dx$ is given by the function
+One can show that the representer for the evaluation functional $\left[x\right] \left(\cdot\right)$ in $\hilbert_{1}$ with inner product $\langle f,g\rangle_{\hilbert_1}= \int_0^1 f''\left(x\right)g''\left(x\right)\;dx$ is given by the function
 \begin{equation}
 {{K }_{1}}\left(x,y\right) = k_{2}\left(x\right)k_{2}\left(y\right) - k_{4}\left(x-y \right).
 \end{equation}
@@ -169,17 +165,17 @@ One can show that the representer for the evaluation functional $\left[x\right] 
 See Example 2.3.3 in \cite{gu2002smoothing} for proof. It is obvious that $\hilbert_0 \bigcap \hilbert_1 = \left\{0\right\}$, so the converse of Theorem 2.5 in \cite{gu2013smoothing} gives us that the reproducing kernel for the full space
 \begin{align}\label{eq:SS-RKHS-as-tensor-sum}
 %\begin{split} 
-\hilbert = \hilbert_0  + \hilbert_1,
+\hilbert = \hilbert_0  \oplus \hilbert_1,
 %\end{split}
 \end{align}
 \noindent
 is given by $K = K_0 + K_1$. Using the decomposition of $\hilbert_0$ into the constant and linear subspaces in \eqref{eq:SS-RKHS-null-space-tensor-sum}, we can further decompose $\hilbert$ into
 \begin{equation}\label{eq:RKHS-ANOVA-decomposition}
-\hilbert = \hilbert_{00}  +  \hilbert_{01} + \hilbert_1, 
+\hilbert = \hilbert_{00}  \oplus  \hilbert_{01} \oplus\hilbert_1, 
 \end{equation}
 \noindent
 where $ \hilbert_{01} \oplus \hilbert_1$ forms the contrast in a one-way ANOVA decomposition with averaging operator $\mathcal{A}f = \int_0^1 f\left(x\right)\;dx$. 
-The reproducing kernel $K = K_{00} + K_{01} + K_1$ can be defined in terns of the corresponding reproducing kernels 
+The reproducing kernel $K = K_{00} + K_{01} + K_1$ can be defined in terms of the corresponding reproducing kernels 
 \begin{align}
 \begin{split} \label{eq:cubic-spline-hilbert-space-rks}
 K_{00}\left(x,y\right) &= 1,\\
@@ -190,20 +186,20 @@ K_{1}\left(x,y\right) &= k_2\left(x\right)k_2\left(y\right) - k_4\left(x-y\right
 \noindent
 The kernel $K_{00}$ generates the ``mean'' space. Together, the kernels $K_{01}$ and $K_{1}$ generate the ``contrast'' space, with $K_{01}$ contributing to the ``parametric contrast'' and $K_{1}$ to the ``nonparametric contrast.''
 
-\subsubsection{The Tensor Product Smoothing Spline Model Space}
+\subsection{The Tensor Product Smoothing Spline Model Space}
 
 To estimate a bivariate function using the ANOVA decomposition given in \eqref{eq:RKHS-ANOVA-decomposition}, one may construct a tensor product reproducing kernel Hilbert space. The space can be constructed through the reproducing kernel, which is constructed using the reproducing kernels on each of the marginal domains. One-way ANOVA decompositions on the marginal domains naturally induce an ANOVA decomposition on the product domain. It can be shown that the products of reproducing kernels on the marginal domains form reproducing kernels on the product domain; see Theorem 2.6 in \cite{gu2013smoothing}.
 
 \bigskip
 
-Let $\hilbert_{\left[1\right]}$ and $\hilbert_{\left[2\right]}$ denote reproducing kernel Hilbert spaces on marginal domains $\left[0, 1\right]$ equipped with corresponding reproducing kernels $K_{\left[1\right]}$ and $K_{\left[2\right]}$, each defined as in \eqref{eq:cubic-spline-hilbert-space-rks}. The RKHS corresponding to the tensor product smoothing spline is given by
+Let $\hilbert_{\left[1\right]}$ and $\hilbert_{\left[2\right]}$ denote reproducing kernel Hilbert spaces on marginal domains $\left[0, 1\right]$ equipped with corresponding reproducing kernels $K_1$ and $K_2$, each defined as in \eqref{eq:cubic-spline-hilbert-space-rks}. The RKHS corresponding to the tensor product smoothing spline is given by
 \[
 \hilbert = \hilbert_{\left[1\right]} \otimes \hilbert_{\left[2\right]}
 \]
 \noindent
 and has reproducing kernel 
 \[
-K\left(\bfx,\bfy\right) = K_{\left[1\right]}\left(x_{\left[1\right]},y_{\left[1\right]}\right) K_{\left[2\right]}\left(x_{\left[2\right]},y_{\left[2\right]}\right),
+K\left(\bfx,\bfy\right) = K_1\left(x_1,y_1\right) K_2\left(x_{2},y_{2}\right),
 \]
 \noindent 
 where $\bfx = \left(x_1, x_2\right)$ and $\bfy = \left(y_1, y_2\right)$.
@@ -212,7 +208,7 @@ where $\bfx = \left(x_1, x_2\right)$ and $\bfy = \left(y_1, y_2\right)$.
 
 The tensor product space can be constructed with nine tensor sum terms, which are defined by the decomposition of the marginal subspaces
 \[
-\hilbert_{\left[i\right]} = \hilbert_{00\left[1\right]}  +  \hilbert_{01\left[i\right]} + \hilbert_{1\left[i\right]}, \quad i = 1,2.
+\hilbert_{\left[i\right]} = \hilbert_{00\left[1\right]}  \oplus  \hilbert_{01\left[i\right]} \oplus \hilbert_{1\left[i\right]}, \quad i = 1,2.
 \]
 \noindent
 Table~\ref{table:tensor-product-cubic-spline-RKHS-table} gives the tensor sum terms defining the decomposition of $\hilbert$ and the functional components corresponding to each subspace. The reproducing kernels for each of the subspaces are given in Table~\ref{table:tensor-product-cubic-spline-RK-table}.
@@ -233,6 +229,8 @@ Table~\ref{table:tensor-product-cubic-spline-RKHS-table} gives the tensor sum te
 
 \begin{table}[H]
 \begin{center}% used for centering table
+\caption{\textit{Construction of the tensor product cubic spline function space from marginal subspaces} $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$ \textit{and the corresponding functional components, where ``n'' and ``p'' mean ``parametric'' and ``nonparametric,'' respectively.}} % title of Table
+\label{table:tensor-product-cubic-spline-RKHS-table}
 \begin{tabular}{r|c|c|c|} % centered columns (4 columns)
 \multicolumn{1}{c}{} & \multicolumn{1}{c}{	$\hilbert_{00\left[2\right]}$}	&	\multicolumn{1}{c}{$\hilbert_{01\left[2\right]} $}	&\multicolumn{1}{c}{ $\hilbert_{1\left[2\right]}$}\\ [1.5ex] 
 \cline{2-4}  % inserts single horizontal line\\
@@ -254,14 +252,14 @@ $ \left\{k_1\right\}$	& 	$p$-main effect	& 	$p\times p$-interaction   & $p \time
 \cline{2-4}
 \end{tabular}
 \end{center}
-\caption{\textit{Construction of the tensor product cubic spline subspace from marginal subspaces} $\hilbert_{\left[1\right]}$, $\hilbert_{\left[2\right]}$ \textit{and the corresponding functional components, where ``n'' and ``p'' mean ``parametric'' and ``nonparametric,'' respectively.}} % title of Table
-\label{table:tensor-product-cubic-spline-RKHS-table}
 \end{table}
 
 
 %\begin{landscape}
 \begin{table}[H]
 \centering % used for centering table
+\caption{\textit{Reproducing kernels corresponding to the subspaces for the cubic tensor product smoothing spline given in Table~\ref{table:tensor-product-cubic-spline-RKHS-table}.}} % title of Table
+\label{table:tensor-product-cubic-spline-RK-table}
 \begin{tabular}{lll} % centered columns (4 columns)
 \hline 
 \hline %inserts double horizontal lines
@@ -269,15 +267,16 @@ Subspace 	& 		Reproducing kernel 		 \\
 \hline % inserts single horizontal line
 $\hilbert_{00\left[1\right]} \otimes \hilbert_{00\left[2\right]}$ & 	$1$	\\ [1ex] 
 $\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]} $& 	$k_1\left(x_1\right)k_1\left(y_1\right)$	\\ [1ex] 
-$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(x_1\right)k_1\left(y_1\right)k_1\left(y_1\right)k_1\left(y_2\right)$ \\ [1ex] 
+$\hilbert_{00\left[1\right]} \otimes \hilbert_{01\left[2\right]} $& 	$k_1\left(x_2\right)k_1\left(y_2\right)$	\\ [1ex] 
+$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(x_1\right)k_1\left(y_1\right)k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex] 
 $\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$  	& 	$k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)$	\\ [1ex] 
+$\hilbert_{00\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  	& 	$k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)$	\\ [1ex] 
 $\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	& 	$\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex]  
+$ \hilbert_{01\left[1\right]}\otimes  \hilbert_{1\left[2\right]}$ 	& 	$k_1\left(x_1\right)k_1\left(y_1\right)\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$ \\ [1ex]  
 $\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  & $\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$	\\ [1ex]  
 \hline %inserts single line
 \hline %inserts single line
 \end{tabular}
-\caption{\textit{Reproducing kernels corresponding to the subspaces for the cubic tensor product smoothing spline given in Table~\ref{table:tensor-product-cubic-spline-RKHS-table}.}} % title of Table
-\label{table:tensor-product-cubic-spline-RK-table}
 \end{table}
 %\end{landscape}
 
@@ -290,9 +289,9 @@ J\left(f\right) = \int_0^1  \left(f^{\left(m\right)}\left(x\right)\right)^2\;dx.
 For example, letting $m = 1$ corresponds to the space for a linear smoothing spline, where the null space of the penalty functional is spanned by constant functions. For detailed derivations of the smoothing spline ANOVA decomposition with arbitrary penalty order $m$, we refer the reader to Chapter 2 in \cite{gu2013smoothing}. 
 
 
-\subsubsection{A General Form for Multiple-Term Reproducing Kernel Hilbert Spaces}
+\subsection{A General Form for Multiple-Term Reproducing Kernel Hilbert Spaces}
 
-The previous construction of the RKHS for the tensor product cubic spline contains multiple tensor sum terms. We can write 
+The previous construction of the RKHS for the tensor product cubic spline space contains multiple tensor sum terms. We can write 
 \begin{equation} \label{eq:multi-term-RKHS}
 \hilbert = \bigoplus\limits_{\beta} \hilbert_\beta, 
 \end{equation}
@@ -301,7 +300,7 @@ where $\beta$ is a generic index. The subspaces $\hilbert_\beta$ have reproducin
 
 \bigskip
 
-The subspaces $\hilbert_\beta$ are independent modules, and the inner products $\langle f_\beta,g\beta {\rangle_{\hilbert}}_\beta$ are not necessarily comparable between subspaces. To standardize across the subspaces, an inner product in $\hilbert$ can be specified via
+The subspaces $\hilbert_\beta$ are independent modules, and the inner products $\langle f_\beta,g_\beta {\rangle_{\hilbert}}_\beta$ are not necessarily comparable between subspaces. To standardize across the subspaces, an inner product in $\hilbert$ can be specified via
 \begin{equation} \label{eq:multi-term-inner-product}
 \langle f,g \rangle_\hilbert = \sum_\beta \theta_\beta^{-1} \langle f,g {\rangle_{\hilbert_\beta}}.
 \end{equation}
@@ -311,9 +310,9 @@ where $\theta_\beta \in \left(0,\infty\right)$ are additional smoothing paramete
 K = \sum_\beta \theta_\beta K_\beta,
 \end{equation}
 \noindent
-which can be used to specify the penalty $J\left(f\right) = \langle f,f \rangle_\hilbert$. Subspaces which don't contribute to $J\left(f\right)$ form $\hilbert_0 = \left\{f: J\left(f\right) = 0\right\}$, the null space of $J\left(f\right)$. The subspaces contributing to $J\left(f\right)$ form the space $\hilbert_1 = \hilbert \ominus \hilbert_0$, in which $J\left(f\right)$ is a full inner product. For this specification, denote the penalty constructed as such by 
+which can be used to specify the penalty $J\left(f\right)$. Subspaces which don't contribute to $J\left(f\right)$ form $\hilbert_0 = \left\{f: J\left(f\right) = 0\right\}$, the null space of $J\left(f\right)$. The subspaces contributing to $J\left(f\right)$ form the space $\hilbert_1 = \hilbert \ominus \hilbert_0$, in which $J\left(f\right)$ is a squared norm. For this specification, denote the penalty constructed as such by 
 \begin{equation}\label{eq:multi-term-penalty}
-J\left(\phi\right) =  \sum_{\beta} \theta^{-1}_\beta  \langle \phi_\beta,\phi_\beta {\rangle_{\hilbert}}_\beta = \sum_{\beta} \theta^{-1}_\beta J_\beta \left( \phi_\beta \right).
+J\left(f\right) =  \sum_{\beta} \theta^{-1}_\beta  \langle f_\beta,f_\beta {\rangle_{\hilbert}}_\beta = \sum_{\beta} \theta^{-1}_\beta J_\beta \left( f_\beta \right).
 \end{equation}
 \noindent
 The $\left \{ \theta_\beta \right\}$ are implicit in notation henceforth to permit ease of exposition.
@@ -325,32 +324,28 @@ The $\left \{ \theta_\beta \right\}$ are implicit in notation henceforth to perm
 
 \section{A Reproducing Kernel Hilbert Space Framework for the Generalized Autoregressive Varying Coefficient} \label{RKHS-for-phi}
 
-We can construct the model space for the generalized autoregressive varying coefficient $\phi$ using the previous recipe for constructing a tensor product RKHS. Let $\hilbert_{\left[l\right]}$ denote the RKHS for the domain of $l \in \left[0,1\right]$ with reproducing kernel $K_{\left[l\right]}$, and similarly, let $\hilbert_{\left[m\right]}$ denote the RKHS for the domain of $m \in \left[0,1\right]$ with reproducing kernel $K_{\left[m\right]}$. The function space for $\phi\left(t,s\right) \in \hilbert$
+We can construct the model space for the generalized autoregressive varying coefficient $\phi$ using the previous recipe for constructing a tensor product RKHS. Let $\hilbert_{\left[l\right]}$ denote the RKHS for the domain of $l \in \left[0,1\right]$ with reproducing kernel $K_{\left[l\right]}$, and similarly, let $\hilbert_{\left[m\right]}$ denote the RKHS for the domain of $m \in \left[0,1\right]$ with reproducing kernel $K_{\left[m\right]}$. The function space for $\phi\left(l,m\right) \in \hilbert$
 \begin{align*}
-\hilbert &= \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]} \\
-&= \hilbert_0 \oplus \hilbert_1
+\hilbert = \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]} = \hilbert_0 \oplus \hilbert_1
 \end{align*}
 \noindent
-is obtained as in Section~\ref{SSANOVA-function-space}, with reproducing kernel
-\[
-K = K_{\left[l\right]}K_{\left[m\right]}.
-\] 
+is obtained as in Section~\ref{SSANOVA-function-space}, with reproducing kernel $K = K_{\left[l\right]}K_{\left[m\right]}$.
 
+
+\bigskip
 %\[
 %\hilbert_1 = \left[\right] \oplus  \left[\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}\right] \oplus \left[\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}\right]
 %\]
 
-Let $\bfv_{ijk} = \left(t_{ij} - t_{ik}, \frac{1}{2}\left(t_{ij} + t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$ denote the tuple corresponding to the transformed pair of observation times. Fixing the innovation variances $\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right)$ in \eqref{eq:full-joint-likelihood}, the negative log likelihood satsifies
+Let $\bfv_{ijk} = \left(t_{ij} - t_{ik}, \frac{1}{2}\left(t_{ij} + t_{ik}\right)\right) = \left(l_{ijk}, m_{ijk}\right)$, $\bfv_{ijk} \in \mathcal{V} = \left[0,1\right]^2$ denote the tuple corresponding to the transformed pair of observation times. Fixing the innovation variances $\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right)$ in \eqref{eq:full-joint-likelihood}, the negative log likelihood satsifies
 \begin{equation}\label{eq:negative-log-likelihood-given-sigma}
 -2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}  \right)^2.
 \end{equation}
 \noindent
 The roughness penalty associated with reproducing kernel $K$ can be written as $J\left(\phi\right) =\vert \vert P_1 \phi \vert\vert^2$, the squared norm of the projection of $\phi$ onto $\hilbert_1$. Appending this to \eqref{eq:negative-log-likelihood-given-sigma}, the penalized negative log likelihood may be written
  \begin{equation} \label{eq:phi-penalized-sums-of-squares}
--2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\left( L_{_{ijk}}\phi\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2, 
+-2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\phi\left(\bfv_{_{ijk}}\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2.
 \end{equation} 
-\noindent
-where $L_{ijk} = \left[\bfv_{ijk}\right]\phi$ denotes the evaluation functional at $\bfv_{ijk}$.
 
 %\bigskip
 %\noindent
@@ -375,23 +370,20 @@ where $L_{ijk} = \left[\bfv_{ijk}\right]\phi$ denotes the evaluation functional 
 
 \subsection{A Representer Theorem}
 
-\cite{wahba1990spline} established an explicit form for the minimizer of the penalized sums of squares in the usual function estimation setting. The following theorem establishes the form for the minimizer of \eqref{eq:phi-penalized-sums-of-squares}, the penalized sums of squares for the varying coefficient model \eqref{eq:cholesky-regression-model-1}. Define  
+\cite{wahba1990spline} established an explicit form for the minimizer of the penalized negative log likelihood in the usual function estimation setting. The following theorem establishes the form for the minimizer of \eqref{eq:phi-penalized-sums-of-squares}, the penalized negative log likelihood for the varying coefficient model \eqref{eq:cholesky-regression-model-1}. Define  
 \[
 V = \bigcup\limits_{i,j,k} \left\{\bfv_{ijk} \right\} \equiv \left\{ \bfv_1,\dots,\bfv_{\vert V \vert} \right\}
 \]
 \noindent
-as the set of unique within-subject pairs of observation times. Let $\psi_{ijk}$ denote the representer of  $L_{ijk}$, i.e. $\psi_{ijk}$ satisfies
-\[
-\langle \psi_{ijk}, \phi \rangle = L_{ijk}\phi, \quad \phi \in \hilbert.
-\]
+as the set of unique within-subject pairs of observation times. 
 
  \begin{theorem} \label{theorem:finite-dimensional-minimizer}
- Let $\left\{\nu_1,\dots, \nu_{d_\Upsilon}\right\}$ span $\hilbert_0$, the null space of $J$. Let $B$ denote the $\vert V \vert \times d_\Upsilon$ matrix having $i^{th}$ column equal to $\nu_i$ evaluated at the observed $\bfv \in V$, and assume that $B$ has full column rank. Then the minimizer $\phi_\lambda$ of \eqref{eq:phi-penalized-sums-of-squares} is given by
+ Let $\left\{\nu_1,\dots, \nu_{\mathcal{N}_0}\right\}$ span $\hilbert_0$, the null space of $J\left(\phi\right) = \vert \vert P_1 \phi\vert\vert^2$. Let $B$ denote the $\vert V \vert \times \mathcal{N}_0$ matrix having $i^{th}$ column equal to $\nu_i$ evaluated at the observed $\bfv \in V$, and assume that $B$ has full column rank. Then the minimizer $\phi_\lambda$ of \eqref{eq:phi-penalized-sums-of-squares} is given by
  \begin{equation} \label{eq:form-of-the-minimizer-phi}
-\phi_\lambda\left(\bfv\right) = \sum_{i = 1}^{d_\Upsilon} d_i \nu_{i}\left(\bfv\right) + \sum_{j = 1}^{\vert V \vert} c_j K_1\left(\bfv_j, \bfv\right),
+\phi_\lambda\left(\bfv\right) = \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_{i}\left(\bfv\right) + \sum_{j = 1}^{\vert V \vert} c_j K_1\left(\bfv_j, \bfv\right),
 \end{equation}
 \noindent
-where $K_1\left(\bfv_j, \bfv \right) = {K_1}_{\bfv_j}\left(\bfv_j \bfv \right)$ denotes the reproducing kernel for $\hilbert_1$ evaluated at ${\bfv_j}$, the $j^{th}$ element of $V$, viewed as a function of $\bfv$.
+where $K_1\left(\bfv_j, \bfv \right)$ denotes the reproducing kernel for $\hilbert_1$ evaluated at ${\bfv_j}$, the $j^{th}$ element of $V$, viewed as a function of $\bfv$.
 \end{theorem}
 \vspace{0.5cm}
 \noindent
@@ -401,13 +393,13 @@ The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wah
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Model Fitting}
 
-Let $Y$ denote the vector of length $n_y= \sum_{i} p_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other:
+Let $Y$ denote the vector of length $n_Y= \sum_{i} p_i - N$  constructed by stacking the $N$ observed response vectors $Y_1,\dots, Y_N$ less their first element $y_{i1}$ one on top of each other:
 \begin{align}\label{eq:stacked-response-vector}
 Y &= \left( Y'_1, Y'_2, \dots, Y'_{N} \right)'\\
- &= \left( y_{12}, y_{13},\dots, y_{1,p_1}, \dots, y_{N2}, y_{N3},\dots, y_{Np_N} \right)'.
+ &= \left( y_{12}, y_{13},\dots, y_{1p_1}, \dots, y_{N2},\dots, y_{Np_N} \right)'.
 \end{align}
 \noindent
-Define $X_i$ to be the $p_i \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,p_i}$ on its predecessors as in Model~\eqref{eq:cholesky-regression-model-1}, and stack these on top of one another to obtain
+Define $X_i$ to be the $\left(p_i-1\right) \times \vert V \vert$ matrix containing the covariates necessary for regressing each measurement $y_{i2}, \dots, y_{i,p_i}$ on its predecessors as in Model~\eqref{eq:cholesky-regression-model-1}, and stack these on top of one another to obtain
 \begin{equation} \label{eq:ar-design-matrix-1}
 X = \begin{bmatrix}
 X_1 \\
@@ -417,12 +409,12 @@ X_N
 \end{bmatrix},
 \end{equation}
 \noindent
-which has dimension $n_y \times \vert V \vert$. The penalized negative log likelihood in \eqref{eq:phi-penalized-sums-of-squares} can be expressed as
+which has dimension $n_Y \times \vert V \vert$. Using the Representer Theorem in \eqref{eq:form-of-the-minimizer-phi}, the penalized negative log likelihood in \eqref{eq:phi-penalized-sums-of-squares} can be expressed as
 \begin{equation} \label{eq:penalized-likelihood-vectorized}
--2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \vert \vert D^{-1/2}\left( Y - X \left( Bd + K_nc \right) \right) \vert \vert^2  + \lambda c^\prime K_n c 
+-2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \vert \vert D^{-1/2}\left( Y - X \left( Bd + K_{_{\ms V}}c \right) \right) \vert \vert^2  + \lambda c^\prime K_{_{\ms V}} c, 
 \end{equation}
 \noindent
-where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $K_n$ is given by $\langle P_1 \xi_i,  P_1 \xi_j \rangle_\hilbert$. The $\vert V \vert \times d_\Upsilon$ matrix $B$ has $\left(i,j\right)$ element equal to $\nu_j\left(\bfv_i\right)$, and we assume $B$ to be full column rank.  The diagonal matrix $D$ holds the $n_Y \times n_Y$  innovation variances $\sigma^2_{ijk}$. The following examples demonstrate how to construct the subject-specific design matrices $X_1,\dots, X_N$ when observation times are common across all subjects and when observation times are subject-specific.
+where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $K_{_{\ms V}}$ is given by $K_1\left(\bfv_i, \bfv_j\right)$. The $\vert V \vert \times \mathcal{N}_0$ matrix $B$ has $\left(i,j\right)$ element equal to $\nu_j\left(\bfv_i\right)$, and we assume $B$ to be full column rank.  The diagonal matrix $D$ holds the $n_Y \times n_Y$  innovation variances $\sigma^2_{ij}$. The following examples demonstrate how to construct the subject-specific design matrices $X_1,\dots, X_N$ when observation times are common across all subjects and when observation times are subject-specific.
 
 \begin{example}{Construction of $X_i$ with complete data} \label{example:construction-of-X}
 
@@ -455,7 +447,7 @@ $t$ & $0.1$ & $0.2$ & $0.5$ & $0.5$ & $0.5$ & $0.7$ & $0.7$ & $0.7$ &$ 0.9$ &$ 0
  $s$ & $0.0$& $0.0$ & $0.0$ & $0.1$ & $0.2$ & $0.0$ & $0.1$ & $0.5$ & $0.0$ & $0.2$ & $0.5$ \\
 \end{tabular}
 \end{table}
-where the top row indicates which subject was observed at each pair $\left(t,s\right)$. This gives that $V =  \left\{\bfv_{121},\dots, \bfv_{143}  \right\} \bigcup \left\{\bfv_{221},\dots, \bfv_{243}  \right\} = \left\{\bfv_1,\dots, \bfv_{11} \right\}$, where the distinct observed $\bfv = \left(l, m\right)$ are 
+Here, the top row indicates which subject was observed at each pair $\left(t,s\right)$. This gives that $V =  \left\{\bfv_{121},\dots, \bfv_{143}  \right\} \bigcup \left\{\bfv_{221},\dots, \bfv_{243}  \right\} = \left\{\bfv_1,\dots, \bfv_{11} \right\}$, where the distinct observed $\bfv = \left(l, m\right)$ are 
 
 \begin{table}[H]
 \centering
@@ -478,30 +470,32 @@ and similarly, for subject 2:
 \[
 X_2 =  \begin{bmatrix} 
 y_{21}    & 	0  &	  0           &      0            &  0 &   0   & 0 & 0 & 0 & 0 & 0  \\
-0   	      &  	0  &	y_{21}     &  y_{22} &  0 &  &    0   &  0 & 0 & 0 & 0 & 0 \\
- 0   	      &        0  &    0           &      0        & 0    &  y_{21}    & y_{22}& y_{23} &    0   & 0  & 0
+0   	      &  	0  &	y_{21}     &  y_{22} &  0 & 0 &    0   &  0 & 0 & 0 & 0 \\
+ 0   	      &        0  &    0           &      0        & 0    &  y_{21}    & y_{22}& y_{23} &    0   & 0 &0
 \end{bmatrix}
 \]
 \end{example}
 
-Defining $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeK_n = D^{-1/2} X K_n$, the penalized negative log likelihood \eqref{eq:penalized-likelihood-vectorized} may be written
+\subsubsection{Finding the Solution}
+
+Defining $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeK_{_{\ms V}} = D^{-1/2} X K_{_{\ms V}}$, the penalized negative log likelihood \eqref{eq:penalized-likelihood-vectorized} may be written
 \begin{equation}\label{eq:penalized-loglik-tilde-vectorized}
--2\ell \left(c, d \right) + \lambda J\left( \phi \right) = \bigg[ \tildeY - \tildeB d - \tildeK_n c\bigg]'\bigg[ \tildeY - \tildeB d - \tildeK_n c\bigg] + \lambda c'Kc.
+-2\ell \left(c, d \vert \tildeY, \tildeB, \tildeK_{_{\ms V}} \right) + \lambda J\left( \phi \right) = \bigg[ \tildeY - \tildeB d - \tildeK_{_{\ms V}} c\bigg]'\bigg[ \tildeY - \tildeB d - \tildeK_{_{\ms V}} c\bigg] + \lambda c'K_Vc.
 \end{equation}
 \noindent
 Taking partial derivatives with respect to $d$ and $c$ and setting them equal to zero yields normal equations: 
 \begin{align}
 \begin{split}
-\tildeB'\tildeB d + \tildeB'\tildeK_n c &= \tildeB' \tildeY \\
-\tildeK_n'\tildeB d + \tildeK_n'\tildeK_n c + \lambda K_n c &= \tildeK_n' \tildeY.
+\tildeB'\tildeB d + \tildeB'\tildeK_{_{ V }} c &= \tildeB' \tildeY \\
+\tildeK_{_{\ms V}}'\tildeB d + \tildeK_{_{\ms V}}'\tildeK_{_{\ms V}} c + \lambda K_{_{\ms V}} c &= \tildeK_{_{\ms V}}' \tildeY.
 \end{split}
 \end{align}
 \noindent
 Thus, for fixed smoothing parameters, the solution $\phi$ is obtained by finding $c$ and $d$ which satisfy
 \begin{equation} \label{eq:vectorized-normal-equations}
 \begin{bmatrix}
-\tildeB'\tildeB & \tildeB'\tildeK_n \\
-\tildeK_n'\tildeB & \tildeK_n'\tildeK_n + \lambda K_n\\
+\tildeB'\tildeB & \tildeB'\tildeK_{_{\ms V}} \\
+\tildeK_{_{\ms V}}'\tildeB & \tildeK_{_{\ms V}}'\tildeK_{_{\ms V}} + \lambda K_{_{\ms V}}\\
 \end{bmatrix}
 \begin{bmatrix}
 d\\
@@ -509,15 +503,15 @@ c\\
 \end{bmatrix}
 = \begin{bmatrix}
 \tildeB'\tildeY \\
- \tildeK_n'\tildeY\\
+ \tildeK_{_{\ms V}}'\tildeY\\
 \end{bmatrix}.
 \end{equation}
 
-Fixing smoothing parameters $\lambda$ and $\theta_\beta$ (hidden in $K_n$ and $\tildeK_n$ if present), assuming that $\tildeK_n$ is full column rank, \eqref{eq:vectorized-normal-equations} can be solved by the Cholesky decomposition of the $\left( \vert V \vert + d_\Upsilon \right) \times \left( \vert V \vert + d_\Upsilon \right)$ matrix, followed by forward and backward substitution. See \cite{golub2012matrix}. Singularity of $\tildeK_n$ demands special consideration. Write the Cholesky decomposition
+Fixing smoothing parameters $\lambda$ and $\theta_\beta$ (hidden in $K_{_{\ms V}}$ and $\tildeK_{_{\ms V}}$ if present), assuming that $\tildeK_{_{\ms V}}$ is full column rank, \eqref{eq:vectorized-normal-equations} can be solved by the Cholesky decomposition of the $\left(\mathcal{N}_0 + \vert V \vert  \right) \times \left(\mathcal{N}_0 + \vert V \vert  \right)$ matrix, followed by forward and backward substitution. See \cite{golub2012matrix}. Singularity of $\tildeK_{_{\ms V}}$ demands special consideration. Write the Cholesky decomposition
 \begin{equation} \label{eq:normal-equation-cholesky}
 \begin{bmatrix}
-\tildeB'\tildeB & \tildeB'\tildeK_n \\
-\tildeK_n'\tildeB & \tildeK_n'\tildeK_n + \lambda K_n\\
+\tildeB'\tildeB & \tildeB'\tildeK_{_{\ms V}} \\
+\tildeK_{_{\ms V}}'\tildeB & \tildeK_{_{\ms V}}'\tildeK_{_{\ms V}} + \lambda K_{_{\ms V}}\\
 \end{bmatrix}
 = \begin{bmatrix}
 C'_1 & 0 \\
@@ -529,7 +523,7 @@ C_1 & C_2 \\
 \end{bmatrix}
 \end{equation}
 \noindent
-where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_n$, and $C'_3 C_3 = \lambda K_n +  \tildeK_n'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_n$. Using an exchange of indices known as pivoting, one may write 
+where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_{_{\ms V}}$, and $C'_3 C_3 = \lambda K_{_{\ms V}} +  \tildeK_{_{\ms V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{\ms V}}$. Using an exchange of indices known as pivoting, one may write 
 \begin{equation*}
 C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
 \end{equation*}
@@ -566,7 +560,7 @@ I & 0 \\
 \end{bmatrix}
 = \begin{bmatrix}
 (C'_1)^{-1} \tildeB'\tildeY \\
-(\tilde{C}'_3)^{-1} \tildeK_n'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY\\
+(\tilde{C}'_3)^{-1} \tildeK_{_{\ms V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY\\
 \end{bmatrix}
 \end{equation}
 \noindent
@@ -577,7 +571,7 @@ where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \rig
 &= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
 \end{align*}
 \noindent
-If $L'C'_3 C_3 L = 0$, then $L'\tildeK_n'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_n L = 0$, so $L'\tildeK_n'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY = 0$. Thus, the linear system has form
+If $L'C'_3 C_3 L = 0$, then $L'\tildeK_{_{\ms V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{\ms V}} L = 0$, so $L'\tildeK_{_{\ms V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY = 0$. Thus, the linear system has form
 \begin{equation} \label{eq:vectorized-normal-equations-cholesky-2}
 \begin{bmatrix}
 I & 0 & 0\\
@@ -596,26 +590,26 @@ I & 0 & 0\\
 \end{bmatrix},
 \end{equation}
 \noindent
-which can be solved, but with $\tilde{c}_2$ arbitrary. One may perform the Cholesky decomposition of \eqref{eq:vectorized-normal-equations} with pivoting, replace the trailing $0$ with $\delta I$ for appropriate value of $\delta$, and proceed as if $\tildeK_n$ were of full rank. 
+which can be solved, but with $\tilde{c}_2$ arbitrary. One may perform the Cholesky decomposition of \eqref{eq:vectorized-normal-equations} with pivoting, replace the trailing $0$ with $\delta I$ for appropriate value of $\delta$, and proceed as if $\tildeK_{_{\ms V}}$ were of full rank. 
 
 \bigskip
 
 
 Solving for the coefficients gives
 \begin{equation} \label{eq:d-c-hat}
-\begin{bmatrix} \hat{d} \\ \hat{c} \end{bmatrix} = \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_n' \end{bmatrix} \tildeY. 
+\begin{bmatrix} \hat{d} \\ \hat{c} \end{bmatrix} = \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_{_{\ms V}}' \end{bmatrix} \tildeY. 
 \end{equation} 
 \noindent
 It follows that
 \begin{equation} \label{eq:tildeY-hat-equals-tildeA-tildeY}
-\widehat{\tildeY} = \tildeB \hat{d} + \tildeK_n \hat{c} = \begin{bmatrix} \tildeB & \tildeK_n \end{bmatrix} \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_n' \end{bmatrix} \tildeY = \tildeA_{\lambda,\bftheta} \tildeY,
+\widehat{\tildeY} = \tildeB \hat{d} + \tildeK_{_{\ms V}} \hat{c} = \begin{bmatrix} \tildeB & \tildeK_{_{\ms V}} \end{bmatrix} \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_{_{\ms V}}' \end{bmatrix} \tildeY = \tildeA_{\lambda,\bftheta} \tildeY,
 \end{equation} 
 \noindent
 where
 \begin{align}
 \begin{split} \label{eq:smoothing-matrix-A-tilde}
-\tildeA_{\lambda,\bftheta} &= \begin{bmatrix} \tildeB & \tildeK_n \end{bmatrix} \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_n' \end{bmatrix}  \\
-&= G + \left(I - G\right) \tildeK_n \left[\tildeK_n'\left( I - G \right)\tildeK_n + \lambda K_n\right]^{-1} \tildeK_n'\left(I - G\right),
+\tildeA_{\lambda,\bftheta} &= \begin{bmatrix} \tildeB & \tildeK_{_{\ms V}} \end{bmatrix} \tilde{C}^{-1} (\tilde{C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_{_{\ms V}}' \end{bmatrix}  \\
+&= G + \left(I - G\right) \tildeK_{_{\ms V}} \left[\tildeK_{_{\ms V}}'\left( I - G \right)\tildeK_{_{\ms V}} + \lambda K_{_{\ms V}}\right]^{-1} \tildeK'_V\left(I - G\right),
 \end{split}
 \end{align} 
 \noindent
@@ -633,43 +627,44 @@ By varying smoothing parameters $\lambda$ and $\theta_\beta$, the minimizer $\ph
 
 \subsubsection{Unbiased Risk Estimate}
 
-Define  $\tildeY$, $\tildeB$, and $\tildeK$ as before. Let $\tildeepsilon = D^{-1/2} \epsilon$ denote the vector of length $n_Y = \sum_{i = 1}^N p_i - N$ containing the standardized prediction errors $\epsilon_{ij} \sim N\left(0,1\right)$. Write the mean of $\tildeY$ as
-\begin{align}
-\tilde{\mu} = D^{-1/2} X \left[ Bd + K_nc \right] = D^{-1/2} X \Phi.
-\end{align}
+Define  $\tildeY$, $\tildeB$, and $\tildeK$ as before. Let $\tildeepsilon = D^{-1/2} \epsilon$ denote the vector of length $n_Y = \sum_{i = 1}^N p_i - N$ containing the standardized prediction errors $\tilde{\epsilon}_{ij} \sim N\left(0,1\right)$. Let ${\mu} =  E\left[Y \vert X \right] = X \Phi$  denote the mean vector of $Y$ conditional on its predecessors, where $\Phi$ is the $\vert V \vert \times 1$ vector resulting from the evaluation of $\phi$ at $\bfv_{1},\dots, \bfv_{\vert V \vert} \in V$. The elements of $\mu = \left(\mu_{11},\dots, \mu_{Np_N} \right)'$ are given by
+\begin{align*}
+\mu_{ij} &= E\left[y_{ij}\vert y_{i1}, \dots, y_{i,j-1}\right] \\
+&= \sum_{k<j} \phi\left(\bfv_{ijk} \right) y_{ik}, \quad i = 1,\dots, N, \;j = 2,\dots, p_i. 
+\end{align*}
 \noindent
-We can assess $\hat{\tildeY}_\lambda$, an estimate of the mean of $\tildeY$ based on observed data $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, p_i$, using the loss function
+Let $\tilde{X} = D^{-1/2}X$, and let $\tilde{\mu} =E\left[\tildeY \vert \tilde{X} \right]  = \tilde{X}\Phi$ denote the conditional mean vector of the standardized observations. We can assess $\hat{\tildeY}_\lambda$, an estimate of the mean of $\tildeY$ based on observed data $\left\{y_{ij}\right\}$ using the loss function
 \begin{align}
 \begin{split}
-L\left(\lambda\right) &= \sum_{i = 1}^N \sum_{j = 1}^{p_i} \left(\hat{\tildey}_{ij} - E\left[\tildey_{ij}\right] \right)^2\\
-&= \vert \vert \tildeY - \tilde{\mu} \vert \vert^2
+L\left(\lambda\right) &= \sum_{i = 1}^N \sum_{j = 1}^{p_i} \left(\hat{\tildey}_{ij} - \tilde{\mu}_{ij} \right)^2\\
+&= \vert \vert \widehat{\tildeY} - \tilde{\mu} \vert \vert^2.
 \end{split}
 \end{align}
 \noindent
-Then straightforward algebra yields that 
+Writing $\widehat{\tildeY} = \tildeA_{\lambda,\bftheta} \tildeY$, straightforward algebra yields that 
 \begin{align} 
-L\left(\lambda\right) = \mu'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\mu - 2\mu'\left( I - \tildeA_{\lambda,\bftheta} \right)^2 \tildeA_{\lambda,\bftheta} \tildeepsilon + \tildeepsilon' \tildeA_{\lambda,\bftheta}^2 \tildeepsilon
+L\left(\lambda\right) = \tilde{\mu}'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tilde{\mu} - 2\tilde{\mu}'\left( I - \tildeA_{\lambda,\bftheta} \right)^2 \tildeA_{\lambda,\bftheta} \tildeepsilon + \tildeepsilon' \tildeA_{\lambda,\bftheta}^2 \tildeepsilon
 \end{align}
 Define the unbiased risk estimate
 \begin{equation*} 
 %U\left(\lambda\right) = \frac{1}{N}\tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + \frac{2}{N}\mbox{tr}\tildeA_{\lambda,\bftheta}
-U\left(\lambda\right) = \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + {2}\mbox{tr}\tildeA_{\lambda,\bftheta}.
+U\left(\lambda\right) = \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + {2}\mbox{ tr}\left(\tildeA_{\lambda,\bftheta}\right).
 \end{equation*}
  \noindent
-Adding $\mu$ to and subtracting $\mu$ from the quadratic terms, one can verify with straightforward algebra that
+Adding $\tilde{\mu}$ to and subtracting $\tilde{\mu}$ from the quadratic terms, one can verify with straightforward algebra that
 \begin{align*}
 %\begin{split}
-U\left(\lambda\right) &= \left( \tildeY - \mu + \mu - \tildeA_{\lambda,\bftheta} \tildeY \right)'\left( \tildeY - \mu + \mu - \tildeA_{\lambda,\bftheta} \tildeY \right) + 2\mbox{ tr}\tildeA_{\lambda,\bftheta} \\
-&= \left(\tildeA_{\lambda,\bftheta} \tildeY - \mu \right)'\left( \tildeA_{\lambda,\bftheta} \tildeY - \mu \right) + \tildeepsilon'\tildeepsilon + 2\tildeepsilon' \left( I- \tildeA_{\lambda,\bftheta}\right)\mu- 2\left( \tildeepsilon'\tildeA_{\lambda,\bftheta} \tildeepsilon -  \mbox{tr}\tildeA_{\lambda,\bftheta}\right).
+U\left(\lambda\right) &= \left( \tildeY - \tilde{\mu} + \tilde{\mu} - \tildeA_{\lambda,\bftheta} \tildeY \right)'\left( \tildeY - \tilde{\mu} + \tilde{\mu} - \tildeA_{\lambda,\bftheta} \tildeY \right) + 2\;\mbox{tr}\left(\tildeA_{\lambda,\bftheta}\right) \\
+&= \left(\tildeA_{\lambda,\bftheta} \tildeY - \tilde{\mu} \right)'\left( \tildeA_{\lambda,\bftheta} \tildeY - \tilde{\mu}\right) + \tildeepsilon'\tildeepsilon + 2\tildeepsilon' \left( I- \tildeA_{\lambda,\bftheta}\right)\tilde{\mu}- 2\left( \tildeepsilon'\tildeA_{\lambda,\bftheta} \tildeepsilon -  \mbox{tr}\left(\tildeA_{\lambda,\bftheta}\right)\right).
 %\end{split}
 \end{align*}
 \noindent
 This gives
 \begin{equation*} 
-U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  2\tildeepsilon' \left( I- \tildeA_{\lambda,\bftheta}\right)\mu- 2\left( \tildeepsilon'\tildeA_{\lambda,\bftheta} \tildeepsilon -  \mbox{tr}\tildeA_{\lambda,\bftheta}\right), 
+U\left(\lambda\right) - L\left(\lambda\right) - \tildeepsilon'\tildeepsilon  =  2\tildeepsilon' \left( I- \tildeA_{\lambda,\bftheta}\right)\tilde{\mu}- 2\left( \tildeepsilon'\tildeA_{\lambda,\bftheta} \tildeepsilon -  \mbox{tr}\left(\tildeA_{\lambda,\bftheta}\right)\right), 
 \end{equation*}
  \noindent
-where $\tilde{\epsilon}_i = \tildeY_i - D_i^{-1/2}X_i \Phi$ denotes the vector of standardized residuals for subject $i$. This shows that $U\left(\lambda\right)$ is unbiased for the relative loss $L\left(\lambda\right) + \tildeepsilon'\tildeepsilon$.  Under mild conditions on the risk function
+where $\tilde{\epsilon} = \left(\tilde{\epsilon}_{11}, \dots, \tilde{\epsilon}_{Np_n}\right)'$ denotes the vector of standardized errors $\tilde{\epsilon}_{ij} = {\sigma^{-2}_{ij}}\left[y_{ij} -  \sum_{k<j} \phi\left(\bfv_{ijk} \right) y_{ik}\right]$. This shows that $U\left(\lambda\right)$ is unbiased for the relative loss $L\left(\lambda\right) + \tildeepsilon'\tildeepsilon$.  Under mild conditions on the risk function
   \[
  R\left(\lambda\right) = E\left[L\left(\lambda\right)\right],
  \]
@@ -684,7 +679,7 @@ The conditions under which the the cross validation and generalized cross valida
 V_{loso}\left(\lambda\right) = \frac{1}{N}\sum_{i=1}^N \left( \tildeY_i - \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)'\left( \tildeY_i -  \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)
 \end{equation}
 \noindent
-where $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ is the estimate of $E\left[ \tildeY_i \right]$ based on the data when $\tildeY_i$ is omitted. Intuitively, the LosoCV score is appealing because it preserves any within-subject dependence by leaving out all observations from the same subject together in the cross-validation.  However, despite its prevalent use, theoretical justifications for its use have not been established. In their seminal work, \cite{rice1991estimating} were the first to present a heuristic justification of LosoCV by demonstrating that it mimics the mean squared prediction error. Consider new observations $\tildeY^*_i = \left(\tilde{y}_{i1}^*, \tilde{y}_{i1}^*, \dots, \tilde{y}_{i, p_i}^*\right)$. We may write the mean squared prediction error for the new observations as follows:  
+where $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ is the estimate of $E\left[ \tildeY_i \vert X_i \right]$ based on the data when $\tildeY_i$ is omitted. Intuitively, the LosoCV score is appealing because it preserves any within-subject dependence by leaving out all observations from the same subject together in the cross-validation.  However, despite its prevalent use, theoretical justifications for its use have not been established. In their seminal work, \cite{rice1991estimating} were the first to present a heuristic justification of LosoCV by demonstrating that it mimics the mean squared prediction error. Consider new observations $\tildeY^*_i = \left(\tilde{y}_{i1}^*, \tilde{y}_{i1}^*, \dots, \tilde{y}_{i, p_i}^*\right)$. We may write the mean squared prediction error for the new observations as follows:  
 \bigskip 
 \begin{align}
 \begin{split}\label{eq:MSPE}
@@ -694,7 +689,7 @@ MSPE &= \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - \widehat{\tild
 \end{split}
 \end{align}
 \noindent
-When $\left\{ \sigma^2\left(t\right)\right\}$ is known, $\tilde{\epsilon}_i$ is a mean zero multivariate normal vector with $Cov\left(\tilde{\epsilon}_i\right) = I_{p_i}$, which gives the last equality. Since $\tildeY_i$ and $ \widehat{\tilde{\mu}}_{i} $ are independent, the expected LosoCV score can be written
+When $\left\{ \sigma^2\left(t\right)\right\}$ is known, $\tilde{\epsilon}_i$ is a mean zero multivariate normal vector with $Cov\left(\tilde{\epsilon}_i\right) = I_{p_i}$, which gives the last equality. Since $\tildeY_i$ and $ \widehat{\tilde{\mu}}^{\left[ -i \right]}_{i} $ are independent, the expected LosoCV score can be written
 \begin{equation} \label{eq:MSPE_LOSOCV}
 E\left[V_{loso}\left(\lambda\right) \right] =  \frac{1}{N}\sum_{i=1}^N\left\{ p_i +  E\left[ \vert \vert \widehat{\tilde{\mu}}^{\left[ -i \right]}_{i} - \tilde{\mu}_{i} \vert \vert^2 \right] \right\}. 
 \end{equation}
@@ -709,7 +704,7 @@ The definition of $V_{loso}$ would lead one to initially believe that calculatio
   \begin{lemma}[Shortcut formula for LosoCV] \label{lemma:losocv-shortcut}
   The LosoCV score satisfies the following identity:
   \begin{equation*}
- V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(\left(I_{p_i} - \tildeA_{ii}\right)^{-1}\right)'\left(I_{p_i} - \tildeA_{ii}\right)^{-1}\left(\tildeY_i - \widehat{\tildeY_i}\right),
+ V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(I_{p_i} - \tildeA_{ii}\right)^{-2}\left(\tildeY_i - \widehat{\tildeY_i}\right),
   \end{equation*}
   \noindent
   where $\tildeA_{ii}$ is the diagonal block of smoothing matrix $\tildeA_{\lambda,\bftheta}$ corresponding to the observations on subject $i$, and $I_{p_i}$ is a $p_i \times p_i$ identity matrix.
@@ -750,7 +745,7 @@ The following presents the main algorithm for minimizing $U\left(\lambda, \bfthe
 	\While{not converged}
 		\State For current value $\bfkappa^* = \bfkappa_- + \Delta \bfkappa$, compute $K^*_\theta = \sum_{\beta = 1}^g \theta^*_\beta K_\beta$, scale so that $\mbox{tr}\left(K_\beta\right)$ is fixed. \label{begin-loop}
 		\State Compute $\tildeA\left(\lambda \vert \bftheta^* \right) = \tildeA\left(\lambda, \exp\left({\bfkappa^*} \right)\right)$.
-		\State Minimize $U\left(\lambda \vert \bfkappa^* \right) =  \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + 2\mbox{tr}\tildeA_{\lambda,\bftheta} $
+		\State Minimize $U\left(\lambda \vert \bfkappa^* \right) =  \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + 2\;\mbox{tr}\tildeA_{\lambda,\bftheta} $
 		\State Set $U_* := \min \limits_\lambda U\left( \lambda \vert \bfkappa^* \right) $
 		\If{$U^* > U_-$ }
 		 		\State Set $\Delta \bfkappa := \Delta \bfkappa/2$
@@ -776,14 +771,14 @@ The following presents the main algorithm for minimizing $U\left(\lambda, \bfthe
 	\end{algorithmic}
 \end{algorithm}
 
-\cite{gu1991minimizing} present details on convergence criteria based on those suggested in \cite{gill1981practical}. \cite{gill1981practical} provide detailed discussion of the Newton method based on the Cholesky decomposition necessary for calculating the update direction for $\bfkappa$. Algorithm step (\ref{ensure-hessian-PD}) returns a descent direction even when $H$ is not positive definite by adding positive mass $e$ to the diagonal elements of $H$ if necessary to produce $\tilde{H} = G'G$ where $G$ is upper triangular. See Chapter 4 in \cite{gill1981practical} for details. 
+Algorithm step (\ref{ensure-hessian-PD}) returns a descent direction even when $H$ is not positive definite by adding positive mass $e$ to the diagonal elements of $H$ if necessary to produce $\tilde{H} = G'G$ where $G$ is upper triangular. See Chapter 4 in \cite{gill1981practical} for details. \cite{gu1991minimizing} present details on convergence criteria based on those suggested in \cite{gill1981practical}. \cite{gill1981practical} provide detailed discussion of the Newton method based on the Cholesky decomposition necessary for calculating the update direction for $\bfkappa$. 
 
 \bigskip
 
 The unbiased risk estimate $U\left(\lambda, \bftheta\right)$ is fully parameterized by $\left\{\lambda_\beta \right\} = \left\{\lambda \theta^{-1}_\beta \right\}$, so the smoothing parameters $\left(\lambda, \left\{\theta^{-1}_\beta \right\}\right)$ over-parameterize the score, which is the reason for scaling the trace of $K_\beta$. The starting values for the $\theta$ quasi-Newton iteration are obtained with two passes of the fixed-$\theta$ outer loop as follows:
 \begin{enumerate}
-\item Set $\breve{\theta}_\beta^{-1} \propto \mbox{tr}\left( K_\beta \right)$, minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\breve{\phi}$. \label{theta-starting-values-1}
-\item Set $\bar{\theta}_\beta^{-1} \propto  J_\beta\left(\breve{\phi}_\beta \right)$, minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\bar{\phi}$. \label{theta-starting-values-2}
+\item Set $\breve{\theta}_\beta^{-1} \propto \mbox{tr}\left( K_\beta \right)$, and minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\breve{\phi}$. \label{theta-starting-values-1}
+\item Set $\bar{\theta}_\beta^{-1} \propto  J_\beta\left(\breve{\phi}_\beta \right)$, and minimize $U\left(\lambda\right)$ with respect to $\lambda$ to obtain $\bar{\phi}$. \label{theta-starting-values-2}
 \end{enumerate}
 \noindent
 The first pass allows equal opportunity for each penalty to contribute to $U$, allowing for arbitrary scaling of $J_\beta \left(\phi_\beta\right)$. The second pass grants greater allowance to terms exhibiting strength in the first pass. The following $\theta$ iteration fixes $\lambda$ and starts from $\check{\theta}_\beta$. These are the starting values adopted by \cite{gu1991minimizing}; the starting values for the first pass loop are arbitrary, but are invariant to scalings of the $\theta_\beta$. The starting values in \ref{theta-starting-values-2} for the second pass of the outer are based on more involved assumptions derived from the background formulation of the smoothing problem. After the first pass, the initial fit $\breve{\phi}$ reveals where the structure in the true $\phi$ lies in terms of the components of the subspaces $\hilbert_\beta$. Less penalty should be applied to terms exhibiting strong signal.   %: the penalty is defined as in \eqref{eq:multi-term-penalty} having form
@@ -804,20 +799,20 @@ Fixing $\phi$ in \eqref{eq:full-joint-likelihood}, the negative log likelihood o
 -2\ell\left(\sigma^2 \vert Y_1,\dots, Y_N ,\phi \right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \log \sigma^2_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} \frac {\epsilon_{ij}^2}{\sigma^2_{ij}};
 \end{equation}
 \noindent
-where $\epsilon_{ij} =  y_{ij} - \sum_{k<j} \phi_{ijk} y_{ik}$. Let 
+where $\epsilon_{ij} =  y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}$. Let 
 \begin{equation}
-\mbox{RSS}\left( t \right) = \sum_{i,j:t_{ij}= t} \left( y_{ij} - \sum_{k<j} \phi_{ijk} y_{ik}\right)^2
+\mbox{RSS}\left( t \right) = \sum_{i,j:t_{ij}= t} \left( y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right)  y_{ik}\right)^2
 \end{equation}
 \noindent
-denote the squared innovations for the observations $y_{ij}$ having corresponding measurement time $t = t_{ij}$. Then $\mbox{RSS}\left( t \right)/\sigma^2\left(t\right) \sim \chi^2_{df_t}$, where the degrees of freedom $df_{t}$ corresponds to the number of observations $y_{ij}$ having corresponding measurement time $t$. In this light, for fixed $\phi$, the penalized likelihood \eqref{eq:penalized-joint-loglik-given-phi-2} is that of a variance model with the $\epsilon_{ij}^2$ serving as the response.  This corresponds to a generalized linear model with Gamma errors and known scale parameter equal to 2. Let $z_{ij} = \epsilon_{ij}^2$, and let $Z_{i} = \left(z_{i1},\dots, z_{i,p_i} \right)'$ denote the vector of squared residuals for the $i^{th}$ observed trajectory. 
+denote the squared innovations for the observations $y_{ij}$ having corresponding measurement time $t = t_{ij}$. Then $\mbox{RSS}\left( t \right)/\sigma^2\left(t\right) \sim \chi^2_{df_t}$, where the degrees of freedom $df_{t}$ corresponds to the number of observations $y_{ij}$ having corresponding measurement time $t$. In this light, for fixed $\phi$, the penalized likelihood \eqref{eq:penalized-joint-loglik-given-phi-2} is that of a variance model with the $\epsilon_{ij}^2$ serving as the response.  This corresponds to a generalized linear model with Gamma errors and known scale parameter equal to 2. Let $z_{ij} = \epsilon_{ij}^2$, and let $Z_{i} = \left(z_{i1},\dots, z_{i,p_i} \right)'$ denote the vector of squared innovations for the $i^{th}$ observed trajectory. 
 
 \bigskip
 
 The Gamma distribution is parameterized by shape parameter $\alpha$ and scale parameter $\beta$. Let $\sigma^2$ denote the mean of the distribution given by $\alpha \beta$. For a single observation $Z$, reparameterizing the Gamma likelihood in terms of $\left(\alpha, \sigma^2 \right)$ and dropping terms that don't involve $\sigma^2\left(\cdot\right)$ gives  
 \begin{align}
 \begin{split}
--\ell \left(\sigma^2, \alpha \vert z \right) &\propto \alpha\left[\frac{z}{\sigma^2} + \log \sigma^2\right]  \\ 
-&= \alpha\left[ze^{-\eta} + \eta\right],\label{eq:gamma-iv-likelihood-canonical-link}
+-\ell \left(\sigma^2, \alpha \vert z \right) &\propto \alpha\left[\log \sigma^2 +\frac{z}{\sigma^2} \right]  \\ 
+&= \alpha\left[\eta + ze^{-\eta}\right],\label{eq:gamma-iv-likelihood-canonical-link}
 \end{split}
 \end{align}
 \noindent
@@ -826,9 +821,9 @@ where $\alpha^{-1}$ is the dispersion parameter and $\eta = \log \sigma^2$. The 
 -2\ell\left(  \sigma^2 \vert Z_1,\dots, Z_N \right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta_{ij}  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij}e^{-\eta_{ij}},
 \end{equation}
 \noindent
-which coincides with a Gamma distribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential families have been studied extensively; see \cite{wahba1995smoothing}, \cite{wang1997grkpack}, and \cite{gu2013smoothing}. Fixing $\phi$, we take the estimator of $\eta\left(t\right) = \log\sigma^2\left(t\right)$ to be the minimizer of the penalized negative log likelihood:
+where $\eta_{ij} = \eta\left(t_{ij}\right)$. This coincides with a Gamma distribution with scale parameter $\alpha = 2$. Smoothing spline ANOVA models for exponential families have been studied extensively; see \cite{wahba1995smoothing}, \cite{wang1997grkpack}, and \cite{gu2013smoothing}. Fixing $\phi$, we take the estimator of $\eta\left(t\right) = \log\sigma^2\left(t\right)$ to be the minimizer of the penalized negative log likelihood:
 \begin{equation} \label{eq:penalized-joint-loglik-given-phi}
--2\ell\left( \eta \vert Z_1,\dots, Z_N, \right) +\lambda J \left(\eta\right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right)  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij} e^{-\eta\left(t_{ij}\right)} + \lambda J\left(\eta\right),  
+-2\ell\left( \eta \vert Z_1,\dots, Z_N \right) +\lambda J \left(\eta\right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right)  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij} e^{-\eta\left(t_{ij}\right)} + \lambda J\left(\eta\right),  
 \end{equation}
 \noindent
 for $\eta \in \hilbert$, where the penalty $J$ can be written as a square norm and decomposed as in \eqref{eq:multi-term-penalty}, with
@@ -836,9 +831,9 @@ for $\eta \in \hilbert$, where the penalty $J$ can be written as a square norm a
 J\left(\eta \right) = \sum_{\beta} \theta_\beta^{-1}\langle \eta,\eta \rangle_{\hilbert_\beta}.
 \end{equation*}
 \noindent 
-The first term in \eqref{eq:penalized-joint-loglik-given-phi-3} serves as a measure of the goodness of fit of $\eta$ to the data, and only depends on $\eta$ through the evaluation functional $\left[t_{ij}\right]\eta$, so the argument justifying the form of the minimizer in \eqref{eq:form-of-the-minimizer-phi} applies to $\eta$. Let $\mathcal{T} = \bigcup_{i,j} \left\{t_{ij}\right\}$ denote the unique values of the observations times pooled across subjects. The minimizer of the penalized likelihood \eqref{eq:penalized-joint-loglik-given-phi} has the form 
+The first two terms in \eqref{eq:penalized-joint-loglik-given-phi-3} serve as a measure of the goodness of fit of $\eta$ to the data, and only depend on $\eta$ through the evaluation functional $\left[t_{ij}\right]\eta$. Thus, the argument justifying the form of the minimizer in \eqref{eq:form-of-the-minimizer-phi} applies to $\eta$. Let $\mathcal{T} = \bigcup_{i,j} \left\{t_{ij}\right\}$ denote the unique values of the observations times pooled across subjects. The minimizer of the penalized likelihood \eqref{eq:penalized-joint-loglik-given-phi} has the form 
 \begin{equation} \label{eq:form-of-smoothing-spline-solution-kappa}
-\eta\left( t \right) = \sum_{i = 1}^{d_\Upsilon} d_i \nu_i\left( t \right) + \sum_{j = 1}^{\vert \mathcal{T} \vert} c_j K_1\left(t_j,t\right),
+\eta_\lambda\left( t \right) = \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left( t \right) + \sum_{j = 1}^{\vert \mathcal{T} \vert} c_j K_1\left(t_j,t\right),
 \end{equation}  
 \noindent
 where $\left\{\nu_i \right\}$ form a basis for the null space $\hilbert_0$ and $K_1\left(t_j,t\right)$ is the reproducing kernel for $\hilbert_1$ evalutated at ${t_j}$, the $j^{th}$ element of $\mathcal{T}$, viewed as a function of $t$.
@@ -854,7 +849,7 @@ L\left( \eta \right) &= \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right
 %\end{split}
 \end{align}
 \noindent
-is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times d_\Upsilon$ matrix $B$ which has $\left(i,j\right)$ element $\nu_j\left(t_i\right)$ is full column rank, so that $L\left(\eta \right)$ is strictly convex in $\hilbert$ and the minimizer of \eqref{eq:penalized-joint-loglik-given-phi} uniquely exists. See \cite{wahba1995smoothing}. 
+is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times \mathcal{N}_0$ matrix $B$ which has $\left(i,j\right)$ element $\nu_j\left(t_i\right)$ is full column rank, so that $L\left(\eta \right)$ is strictly convex in $\hilbert$ and the minimizer of \eqref{eq:penalized-joint-loglik-given-phi} uniquely exists. See \cite{wahba1995smoothing}. 
 
 \bigskip
 
@@ -870,7 +865,7 @@ to update $\tilde{\eta}$, where $\tilde{z}_{ij} = \tilde{\eta}\left(t_{ij}\right
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Smoothing Parameter Selection for Exponential Families} \label{smoothing-parameter-selection-exponential-families}
-Performance-oriented is a typical choice for method of smoothing parameter selection when data are generated from a distribution belonging to exponential families. This section provides a brief overview of the the performance-oriented iteration, specifically for selecting the optimal degree of smoothing for $\sigma^2$. This approach is just one of many in the inventory of model selection techniques for penalized regression with exponential families. We refer the reader desiring detailed examination to \cite{zhang2006component}, \cite{xiang1996generalized}, \cite{wahba1995smoothing},  \cite{wood2004stable}, and \cite{wood2017generalized}. 
+Performance-oriented is a typical choice for method of smoothing parameter selection when data are generated from a distribution belonging to exponential families. This section provides a brief overview of the the performance-oriented iteration, specifically for selecting the optimal degree of smoothing for $\sigma^2\left(t\right)$. This approach is just one of many in the inventory of model selection techniques for penalized regression with exponential families. We refer the reader desiring detailed examination to \cite{zhang2006component}, \cite{xiang1996generalized}, \cite{wahba1995smoothing},  \cite{wood2004stable}, and \cite{wood2017generalized}. 
 
 \bigskip
 
@@ -889,7 +884,7 @@ For the Gamma distribution, the KL distance simplifies to
 \noindent
 which is not symmetric. Thus, a natural choice of loss function for measuring the performance of an estimator $\eta_\lambda\left(t\right)$ of $\eta \left(t\right)$ is the symmeterized Kullback-Leibler distance averaged over the observed time points $t_{11}, \dots ,  t_{N,p_N}$. For the Gamma distribution, this is given by 
 \begin{equation}\label{eq:gamma-SKL-loss-function}
- L\left( \eta,\eta_\lambda \right) \equiv  = \frac{1}{N}\sum_{i=1}^N \left[\frac{1}{p_i}\sum_{j=1}^{p_i}  \left( \frac{\sigma^2\left(t_{ij}\right)}{\sigma^2_\lambda\left(t_{ij}\right)} - \frac{\sigma^2_\lambda \left(t_{ij}\right)}{\sigma^2\left(t_{ij}\right)} - 2\right)\right].
+ L\left( \eta,\eta_\lambda \right) = \frac{1}{N}\sum_{i=1}^N \left[\frac{1}{p_i}\sum_{j=1}^{p_i}  \left( \frac{\sigma^2\left(t_{ij}\right)}{\sigma^2_\lambda\left(t_{ij}\right)} - \frac{\sigma^2_\lambda \left(t_{ij}\right)}{\sigma^2\left(t_{ij}\right)} - 2\right)\right].
 \end{equation}
 \noindent
 The ideal smoothing parameters are those which minimize \eqref{eq:gamma-SKL-loss-function}. One can derive an unbiased risk estimate $U$ for the Gamma distribution as in Section~\ref{gaussian-unbiased-risk-estimate} for the Gaussian case. Theorem 5.2 in \cite{gu2013smoothing} gives that the minimizer of $U$, which relies only on the data, approximately minimizes and quadratic approximation to \eqref{eq:gamma-SKL-loss-function}. To find the optimal value of the smoothing parameter, the performance-oriented iteration tracks loss $L\left( \eta,\eta_\lambda \right)$ (through $U$) indirectly, simultaneously updating $\lambda, \theta_\beta$. Since it does not explicitly keep track of $L\left( \eta,\eta_\lambda \right)$ itself, it may not be the most effective way to search for the optimal smoothing parameters, but it is numerically efficient. Instead of fixing smoothing parameters and moving according to a particular Newton update, one chooses an update from among a family of Newton updates that is perceived to be better performing according to $L\left( \eta,\eta_\lambda \right)$. If the smoothing parameters stabilize at, say, $\left(\lambda^*,\theta^*_\beta\right)$ and the corresponding Newton iteration converges at $\eta^*$, then it is clear that $\eta^* = \eta_{\lambda^*}$ is the minimizer. In a neighborhood of $\eta^*$ where the corresponding values of the quadratic approximation of $L$ closely approximate the penalized likelihood functional \eqref{eq:penalized-likelihood-functional} for smoothing parameters close to $\left( \lambda^*, \theta^*_\beta \right)$, then the $\eta_{\lambda, \eta^*}$s are, in turn, hopefully close approximations to the $\eta_\lambda$s. Thus, through indirect comparison $\eta^*$ is perceived to be better performing among the other $\eta_\lambda$s in the neighborhood. See Chapter 5, Section 2 of \cite{gu2013smoothing} for thorough discussion.
@@ -911,11 +906,11 @@ An alternative to the performance-oriented iteration is to choose the optimal sm
 
 To jointly estimate the autoregressive coefficient function and the innovation variance function, we adopt an iterative approach in the spirit of \cite{huang2006covariance}, \cite{huang2007estimation}, and \cite{pourahmadi2000maximum}. A procedure for minimizing 
 \[
--2\ell\left(\phi \vert Y_1, \dots, Y_N , \eta \right) + \lambda_\phi  J_\phi\left(\phi\right) + \lambda_\eta  J_\eta\left(\eta\right)
+-2\ell\left(\phi,\eta \vert Y_1, \dots, Y_N  \right) + \lambda_\phi  J_\phi\left(\phi\right) + \lambda_\eta  J_\eta\left(\eta\right)
 \]
-starts with initializing $\left\{ e^{\eta_{ij}} = \sigma^2_{ij}\right\} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, p_i$.  For fixed $\eta$, we take $\phi^*$ to minimize the penalized negative log likelihood 
+starts with initializing $e^{\eta_{ij}} = \sigma^2_{ij} = 1$ for $i = 1,\dots, N$, $j = 1,\dots, p_i$.  For fixed $\eta$, we take $\phi^*$ to minimize the penalized negative log likelihood 
 \[
--2\ell\left(\phi, \eta\vert Y_1, \dots, Y_N\right) + \lambda_\phi  J_\phi\left(\phi\right).
+-2\ell\left(\phi\vert Y_1, \dots, Y_N, \eta\right) + \lambda_\phi  J_\phi\left(\phi\right).
 \]
 \noindent
 Given $\phi^*$ and setting $\phi = \phi^*$, we update our estimate of $\eta$ by taking $\eta^*$ to minimize the penalized negative log likelihood of the working residuals  

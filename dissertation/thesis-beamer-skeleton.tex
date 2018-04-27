@@ -1,0 +1,248 @@
+%% BEAMER THEME FLIP 2012: Main tex file for compiling
+%$ Compile this file. 
+%%
+%% Copyright 2012 by Flip Tanedo
+%% This file may be distributed and/or modified
+%% 	1. under the LaTeX Project Public License and/or
+%% 	2. under the GNU Public License.
+%% 
+%% If you e-mail Flip (pt267@cornell.edu) to say that you
+%% like this style file, then it would make him smile.
+
+%% Please see notes.txt for comments on Beamer Theme Flip 2013
+%% By default, this template is meant to be run with XeLaTeX (for fonts)
+%% To run in PDFLaTeX, remove fontspec and any font commands
+
+%% Discussion of Beamer vs XeLaTeX vs LuaLaTeX
+%% http://tex.stackexchange.com/questions/29497/xelatex-preventing-beamer-from-using-different-backgrounds
+
+
+
+\documentclass[12 pt]{beamer}
+\usetheme[
+	bullet=circle,		% Other option: square
+	topline=false,			% colored bar at the top of the frame 
+	shadow=false,			% Shading for beamer blocks
+%	watermark=BG_lower,	% png file for the watermark
+	]{Flip}
+
+
+\newcommand{\titleimage}{title}			% Custom title 
+\newcommand{\tanedo}{tanedolight}		% Custom author name
+\newcommand{\CMSSMDM}{CMSSMDMlight.png}	% light background plot
+
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\hilbertl}{\mathcal{H}_{\langle l \rangle}}
+\newcommand{\hilbertm}{\mathcal{H}_{\langle m \rangle}}
+\newcommand{\hilbertlnull}{\mathcal{H}_{0\langle l \rangle}}
+\newcommand{\hilbertmnull}{\mathcal{H}_{0\langle m \rangle}}
+\newcommand{\hilbertlpen}{\mathcal{H}_{1\langle l \rangle}}
+\newcommand{\hilbertmpen}{\mathcal{H}_{1\langle m \rangle}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\vphistar}{\mbox{\boldmath $\phi$}}
+\newcommand{\vsigmasq}{\mbox{\boldmath $\sigma^2$}}
+\newcommand{\bfeps}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\bfgamma}{\mbox{\boldmath $\gamma$}}
+\newcommand{\bflam}{\mbox{\boldmath $\lambda$}}
+\newcommand{\bfphi}{\mbox{\boldmath $\phi$}}
+\newcommand{\bfsigma}{\mbox{\boldmath $\sigma$}}
+\newcommand{\bfkappa}{\mbox{\boldmath $\kappa$}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfalpha}{\mbox{\boldmath $\alpha$}}
+\newcommand{\bftheta}{\mbox{\boldmath $\theta$}}
+\newcommand{\bfe}{\mbox{\boldmath $e$}}
+\newcommand{\bft}{\mbox{\boldmath $t$}}
+\newcommand{\bfg}{\mbox{\boldmath $g$}}
+\newcommand{\bfv}{\mbox{\boldmath $v$}}
+\newcommand{\bfu}{\mbox{\boldmath $u$}}
+\newcommand{\bfx}{\mbox{\boldmath $x$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bff}{\mbox{\boldmath $f$}}
+\newcommand{\bfone}{\mbox{\boldmath $1$}}
+\newcommand{\bfo}{\mbox{\boldmath $0$}}
+\newcommand{\bfO}{\mbox{\boldmath $O$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfz}{\mbox{\boldmath $z$}}
+\newcommand{\tildeY}{\tilde{Y}}
+\newcommand{\tildey}{\tilde{y}}
+\newcommand{\tildeQ}{\tilde{Q}}
+\newcommand{\tildeK}{\tilde{K}}
+\newcommand{\tildeR}{\tilde{R}}
+\newcommand{\tildeA}{\tilde{A}}
+\newcommand{\tildeepsilon}{\tilde{\epsilon}}
+\newcommand{\bfepsilon}{\mbox{\boldmath $\epsilon$}}
+\newcommand{\tildeS}{\tilde{S}}
+\newcommand{\tildeB}{\tilde{B}}
+\newcommand{\boxedeq}[2]{\begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2\end{empheq}}
+
+%%%%%%%%%%
+% FONTS %
+%%%%%%%%%%
+
+%% Default font: lmodern, doesn't require fontspec % solves some default warnings
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}	
+\usepackage{empheq}		
+%\usepackage{sfmath}		% Sans Serif Math, off by default
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usefonttheme{professionalfonts}
+
+
+%% XeLaTeX fonts: (comment out if you don't use XeLaTeX)
+
+%% For advanced fonts: access local OS X fonts
+\usepackage[no-math]{fontspec}		
+%% This template uses typical OS X and Adobe fonts
+\defaultfontfeatures{Mapping=tex-text}	% This seems to be important for mapping glyphs properly
+
+\setmainfont{Gill Sans}			% Beamer ignores "main font" in favor of sans font
+\setsansfont{Gill Sans}			% This is the font that beamer will use by default
+% \setmainfont{Gill Sans Light}		% Prettier, but harder to read
+
+\setbeamerfont{title}{family=\fontspec{Gill Sans}}
+
+
+\newcommand{\handwriting}{\fontspec{Gill Sans Light}} % From Emerald City, free font
+% \newcommand{\handwriting}{}	% If you prefer no special handwriting font or don't have augie
+
+%% Gill Sans doesn't look very nice when boldfaced
+%% This is a hack to use Helvetica instead
+%% Usage: \textbf{\forbold some stuff}
+\newcommand{\forbold}{\fontspec{Helvetica}}
+% \newcommand{\forbold}{} % if you want no special boldface
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Usual LaTeX Packages %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{subfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lipsum} % just for the example
+\usepackage{caption}
+\usepackage{mathrsfs} 			% For Weinberg-esque letters
+\usepackage{cancel}				% For "SUSY-breaking" symbol
+\usepackage{slashed}            % for slashed characters in math mode
+\usepackage{bbm}                % for \mathbbm{1} (unit matrix)
+\usepackage{amsthm}				% For theorem environment
+\usepackage{multirow}			% For multi row cells in table
+\usepackage{arydshln} 			% For dashed lines in arrays and tables
+\usepackage{tikzfeynman}		% For Feynman diagrams
+% \usepackage{subfig}           % for sub figures
+% \usepackage{young}			% For Young Tableaux
+% \usepackage{xspace}			% For spacing after commands
+% \usepackage{wrapfig}			% for Text wrap around figures
+% \usepackage{framed}
+\usepackage{rotating}
+\usepackage{biblatex}
+\usepackage{hyperref}
+
+\graphicspath{{images/}}	% Put all images in this directory. Avoids clutter.
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{mindmap,trees}	% For mind map
+% http://www.texample.net/tikz/examples/computer-science-mindmap/
+
+
+% SOME COMMANDS THAT I FIND HANDY
+% \renewcommand{\tilde}{\widetilde} % dinky tildes look silly, dosn't work with fontspec
+\newcommand{\comment}[1]{\textcolor{comment}{\footnotesize{#1}\normalsize}} % comment mild
+\newcommand{\Comment}[1]{\textcolor{Comment}{\footnotesize{#1}\normalsize}} % comment bold
+\newcommand{\COMMENT}[1]{\textcolor{COMMENT}{\footnotesize{#1}\normalsize}} % comment crazy bold
+\newcommand{\Alert}[1]{\textcolor{Alert}{#1}} % louder alert
+\newcommand{\ALERT}[1]{\textcolor{ALERT}{#1}} % loudest alert
+%% "\alert" is already a beamer pre-defined
+\definecolor{hilight}{RGB}{102,255,204}
+\newcommand{\nt}[1]{{\small \color{hilight} {#1}}}
+
+\newenvironment<>{varblock}[2][.9\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+\newenvironment<>{varalertblock}[2][.9\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block alerted begin}}
+  {\par%
+    \usebeamertemplate{block alerted end}%
+  \end{actionenv}}
+
+\newenvironment<>{varexampleblock}[2][.9\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block example begin}}
+  {\par%
+    \usebeamertemplate{block example end}%
+  \end{actionenv}}
+\definecolor{mint}{RGB}{102,255,204}
+\newcommand{\coloredeq}[2]{\begin{empheq}[box=\colorbox{mint}]{align}\label{#1}#2\end{empheq}}
+
+%
+%\setbeamertemplate{bibliography item}{%
+%  \ifboolexpr{ test {\ifentrytype{book}} or test {\ifentrytype{mvbook}}
+%    or test {\ifentrytype{collection}} or test {\ifentrytype{mvcollection}}
+%    or test {\ifentrytype{reference}} or test {\ifentrytype{mvreference}} }
+%    {\setbeamertemplate{bibliography item}[book]}
+%    {\ifentrytype{online}
+%       {\setbeamertemplate{bibliography item}[online]}
+%       {\setbeamertemplate{bibliography item}[article]}}%
+%  \usebeamertemplate{bibliography item}}
+%
+%\defbibenvironment{bibliography}
+%  {\list{}
+%     {\settowidth{\labelwidth}{\usebeamertemplate{bibliography item}}%
+%      \setlength{\leftmargin}{\labelwidth}%
+%      \setlength{\labelsep}{\biblabelsep}%
+%      \addtolength{\leftmargin}{\labelsep}%
+%      \setlength{\itemsep}{\bibitemsep}%
+%      \setlength{\parsep}{\bibparsep}}}
+%  {\endlist}
+%  {\item}
+%
+%\addbibresource{Master.bib}
+%\bibstyle{plainnat}
+
+
+\author[T A Blake]{Tayler A. Blake}
+\title[Nonparametric Covariance Estimation]{Nonparametric Covariance Estimation for Longitudinal Data}
+\institute{The Ohio State University, Department of Statistics}
+\date{\today}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional  settings %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% To use external nodes; http://www.texample.net/tikz/examples/beamer-arrows/
+\tikzstyle{every picture}+=[remember picture]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Actual content below %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% It's much nicer to have all the content in a separate file
+\include{thesis-beamer-content}
+
+
+%\begin{frame}[allowframebreaks]{References}
+%\end{frame}
+
+\end{document}
+

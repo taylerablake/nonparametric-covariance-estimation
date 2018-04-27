@@ -3,53 +3,61 @@
 \section{Proof of Theorem~\ref{theorem:finite-dimensional-minimizer}}
 
 \begin{proof}%[Proof of Theorem~\ref{theorem:finite-dimensional-minimizer}]
-Some detailed discussion of the components of the minimizer $\phi_\lambda$ is useful for the proof. Letting $\hilbert = \hilbert_0 + \hilbert_J$ with $\hilbert_0 \perp \hilbert_J$, with reproducing kernel
-\[
-Q\left(\bfv, \bfv^*\right) = Q_0\left(\bfv, \bfv^*\right) + Q_J\left(\bfv, \bfv^*\right),
-\]
-\noindent
-where $Q_0$ is the RK for $\hilbert_0$ and  $Q_J$ is the RK for $\hilbert_J$. Then 
+%Some detailed discussion of the components of the minimizer $\phi_\lambda$ is useful for the proof. Letting $\hilbert = \hilbert_0 + \hilbert_1$ with $\hilbert_0 \perp \hilbert_1$, with reproducing kernel
+%\[
+%K\left(\bfv, \bfv^*\right) = K_0\left(\bfv, \bfv^*\right) + K_1\left(\bfv, \bfv^*\right),
+%\]
+%\noindent
+%where $K_0$ is the RK for $\hilbert_0$ and  $K_1$ is the RK for $\hilbert_1$. Let $L_{ijk} = \left[\bfv_{ijk}\right]\phi$ denote the evaluation functional at $\bfv_{ijk}$. Define $\xi_{ijk}$ to be the representer of $L_{ijk}$, so $\xi_{ijk}$ satisfies
+%\noindent
+%Then 
+%
+%\begin{align}
+%\xi_{ijk}\left(\bfv\right) &= \langle \xi_{ijk}, K_\bfv \rangle_\hilbert \nonumber \\
+%&= \langle P_1 \psi_{ijk},  K_\bfv \rangle_\hilbert = \langle \psi_{ijk}, P_1 {K}_\bfv \rangle_\hilbert \nonumber   \\
+%&= \langle \psi_{ijk}, {K_1}_\bfv \rangle_\hilbert \nonumber  \\
+%&= L_{ijk} {K_1}_\bfv.\nonumber 
+%\end{align}
+%\noindent
+%where ${K_1}_\bfv$ is the representer for the evaluation functional at $\bfv$ in $\hilbert_1$.  Since $\langle \psi_{i} - \xi_{i}, \xi_{j} \rangle = 0$,
+%\[
+%\langle \xi_{i}, \xi_{j} \rangle_\hilbert = \langle \psi_{i}, \xi_{j} \rangle_\hilbert.
+%\]
+%\noindent
+%Therefore, we have that 
+%\[
+%\langle \xi_{i}, \xi_{j} \rangle_\hilbert = L_{i}\xi_{j} = L_{i\left(\bfv \right)}L_{j\left(\bfv^* \right)} K_1\left(\bfv,\bfv^*\right).
+%\]
+%
 
-\begin{align}
-\xi_{i}\left(\bfv\right) &= \langle \xi_{i}, Q_\bfv \rangle_\hilbert \nonumber \\
-&= \langle P_J \psi_{i},  Q_\bfv \rangle_\hilbert = \langle \psi_{i}, P_J {Q}_\bfv \rangle_\hilbert \nonumber   \\
-&= \langle \psi_{i}, {Q_J}_\bfv \rangle_\hilbert \nonumber  \\
-&= L_{i} {Q_J}_\bfv.\nonumber 
-\end{align}
-\noindent
-where ${Q_J}_\bfv$ is the representer for the evaluation functional at $\bfv$ in $\hilbert_J$.  Since $\langle \psi_{i} - \xi_{i}, \xi_{j} \rangle = 0$,
-\[
-\langle \xi_{i}, \xi_{j} \rangle_\hilbert = \langle \psi_{i}, \xi_{j} \rangle_\hilbert.
-\]
-\noindent
-Therefore, we have that 
-\[
-\langle \xi_{i}, \xi_{j} \rangle_\hilbert = L_{i}\xi_{j} = L_{i\left(\bfv \right)}L_{j\left(\bfv^* \right)} Q_J\left(\bfv,\bfv^*\right).
-\]
-
-Let the minimizer $\phi_\lambda$ be of the form
-
+The function space $\hilbert$ is decomposed into $\hilbert_0$ and $\hilbert_1$. $\hilbert_1$ can be further decomposed into the finite dimensional subspace spanned by $\left\{K_1\left(\bfv_{j}, \bfv\right) \right\}$, $j = 1, \dots, \vert V\vert$ and its orthogonal complement in $\hilbert_1$. Considering the three subspaces, any $\phi \in \hilbert$ can be written as
 \begin{equation} \label{eq:form-of-the-minimizer-phi-plus-rho}
-\phi_\lambda = \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu + \sum_{\bfv_{i} \in V} c_i \xi_i + \rho,
+\phi\left(\bfv\right) = \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i \left(\bfv\right) + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \bfv\right) + \rho\left( \bfv\right) ,
 \end{equation}
 \noindent
-where $\rho \in \hilbert_J$ is perpendicular to $\eta_1,\dots, \eta_{d_0}, \xi_{1}, \dots, \xi_{\vert V \vert}$.  The properties of reproducing kernel Hilbert spaces give us that any element in $\hilbert$ permits such a representation. Using that 
+where $\rho \in \hilbert_1$ is perpendicular to $\nu_1,\dots, \nu_{\mathcal{N}_0}$ and $K_1\left(\bfv_j, \bfv\right)$ for $\bfv_j \in V$. 
 
+\bigskip
+
+Using the properties of the reproducing kernel $K = K_0 + K_1$, we can show that evaluation of any $\phi \in \hilbert$ at $\bfv_\ell \in V$ does not depend on $\rho$:
 \begin{align*}
-L_{ijk} \phi &= \langle \phi\left(\cdot\right), Q\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert \\
-&=  \langle  \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) + \sum_{\bfv_{i} \in V} c_i \xi_i + \rho\left(\cdot\right), Q\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert \\
-&= \langle  \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) + \sum_{\bfv_{i} \in V} c_i \xi_i + \rho\left(\cdot\right), Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert + \langle \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) + \sum_{\bfv_{i} \in V} c_i \xi_i + \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert \\
-&=  \langle  \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) ,  Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert +  \langle   \sum_{\bfv_{i} \in V} c_i \xi_i  ,  Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert + \langle \rho\left(\cdot\right), Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert \\ 
-&\phantom{=} + \langle  \sum_{\nu = 1}^{d_0} d_\nu \eta_\nu\left(\cdot\right) ,  Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert +  \langle   \sum_{\bfv_{i} \in V} c_i \xi_i  ,  Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert + \langle \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert, 
+ \phi\left(\bfv_{\ell}\right) &= \langle \phi\left(\cdot\right), K\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\
+&=  \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right) + \rho\left(\cdot\right), K\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\
+&= \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right) + \rho\left(\cdot\right), K_0\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\
+&\phantom{= \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right) \rangle}+ \langle \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right) + \rho\left(\cdot\right), K_1\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\
+&=  \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) ,  K_0\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert +  \langle   \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right)  ,  K_0\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert + \langle \rho\left(\cdot\right), K_0\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\ 
+&\phantom{=} + \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) ,  K_1\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert +  \langle   \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right)  ,  K_1\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert + \langle \rho\left(\cdot\right), K_1\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert \\
+&=  \langle  \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\cdot\right) ,  K_0\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert  + \langle   \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \cdot\right)  ,  K_1\left(\bfv_{\ell}, \cdot\right) \rangle_\hilbert\\
+&=   \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\bfv_\ell\right)  + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \bfv_\ell\right).
 \end{align*}
 \noindent
-where $\langle \rho\left(\cdot\right), Q_0\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = \langle \rho\left(\cdot\right), Q_1\left(\bfv_{ijk}, \cdot\right) \rangle_\hilbert = 0$. Thus, substituting \eqref{eq:form-of-the-minimizer-phi-plus-rho} for $\phi$ into \eqref{eq:phi-penalized-sums-of-squares}, the penalized sums of squares, becomes
-
-\begin{equation*} 
-\sum_{i=1}^N \sum_{j=2}^{m_i} \sigma^{-2}_{ij}\left( y_{ij} - \sum_{k<j}\left( L_{ijk}\phi\right) y_{ik}  \right)^2 + \lambda \left(\vert \vert \sum_{\bfv_i \in V} c_i \xi_i \vert \vert_\hilbert^2 + \vert \vert \rho \vert \vert_\hilbert^2\right),
-\end{equation*} 
+The last two equalities result from the orthogonality of $\hilbert_0$, $\left\{K_1\left(\bfv_{j}, \bfv\right) \right\}$, and $\rho$, and the reproducing property of $K$. Thus, the negative log likelihood in \eqref{eq:phi-penalized-sums-of-squares} depends only on $\sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left(\bfv\right)  + \sum_{\bfv_{j} \in V} c_j K_1\left(\bfv_j, \bfv\right)$. On the other hand, the penalty is given by
+\begin{align*} 
+\vert \vert P_1 \phi \vert\vert^2 &= \lvert \lvert \sum_{\bfv_j \in V} c_j K_1\left(\bfv_j, \cdot\right) + \rho\left(\cdot\right) \rvert \rvert_\hilbert^2,\\
+&= \lvert \lvert \sum_{\bfv_j \in V} c_j K_1\left(\bfv_j, \cdot\right) \rvert \rvert_\hilbert^2 + \vert \vert \rho\left(\cdot\right) \vert \vert_\hilbert^2.
+\end{align*} 
 \noindent
-which is obviously minimized when $\vert \vert \rho \vert \vert^2 = 0$.
+The penalized negative log likelihood is obviously minimized when $\vert \vert \rho \vert \vert^2 = 0$, or $\rho\left(\cdot\right) = 0$. This leads to the form of the minimizer for $\phi_\lambda$ as stated in Theorem~\ref{theorem:finite-dimensional-minimizer}.
  
 \end{proof}
  

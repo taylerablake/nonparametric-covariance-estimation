@@ -231,7 +231,7 @@ where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq
 The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
 
 \[
-\hat{\sigma^2\left( t \right)} = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
+\hat{\sigma}^2\left( t \right) = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
 \]
 \noindent
 where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:
@@ -308,9 +308,9 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \begin{figure}[H] 
 \centering
-  \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}\label{fig:cov-estimate-lattice}
+  \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}
   \vspace*{-10mm}
-  \caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}
+  \caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}\label{fig:cov-estimate-lattice}
 \end{figure}
 
 \begin{figure}[H] 
@@ -323,8 +323,8 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 %\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
 
 \begin{figure}[H] 
-  \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} \label{fig:ssanova-component-lattice}
-  \caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}}
+  \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} 
+  \caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}}\label{fig:ssanova-component-lattice}
 \end{figure}
 
 \bigskip
