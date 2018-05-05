@@ -6,11 +6,11 @@
 %\subsubsection{A tensor product P-spline model for the generalized autoregressive coefficients}
 
 
-In this chapter, we demonstrate multidimensional smoothing with penalized B-splines, or \textit{P-splines}, as a flexible and computationally convenient alternative to the Hilbert space methods presented in Chapter~\ref{SSANOVA-chapter}. P-spline models are an extension of (generalized) linear regression models. They exploit the attractive properties of the B-spline basis along with the use of computationally convenient difference penalties. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization. The B-spline functions have compact support, making them more attractive than the smoothing spline basis when the function to be estimated exhibits compact support as well, such as covariance matrices having banded Cholesky factor. Despite their flexibility, fitting P-spline models are only as computationally intensive as in regression modeling.  
+In this chapter, we demonstrate multidimensional smoothing with penalized B-splines, or \textit{P-splines}, as a flexible and computationally convenient alternative to the Hilbert space methods presented in Chapter~\ref{SSANOVA-chapter}. P-spline models are an extension of (generalized) linear regression models. They exploit the attractive properties of the B-spline basis along with the use of computationally convenient difference penalties. The formulation of the penalty is independent of the basis, which provides added modeling flexibility due to the ease with which one can employ various types of regularization. The B-spline functions have compact support, making them more attractive than the smoothing spline basis when the function to be estimated exhibits compact support as well, such as covariance matrices having banded Cholesky factor. Despite their flexibility, fitting P-spline models are only as computationally intensive as fitting regression models.  
 
 \section{Tensor Product B-splines for Multidimensional Smoothing}
 
-Splines are piecewise polynomial functions, where the piecewise polynomials are joined at certain values of the domain called knots. B-splines are a basis for splines. Given a set of knots, B-splines can be easily computed recursively for any polynomial degree (see \cite{de1978practical} and \cite{dierckx1995curve}). The smoothness of a fitted curve can be controlled by the number of B-splines used in the basis expansion used to approximate the curve. Fewer knots (thus, fewer basis functions) lead to smoother fits, and there is an extensive body of research focused on the choice of knot placement. Some authors have proposed adaptive smoothing techniques which attempt to automatically optimize the number and the positions of the knots; see \cite{friedman1989flexible}, \cite{kooperberg1991study}. However, this problem is nontrivial and requires nonlinear optimization, and is still an open problem today. However, limiting the number of B-splines is not the only approach to controlling the complexity of the fitted function.
+Splines are piecewise polynomial functions, where the piecewise polynomials are joined at certain values of the domain called knots. B-splines are a basis for splines. Given a set of knots, B-splines can be easily computed recursively for any polynomial degree; see \cite{de1978practical} and \cite{dierckx1995curve}. The smoothness of a fitted curve can be controlled by the number of B-splines used in the basis expansion used to approximate the curve. Fewer knots (thus, fewer basis functions) lead to smoother fits, and there is an extensive body of research focused on the choice of knot placement. Some authors have proposed adaptive smoothing techniques which attempt to automatically optimize the number and the positions of the knots; see \cite{friedman1989flexible}, \cite{kooperberg1991study}. However, this problem is nontrivial and requires nonlinear optimization, and is still an open problem today. However, limiting the number of B-splines is not the only approach to controlling the complexity of the fitted function.
 
 \bigskip
 
@@ -34,22 +34,28 @@ B_{ik}\left(x\right) &= \frac{x-t_i}{t_{i+k-1}-t_i}B_{i,k-1}\left(x\right) + \fr
 Figure~\ref{fig:overlapping-linear-cubic-bsplines} shows two sets of B-splines; the top facet displays linear B-splines and the bottom displays B-splines of degree 2. A single isolated B-spline is shown on the left side of the axis in each panel. In Figure~\ref{fig:overlapping-linear-bsplines}, the single B-spline of degree 1 consists of two linear pieces: one piece from $x_3$ to $x_4$, and the other from $x_4$ to $x_5$, which are the knots that define its support. In the right part of Figure~\ref{fig:overlapping-linear-bsplines}, three more B-splines of degree 1 are shown. Each one based on three knots. Comparing these with the overlapping quadratic B-splines in Figure~\ref{fig:overlapping-cubic-bsplines}, we can see that the extent to which neighboring B-splines overlap depends on the polynomial degree of the basis. 
 
 \begin{figure}[H]
- \begin{center}
- \begin{subfigure}[t]{\textwidth}
   \centering
-   \includegraphics[width=0.75\textwidth]{img/uni_linear_bsplines}
- \caption{\textit{B-splines of degree 1} }\label{fig:overlapping-linear-bsplines}
-  \end{subfigure}
-   \end{center}
-  \hfill
-  \begin{center}
- \begin{subfigure}[t]{0.75\textwidth}
-\includegraphics[width = \textwidth]{img/uni_cubic_bsplines}
- \caption{\textit{B-splines of degree 2}}
-\label{fig:overlapping-cubic-bsplines}
- \end{subfigure}
- \end{center}
-   \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
+  \subfloat[]{\includegraphics[width=\textwidth]{img/uni_linear_bsplines}}\caption{\textit{B-splines of degree 1}}\label{fig:overlapping-linear-bsplines}\hfill
+    \subfloat[]{\includegraphics[width=\textwidth]{img/uni_cubic_bsplines}}\caption{\textit{B-splines of degree 2}}\label{fig:overlapping-cubic-bsplines}
+   \vspace*{3mm}
+  \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
+%\begin{figure}[H]
+% \begin{center}
+% \begin{subfigure}[t]{\textwidth}
+%  \centering
+%   \includegraphics[width=0.75\textwidth]{img/uni_linear_bsplines}
+% \caption{\textit{B-splines of degree 1} }\label{fig:overlapping-linear-bsplines}
+%  \end{subfigure}
+%   \end{center}
+%  \hfill
+%  \begin{center}
+% \begin{subfigure}[t]{0.75\textwidth}
+%\includegraphics[width = \textwidth]{img/uni_cubic_bsplines}
+% \caption{\textit{B-splines of degree 2}}
+%\label{fig:overlapping-cubic-bsplines}
+% \end{subfigure}
+% \end{center}
+%   \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
 \end{figure}
 
 B-splines make attractive basis functions for nonparametric regression; a linear combination of B-spline basis functions gives a smooth curve. Once a B-spline basis is computed, their application is no more difficult than polynomial regression, and extension to two-dimensional smoothing is available with the use of tensor products. To construct a B-spline representation for $\phi$, we need to equip the $l$ and $m$ axes each with a B-spline basis: let
@@ -82,18 +88,26 @@ carve the $l$-$m$ domain into rectangles. Figure~\ref{fig:bicubic-bspline-functi
 %where $J\left(\phi\right)$ is a penalty on the roughness of the fitted function. 
 %
 %
+
 \begin{figure}[H]
-    \begin{center}
- \begin{subfigure}[t]{0.48\textwidth}
+\captionsetup[subfigure]{labelformat=empty}
   \centering
-  \includegraphics[width=\textwidth]{img/bicubic_basis_function}
-  \end{subfigure}
- \begin{subfigure}[t]{.48\textwidth}
-  \centering
-\includegraphics[width=\textwidth]{img/bicubic_bspline_contour}
- \end{subfigure}
+  \subfloat[\textit{B-splines of degree 1}]{\includegraphics[width=.5\textwidth]{img/bicubic_basis_function}}\hfill
+    \subfloat[\textit{B-splines of degree 2}]{\includegraphics[width=.5\textwidth]{img/bicubic_bspline_contour}}
+   \vspace*{3mm}
   \caption{\textit{ Tensor product of two quadratic B-splines }}\label{fig:bicubic-bspline-function}
- \end{center}
+%\begin{figure}[H]
+%    \begin{center}
+% \begin{subfigure}[t]{0.48\textwidth}
+%  \centering
+%  \includegraphics[width=\textwidth]{img/bicubic_basis_function}
+%  \end{subfigure}
+% \begin{subfigure}[t]{.48\textwidth}
+%  \centering
+%\includegraphics[width=\textwidth]{img/bicubic_bspline_contour}
+% \end{subfigure}
+%  \caption{\textit{ Tensor product of two quadratic B-splines }}\label{fig:bicubic-bspline-function}
+% \end{center}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,63 +200,80 @@ This establishes that traditional smoothness penalty on the squared second deriv
 A smoother sequence of coefficients leads to a smoother curve, as illustrated in Figure~\ref{fig:increasing-lambda-pspline-fits}.  The relationship between P-spline curves and their coefficients is easily characterized if we consider the coefficients as the skeleton of the function, and draping the B-splines over them puts the flesh on the bones, so to speak. As long as the coefficient sequence is smooth, the number of basis functions (and coefficients) is unimportant since the penalty ensures the smoothness of the skeleton and that the fitting procedure is well-conditioned.  
 
 \begin{figure}[H] 
-\begin{subfigure}{.4\textwidth}
   \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.4]{pspline_pord2_xsmall_lambda.png}
-  \label{fig:pspline_small_lambda}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.4]{pspline_pord2_small_lambda.png}
-  \label{fig:pspline_small_lambda}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.4]{pspline_pord2_medium_lambda.png}
-  \label{fig:pspline_small_lambda}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.4]{pspline_pord2_large_lambda.png}
-  \label{fig:pspline_small_lambda}
-\end{subfigure}
+  \subfloat[]{\includegraphics[width=.5\textwidth]{img/pspline_pord2_xsmall_lambda}}
+    \subfloat[]{\includegraphics[width=.5\textwidth]{img/pspline_pord2_small_lambda}} \hfill
+      \subfloat[]{\includegraphics[width=.5\textwidth]{img/pspline_pord2_medium_lambda}}
+    \subfloat[]{\includegraphics[width=.5\textwidth]{img/pspline_pord2_large_lambda}} 
+   \vspace*{3mm}
 \caption{\textit{Illustration of the impact of the second order difference penalty. The number of B-splines used is the same in each plot, with the value of the penalty parameter increasing from left to right and top to bottom across each plot. The red circles are the values of each of the B-spline coefficients; as the penalty increases, they form as smoother sequence as we move across the four plots, which results in a smoother fitted function. As the penalty parameter approaches infinity, the fit approaches a linear function as shown in the bottom right plot.}}
 \label{fig:increasing-lambda-pspline-fits}
+%\begin{subfigure}{.4\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.4]{pspline_pord2_xsmall_lambda.png}
+%  \label{fig:pspline_small_lambda}
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.4]{pspline_pord2_small_lambda.png}
+%  \label{fig:pspline_small_lambda}
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.4]{pspline_pord2_medium_lambda.png}
+%  \label{fig:pspline_small_lambda}
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.4]{pspline_pord2_large_lambda.png}
+%  \label{fig:pspline_small_lambda}
+%\end{subfigure}
+%\caption{\textit{Illustration of the impact of the second order difference penalty. The number of B-splines used is the same in each plot, with the value of the penalty parameter increasing from left to right and top to bottom across each plot. The red circles are the values of each of the B-spline coefficients; as the penalty increases, they form as smoother sequence as we move across the four plots, which results in a smoother fitted function. As the penalty parameter approaches infinity, the fit approaches a linear function as shown in the bottom right plot.}}
+%\label{fig:increasing-lambda-pspline-fits}
 \end{figure}
 The limiting P-spline fit approaches a polynomial as the smoothing parameter tends to infinity. Under a difference penalty of order $d$, the fitted function will approach a polynomial of degree $\left(d-1\right)$ for large values of the smoothing parameter as long as the degree of the B-splines is greater than or equal to $k$. Figure~\ref{fig:PS-difference-order-demo} demonstrates the impact of the order of the penalty on the fitted function as the smoothing parameter increases. To verify this mathematically, we need to use the relationship between the differenced coefficient sequence and the derivative of a B-spline. See Appendix~\ref{psplines-appendix}. Consider using the second-order difference penalty. When $\lambda$ is large, the penalty dominates the penalized likelihood, so that the minimizer $\theta$ must be such that $\sum\limits_{j}\left(\Delta^2\theta_j\right)^2$ is close to zero. Consequently, each of the individual second differences must also be nearly zero, and thus the second derivative of the fitted function must be close to zero over the entire domain.
+
 \begin{figure}[H]
-\begin{subfigure}{.5\textwidth}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_0.png}
+%  %\label{fig:pspline_small_lambda}
+%\caption{$d=0$ }
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_1.png}
+% % \label{fig:pspline_small_lambda}
+%\caption{$d=1$}
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_2.png}
+%  %\label{fig:pspline_small_lambda}
+%\caption{$d=2$}
+%\end{subfigure}
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%   \graphicspath{{img/}}
+%  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_3.png}
+%  %\label{fig:pspline_small_lambda}
+%\caption{$d=3$}
+%\end{subfigure}
+%
+%\begin{figure}[H] 
   \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_0.png}
-  %\label{fig:pspline_small_lambda}
-\caption{$d=0$ }
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_1.png}
- % \label{fig:pspline_small_lambda}
-\caption{$d=1$}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_2.png}
-  %\label{fig:pspline_small_lambda}
-\caption{$d=2$}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-   \graphicspath{{img/}}
-  \includegraphics[scale=0.45]{PS_penalty_section_figure_6_order_3.png}
-  %\label{fig:pspline_small_lambda}
-\caption{$d=3$}
-\end{subfigure}
+  \subfloat[$d = 0$]{\includegraphics[width=.5\textwidth]{img/PS_penalty_section_figure_6_order_0}}
+    \subfloat[$d = 1$]{\includegraphics[width=.5\textwidth]{img/PS_penalty_section_figure_6_order_1}} \hfill
+      \subfloat[$d = 2$]{\includegraphics[width=.5\textwidth]{img/PS_penalty_section_figure_6_order_2}}
+    \subfloat[$d = 3$]{\includegraphics[width=.5\textwidth]{img/PS_penalty_section_figure_6_order_3}} 
+   \vspace*{3mm}
 \caption{\textit{Illustration of the impact of the order of the difference penalty. The number of B-splines used is the same in each plot, with the penalty parameter varying from across the same grid of values. The fitted curves in the upper left plot correspond to the difference penalty of order $0$, where $\vert D_0 \theta \vert^2 = \sum_{i} \theta_i^2$, analogous to ridge regression using the B-spline basis as regression covariates. The fitted curves approach polynomials of degree $d-1$ as $\lambda \rightarrow \infty$.}} \label{fig:PS-difference-order-demo}
 \end{figure}
 
@@ -328,7 +359,6 @@ When the tensor product basis is constructed on the regular grid defined by the 
 
 \bigskip
 
-Triangular B-splines are a new tool for modeling complex objects with nonrectangular topology. The scheme is based on blending functions and control points, and lets us model piecewise pol
 Bivariate B-splines are useful for smoothing over arbitrary domains, making them a natural alternative for the construction of a basis for $\bfv = \left(l,m\right)$. Multidimensional B-splines are well-developed by mathematicians, but they are rarely used in the statistical community. To smooth over non-rectangular domains, the domain is approximated by a set of triangles, or a triangulation, where each triangle is defined by its three vertices. The B-splines are defined according to a set of triples which correspond to set of knots over the bivariate domain. See \citet{dahmen1992blossoming} and \citet{seidel1991symmetric} for details. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

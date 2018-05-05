@@ -22,13 +22,13 @@ where $\bar{Y} = N^{-1}\sum_{i=1}^N Y_i$ denotes the sample mean vector. The sam
 
 \bigskip
 
-Despite these merits, it has been well established that the empirical covariance matrix is unstable in high dimensions; see \cite{lin1985monte} or \cite{johnstone2001distribution}, for example. The sample covariance is not parsimonious, making it unsatisfactory when it is suspected that the true underlying covariance matrix is sparse, or has many of its elements equal to zero. Moreover, it is not uncommon to encounter practical situations in which the data do not permit the straightforward construction in \eqref{eq:sample-covariance-matrix}. Specifically, we are interested in estimating the covariance matrix associated with a vector of repeated measurements generated from longitudinal studies in which the measurements on the $i^{th}$ subject $Y_i = \left(y_{i1}, y_{i2}, \dots, y_{ip}\right)'$ are associated with measurement times $t_i = \left(t_{i1}, t_{i2}, \dots, t_{ip}\right)'$. In this setting, the sample covariance matrix is not necessarily an optimal estimator of the covariance matrix because it does not naturally incorporate the temporal structure of the data. Moreover, construction of the sample covariance matrix requires rectangular, or balanced, data. Table~\ref{table:ideal-repeated-measurements} shows the ideal shape of a (rectangular) longitudinal data set. Unfortunately, longitudinal studies frequently produce non-rectangular data, where trajectories are potentially sparsely observed at times which are not common across all subjects. In the case, construction of the sample covariance matrix as defined in \eqref{eq:sample-covariance-matrix} is infeasible. 
+Despite these merits, it has been well established that the empirical covariance matrix is unstable in high dimensions; see \cite{lin1985monte} or \cite{johnstone2001distribution}, for example. The sample covariance is not parsimonious, making it unsatisfactory when it is suspected that the true underlying covariance matrix is sparse, or has many of its elements equal to zero. Moreover, it is not uncommon to encounter practical situations in which the data do not permit the straightforward construction in \eqref{eq:sample-covariance-matrix}. Specifically, we are interested in estimating the covariance matrix associated with a vector of repeated measurements generated from longitudinal studies in which the measurements on the $i^{th}$ subject $Y_i = \left(y_{i1}, y_{i2}, \dots, y_{ip}\right)'$ are associated with measurement times $t_i = \left(t_{i1}, t_{i2}, \dots, t_{ip}\right)'$. In this setting, the sample covariance matrix is not necessarily an optimal estimator of the covariance matrix because it does not naturally incorporate the temporal structure of the data. Moreover, construction of the sample covariance matrix requires rectangular, or balanced, data. Table~\ref{table:ideal-repeated-measurements} shows the ideal form of a (rectangular) longitudinal data set. Unfortunately, longitudinal studies frequently produce non-rectangular data, where trajectories are potentially sparsely observed at times which are not common across all subjects. In the case, construction of the sample covariance matrix as defined in \eqref{eq:sample-covariance-matrix} is infeasible. 
 
 \bigskip
 
 \begin{table}[H] 
 \centering
-\caption{\textit{Ideal shape of repeated measurements.}}
+\caption{\textit{Ideal form of repeated measurements.}}
 \begin{tabular}{cc|cccccc}
 \multicolumn{8}{c}{Time}\\
 & & $1$&$2$ &  $\dots$ & $t$ & $\dots$ & $p$ \\ \midrule
@@ -504,7 +504,7 @@ where $L = D^{-1/2}C$. This is commonly referred to as the modified Cholesky dec
 D = T\Sigma T',
 \end{equation}
  \noindent
-where $T = L^{-1}$. Like the orthogonal matrix $P$ in the spectral decomposition, the lower triangular matrix $T$ diagonalizes $\Sigma$, however the entries of $T$ can be written as the coefficients of a particular regression model, and are therefore unconstrained. The elements of the diagonal matrix $D$ can also be interpreted as parameters associated with the same model. Let $Y = \left( y_1,\dots, y_p \right)'$ denote a mean zero random vector with positive definite covariance matrix $\Sigma$, and consider regressing $y_t$ on its predecessors $y_1, \dots, y_{t-1}$. Let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t-1}, \dots , y_1$. Standard regression machinery gives us that there exist unique scalars $\phi_{tj}$ so that
+where $T = L^{-1}$. Like the orthogonal matrix $P$ in the spectral decomposition, the lower triangular matrix $T$ diagonalizes $\Sigma$, however the entries of $T$ can be written as the coefficients of a particular regression model, and are therefore unconstrained. The elements of the diagonal matrix $D$ can also be interpreted as parameters associated with the same model. Let $Y = \left( y_1,\dots, y_p \right)'$ denote a mean zero random vector with positive definite covariance matrix $\Sigma$, and consider regressing $y_t$ on its predecessors $y_1, \dots, y_{t-1}$. Let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t-1}, \dots , y_1$, and let $\epsilon_t = y_t - \hat{y}_t$ denote the corresponding prediction error with variance $Var\left(\epsilon_t\right) = \sigma_t^2$. Standard regression machinery gives us that there exist unique scalars $\phi_{tj}$ so that
 \begin{equation} \label{eq:mcd-ar-model}
 y_t = \left\{ \begin{array}{ll} \epsilon_t, & t = 1\\
 \sum_{j = 1}^{t-1} \phi_{tj} y_j + \epsilon_t, & t = 2, \dots, p,
@@ -524,11 +524,11 @@ Then model \eqref{eq:mcd-ar-model} can be written
 where the $\left(t, j\right)$ entry of $T$ is $-\phi_{tj}$ , and the $(t, t)$ entry of $D$ is the variance of the $t^{th}$ prediction residual: $\sigma_t^2 = Var\left(\epsilon_t\right)$. 
 \begin{align}
 \begin{bmatrix}
-1&&&&\\
--\phi_{21}&1&&&\\
--\phi_{31}&-\phi_{32}&1&&\\
+$1$&&&&\\
+-\phi_{21}&$1$&&&\\
+-\phi_{31}&-\phi_{32}&$1$&&\\
 \vdots &&&\ddots& \\
--\phi_{p1}&-\phi_{p2}& \dots & -\phi_{p,p-1}&1\\
+-\phi_{p1}&-\phi_{p2}& \dots & -\phi_{p,p-1}&$1$\\
 \end{bmatrix}
 \begin{bmatrix}
 y_1 \\
@@ -695,7 +695,7 @@ The Cholesky decomposition leads to unconstrained and statistically meaningful r
 The nonredundant entries of $\left(T, \log D\right)$ are unconstrained, allowing them to be modeled using any desired technique, including parametric, semi- and nonparametric, and Bayesian approaches. For a random sample of mean zero $p$-dimensional vectors $Y_1,\dots , Y_N$  from a normal density with covariance matrix $\Sigma$, the form of the likelihood allows for relatively simple computation of the MLE of the parameters. Up to a constant, the log likelihood satisfies
 \begin{align}
 \begin{split} \label{eq:regular-cholesky-log-likelihood}
--2\ell\left(\Sigma \vert Y_1,\dots, Y_N\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y'_i\right) \\
+-2\ell\left(\Sigma \vert Y_1,\dots, Y_N\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y_i\right) \\
 &= N \log \vert D \vert + N \mbox{tr}\left(\Sigma^{-1}S\right) \\
 & = N \log \vert D \vert + N \mbox{tr}\left(D^{-1}TST'\right), 
 \end{split}
@@ -716,8 +716,8 @@ While the MLE is flexible under a saturated model, this advantage can be offset 
 where $x_{tj}$ and $z_{t}$ denote $q \times 1$ and $d \times 1$ vectors of known covariates, and $\beta = \left(\beta_1,\dots, \beta_q \right)'$ and $\gamma = \left(\gamma_1,\dots, \gamma_d \right)'$ are the parameters relating these covariates to the innovation variances and the dependence among the elements of $Y$. Covariates most frequently used in the analysis of real longitudinal data sets are low order polynomials of lag and time. \cite{pourahmadi1999joint}, \cite{pourahmadi2000maximum}, and \cite{pan2003modelling} parameterize $\phi_{tj}$ and $\log \sigma^2_t$ using covariates
 \begin{align}
 \begin{split}  \label{eq:GARP-IV-parametric-model}
-x'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{d-1}\right)' \\
-z'_{j}  &= \left(1, t_j, \dots, t_j^{q-1}\right)'
+x'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{q-1}\right)' \\
+z'_{j}  &= \left(1, t_j, \dots, t_j^{d-1}\right)'
 \end{split}
 \end{align}
 

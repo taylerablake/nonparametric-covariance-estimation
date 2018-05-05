@@ -22,7 +22,7 @@ Y_i = \left(y_{i1}, \dots, y_{i,p_i}\right)'
 \noindent
 denote the corresponding measurements, $i = 1, \dots, N$. We assume that measurement times are drawn from some distribution having compact domain $\mathcal{T}$; without loss of generality, we take $\mathcal{T} = \left[0,1\right]$. We use varying coefficient models to extend the linear model corresponding to the Cholesky decomposition \eqref{eq:mcd-ar-model}. Consider the following model as a generalization of \eqref{eq:mcd-ar-model}: 
 \begin{equation}  \label{eq:cholesky-regression-model-1} 
-y\left(t_{ij} \right)  = \sum_{k < j} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \epsilon\left({t_{ij}}\right), \quad \begin{array}{l} i = 1, \dots, N\\ j = 1, \dots, p_i,\end{array}
+y\left(t_{ij} \right)  = \sum_{k < j} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \epsilon\left({t_{ij}}\right), \quad \begin{array}{l} i = 1, \dots, N\\ j = 2, \dots, p_i,\end{array}
 \end{equation}
 \noindent
 where the prediction errors $\epsilon\left(t\right)$ follow a mean zero Gaussian process, with variance function $\sigma^2\left(t\right)$. The coefficient associated with regressing the measurement taken at time $t$ on the measurement taken at time $s$ is given by the value of the autoregressive coefficient function evaluated at $\left(t,s\right)$:
@@ -378,7 +378,7 @@ V = \bigcup\limits_{i,j,k} \left\{\bfv_{ijk} \right\} \equiv \left\{ \bfv_1,\dot
 as the set of unique within-subject pairs of observation times. 
 
  \begin{theorem} \label{theorem:finite-dimensional-minimizer}
- Let $\left\{\nu_1,\dots, \nu_{\mathcal{N}_0}\right\}$ span $\hilbert_0$, the null space of $J\left(\phi\right) = \vert \vert P_1 \phi\vert\vert^2$. Let $B$ denote the $\vert V \vert \times \mathcal{N}_0$ matrix having $i^{th}$ column equal to $\nu_i$ evaluated at the observed $\bfv \in V$, and assume that $B$ has full column rank. Then the minimizer $\phi_\lambda$ of \eqref{eq:phi-penalized-sums-of-squares} is given by
+ Let $\left\{\nu_1,\dots, \nu_{\mathcal{N}_0}\right\}$ span $\hilbert_0$, the null space of $J\left(\phi\right) = \vert \vert P_1 \phi\vert\vert^2$. Then the minimizer $\phi_\lambda$ of \eqref{eq:phi-penalized-sums-of-squares} is given by
  \begin{equation} \label{eq:form-of-the-minimizer-phi}
 \phi_\lambda\left(\bfv\right) = \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_{i}\left(\bfv\right) + \sum_{j = 1}^{\vert V \vert} c_j K_1\left(\bfv_j, \bfv\right),
 \end{equation}
@@ -414,7 +414,7 @@ which has dimension $n_Y \times \vert V \vert$. Using the Representer Theorem in
 -2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \vert \vert D^{-1/2}\left( Y - X \left( Bd + K_{_{\ms V}}c \right) \right) \vert \vert^2  + \lambda c^\prime K_{_{\ms V}} c, 
 \end{equation}
 \noindent
-where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $K_{_{\ms V}}$ is given by $K_1\left(\bfv_i, \bfv_j\right)$. The $\vert V \vert \times \mathcal{N}_0$ matrix $B$ has $\left(i,j\right)$ element equal to $\nu_j\left(\bfv_i\right)$, and we assume $B$ to be full column rank.  The diagonal matrix $D$ holds the $n_Y \times n_Y$  innovation variances $\sigma^2_{ij}$. The following examples demonstrate how to construct the subject-specific design matrices $X_1,\dots, X_N$ when observation times are common across all subjects and when observation times are subject-specific.
+where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ matrix $K_{_{\ms V}}$ is given by $K_1\left(\bfv_i, \bfv_j\right)$, and the $\vert V \vert \times \mathcal{N}_0$ matrix $B$ has $\left(i,j\right)$ element equal to $\nu_j\left(\bfv_i\right)$.  The diagonal matrix $D$ holds the $n_Y$  innovation variances $\sigma^2_{ij}$. The following examples demonstrate how to construct the subject-specific design matrices $X_1,\dots, X_N$ when observation times are common across all subjects and when observation times are subject-specific.
 
 \begin{example}{Construction of $X_i$ with complete data} \label{example:construction-of-X}
 
@@ -423,10 +423,10 @@ where the $\left(i,j\right)$ entry of the $\vert V \vert \times \vert V \vert$ m
 Construction of the autoregressive design matrix $X_i$ is straightforward in the case that there are an equal number of measurements on each subject at a common set of measurement times $t_1,\dots, t_p$. When complete data are available for measurement times $t_1, \dots, t_p$, 
 \begin{equation}
 X_i =  \begin{bmatrix} 
-y_{i1} & 0 & 0 & 0 &0&\dots & 0 \\
- 0 & y_{i 1} &  y_{i2}&0 &0& \dots & 0 \\
- \vdots &&&&&&\\
- 0 & 0 & \dots &0 & y_{i1} & \dots &  y_{i,{p-1}}
+y_{i1} & 0 & 0 & \dots & &\dots & 0 \\
+ 0 & y_{i 1} &  y_{i2}& & & \dots & 0 \\
+ \vdots &&&\ddots&&&\\
+ 0 & 0 & \dots & & y_{i1} & \dots &  y_{i,{p-1}}
 \end{bmatrix}
 \end{equation}
 \noindent
@@ -917,8 +917,7 @@ Given $\phi^*$ and setting $\phi = \phi^*$, we update our estimate of $\eta$ by 
 \[
 -2\ell\left( \eta \vert Z_1,\dots, Z_N, \phi^* \right) + \lambda_\eta  J_\eta\left(\eta\right).
 \]
-This process of iteratively updating $\phi^*$ and ${\eta}^*$ is repeated until convergence. 
-
+This process of iteratively updating $\phi^*$ and ${\eta}^*$ is repeated until convergence. Alternatively, one could initialize the innovation variances using parsimonious approximation of the autoregressive varying coefficient $\phi$ to calculate an initial estimate of the $\sigma_{ij}^2$. For example, one might initialize the innovation variances using the squared prediction errors after regressing $y_{ij}$ on just its most recent preceding measurement $y_{i,j-1}$. Better starting values may lead to faster convergence of the overall procedure, though we have not yet explored this concern and leave it to future investigation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

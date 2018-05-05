@@ -70,19 +70,25 @@ day &  70 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &1&&&&&& 3.363 & $\log\left(\hat{
 \end{center}
 \end{table}
 
+
 \begin{figure}[H]
- \begin{subfigure}[t]{.65\textwidth}
-  \centering
-\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
- \caption{\textit{Sample generalized autoregressive parameters $\hat{\phi}_{ts}$.}}
-\label{fig:cattleA-regressogram}
- \end{subfigure}
-   \centering
-    \begin{subfigure}[t]{.65\textwidth}
-    \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
- \caption{\textit{Sample innovation variances $\hat{\sigma}_t^2$}} \label{fig:cattleA-innovation-variogram}
- \end{subfigure}
+\begin{center}
+  \subfloat[\textit{Sample generalized autoregressive parameters $\hat{\phi}_{ts}$.}]{\label{fig:cattleA-regressogram} \includegraphics[width=0.65\textwidth]{img/cattle/cattleA-regressogram}}%\caption{\textit{Sample generalized autoregressive parameters $\hat{\phi}_{ts}$.}}
+  \hfill
+    \subfloat[\textit{Sample innovation variances $\hat{\sigma}_t^2$}]{\label{fig:cattleA-innovation-variogram} \includegraphics[width=0.65\textwidth]{img/cattle/cattleA-innovation-variogram}}%\caption{\textit{Sample innovation variances $\hat{\sigma}_t^2$}}
+% \begin{subfigure}[t]{.65\textwidth}
+%  \centering
+%\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram}
+% \caption{\textit{Sample generalized autoregressive parameters $\hat{\phi}_{ts}$.}}
+%\label{fig:cattleA-regressogram}
+% \end{subfigure}
+%   \centering
+%    \begin{subfigure}[t]{.65\textwidth}
+%    \includegraphics[width=\textwidth]{img/cattle/cattleA-innovation-variogram}
+% \caption{\textit{Sample innovation variances $\hat{\sigma}_t^2$}} \label{fig:cattleA-innovation-variogram}
+% \end{subfigure}
  \caption{\textit{Empirical estimates of the parameters of the Cholesky decomposition of the sample covariance matrix.}} \label{fig:cattleA-innovation-variogram-and-regressogram}
+\end{center}
 \end{figure}
 
 %
@@ -117,28 +123,31 @@ x'_{ts} = \begin{bmatrix} 1 & t - s& \left(t - s\right)^2 & \left(t - s\right)^3
 \noindent
 They estimate $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-variogram} shows the estimated cubic polynomials corresponding to Model~\ref{eq:pourahmadi-cubic-model}. 
 
-\begin{figure}[H]
-  \centering
- \begin{subfigure}[t]{.65\textwidth}
-\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
- \caption{\textit{Smoothed sample regressogram.} }
- \label{fig:cattleA-innovariogram-with-cubic-smooth}
- \end{subfigure}
- \hfill
-   \centering
- \begin{subfigure}[t]{.65\textwidth}
-\includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
- \caption{\textit{Smoothed sample log innovation variances.} }
-\label{fig:cattleA-innovariogram-with-cubic-smooth}
- \end{subfigure}
+%\begin{figure}[H]
+%  \centering
+% \begin{subfigure}[t]{.65\textwidth}
+%\includegraphics[width = \textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}
+% \caption{\textit{Smoothed sample regressogram.} }
+% \label{fig:cattleA-innovariogram-with-cubic-smooth}
+% \end{subfigure}
+% \hfill
+%   \centering
+% \begin{subfigure}[t]{.65\textwidth}
+%\includegraphics[width = \textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}
+% \caption{\textit{Smoothed sample log innovation variances.} }
+%\label{fig:cattleA-innovariogram-with-cubic-smooth}
+% \end{subfigure}
+ \begin{figure}[H]
+\begin{center}
+  \subfloat[\textit{Smoothed sample regressogram.}] {\label{fig:cattleA-regressogram-with-cubic-smooth} \includegraphics[width=0.65\textwidth]{img/cattle/cattleA-regressogram-with-cubic-smooth}}%\caption{\textit{Smoothed sample regressogram.}}
+  \hfill
+    \subfloat[\textit{Smoothed sample log innovation variances.}]{\label{fig:cattleA-innovariogram-with-cubic-smooth} \includegraphics[width=0.65\textwidth]{img/cattle/cattleA-innovariogram-with-cubic-smooth}}%\caption{\textit{Smoothed sample log innovation variances.}}
  \caption{\textit{Cubic polynomomials fitted to the sample regressogram and log innovation variances for the cattle data from treatment group A.}} \label{fig:cattleA-smoothed-regressogram-variogram}
+ \end{center}
 \end{figure}
 
 
-\bigskip
-
-
-First things first: before estimating the covariance structure, we need to center the data using an adequate estimate of the mean weight trajectories. To account for any between-subject variability, we adopt an approach akin to the dynamical conditionally linear mixed model presented in \cite{pourahmadi2002dynamic}:
+Before estimating the covariance structure, we need to center the data using an adequate estimate of the mean weight trajectories. To account for any between-subject variability, we adopt an approach akin to the dynamical conditionally linear mixed model presented in \cite{pourahmadi2002dynamic}:
 
 \begin{equation}
 Y_i = f\left(t_i  \right) + Z_i b_i + \epsilon^*_i,
@@ -253,33 +262,36 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
 %\caption{\textit{Components of the estimated covariance matrix for the cattle weight data from treatment group A: the sample covariance  }} \label{fig:fitted-cholesky-decomposition-cattle-date}
 %\end{figure}
 
-\begin{figure}[H]
-\begin{center}
- \begin{subfigure}[t]{.35\textwidth}
-  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-S}
- \caption{\textit{$S$}} \label{fig:fitted-cholesky-decomposition-cattle-date-S}
- \end{subfigure}
- \begin{subfigure}[t]{.35\textwidth}
+\begin{figure}[ht]
+\centering
+ \subfloat[\textit{$S$}]{\label{fig:fitted-cholesky-decomposition-cattle-date-S}\includegraphics[width=0.35\textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-S}}%\caption{\textit{$S$}}
+    \subfloat[\textit{ $\hat{\Sigma} = \hat{T}^{-1} \hat{D} \hat{T}'^{-1} $}]{\label{fig:fitted-cholesky-decomposition-cattle-date-Sigma} \includegraphics[width=0.35\textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-Sigma}} \hfill
+  \subfloat[\textit{$\hat{\phi}\left(t,s\right)$}]{\label{fig:fitted-cholesky-decomposition-cattle-date-phi} \includegraphics[width=0.35\textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-phi}}%\label{fig:fitted-cholesky-decomposition-cattle-date-phi}
+    \subfloat[\textit{$\log\hat{\sigma}^2\left(t\right)$}]{\label{fig:fitted-cholesky-decomposition-cattle-date-log-sigma2}\includegraphics[width=0.35\textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-log-sigma2} }
+%  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-S}
+% \caption{\textit{$S$}} \label{fig:fitted-cholesky-decomposition-cattle-data-S}
+% \end{subfigure}
+% \begin{subfigure}[t]{.35\textwidth}
+%%  \centering
+%  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-Sigma}
+% \caption{\textit{ $\hat{\Sigma} = \hat{T}^{-1} \hat{D} \hat{T}'^{-1} $}}
+%\label{fig:fitted-cholesky-decomposition-cattle-date-Sigma}
+% \end{subfigure}
+% \end{center}
+% \hfill
+% \begin{center}
+%  \begin{subfigure}[t]{.35\textwidth}
 %  \centering
-  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-Sigma}
- \caption{\textit{ $\hat{\Sigma} = \hat{T}^{-1} \hat{D} \hat{T}'^{-1} $}}
-\label{fig:fitted-cholesky-decomposition-cattle-date-Sigma}
- \end{subfigure}
- \end{center}
- \hfill
- \begin{center}
-  \begin{subfigure}[t]{.35\textwidth}
-  \centering
-  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-phi}
- \caption{\textit{$\hat{\phi}\left(t,s\right)$}} \label{fig:fitted-cholesky-decomposition-cattle-date-phi}
- \end{subfigure}
- \begin{subfigure}[t]{.35\textwidth}
- % \centering
-  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-log-sigma2}
- \caption{\textit{$\log\hat{\sigma}^2\left(t\right)$}}
-\label{fig:fitted-cholesky-decomposition-cattle-date-log-sigma2}
- \end{subfigure}
- \end{center}
+%  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-phi}
+% \caption{\textit{$\hat{\phi}\left(t,s\right)$}} \label{fig:fitted-cholesky-decomposition-cattle-date-phi}
+% \end{subfigure}
+% \begin{subfigure}[t]{.35\textwidth}
+% % \centering
+%  \includegraphics[width = \textwidth]{img/chapter-5/cattle-cholesky-estimate-ggplot-log-sigma2}
+% \caption{\textit{$\log\hat{\sigma}^2\left(t\right)$}}
+%\label{fig:fitted-cholesky-decomposition-cattle-date-log-sigma2}
+% \end{subfigure}
+% \end{center}
  \caption{\textit{The sample covariance matrix $S$, the estimated covariance matrix for the cattle weight data from treatment group A and the estimated Cholesky decomposition of the covariance matrix. The generalized autoregressive coefficient function $\phi\left(t,s\right)$ and the log innovation variances $\log \sigma^2\left(t\right)$ were estimated using a tensor product cubic spline and cubic spline, respectively. The fitted functions define the components of the Cholesky factor $\hat{T}$ and diagonal matrix $\hat{D}$.}}  \label{fig:fitted-cholesky-decomposition-cattle-date}
 \end{figure}
 

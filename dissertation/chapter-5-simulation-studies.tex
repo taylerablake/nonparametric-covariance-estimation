@@ -132,7 +132,6 @@ The following estimators serve as benchmarks for performance under the five simu
 \bigskip
 
 In the spirit of the GLM, the MCD polynomial estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
-
 \begin{align*}
 \begin{split}  \label{eq:GARP-IV-parametric-model}
 \phi_{jk} &= z'_{jk} \gamma \\
@@ -140,21 +139,19 @@ In the spirit of the GLM, the MCD polynomial estimator is a particular case of e
 \end{split}
 \end{align*}
 \noindent
-for $j = 1,\dots, p$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $p \times 1$  which hold covariates
-
+for $j = 2,\dots, p$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $d \times 1$  which hold covariates
 \begin{align}
 \begin{split} 
-z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
+z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{d-1}\right)', \\
 z'_{j}  &= \left(1, t_j, \dots, t_j^{q-1}\right)'.
 \end{split}
 \end{align} \label{eq:mcd-polynomial-model}
 \noindent
-where the orders of the polynomials, $p$ and $q$, are chosen by BIC. 
+where the orders of the polynomials, $d$ and $q$, are chosen by BIC. 
 
 \bigskip
 
 \cite{rothman2009generalized} presented a class of generalized thresholding estimators, including the soft-thresholding estimator given by
-
 \[
 S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
 \]
@@ -179,9 +176,6 @@ The weights $\omega^k_{ij}$ are controlled by a tuning parameter, $k$,  which ca
                              2 - \frac{i - j}{k_h}, & k_h < \vert  i -j \vert \le k, \\
                              0, & \mbox{otherwise}  \end{array} \right.
 \end{align*}
-\noindent
-
-\bigskip
 
 Tuning parameter selection for the regularized versions of the sample covariance matrix was performed using cross validation. Under certain conditions pertaining to the ratio of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
 
@@ -202,19 +196,16 @@ As discussed in Chapter 1, in the limit, soft thresholding produces a positive d
 \bigskip
 
 In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}, which serves as a practical lower bound for the risk under each generating model. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma^2}$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, p_i$. The oracle estimator for Model II is obtained by fitting the model
-
 \begin{equation} \label{eq:model-2-oracle-model}
 y\left(t_{ij}\right) = \sum_{k < j} \left(\beta_0 + \beta_1 t_{ij}\right) y\left( t_{ik} \right) + \epsilon_{ij},
 \end{equation}
 \noindent 
 where $\epsilon_{ij}$ are independent mean zero Normal random variables with common variance $\sigma^2$. The estimator of $\bfbeta = \left(\beta_0, \beta_1\right)'$, $\hat{\bfbeta}$ is taken to be 
-
 \begin{equation}\label{eq:model-2-oracle-estimator}
 \argmin{\beta} \vert \vert Y - X B \beta \vert \vert^2, 
 \end{equation}
 \noindent
 where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq:ar-design-matrix-1}) and Example~\ref{example:construction-of-X}, and the matrix $B$ contains the basis for a linear function of $t$:
-
 \[
 \begin{bmatrix}
 1 & t_{11} \\
@@ -229,13 +220,11 @@ where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq
 \]
 \noindent
 The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
-
 \[
 \hat{\sigma}^2\left( t \right) = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
 \]
 \noindent
 where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:
-
 \begin{equation} \label{eq:model-3-oracle-model}
 y\left(t_j\right) = \sum_{ t_j - t_k < 0.5} \left(\beta_0 + \beta_1 t_j\right) y\left( t_k \right) + \epsilon. 
 \end{equation}
@@ -245,13 +234,11 @@ The oracle estimator under Model IV, the rational quadratic covariance model, as
 \bigskip
 
 The compound symmetric covariance model (V) can be written as a simple random effects model:
-
 \begin{equation} \label{eq:model-5-oracle-model}
 Y_i = Z_i b_i + \bfepsilon_i,
 \end{equation}
 \noindent
 where $\bfepsilon_i$ is a vector of residuals from a $N\left(0,\sigma_\epsilon^2\right)$ distribution, and the $b_i$ are independent $N\left(0,\sigma_b^2 \mathrm{I}\right)$ random vectors, the elements of which are mutually independent of the elements of $\epsilon_{i}$. The matrix of covariates corresponding to the random effects contains only an intercept term:
-
 \[
 Z_i = \begin{bmatrix}  1 \\ 1 \\ \vdots \\1 \end{bmatrix}.
 \]
@@ -283,7 +270,6 @@ t_1,\dots, t_p.
 \]
 \noindent
 We generate irregular data by first generating a complete dataset as we did for the first simulation study:
-
 \begin{align*}
 Y_1 &= \left(y_1\left(t_1\right), y_1\left(t_2\right), \dots, y_1\left(t_p\right)\right)' \\
 Y_2 &= \left(y_2\left(t_1\right), y_2\left(t_2\right), \dots, y_2\left(t_p\right)\right)' \\
@@ -304,7 +290,6 @@ where $Y_1,\dots, Y_N$ are independently and identically distributed according t
 \subsection{Simulations with Complete Data}
 Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitative differences between the estimates resulting from each of the eight methods of estimation for the five covariance structures used for simulation. The first row in the grid shows the surface plot of each of the true covariance structures, and each row thereafter corresponds to the five covariance estimates for the given estimation method. The surface plots of the oracle estimate in the second row serve as a point of reference for the `gold standard` in each scenario, since the oracle estimates were constructed assuming that the functional form of the covariance is known (either the full covariance structure or the components of the Cholesky decomposition.) The corresponding estimates of the Cholesky factor $T$ for the estimators based on the modified Cholesky decomposition are shown in Figure~\ref{fig:chol-estimate-lattice}, and the decomposition of the $\hat{T}$ corresponding to the smoothing spline ANOVA estimator $\hat{\Sigma}_{SS}$ into functional components is displayed in Figure~\ref{fig:ssanova-component-lattice}
 
-%\subfile{chapter-4-subfiles/chapter-4-cov-lattice-ggplot}
 
 \begin{figure}[H] 
 \centering
@@ -320,7 +305,6 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
   \caption{\textit{The generalized autoregressive coefficient function $\phi$ which defines the elements of the true lower triangle of Cholesky factor $T$ corresponding to Model I - Model V and estimates of the same surface for estimators based on the modified Cholesky decomposition. The true covariance structure is displayed across the top row.}}  \label{fig:chol-estimate-lattice}
 \end{figure}
 
-%\subfile{chapter-4-subfiles/chapter-4-ssanova-lattice-ggplot}
 
 \begin{figure}[H] 
   \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} 
@@ -329,6 +313,43 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \bigskip
 The results of the simulations for complete data under entropy loss are presented in Tables~\ref{table:simulation-1-entropy-loss-sigma-1} - \ref{table:simulation-1-entropy-loss-sigma-5}, where the smoothing parameters for our smoothing spline estimator $\hat{\Sigma}_{SS}$ and P-spline estimator $\hat{\Sigma}_{PS}$ are chosen using the unbiased risk estimate. Performance of the estimator when the smoothing parameter is chosen using leave-one-subject-out cross validation is comparable; these results are left to Appendix~\ref{simulation-studies-appendix}. Risk estimates under quadratic loss, while there is not agreement between results every time, qualitatively, they are similar in nature to those with entropy loss and are also presented in Appendix~\ref{simulation-studies-appendix}, Tables~\ref{table:simulation-1-quad-loss-sigma-1}-\ref{table:simulation-1-quad-loss-sigma-5}. Since both loss functions are not standardized, they cannot be compared across dimensions $p$.
+
+\begin{figure}[H]
+\captionsetup[subfigure]{labelformat=empty}
+  \centering
+  \subfloat[]{\includegraphics[width=0.75\textwidth]{img/chapter-4/model-1-entropy-loss-boxplots}}\hfill
+    \subfloat[]{\includegraphics[width=0.75\textwidth]{img/chapter-4/model-1-entropy-loss-boxplots-zoom}}
+      \vspace*{3mm}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model I for each of the estimators considered in the simulations with complete data. The top figure displays results under each of the three data dimensions $p = 10, 20, 30$ and sample sizes $N = 50, 100$. The relative performance of each estimator compared to the others is consistent across dimensions. The bottom figure shows a more detailed view for comparison between the oracle estimator and the estimators based on the modified Cholesky decomposition.}}  \label{fig:model-1-entropy-loss-boxplots}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width =\textwidth]{img/chapter-4/model-2-entropy-loss-boxplots-p-20}
+  \vspace*{3mm}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model III for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The estimator $\Sigma_{poly}$ based on the parametric model for the modified Cholesky decomposition suffers from model misspecification, which is clearly reflected in its performance as measured by $\Delta_2$.}}  \label{fig:model-2-entropy-loss-boxplots}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width =\textwidth]{img/chapter-4/model-3-entropy-loss-boxplots-zoom}
+  \vspace*{3mm}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model III for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The loss distributions are shown for the sample covariance matrix as well as the tapered sample covariance matrix. While the underlying inverse covariance matrix is banded, the covariance matrix itself is not which explains why $S$ outperforms its regularized variant $S_\omega$.}}  \label{fig:model-3-entropy-loss-boxplots}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width =\textwidth]{img/chapter-4/model-4-entropy-loss-boxplots-zoom}
+  \vspace*{3mm}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model IV for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The performance of the estimator $\Sigma_{poly}$ based on the parametric model for the modified Cholesky decomposition is more comparable to that of our estimators when the underlying covariance matrix is stationary.}}  \label{fig:model-4-entropy-loss-boxplots}
+\end{figure}
+
+\begin{figure}[H] 
+\centering
+\includegraphics[width =\textwidth]{img/chapter-4/model-5-entropy-loss-boxplots-zoom}
+  \vspace*{3mm}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model V for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The parsimony of the compound symmetric model, having only two parameters to be estimated, lends to the marked improvement of the performance of the sample covariance when the sample size is increased from $N = 50$ to $100$.}}  \label{fig:model-5-entropy-loss-boxplots}
+\end{figure}
 
 \bigskip
 
@@ -475,14 +496,24 @@ $N = 50$ & 10 &0.0135 & 0.0685 & 0.1261 &  0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subfile{chapter-4-subfiles/chapter-4-missing-data-study-discussion}
 
-Estimated risk under entropy loss is given in Tables~\ref{table:simulation-study-2-entropy-risk-model-1} - \ref{table:simulation-study-2-entropy-risk-model-5}.  Risk estimates under quadratic loss echo in sentiment and are left to Appendix~\ref{simulation-studies-appendix}, Tables~\ref{table:simulation-study-2-quad-risk-model-1} - \ref{table:simulation-study-2-quad-risk-model-5}. Neither model selection perform better than the other across all of the simulation settings. This might suggest that when the estimated innovation variances are close to the true variances of the prediction residuals, using the unbiased risk estimate with the working residuals as substitute for the relative error is a reasonable approach to modeling. Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For Models I and IV, the identity matrix and the rational quadratic covariance model, performance remains fairly stable as the proportion of missing data increases. The estimator exhibits similar degrees of performance degradation under Models II, III, and V.  Interestingly, these models (with the exception of Model III, which is a special case) have true varying coefficient functions which are naturally parameterized as functions of $t$, while the models under which the performance remain stable across increasing proportions of missing data are naturally parameterized in terms of $l$. 
+Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entropy loss for our smoothing spline estimator when the smoothing parameters are selected using the unbiased risk estimator. Tables~\ref{table:simulation-study-2-entropy-risk-model-1} - \ref{table:simulation-study-2-entropy-risk-model-5} provide summaries of these distributions as well as those for the estimator when leave-one-subject-out cross validation is used for smoothing parameter selection. Results under quadratic loss are similar to those under entropy loss and are left to Appendix~\ref{simulation-studies-appendix}, Tables~\ref{table:simulation-study-2-quad-risk-model-1} - \ref{table:simulation-study-2-quad-risk-model-5}. Neither model selection perform better than the other across all of the simulation settings. This might suggest that when the estimated innovation variances are close to the true variances of the prediction residuals, using the unbiased risk estimate with the working residuals as substitute for the relative error is a reasonable approach to modeling. Performance degradation of the estimator in the presence of missing data is highly dependent on the underlying structure of the Cholesky factor of the inverse covariance matrix. For Models I and IV, the identity matrix and the rational quadratic covariance model, performance remains fairly stable as the proportion of missing data increases. The estimator exhibits similar degrees of performance degradation under Models II, III, and V.  Interestingly, these models (with the exception of Model III, which is a special case) have true varying coefficient functions which are naturally parameterized as functions of $t$, while the models under which the performance remain stable across increasing proportions of missing data are naturally parameterized in terms of $l$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bigskip
+\begin{figure}[H]
+\centering
+  \begin{tikzpicture}
+    \draw (0,0) node {  \includegraphics[width = \textwidth]{img/chapter-4/simulation-study-2-entropy-loss-boxplots} };
+% \node at (-2,3) {\textcolor{wes1}{$p = 20$}};
+\draw[red] (-6.3,-.7) node {{$p = 20$}}; % Draws a circle
+\draw[red] (-6.3,4.2) node {{${p = 10}$}}; % Draws a circle
+\end{tikzpicture} \caption{\textit{The distribution of entropy loss for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate
+                            normal samples of size $N = 50$ when 0\%, 10\%, 20\%, and 30\% of the data are missing for each subject for dimension $p = 10$ (top) and $p = 20$ (bottom). }}\label{fig:simulation-study-2-boxplots}
+\end{figure}
+
 \setlength{\dashlinedash}{0.5pt}
 \setlength{\dashlinegap}{1pt}
 \setlength{\arrayrulewidth}{0.2pt}
