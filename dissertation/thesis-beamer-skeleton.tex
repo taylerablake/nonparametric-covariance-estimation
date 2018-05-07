@@ -82,6 +82,7 @@
 %% Default font: lmodern, doesn't require fontspec % solves some default warnings
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}	
+\usepackage{bm}
 \usepackage{empheq}		
 %\usepackage{sfmath}		% Sans Serif Math, off by default
 \usepackage{adjustbox}
@@ -146,6 +147,9 @@
 \usetikzlibrary{patterns}
 \usetikzlibrary{backgrounds}
 \usetikzlibrary{mindmap,trees}	% For mind map
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows,shapes,positioning,shadows}
+
 % http://www.texample.net/tikz/examples/computer-science-mindmap/
 
 
@@ -158,6 +162,15 @@
 \newcommand{\ALERT}[1]{\textcolor{ALERT}{#1}} % loudest alert
 %% "\alert" is already a beamer pre-defined
 \definecolor{hilight}{RGB}{102,255,204}
+
+\definecolor{wes1}{RGB}{216,183,10}
+\definecolor{wes2}{RGB}{214,114,54}
+\definecolor{wes3}{RGB}{2,64,27}
+\definecolor{wes4}{RGB}{162,164 ,117}
+\definecolor{wes5}{RGB}{129,168,141}
+\definecolor{wes6}{RGB}{151,45,21}
+\definecolor{wes7}{RGB}{253,100,103}
+
 \newcommand{\nt}[1]{{\small \color{hilight} {#1}}}
 
 \newenvironment<>{varblock}[2][.9\textwidth]{%

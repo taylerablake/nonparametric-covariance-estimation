@@ -43,7 +43,7 @@ A number of methods have been developed for estimating the varying coefficients 
 
 \bigskip
 
-This model formulation grants access to the abundance of regularization techniques that are accessible in the usual function estimation setting. Nonparametric models are often used for ``checking'' or eliciting parametric models; see \cite{cox1988testing} and \cite{liu2004hypothesis}. In this light, it is convenient to parameterize $\tilde{\phi}$ so that the fitted function can easily be used as diagnostic tools or for suggesting parsimonious or structured models for the Cholesky decomposition. Given the prevalence of stationary covariance models in the applied literature, including those specifying the elements of $T$ as a function of the lag between observations, we take a convenient parameterization of the varying coefficient function with inputs
+This model formulation grants access to the abundance of regularization techniques that are accessible in the usual function estimation setting. Nonparametric models are often used for ``checking'' or eliciting parametric models; see \cite{cox1988testing} and \cite{liu2004hypothesis}. In this light, it is convenient to parameterize $\tilde{\phi}$ so that the fitted function can easily be used as a diagnostic tool or for suggesting parsimonious or structured models for the Cholesky decomposition. Given the prevalence of stationary covariance models in the applied literature, including those specifying the elements of $T$ as a function of the lag between observations, we take a convenient parameterization of the varying coefficient function with inputs
 \begin{align}\label{eq:l-m-transformation}
 l = t - s \mbox{ and } m = \frac{t + s}{2}, 
 \end{align}
@@ -112,7 +112,7 @@ J\left(f\right) = \int_0^1  \left(f''\left(x\right)\right)^2\;dx.
 \noindent
 The penalty on the squared second derivative induces a decomposition of the function space
 \begin{equation*}
-C^{\left(2\right)}\left[0,1\right] = \left\{f: \int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \right\}
+C^{\left(2\right)}\left[0,1\right] = \left\{f: \int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \right\},
 \end{equation*}
 \noindent %with $\mathcal{N}_0 = 2$, 
 which is a Hilbert space if equipped with inner product
@@ -149,7 +149,7 @@ K_{0}\left(x,y\right) =  k_0\left(x\right)  k_0\left(y\right) +  k_1\left(x\righ
 is the reproducing kernel for $\hilbert_{0}$. One can further decompose $\hilbert_0$ into the tensor sum of the subspaces spanned by $k_0$ and $k_1$:
 \begin{align}\label{eq:SS-RKHS-null-space-tensor-sum}
 %\begin{split} 
-\hilbert_0 &=  \hilbert_{00} \oplus \hilbert_{01}= \left\{f: \;f \propto 1 \right\} \oplus \left\{f: \;f \propto k_1\right\}
+\hilbert_0 &=  \hilbert_{00} \oplus \hilbert_{01}= \left\{f: \;f \propto 1 \right\} \oplus \left\{f: \;f \propto k_1\right\},
 %\end{split}
 \end{align}
 \noindent
@@ -208,7 +208,7 @@ where $\bfx = \left(x_1, x_2\right)$ and $\bfy = \left(y_1, y_2\right)$.
 
 The tensor product space can be constructed with nine tensor sum terms, which are defined by the decomposition of the marginal subspaces
 \[
-\hilbert_{\left[i\right]} = \hilbert_{00\left[1\right]}  \oplus  \hilbert_{01\left[i\right]} \oplus \hilbert_{1\left[i\right]}, \quad i = 1,2.
+\hilbert_{\left[i\right]} = \hilbert_{00\left[i\right]}  \oplus  \hilbert_{01\left[i\right]} \oplus \hilbert_{1\left[i\right]}, \quad i = 1,2.
 \]
 \noindent
 Table~\ref{table:tensor-product-cubic-spline-RKHS-table} gives the tensor sum terms defining the decomposition of $\hilbert$ and the functional components corresponding to each subspace. The reproducing kernels for each of the subspaces are given in Table~\ref{table:tensor-product-cubic-spline-RK-table}.
@@ -370,7 +370,7 @@ The roughness penalty associated with reproducing kernel $K$ can be written as $
 
 \subsection{A Representer Theorem}
 
-\cite{wahba1990spline} established an explicit form for the minimizer of the penalized negative log likelihood in the usual function estimation setting. The following theorem establishes the form for the minimizer of \eqref{eq:phi-penalized-sums-of-squares}, the penalized negative log likelihood for the varying coefficient model \eqref{eq:cholesky-regression-model-1}. Define  
+\cite{wahba1990spline} established an explicit form for the minimizer of the penalized sums of squares in the usual function estimation setting. The following theorem establishes the form for the minimizer of the penalized negative log likelihood \eqref{eq:phi-penalized-sums-of-squares} for the varying coefficient model \eqref{eq:cholesky-regression-model-1}. Define  
 \[
 V = \bigcup\limits_{i,j,k} \left\{\bfv_{ijk} \right\} \equiv \left\{ \bfv_1,\dots,\bfv_{\vert V \vert} \right\}
 \]
@@ -387,7 +387,7 @@ where $K_1\left(\bfv_j, \bfv \right)$ denotes the reproducing kernel for $\hilbe
 \end{theorem}
 \vspace{0.5cm}
 \noindent
-The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wahba1990spline} can be found in Appendix~\ref{chapter-2-appendix}.
+The proof, which is similar in spirit to the proof of Theorem 1.3.1 in \cite{wahba1990spline}, can be found in Appendix~\ref{chapter-2-appendix}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

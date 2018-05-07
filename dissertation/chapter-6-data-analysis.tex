@@ -107,21 +107,19 @@ day &  70 & 0.04 & -0.28 & 0.11 & 0.37 & 0.82  &1&&&&&& 3.363 & $\log\left(\hat{
 %\end{figure} 
 
 Analyzing the sample regressogram (Figure~\ref{fig:cattleA-regressogram}) and sample innovation variogram (Figure~\ref{fig:cattleA-innovation-variogram}), \cite{pourahmadi1999joint} suggested that both sample generalized autoregressive parameters and the logarithms of the innovation variances can be characterized in terms of cubic functions of the lag only. They model 
-
 \begin{align}
 \begin{split} \label{eq:pourahmadi-cubic-model}
-\phi_{ts} = x'_{ts}\gamma, \\
-\log\left(\sigma_t^2\right) = z'_{t}\xi, 
+\phi_{ts} = x'_{ts}\beta, \\
+\log\left(\sigma_t^2\right) = z'_{t}\gamma, 
 \end{split}
 \end{align}
 \noindent
 for $t = t_2,\dots, t_{11}$ where 
-
 \begin{align*}
 x'_{ts} = \begin{bmatrix} 1 & t - s& \left(t - s\right)^2 & \left(t - s\right)^3 \end{bmatrix},\; \mbox{and } z'_{t} = \begin{bmatrix} 1 & t& t^2& t^3 \end{bmatrix}.
 \end{align*}
 \noindent
-They estimate $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-variogram} shows the estimated cubic polynomials corresponding to Model~\ref{eq:pourahmadi-cubic-model}. 
+They estimate $\beta$ and $\gamma$ via maximum likelihood.  Figure~\ref{fig:cattleA-smoothed-regressogram-variogram} shows the estimated cubic polynomials corresponding to Model~\eqref{eq:pourahmadi-cubic-model}. 
 
 %\begin{figure}[H]
 %  \centering
@@ -148,39 +146,31 @@ They estimate $\gamma$ and $\xi$ via maximum likelihood.  Figure~\ref{fig:cattle
 
 
 Before estimating the covariance structure, we need to center the data using an adequate estimate of the mean weight trajectories. To account for any between-subject variability, we adopt an approach akin to the dynamical conditionally linear mixed model presented in \cite{pourahmadi2002dynamic}:
-
 \begin{equation}
 Y_i = f\left(t_i  \right) + Z_i b_i + \epsilon^*_i,
 \end{equation} 
-
 \noindent
 where $Y_i$ is the $p_i \times 1$ response vector for the $i^{th}$ subject, $b_i$ is a $q \times 1$ vector of unknown random effects parameters, and $Z_i$ is a known $p_i \times q$ design matrix.  $f$ is the smooth function of $t$, and $t_i = \left(t_{i1}, \dots, t_{i,p_i}\right)'$ is the $p_i \times 1$ vector of measurement times for subject $i$. We specify the random term $Z_i b_i$ as an intercept only, letting $Z_i = \left(1 , \dots, 1\right)'$ so that 
-
 \[
- Z_i b_i = \alpha_i 1_{p_i}, 
+ Z_i b_i = \alpha_i 1_{p_i}.
 \] 
 
 \noindent
-so that the random effect corresponds to a subject-specific shift $\alpha_i$, which are assumed to be independent and identically distributed $N\left(0,\sigma_\alpha^2\right)$ random variables. We assume that the $p_i \times 1$ vector of residuals
-
+The random effects $\alpha_i$ correspond to subject-specific shifts which are assumed to be independent and identically distributed $N\left(0,\sigma_\alpha^2\right)$ random variables. We assume that the $p_i \times 1$ vector of residuals
 \[
-\epsilon^*_i \sim N\left(0, \Sigma_i\right).
+\epsilon^*_i \sim N\left(0, \Sigma_i\right)
 \] 
-
 \noindent
 are mutually independent of the random intercepts $\alpha_i$, $i = 1,\dots, N$. Given that the animals belong to the same treatment group and share a common set of observation times, we assume each subject shares common covariance matrix $\Sigma_i = \Sigma$. We let $f$ belong to the Hilbert space
-
 \[
 \mathcal{C}^2 = \left\{f: \; f,\;f' \mbox{ absolutely continuous, } \int\left(f''\left(x\right)\right)^2 \;dx < \infty  \right\}, 
 \]
-equipped with the inner product which corresponds to $J\left(f\right) = \int_0^1 \left(f''\left(x\right)\right)^2\;dx$.
+equipped with the inner product which corresponds to $J\left(f\right) = \int \left(f''\left(x\right)\right)^2\;dx$.
 \noindent
 We take the estimators of $f$, $\alpha = \left(\alpha_1,\dots, \alpha_N\right)'$ to minimize the penalized joint log likelihood
-
 \begin{equation}
-\sum_{i = 1}^N \sum_{i = 1}^{p_i} \left(y_{ij} - f\left(t_{ij} \right) - \alpha_i \right)^2 + \alpha' \Sigma_\alpha^{-1} \alpha + \lambda J \left(f\right)
+\sum_{i = 1}^N \sum_{i = 1}^{p_i} \left(y_{ij} - f\left(t_{ij} \right) - \alpha_i \right)^2 + \alpha' \Sigma_\alpha^{-1} \alpha + \lambda J \left(f\right),
 \end{equation}
-
 \noindent
 where $\textup{Cov}\left(\alpha\right) = \Sigma_\alpha = \sigma_\alpha^2 \mathrm{I}$. The variance of the random effects $\sigma^{-2}_\alpha$  is viewed as an additional smoothing parameter and estimated alongside $\lambda$. Figure~\ref{fig:cattleA-smoothed-weights-vs-time} shows the corresponding fitted mean curves. 
 
@@ -200,28 +190,26 @@ where $\textup{Cov}\left(\alpha\right) = \Sigma_\alpha = \sigma_\alpha^2 \mathrm
 \label{fig:cattleA-smoothed-weights-vs-time}
 \end{center}
 \end{figure} 
-
 Centering the data using the fitted mean, the residuals 
-
 \begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-2}
-\epsilon^*\left(t_{ij}\right) = y\left(t_{ij}\right) - \left(f\left(t_{ij} \right) + \alpha_{i}\right).
+\epsilon^*\left(t_{ij}\right) = y\left(t_{ij}\right) - \left(f\left(t_{ij} \right) + \alpha_{i}\right)
 \end{equation}
 \noindent
 serve as the data for estimating the functions defining the Cholesky factor and innovation variances. We model
 \begin{equation} \label{eq:cattleA-dynamic-cond-mixed-model-1}
-\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ij}\right) + \epsilon\left(t_{ij}\right)
+\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \tilde{\phi}\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ik}\right) + \epsilon\left(t_{ij}\right)
 \end{equation}
 \noindent
-where $\epsilon$ is a mean zero gaussian process with variance $\sigma\left(t\right)$.
+where $\epsilon$ is a mean zero Gaussian process with variance $\sigma^2\left(t\right)$.
 
 \bigskip
 
-Choice of penalty is critical for convergence of the iterative estimation of $\phi$ and $\log\left(\sigma^2 \right)$. \cite{pan2017jmcm} concluded that the regressogram of empirical estimates of $\phi_{t,s}$ show consistent behaviour over $l = t - s$ for each value of $t$, indicating a lack of a strong functional component of $m$. This is consistent Pourahmadi's choice in the specification of model (\ref{eq:pourahmadi-cubic-model}) in terms of lag only. To balance the consideration of previous analyses with the interest of entirely data-driven model specification, we let $\phi \in \hilbert = \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]}$, where 
+Choice of penalty is critical for convergence of the iterative estimation of $\tilde{\phi}$ and $\log\left(\sigma^2 \right)$. \cite{pan2017jmcm} concluded that the regressogram of empirical estimates of $\tilde{\phi}_{t,s}$ show consistent behaviour over $l = t - s$ for each value of $t$, indicating a lack of a strong functional component of $m$. This is consistent Pourahmadi's choice in the specification of model (\ref{eq:pourahmadi-cubic-model}) in terms of lag only. To balance the consideration of previous analyses with the interest of entirely data-driven model specification, we let $\phi \in \hilbert = \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]}$, where 
 \begin{align*} 
-\hilbert_{\left[l\right]} &= \bigg\{ \phi: \ddot{\phi} = 0 \bigg\} \oplus \left\{\phi: \phi\left(0\right) = \dot{\phi}\left(0\right) = 0; \;\;\ddot{\phi} \in \mathcal{L}_2\left[0,1\right]   \right\} \\
-\hilbert_{\left[m\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int\limits_0^1 \phi \;dx = 0, \;\; \dot{\phi} \in \mathcal{L}_2\left[0,1\right]  \right\} 
+\hilbert_{\left[l\right]} &= \bigg\{ \phi: \phi' = 0 \bigg\} \oplus \left\{\phi: \phi\left(0\right) = {\phi'}\left(0\right) = 0; \;\; \int {\phi}''\left(l\right)\;dl < \infty   \right\} \\
+\hilbert_{\left[m\right]} &= \bigg\{ \phi: \phi \propto 1 \bigg\} \oplus \left\{ \phi: \int_0^1 \phi\left(m\right) \;dm = 0, \;\; \int {\phi}''\left(m\right)\;dm < \infty \right\} 
 \end{align*} 
-This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by $\phi$ \cite{pan2017jmcm}, \cite{huang2006covariance}, and \cite{wu2003nonparametric} for the same data set.  Figure~\ref{fig:fitted-cholesky-decomposition-cattle-date} shows the estimated Cholesky surface and innovation variance function evaluated at $t =  0,14, 28,\dots,112, 126,133$ and the corresponding pairs of observation times $\left(t,s\right)$, $0 \le s < t \le 133$. Figure~\ref{fig:cattle-fitted-cholesky-ssanova} shows $\hat{\phi}$ decomposed into the functional components of its ANOVA decomposition.
+This decomposition leads to a null space comprised of functions of $l$ only, which is attractive because it coincides with the modeling assumptions made by \cite{pan2017jmcm}, \cite{huang2006covariance}, and \cite{wu2003nonparametric} for the same data set.  Figure~\ref{fig:fitted-cholesky-decomposition-cattle-date} shows the estimated Cholesky surface and innovation variance function evaluated at $t =  0,14, 28,\dots,112, 126,133$ and the corresponding pairs of observation times $\left(t,s\right)$, $0 \le s < t \le 133$. Figure~\ref{fig:cattle-fitted-cholesky-ssanova} shows $\hat{\phi}$ decomposed into the functional components of its ANOVA decomposition.
 
 
 %\begin{figure}[H]
@@ -304,7 +292,7 @@ This decomposition leads to a null space comprised of functions of $l$ only, whi
 \end{figure}
 
 
-Our sole focus on covariance estimation rather than the joint estimation of the mean and covariance makes apples-to-apples comparison with other analyses of the same dataset difficult. We constructed the mean estimate for the cattle in treatment group A shown in Figure~\ref{fig:cattleA-smoothed-weights-vs-time} entirely independently of the covariance estimate, which may be suboptimal compared to an iterative procedure that jointly estimates $f$, $b$, and $\Sigma$ as in \cite{pan2017jmcm} and \cite{pourahmadi1999joint}. Nevertheless, it is interesting to examine the differences between our estimates and cubic model fit shown in Figure~\ref{fig:cattleA-smoothed-regressogram-variogram}. Modeling $\phi$ as a polynomial in $l$ leaves any nonstationarity to be captured by the innovation variances. Of course, a model for the Cholesky factor having constant innovation variances and generalized autoregressive parameters which vary in $l$ only corresponds to a stationary process when certain conditions on the magnitude of the GARPs are satisfied (see \citep{klein1997statistical}, \citep{madsen2007time}). Our estimated model instead captures the non-stationarity with both the log innovation variances as well as with $\phi_2]$, the functional component corresponding to the main effect of $m$. The size of the functional components (in terms of the squared norm), however, does indicate a certain degree of concordance with the model proposed by \cite{pourahmadi1999joint}. The squared norm of the main effect of $l$, at 1.914, is over twice that of the main effect of $m$ (0.790), and the squared norm of the interaction term, as clearly indicated by Figure~\ref{fig:cattle-fitted-cholesky-ssanova}, is negligible in comparison to the main effects.
+Our sole focus on covariance estimation rather than the joint estimation of the mean and covariance makes apples-to-apples comparison with other analyses of the same dataset difficult. We constructed the mean estimate for the cattle in treatment group A shown in Figure~\ref{fig:cattleA-smoothed-weights-vs-time} entirely independently of the covariance estimate, which may be suboptimal compared to an iterative procedure that jointly estimates $f$, $b$, and $\Sigma$ as in \cite{pan2017jmcm} and \cite{pourahmadi1999joint}. Nevertheless, it is interesting to examine the differences between our estimates and cubic model fit shown in Figure~\ref{fig:cattleA-smoothed-regressogram-variogram}. Modeling $\phi$ as a polynomial in $l$ leaves any nonstationarity to be captured by the innovation variances. Of course, a model for the Cholesky factor having constant innovation variances and generalized autoregressive parameters which vary in $l$ only corresponds to a stationary process when certain conditions on the magnitude of the GARPs are satisfied \citep{klein1997statistical,madsen2007time}. Our estimated model instead captures the non-stationarity with both the log innovation variances as well as with $\phi_2$, the functional component corresponding to the main effect of $m$. The size of the functional components (in terms of the squared functional norm), however, does indicate a certain degree of concordance with the model proposed by \cite{pourahmadi1999joint}. The squared norm of the main effect of $l$ (1.914) is over twice that of the main effect of $m$ (0.790), and the squared norm of the interaction term, as clearly indicated by Figure~\ref{fig:cattle-fitted-cholesky-ssanova}, is negligible in comparison to the main effects.
 
 %Evaluating the normal likelihood at the fitted model gives $\hat{\ell} = -818.5323$.
 

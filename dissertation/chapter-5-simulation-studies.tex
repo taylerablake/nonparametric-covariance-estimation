@@ -1,7 +1,7 @@
 \chapter{Simulation Studies} \label{simulation-studies-chapter}
 
 
-In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by \cite{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix \citep{cai2010optimal} and the soft thresholding estimator \citep{rothman2009generalized}, which does not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
+In this section we compare bivariate spline estimators of the Cholesky factor to other methods of covariance estimation. Our primary comparisons are that with the parametric polynomial estimator proposed by \cite{pourahmadi1999joint},  \cite{pan2003modelling}, and \cite{pourahmadi2002dynamic}, which is also based on the modified Cholesky decomposition, and with the oracle estimator, which effectively gives a lower bound on the risk for given covariance structure. As a benchmark, we also include the sample covariance matrix, and two regularized variants of it: the tapered sample covariance matrix \citep{cai2010optimal} and the soft thresholding estimator \citep{rothman2009generalized}, which do not rely on a natural ordering among the variables. In the simulations, the smoothing spline estimator of the modified Cholesky decomposition was constructed using the framework of a tensor product cubic smoothing spline. For each covariance matrix used for simulation, the P-spline estimator was constructed so that the order of the difference penalties for $l$ and $m$ are treated as additional tuning parameters.
 
 \bigskip
 
@@ -14,7 +14,7 @@ Simulations were carried out for five covariance structures: the diagonal covari
 \hline
  \multicolumn{2} {l} {I: Mutual independence} \\[0.3cm]
  $\Sigma = \mathrm{I}$ & $\begin{aligned}
-\phi\left(t,s\right) &= 0, \quad 0 \le s < t \le 1,\\[0.15cm] 
+\tilde{\phi}\left(t,s\right) &= 0, \quad 0 \le s < t \le 1,\\[0.15cm] 
 \sigma^2\left(t\right) &= 1, \quad 0 \le t \le 1.
 \end{aligned}$ \\[0.2cm]
 \\
@@ -22,7 +22,7 @@ Simulations were carried out for five covariance structures: the diagonal covari
 \\
  \multicolumn{2} {l} {II: Linear varying coefficient function, constant innovation variances} \\[0.3cm]
 $\Sigma = T^{-1} D {T'}^{-1}$ & $\begin{aligned}
-\phi\left(t,s\right) &= t - \frac{1}{2},  \quad 0 \le t \le 1, \\[0.15cm]
+\tilde{\phi}\left(t,s\right) &= t - \frac{1}{2},  \quad 0 \le t \le 1, \\[0.15cm]
 \sigma^2\left(t\right) &= 0.1^2,  \quad 0 \le t \le 1.
 \end{aligned}$ \\
 \\
@@ -30,7 +30,7 @@ $\Sigma = T^{-1} D {T'}^{-1}$ & $\begin{aligned}
 \\
 \multicolumn{2} {l} {III: Banded linear varying coefficient function, constant innovation variances} \\[0.3cm]
  $\Sigma = T^{-1} D {T'}^{-1}$ &$ \begin{aligned}
-\phi\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le 0.5\\ 
+\tilde{\phi}\left(t,s\right) &= \left\{\begin{array}{ll} t - \frac{1}{2}, & t - s \le 0.5\\ 
 0, & t - s > 0.5\end{array}\right.,\\[0.15cm]
 \sigma^2\left(t\right) &= 0.1^2, \quad 0 \le t \le 1.
 \end{aligned}$  \\
@@ -47,9 +47,9 @@ $\Sigma = T^{-1} D {T'}^{-1}$ & $\begin{aligned}
  $\begin{array}{l}\Sigma = \sigma^2\left(\rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}\right),  \\
  \\
   \rho=0.7, \quad \sigma^2=1 \end{array}$  &  $\begin{aligned}
-\phi_{ts} &= \frac{\rho}{1 + \left(t-2\right)\rho}, \begin{array}{l} t = 2, \dots, p,\\ 
+\tilde{\phi}\left(t,s\right) &= \frac{\rho}{1 + \left(t-2\right)\rho}, \begin{array}{l} t = 2, \dots, p,\\ 
 				 s = 1, \dots, t-1 \end{array}\\
-\sigma_t^2 &= \left\{\begin{array}{ll} 1, & t = 1\\ 1 -\frac{\left(t-2\right)\rho^2}{1 + \left(t-2\right)\rho}, & t = 2, \dots, p \end{array}\right.
+\sigma^2\left(t\right) &= \left\{\begin{array}{ll} 1, & t = 1\\ 1 -\frac{\left(t-2\right)\rho^2}{1 + \left(t-2\right)\rho}, & t = 2, \dots, p \end{array}\right.
 \end{aligned}$ \\
  \\
 \hline
@@ -59,7 +59,7 @@ $\Sigma = T^{-1} D {T'}^{-1}$ & $\begin{aligned}
 
 \bigskip
 
-Figure~\ref{fig:true-covariance-heatmaps} displays a two dimensional representation of each covariance matrix $\Sigma$ and it's corresponding Cholesky factor $T$ used in the simulation study. The smallest elements of each matrix correspond to dark green pixels, while the light pink (white) pixels correspond to the large (largest) elements of the matrix. Comparison of the covariance matrices with the generalized autoregressive coefficient function which defines lower triangular surface in the second row demonstrates that covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition. The Cholesky factor for Model III, the truncated linear varying coefficient AR model, is sparse, with elements on the outer half of the subdiagonals equal to zero. While this corresponds to a banded inverse covariance structure, $\Sigma$ itself is not sparse.  The compound symmetric model has simple structure and is parsimonious; its dependence parameters can be expressed as the evaluation of a function which is constant in time $t$. However, the elements of the Cholesky factor and diagonal matrix of innovation variances $D = T \Sigma T'$ do not exhibit such elementary structure, the elements of which are nonlinear in $t$. 
+The smallest elements of each matrix correspond to dark green pixels, while the light pink (white) pixels correspond to the large (largest) elements of the matrix. Comparison of the covariance matrices with the generalized autoregressive coefficient function which defines lower triangular surface in the second row demonstrates that covariance structures exhibiting sparsity or parsimony do not necessarily exhibit the same simplicity in the components of the Cholesky decomposition. The Cholesky factor for Model III, the truncated linear varying coefficient AR model, is sparse, with elements on the outer half of the subdiagonals equal to zero. While this corresponds to a banded inverse covariance structure, $\Sigma$ itself is not sparse.  The compound symmetric model has simple structure and is parsimonious; its dependence parameters can be expressed as the evaluation of a function which is constant in time $t$. However, the elements of the Cholesky factor and diagonal matrix of innovation variances $D = T \Sigma T'$ do not exhibit such elementary structure, the elements of which are nonlinear in $t$. 
 
 %\subfile{chapter-4-subfiles/chapter-4-true-covariance-heatmaps}
 \begin{figure}[H] 
@@ -90,8 +90,7 @@ Let $\hat{\Sigma}$ be an estimator of the true $p \times p$ covariance matrix $\
 \Delta_2\left(\Sigma,\hat{\Sigma}\right) = tr\left( \Sigma^{-1} \hat{\Sigma} \right) - log \vert \Sigma^{-1} \hat{\Sigma} \vert - p.
 \end{equation}
 \noindent
-$\Sigma$ denotes the true covariance matrix and $\hat{\Sigma}$ is an $p \times p$ positive definite matrix. Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the $Z$ as some linear transformation of $Y$:
-
+Each of these loss functions is $0$ when $\hat{\Sigma} = \Sigma$ and is positive when $\hat{\Sigma} \ne \Sigma$. Both measures of loss are scale invariant. If we let random vector $Y$ have covariance matrix $\Sigma$, and define the $Z$ as some linear transformation of $Y$:
 \[
 Z = CY. 
 \]
@@ -102,17 +101,15 @@ for some $p \times p$ matrix $C$,  then $Z$ has covariance matrix $\Sigma_Z = C 
 \]
 \noindent
 The first loss $\Delta_1$, or the quadratic loss, measures the discrepancy between $\left(\Sigma^{-1} \hat{\Sigma}\right)$ and the identity matrix with the squared Frobenius norm. The Frobenius norm of a matrix $A$ is given by 
-
 \[
 \vert \vert A \vert \vert_F^2 = \mbox{tr}\left(A A'\right).
 \]
 \noindent
-The second loss $\Delta_2$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities with the same mean and the two corresponding covariance matrices. The quadratic loss penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_1$ than $\Delta_2$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \cite{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{NS}{N+p+1}$ is optimal under $\Delta_1$. 
+The second loss $\Delta_2$ is commonly referred to as the entropy loss; it gives the Kullback-Leibler divergence of two multivariate Normal densities with the same mean and the two corresponding covariance matrices. The quadratic loss penalizes overestimates more than underestimates, so ``smaller'' estimates are favored more under $\Delta_1$ than $\Delta_2$. For example, among the class of estimators comprised of scalar multiples $cS$ of the sample covariance matrix, \cite{haff1980empirical} established that $S$ is optimal under $\Delta_2$, while the smaller estimator $\frac{N}{N+p+1}S$ is optimal under $\Delta_1$. 
 
 \bigskip
 
 Given $\Sigma$, the corresponding values of the risk functions are obtained by taking expectations:
-
 \begin{equation*}
 R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\Sigma}\right)\right], \quad i = 1,2.
 \end{equation*}
@@ -134,16 +131,16 @@ The following estimators serve as benchmarks for performance under the five simu
 In the spirit of the GLM, the MCD polynomial estimator is a particular case of estimators which model the components of the Cholesky decomposition using covariates. The polynomial estimator takes the GARPs and IVs to be polynomials of lag and time, respectively:
 \begin{align*}
 \begin{split}  \label{eq:GARP-IV-parametric-model}
-\phi_{jk} &= z'_{jk} \gamma \\
-\log \sigma^2_{j} &= z'_{j}\lambda, 
+\phi_{jk} &= x'_{jk} \beta \\
+\log \sigma^2_{j} &= z'_{j}\gamma, 
 \end{split}
 \end{align*}
 \noindent
-for $j = 2,\dots, p$, $k = 1,\dots, j-1$. The vectors $z_j$ and $z_{jk}$ are of dimension $q \times 1$ and $d \times 1$  which hold covariates
+for $j = 2,\dots, p$, $k = 1,\dots, j-1$. The vectors $z_j$ and $x_{jk}$ are of dimension $q \times 1$ and $d \times 1$  which hold covariates
 \begin{align}
 \begin{split} 
-z'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{d-1}\right)', \\
-z'_{j}  &= \left(1, t_j, \dots, t_j^{q-1}\right)'.
+x'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{d-1}\right)', \\
+z'_{j}  &= \left(1, t_j, \dots, t_j^{q-1}\right)',
 \end{split}
 \end{align} \label{eq:mcd-polynomial-model}
 \noindent
@@ -156,7 +153,7 @@ where the orders of the polynomials, $d$ and $q$, are chosen by BIC.
 S^{\lambda}=   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
 \]
 \noindent 
-where $\sigma^*_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. 
+where $s_{ij}$ denotes the $i$-$j^{th}$ entry of the sample covariance matrix, and $\lambda$ is a penalty parameter controlling the amount of shrinkage applied to the empirical estimator. 
 
 \bigskip
 
@@ -167,40 +164,40 @@ S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
 \noindent
 where the $\omega_{ij}^k$ are given by 
 \begin{equation*}
-\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right],
+\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right].
 \end{equation*}
 \noindent
 The weights $\omega^k_{ij}$ are controlled by a tuning parameter, $k$,  which can take integer values between 0 and $p$. Without loss of generality,  we assume that $k_h = k/2$ is even. The weights may be rewritten as
 \begin{align*}
 \omega_{ij} = \left\{\begin{array}{ll} 1, & \vert i -j \vert \le k_h \\
                              2 - \frac{i - j}{k_h}, & k_h < \vert  i -j \vert \le k, \\
-                             0, & \mbox{otherwise}  \end{array} \right.
+                             0, & \mbox{otherwise.}  \end{array} \right. 
 \end{align*}
 
 Tuning parameter selection for the regularized versions of the sample covariance matrix was performed using cross validation. Under certain conditions pertaining to the ratio of sample sizes of the training and validation datasets, the $K$-fold cross validation criterion is a consistent estimator of the Frobenius norm risk. It is defined 
 
 \begin{equation} \label{eq:K-fold-matrix--cv}
-\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2, 
+\mbox{CV}_F\left(\lambda \right) = \argmin{\lambda} K^{-1} \sum_{k = 1}^K  \vert \vert\hat{\Sigma}^{\left(-k\right)} - \tilde{\Sigma}^{\left(k\right)}  \vert \vert_F^2.
 \end{equation}
 \noindent
-There is little established about the optimal method for tuning parameter selection in for the class of estimators based on element-wise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \cite{fang2016tuning}, we use $K = 10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. They authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \cite{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
+There is little established about the optimal method for tuning parameter selection for the class of estimators based on elementwise shrinkage of the sample covariance matrix.  However, based on the results of an extensive simulation study presented in \cite{fang2016tuning}, we use $10$-fold cross validation to select the tuning parameters for both the tapering estimator $S^\omega$ and the soft thresholding estimator $S^{\lambda}$. The authors implement cross validation for a number of element-wise shrinkage estimators for covariance matrices in the \cite{CVTuningCov} R package, which was used to calculate the risk estimates for $S^{\omega}$ and $S^{\lambda}$. 
 
 \bigskip
 
-As discussed in Chapter 1, in the limit, soft thresholding produces a positive definite estimator with probability tending to 1 (\cite{rothman2009generalized}), however element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite. We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.  In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \ref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \cite{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
+As discussed in Chapter 2, in the limit, soft thresholding produces a positive definite estimator with probability tending to 1 \citep{rothman2009generalized}, however element-wise shrinkage estimators of the covariance matrix, including the soft thresholding estimator, are not guaranteed to be positive definite. We observed simulations runs which yielded a soft thresholding estimator that was indeed not positive definite.  In this case, the estimate has at least one eigenvalue less than or equal to zero, and the evaluation of the entropy loss \eqref{eq:entropy-loss} is undefined. To enable the evaluation of the entropy loss, we coerced these estimates to the ``nearest'' positive definite estimate via application of the technique presented in \cite{cheng1998modified}.  For a symmetric matrix $A$, which is not positive definite,  a modified Cholesky algorithm produces a symmetric perturbation matrix $E$ such that $A + E$ is positive definite.
 
 \bigskip
 
-\cite{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\lambda$, $\gamma$ of the polynomial model \ref{eq:mcd-polynomial-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is  is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \cite{pan2017jmcm}. 	 
+\cite{pan2003modelling} present an iterative procedure for estimating coefficient vectors $\beta$, $\gamma$ of the polynomial model \eqref{eq:mcd-polynomial-model}. Their algorithm uses a quasi-Newton step for computing the MLE under the multivariate normal likelihood. Their work is implemented in the JMCM package for \textsf{R}, which we used to compute the polynomial MCD estimates.  For implementation details, see \cite{pan2017jmcm}. 	 
 
 \bigskip
 
-In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}, which serves as a practical lower bound for the risk under each generating model. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma^2}$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, p_i$. The oracle estimator for Model II is obtained by fitting the model
+In addition to these estimators, we include risk estimates for the oracle estimator for each of the simulation models in Table~\ref{table:simulation-model-list}, which serves as a practical lower bound for the risk under each generating model. For the case of mutual independence with constant variance, the oracle estimator of the covariance matrix is a diagonal matrix with the diagonal elements given by $\hat{\sigma}^2$, which is an estimate of the variance based on all of the data, $y_{ij}$, $i = 1,\dots, N$, $j = 1,\dots, p_i$. The oracle estimator for Model II is obtained by fitting the model
 \begin{equation} \label{eq:model-2-oracle-model}
-y\left(t_{ij}\right) = \sum_{k < j} \left(\beta_0 + \beta_1 t_{ij}\right) y\left( t_{ik} \right) + \epsilon_{ij},
+y\left(t_{ij}\right) = \sum_{k < j} \left(\beta_0 + \beta_1 t_{ik}\right) y\left( t_{ik} \right) + \epsilon\left(t_{ij}\right),
 \end{equation}
 \noindent 
-where $\epsilon_{ij}$ are independent mean zero Normal random variables with common variance $\sigma^2$. The estimator of $\bfbeta = \left(\beta_0, \beta_1\right)'$, $\hat{\bfbeta}$ is taken to be 
+where $\epsilon\left(t_{ij}\right)$ are independent mean zero Normal random variables with common variance $\sigma^2$. The estimator of $\bfbeta = \left(\beta_0, \beta_1\right)'$, $\hat{\bfbeta}$ is taken to be 
 \begin{equation}\label{eq:model-2-oracle-estimator}
 \argmin{\beta} \vert \vert Y - X B \beta \vert \vert^2, 
 \end{equation}
@@ -219,21 +216,21 @@ where $X$ denotes the matrix of autoregressive covariates as defined in (\ref{eq
 \end{bmatrix}.
 \]
 \noindent
-The estimator for $\sigma^2\left(t\right)$ is then the mean of the squared residuals:
+The estimator for $\sigma^2$ is then the mean of the squared residuals:
 \[
-\hat{\sigma}^2\left( t \right) = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
+\hat{\sigma}^2 = \frac{1}{N}\left[\sum_{i = 1}^N\frac{1}{\left(p_i - 1\right)} \sum_{j = 1}^{p_i} e_{ij}^2\right],
 \]
 \noindent
 where $e_{i1} = y_{i1}$, $i = 1,\dots, N$. The oracle estimator for Model III is obtained in the same fashion, but $y\left(t_{ij}\right)$ is regressed only on its predecessors such that $t_{ij} - t_{ik} < 0.5$:
 \begin{equation} \label{eq:model-3-oracle-model}
-y\left(t_j\right) = \sum_{ t_j - t_k < 0.5} \left(\beta_0 + \beta_1 t_j\right) y\left( t_k \right) + \epsilon. 
+y\left(t_{ij}\right) = \sum_{ t_{ij} - t_{ik} < 0.5} \left(\beta_0 + \beta_1 t_{ik}\right) y\left( t_{ik} \right) + \epsilon\left(t_{ij}\right). 
 \end{equation}
 
 The oracle estimator under Model IV, the rational quadratic covariance model, assumes that $Y_1, \dots, Y_N$ is a random sample from a mean zero multivariate normal distribution with covariance matrix $\Sigma = \begin{bmatrix} \sigma_{ij} \end{bmatrix}$, where the elements of the covariance matrix are defined according to the parametric function given in Table~\ref{table:simulation-model-list}.
 
 \bigskip
 
-The compound symmetric covariance model (V) can be written as a simple random effects model:
+The compound symmetric covariance Model V can be written as a simple random effects model:
 \begin{equation} \label{eq:model-5-oracle-model}
 Y_i = Z_i b_i + \bfepsilon_i,
 \end{equation}
@@ -259,12 +256,11 @@ The oracle estimator can be obtained using restricted maximum likelihood estimat
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Generation Procedures}
 
-For each of the covariance models, we generated a set of observations of sample size $N = 50, 100$ from a multivariate normal distribution for each of three different values of within-subject sample size $p = 10, 20, 30$. To generate data according to Models II and III, which are parameterized in terms of the components of the Cholesky decomposition, the Cholesky factor $T$ and diagonal innovation variance matrix $D$ are constructed by evaluating $\phi$ and $\sigma^2$ at the fixed observation times. The data are then sampled according to the multivariate normal distribution with covariance matrix $\Sigma = T^{-1} D {T'}^{-1}$. Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $p$-dimensional multivariate Normal distribution with mean zero and the same covariance.  Since construction of the sample covariance matrix $S$, $S^\omega$, and $S^\lambda$ rely on having an equal number of regularly-spaced observations on each subject, simulations comparing performance across estimators were conducted using complete data with common measurement times across all $N$ subjects. The observation times, which are equally spaced, are mapped from the integers $1,2, \dots, p$ to the unit interval for estimation.
+For each of the covariance models, we generated a set of observations of sample size $N = 50, 100$ from a multivariate normal distribution for each of three different values of within-subject sample size $p = 10, 20, 30$. To generate data according to Models II and III, which are parameterized in terms of the components of the Cholesky decomposition, the Cholesky factor $T$ and diagonal innovation variance matrix $D$ are constructed by evaluating $\tilde{\phi}$ and $\sigma^2$ at the fixed observation times. The data are then sampled according to the multivariate normal distribution with covariance matrix $\Sigma = T^{-1} D {T'}^{-1}$. Given covariance matrix $\Sigma$, risk estimates are obtained from$N_{sim} = 100$ samples from an $p$-dimensional multivariate Normal distribution with mean zero and the same covariance.  Since construction of the sample covariance matrix $S$, $S^\omega$, and $S^\lambda$ rely on having an equal number of regularly-spaced observations on each subject, simulations comparing performance across estimators were conducted using complete data with common measurement times across all $N$ subjects. The observation times, which are equally spaced, are mapped from the integers $1,2, \dots, p$ to the unit interval for estimation.
 
 \bigskip
 
 Our second concern in evaluation of our methods is how performance changes when the data exhibit varying degrees of sparsity. We fix the number of sampled trajectories $N$ and vary $p$, the size of the set  of possible measurement times
-
 \[
 t_1,\dots, t_p.
 \]
@@ -277,7 +273,7 @@ Y_2 &= \left(y_2\left(t_1\right), y_2\left(t_2\right), \dots, y_2\left(t_p\right
 Y_N &= \left(y_N\left(t_1\right), y_N\left(t_2\right), \dots, y_N\left(t_p\right)\right)',
 \end{align*}
 \noindent
-where $Y_1,\dots, Y_N$ are independently and identically distributed according to an $p$-dimensional multivariate Normal distribution with mean zero and having covariance structure identical to one of Models I - V in \ref{table:simulation-model-list}. To induce sparsity, we subsample from the complete data $\left\{y_i\left(t_j\right) \right\}$, $i = 1,\dots, N$, $j = 1,\dots, p$, randomly omitting an observation $y_i\left(t_j\right)$ with probability $0.1$, $0.2$, and $0.3$. For both sets of simulations, the smoothing parameters for the smoothing spline and P-spline estimators were selected using both leave-one-subject-out cross validation $\mbox{losoCV}\left(\lambda\right)$ and unbiased risk estimate $\mbox{U}\left(\lambda\right)$. Given the selected values of the tuning parameters, we computed the estimated covariance matrix and compared it to the true covariance matrix via entropy loss and quadratic loss. 
+where $Y_1,\dots, Y_N$ are independently and identically distributed according to an $p$-dimensional multivariate Normal distribution with mean zero and having covariance structure identical to one of Models I - V in Table~\ref{table:simulation-model-list}. To induce sparsity, we subsample from the complete data $\left\{y_i\left(t_j\right) \right\}$, $i = 1,\dots, N$, $j = 1,\dots, p$, randomly omitting an observation $y_i\left(t_j\right)$ with probability $0.1$, $0.2$, and $0.3$. For both sets of simulations, the smoothing parameters for the smoothing spline and P-spline estimators were selected using both leave-one-subject-out cross validation $\mbox{losoCV}\left(\lambda\right)$ and unbiased risk estimate $\mbox{U}\left(\lambda\right)$. Given the selected values of the tuning parameters, we computed the estimated covariance matrix and compared it to the true covariance matrix via entropy loss and quadratic loss. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -288,14 +284,14 @@ where $Y_1,\dots, Y_N$ are independently and identically distributed according t
 \section{Results}
 
 \subsection{Simulations with Complete Data}
-Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitative differences between the estimates resulting from each of the eight methods of estimation for the five covariance structures used for simulation. The first row in the grid shows the surface plot of each of the true covariance structures, and each row thereafter corresponds to the five covariance estimates for the given estimation method. The surface plots of the oracle estimate in the second row serve as a point of reference for the `gold standard` in each scenario, since the oracle estimates were constructed assuming that the functional form of the covariance is known (either the full covariance structure or the components of the Cholesky decomposition.) The corresponding estimates of the Cholesky factor $T$ for the estimators based on the modified Cholesky decomposition are shown in Figure~\ref{fig:chol-estimate-lattice}, and the decomposition of the $\hat{T}$ corresponding to the smoothing spline ANOVA estimator $\hat{\Sigma}_{SS}$ into functional components is displayed in Figure~\ref{fig:ssanova-component-lattice}
+Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitative differences between the estimates resulting from each of the eight methods of estimation for the five covariance structures used for simulation. The first row in the grid shows the surface plot of each of the true covariance structures, and each row thereafter corresponds to the five covariance estimates for the given estimation method. The surface plots of the oracle estimate in the second row serve as a point of reference for the `gold standard` in each scenario, since the oracle estimates were constructed assuming that the functional form of the covariance is known (either the full covariance structure or the components of the Cholesky decomposition). The corresponding estimates of the Cholesky factor $T$ for the estimators based on the modified Cholesky decomposition are shown in Figure~\ref{fig:chol-estimate-lattice}, and the decomposition of the $\hat{T}$ corresponding to the smoothing spline ANOVA estimator $\hat{\Sigma}_{SS}$ into functional components is displayed in Figure~\ref{fig:ssanova-component-lattice}
 
 
 \begin{figure}[H] 
 \centering
   \includegraphics[width = 1\textwidth]{img/chapter-4/cov-estimate-lattice}
   \vspace*{-10mm}
-  \caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row of shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}\label{fig:cov-estimate-lattice}
+  \caption{\textit{Covariance Model I - Model V (see Table~\ref{table:simulation-model-list}) used for simulation and corresponding estimates. The columns in the grid correspond to each simulation model. The first row shows the true covariance structure, and each row beneath corresponds to each of the estimators.}}\label{fig:cov-estimate-lattice}
 \end{figure}
 
 \begin{figure}[H] 
@@ -308,7 +304,7 @@ Figure~\ref{fig:cov-estimate-lattice} provides a visual summary of the qualitati
 
 \begin{figure}[H] 
   \includegraphics[width = \textwidth]{img/chapter-4/ssanova-estimate-lattice} 
-  \caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation model I - V.}}\label{fig:ssanova-component-lattice}
+  \caption{\textit{Estimated functional components of the smoothing spline ANOVA decomposition $\phi = \phi_1 + \phi_2 + \phi_{12}$ for $\hat{\Sigma}_{SS}$ under each simulation Model I - V.}}\label{fig:ssanova-component-lattice}
 \end{figure}
 
 \bigskip
@@ -334,7 +330,7 @@ The results of the simulations for complete data under entropy loss are presente
 \centering
 \includegraphics[width =\textwidth]{img/chapter-4/model-3-entropy-loss-boxplots-zoom}
   \vspace*{3mm}
-  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model III for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The loss distributions are shown for the sample covariance matrix as well as the tapered sample covariance matrix. While the underlying inverse covariance matrix is banded, the covariance matrix itself is not which explains why $S$ outperforms its regularized variant $S_\omega$.}}  \label{fig:model-3-entropy-loss-boxplots}
+  \caption{\textit{The distribution of the square root of entropy loss $\Delta_2$ under Model III for the smoothing spline estimator $\hat{\Sigma}_{SS}$ for 100 simulated multivariate normal samples of size $N = 50$ (hollow boxplots) and $N = 100$ (filled boxplots) with dimension $p = 20$. The loss distributions are shown for the sample covariance matrix as well as the tapered sample covariance matrix. While the underlying inverse covariance matrix is banded, the covariance matrix itself is not, which explains why $S$ outperforms its regularized variant $S_\omega$.}}  \label{fig:model-3-entropy-loss-boxplots}
 \end{figure}
 
 \begin{figure}[H] 
@@ -353,15 +349,15 @@ The results of the simulations for complete data under entropy loss are presente
 
 \bigskip
 
-In general, our estimators outperform the alternative estimators across the five covariance structures. This is not surprising; the soft thresholding estimator assumes no ordering of the variables of the random vector, which all but one of the generating structures exhibit. The tapering estimator assumes that the absolute value of the covariance decays as $l$ increases; only model IV satisfies this. The parametric estimator based on the modified Cholesky decomposition assumes that $\phi$ can be modeled as a univariate function of $l$, which does not hold for any of the models, save model IV.
+In general, our estimators outperform the alternative estimators across the five covariance structures. This not surprising; the soft thresholding estimator assumes no ordering of the variables of the random vector, which all but one of the generating structures exhibit. The tapering estimator assumes that the absolute value of the covariance decays as $l$ increases; only Model IV satisfies this. The parametric estimator based on the modified Cholesky decomposition assumes that $\phi$ can be modeled as a univariate function of $l$, which does not hold for any of the models, save Model IV.
 
 \bigskip
 
-The smoothing spline estimator outperforms the P-spline estimator in cases where the underlying covariance structure cannot be modeled as a multiplicative function of $l$ and $m$ - namely, model II. It also does a better job estimating the diagonal structure of model I. In most cases, the optimal difference penalty order for the P-spline under the identity covariance matrix is $d = 0$, which corresponds to a ridge penalty on the B-spline coefficients which could lead to a fitted surface which is not necessarily smooth. 
+The smoothing spline estimator outperforms the P-spline estimator in cases where the underlying covariance structure cannot be modeled as a multiplicative function of $l$ and $m$ - namely, Model II. It also does a better job estimating the diagonal structure of Model I. The optimal difference penalty order for the P-spline under the identity covariance matrix is $d = 0$, which corresponds to a ridge penalty on the B-spline coefficients which could lead to a fitted surface which is not necessarily smooth. 
 
 \bigskip
 
-Treating the differencing order as an additional tuning parameter is advantageous since selecting the search for the optimal set of smoothing parameters is much easier when the true function belongs to the null space of the penalty. The P-spline estimator outperforms the smoothing spline estimator under models IV and V, likely due to this advantage. While the surface of the Cholesky factor of model IV is smooth, value of the function changes very quickly in distance from the diagonal. The local support of the B-spline basis functions aids in the P-spline estimator's ability to accommodate such fast oscillations in surface. The same can be said for model III, which is not smooth in $l = t - s$.
+Treating the differencing order as an additional tuning parameter is advantageous since searching for the optimal set of smoothing parameters is much easier when the true function belongs to the null space of the penalty. The P-spline estimator outperforms the smoothing spline estimator under Models IV and V, likely due to this advantage. While the surface of the Cholesky factor of Model IV is smooth, value of the function changes very quickly in distance from the diagonal. The local support of the B-spline basis functions aids in the P-spline estimator's ability to accommodate such fast oscillations in surface. The same can be said for Model III, which is not smooth in $l = t - s$.
  
 \bigskip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -374,7 +370,7 @@ Treating the differencing order as an additional tuning parameter is advantageou
 % Tue Mar  6 10:27:03 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Multivariate normal simulations for Model I. Estimated entropy risk is reported for our smoothing spline ANOVA estimator and P-spline estimator, the oracle estimator for each covariance structure, the parametric polynomial estimator of Pan and MacKenzie (2003), the sample covariance matrix, the tapered sample covariance matrix, and the soft thresholding estimator.}}
+\caption{\textit{Multivariate normal simulations for Model I. Estimated entropy risk is reported for the oracle estimator for each covariance structure, our smoothing spline ANOVA estimator and P-spline estimator, the parametric polynomial estimator of Pan and MacKenzie (2003), the sample covariance matrix, the tapered sample covariance matrix, and the soft thresholding estimator.}}
 \begin{tabular}{lrrrrrrrr}
  & $p$ & $\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
@@ -397,7 +393,7 @@ $N = 50$ & 10 &0.0135 & 0.0685 & 0.1261 &  0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 
 \begin{table}[H]
 \centering
-\caption{\textit{Multivariate normal simulations for model II.}}
+\caption{\textit{Multivariate normal simulations for Model II.}}
 \begin{tabular}{lrrrrrrrr}
  & $p$ &$\hat{\Sigma}_{oracle}$& $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
@@ -415,15 +411,15 @@ $N = 50$ & 10 &0.0135 & 0.0685 & 0.1261 &  0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-2}
-%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-3}
+%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-Model-2}
+%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-Model-3}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:35 2018
 
 
 \begin{table}[H]
 \centering
-\caption{\textit{Multivariate normal simulations for model III.} }
+\caption{\textit{Multivariate normal simulations for Model III.} }
 \begin{tabular}{lrrrrrrrr}
  & $p$ &$\hat{\Sigma}_{oracle}$&  $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ &$\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
    \hline
@@ -440,12 +436,12 @@ $N = 50$ & 10 &0.0135 & 0.0685 & 0.1261 &  0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-4}
+%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-Model-4}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:39 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Multivariate normal simulations for model IV.}}
+\caption{\textit{Multivariate normal simulations for Model IV.}}
 \begin{tabular}{lrrrrrrrr}
  & $p$ & $\hat{\Sigma}_{oracle}$ & $\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
@@ -462,12 +458,12 @@ $N = 50$ & 10 &0.0135 & 0.0685 & 0.1261 &  0.1102 & 1.2047 & 0.5369 & 1.1742 \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-model-5}
+%\subfile{chapter-4-subfiles/simulation-study-1-entropy-table-Model-5}
 % latex table generated in R 3.4.3 by xtable 1.8-2 package
 % Tue Mar  6 10:27:42 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Multivariate normal simulations for model V.}}
+\caption{\textit{Multivariate normal simulations for Model V.}}
 \begin{tabular}{lrrrrrrrr}
  & $p$ &$\hat{\Sigma}_{oracle}$&$\hat{\Sigma}_{SS}$& $\hat{\Sigma}_{PS}$ & $\hat{\Sigma}_{poly}$ & $S$ &$S^\omega$& $S^\lambda$ \\ 
   \hline
@@ -522,7 +518,7 @@ Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entrop
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 1: Entropy risk estimates and corresponding standard errors 
+\caption{\textit{Model I: Entropy risk estimates and corresponding standard errors 
                             for the MCD smoothing spline ANOVA estimator via 100 simulated multivariate
                             normal samples of size $N = 50$
                             when 0\%, 10\%, 20\%, and 30\% of the data are missing for each subject. Risk is reported for the estimator constructed using
@@ -550,7 +546,7 @@ Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entrop
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 2: Entropy risk estimates and corresponding standard errors.} }
+\caption{\textit{Model II: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-2}
 \begin{tabular}{lrrlrl}
    $p$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -574,7 +570,7 @@ Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entrop
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 3: Entropy risk estimates and corresponding standard errors.} }
+\caption{\textit{Model III: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-3}
 \begin{tabular}{lrrlrl}
    $p$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -597,7 +593,7 @@ Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entrop
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 4: Entropy risk estimates and corresponding standard errors.} }
+\caption{\textit{Model IV: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-4}
 \begin{tabular}{lrrlrl}
    $p$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
@@ -621,7 +617,7 @@ Figure~\ref{fig:simulation-study-2-boxplots} displays the distribution of entrop
 % Wed Mar 21 09:46:43 2018
 \begin{table}[H]
 \centering
-\caption{\textit{Model 5: Entropy risk estimates and corresponding standard errors.} }
+\caption{\textit{Model V: Entropy risk estimates and corresponding standard errors.} }
 \label{table:simulation-study-2-entropy-risk-model-5}
 \begin{tabular}{lrrlrl}
    $p$ & \% missing & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{U}_{SS})$} & \multicolumn{2} {c} {$\Delta_2(\hat{\Sigma}^{V^*}_{SS})$}\\ \hline
