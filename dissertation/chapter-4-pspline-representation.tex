@@ -31,14 +31,14 @@ B_{ik}\left(x\right) &= \frac{x-t_i}{t_{i+k-1}-t_i}B_{i,k-1}\left(x\right) + \fr
 \end{split}
 \end{align}
 
-Figure~\ref{fig:overlapping-linear-cubic-bsplines} shows two sets of B-splines; the top facet displays linear B-splines and the bottom displays B-splines of degree 2. A single isolated B-spline is shown on the left side of the axis in each panel. In Figure~\ref{fig:overlapping-linear-bsplines}, the single B-spline of degree 1 consists of two linear pieces: one piece from $x_3$ to $x_4$, and the other from $x_4$ to $x_5$, which are the knots that define its support. In the right part of Figure~\ref{fig:overlapping-linear-bsplines}, three more B-splines of degree 1 are shown. Each one based on three knots. Comparing these with the overlapping quadratic B-splines in Figure~\ref{fig:overlapping-cubic-bsplines}, we can see that the extent to which neighboring B-splines overlap depends on the polynomial degree of the basis. 
+Figure~\ref{fig:overlapping-linear-bsplines} displays a set of linear B-splines, and Figure~\ref{fig:overlapping-linear-bsplines} displays a set of B-splines of degree 2. A single isolated B-spline is shown on the left side of the axis in each panel. In Figure~\ref{fig:overlapping-linear-bsplines}, the single B-spline of degree 1 consists of two linear pieces: one piece from $x_3$ to $x_4$, and the other from $x_4$ to $x_5$, which are the knots that define its support. In the right part of Figure~\ref{fig:overlapping-linear-bsplines}, three more B-splines of degree 1 are shown. Each one based on three knots. Comparing these with the overlapping quadratic B-splines in Figure~\ref{fig:overlapping-cubic-bsplines}, we can see that the extent to which neighboring B-splines overlap depends on the polynomial degree of the basis. 
 
 \begin{figure}[H]
   \centering
   \subfloat[]{\includegraphics[width=\textwidth]{img/uni_linear_bsplines}}\caption{\textit{B-splines of degree 1}}\label{fig:overlapping-linear-bsplines}\hfill
     \subfloat[]{\includegraphics[width=\textwidth]{img/uni_cubic_bsplines}}\caption{\textit{B-splines of degree 2}}\label{fig:overlapping-cubic-bsplines}
    \vspace*{3mm}
-  \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
+%  \caption{\textit{ On the left: a single, isolated B-spline basis function, and on the right: several overlapping B-splines.  }}\label{fig:overlapping-linear-cubic-bsplines}
 %\begin{figure}[H]
 % \begin{center}
 % \begin{subfigure}[t]{\textwidth}

@@ -21,74 +21,14 @@ denote the random vector of observations and their associated measurement times,
 \end{align*}
 
 \begin{itemize}
-\item \nt{Dimensionality: the number of parameters $\sigma_{ij}$ is quadratic in $p$.} \pause
-\item \nt{The positive definite constraint:}
+\item \nt{Dimensionality: the number of parameters is quadratic in $p$.} \pause
+\item \nt{Covariance estimates should satisfy the positive definite constraint:}
 \begin{equation*}
  		c'\Sigma c = \sum_{i,j = 1}^p c_i c_j \sigma_{ij} \ge 0
 \end{equation*} \pause
 \item \nt{Observation times may be irregular or subject-specific.} 
 \end{itemize}
 \end{frame}
-
-
-
-\begin{frame}[c]{Popular approaches to covariance modeling}
-
-	\begin{center}
-	
-	\begin{columns}[T]
-	
-	\begin{column}{0.5\textwidth}
-	
-	\begin{varalertblock}[5.5cm]{\small Parametric Models}
-	\footnotesize
-	\begin{itemize}
-	\item autoregressive models
-	\item moving average models
-	\item compound symmetry
-	\end{itemize}
-	\end{varalertblock}
-	\end{column}
-	
-	\begin{column}{0.5\textwidth}
-	
-	\begin{varalertblock}[5.5cm]{\small Sample covariance $S$}
-	\scriptsize
-	\[
-	S = \left(N-1\right)^{-1} \sum_{i = 1}^N \left(Y_i - \bar{Y}\right)\left(Y_i - \bar{Y}\right)'
-	\]
-	\end{varalertblock}
-	\end{column}
-	\end{columns}
-
-	\begin{columns}[T]
-
-	\begin{column}{0.5\textwidth}
-	\begin{varblock}[5.5cm]{\small Low variance, potentially high bias}
-	\footnotesize
-	\begin{itemize}
-	\item parsimonious, stable
-	\item computationally convenient
-	\item bias from model misspecification
-	\end{itemize}	
-	\end{varblock}
-	\end{column}
-	
-	\begin{column}{0.5\textwidth}
-	\begin{varblock}[5.5cm]{\small Unbiased for $\Sigma$, potentially high variance}
-	\footnotesize
-		\begin{itemize}
-		\item flexible, unbiased
-		\item positive definite
-		\item unstable even when $N > p$ and $p$ is moderate.
-		\end{itemize}	
-	\end{varblock}
-	\end{column}
-	
-	\end{columns}
-\end{center}
-\end{frame}
-
 
 
 
@@ -135,9 +75,7 @@ denote the random vector of observations and their associated measurement times,
 \begin{itemize}
 \item \nt{Background: A Review of Covariance Estimation for Longitudinal Data}
 	\begin{itemize}
-	\item \nt{Parametric Covariance Models}
-	\item \nt{Shrinkage Estimators based on the Sample Covariance Matrix}
-	\item \nt{Matrix Decompositions and GLMs for Covariance}
+	\item \nt{The Cholesky Decomposition}
 	\end{itemize}
 \item \nt{A Reproducing Kernel Hilbert Space Framework for Covariance Estimation}
 \item \nt{Tensor Product P-splines for Covariance Estimation}
@@ -146,60 +84,49 @@ denote the random vector of observations and their associated measurement times,
 \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\begin{frame}
-%\frametitle{\textit{Parametric Covariance Models}}
-%
-%
-%\end{frame}
 
 
+\begin{frame}{\textit{Common approaches to covariance estimation}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\centering
 
-\begin{frame}{\textit{Applying Elementwise Shrinkage to $S$}}{Tapering Estimators}\label{shrinkage-estimators}
-%For $S = \left[ s_{ij} \right]$, a general tapering estimator has the form
-%\begin{equation} \label{eq:general-tapering-estimator} 
-%\hat{\Sigma} = R \ast S, 
-%\end{equation}
-%	\begin{columns}[T]
-%	\begin{column}{0.5\textwidth}
-	\footnotesize
-	\begin{itemize}
- 	\item \textbf{The Banded Sample Covariance Matrix} 
-	\begin{align*}%\label{eq:variance-correlation-decomposition}
-		B_k\left(S\right) = \begin{bmatrix} s_{ij} 1\left(\vert i-j \vert \le k\right) \end{bmatrix} = R_B \ast S,\quad 0 < k < p.
-		%R_B &= \left[r_{ij}\right] = \left[ 1\left(\vert i-j \vert \le k\right)\right],
-		\end{align*}
-%		$R_B$ not positive definite $\Rightarrow$ $B_k$ not positive definite.
-	\item \textbf{The Tapered Sample Covariance Matrix} 
-		 	\begin{equation*}% \label{eq:cai-tapering-estimator}
-			S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
-			\end{equation*}
-		where $0 < k < p$, and if $k_h = k/2$ 
-		\begin{equation*}
-		\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right].
-		\end{equation*}
-%	\end{column}
-%	\begin{column}{0.5\textwidth}
-%	\footnotesize
-	\item \textbf{Soft Thresholding Estimator:} 
-			\begin{equation*}% \label{eq:spectral-decomposition}
-			S^{\lambda} =   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix},
-			\end{equation*}	\footnotesize
-%			$S^{\lambda}$ not guaranteed to be positive definite.
-	\end{itemize}
-%	\end{column}
-%	\end{columns}
-\hyperlink{simulation-studies-benchmark-estimators}{\beamerskipbutton{Simulations}}
+\begin{tikzpicture} 
+\draw[-,draw=white, thick] (1.1,2.8) to (8.85,2.8);
+\draw[-,draw=white, thick] (8.85,2.2) to (8.85,2.8);
+\draw[-,draw=white, thick] (1.1,2.2) to (1.1,2.8);
+\draw[-,draw=white, thick] (4.975,2.425) to (4.975,2.8);
+\node [draw, top color=gray!30!, bottom color=gray!90, shading angle=45, text width=2cm, 
+text centered, rounded corners, minimum height=10mm] (s) at (1.1,2) {$S$};
+\node [draw, top color=gray!30!, bottom color=gray!90, shading angle=45, text width=2cm, 
+text centered, rounded corners, minimum height=10mm] (s) at (8.85,2) {Parametric models};
+\shade[left color=blue,right color=red] (0,4) rectangle (10,5);
+\shade[left color=red,right color=blue] (0,4) rectangle (10,3);
+\node[align = right, text=white]  at (9.1,4.5) {high bias} ;
+\node[text=white,align=left]  at (.8,4.5) {low bias} ;
+\node[text=white,align=right]  at (8.8,3.5) {low variance} ;
+\node[text=white,align=left]  at (1.2,3.5) {high variance} ;
+\node [draw,text width=4.5cm, minimum height=20mm,top color=gray!30!,
+bottom color=gray!90, shading angle=45,] at (4.975,0.3) {\vbox {\footnotesize
+    {\begin{itemize}
+        \item Improvements on $S$ 
+         \begin{itemize}
+        \item Stein's estimator, Ledoit et. al. (2000)
+        \end{itemize}
+        \item (non)stationary banded models
+        \item linear, log linear models
+    \end{itemize}}
+}};
+
+\end{tikzpicture}
+
+
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -284,15 +211,16 @@ where {$T = L^{-1}$}. The lower triangular entries of $T$ are \textit{unconstrai
 
 \begin{frame}
 \frametitle{\emph{Statistical Interpretation of $\left(T,D\right)$}}{}
-Let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t-1}, \dots , y_1$. We can find unique scalars $\phi_{tj}$:
+\footnotesize
+Let $\hat{y}_t$ be the linear least-squares predictor of $y_t$ based on previous measurements $y_{t-1}, \dots , y_1$ and $\epsilon_t = y_t - \hat{y}_t$ denote the corresponding mean zero prediction error with variance $Var\left(\epsilon_t\right) = \sigma_t^2$. We can find unique scalars $\phi_{tj}$:
 
-\nt{\begin{equation} \label{eq:mcd-ar-model}
+\nt{\begin{equation*} \label{eq:mcd-ar-model}
 y_t = \left\{ \begin{array}{ll} \epsilon_t, & t = 1\\
 \sum_{j = 1}^{t-1} \phi_{tj} y_j + \epsilon_t, & t = 2, \dots, p,
 \end{array}\right.
-\end{equation}}
+\end{equation*}}
 
-where $E\left[\epsilon_t\right] = 0$, $D = Cov\left( \epsilon \right) = diag\left( \sigma_1^2,\dots,\sigma_p^2, \right)$. Then
+where $D = Cov\left( \epsilon \right) = diag\left( \sigma_1^2,\dots,\sigma_p^2, \right)$. Then
 
 \begin{align*}
 \underbrace{\begin{bmatrix}
@@ -315,11 +243,6 @@ Taking the covariance on both sides gives the \nt{MCD \eqref{eq:modified-cholesk
 \end{frame}
 
 
-
-
-
-
-
 \begin{frame}{\textit{The coefficients and prediction error variances of successive regressions are unconstrained.}}{}
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
@@ -334,11 +257,11 @@ is guaranteed to be positive definite.
 \begin{tabular}{cccccc}
  $y_{1}$&$y_{2}$ & $y_{3}$ & $\dots$ &$y_{p-1}$& $y_{p}$\\ \hline
  $1$& &&&&\\
-$\phi_{21}$& 1 &&&& \\
-$\phi_{31}$& $\phi_{32}$& 1 &&& \\ 
+$\phi_{21}$& $1$ &&&& \\
+$\phi_{31}$& $\phi_{32}$& $1$ &&& \\ 
 $\vdots$ & $\vdots$ & & $\ddots$&& \\
 $\vdots$ & $\vdots$ & && $\ddots$& \\
-$\phi_{p1}$& $\phi_{p2}$&$\dots$ &$\dots$ &$\phi_{p,p-1}$ & 1\\ \hline
+$\phi_{p1}$& $\phi_{p2}$&$\dots$ &$\dots$ &$\phi_{p,p-1}$ & $1$\\ \hline
 $\sigma_1^2$ & $\sigma_2^2$ & $\dots$&$\dots$ &$\sigma_{p-1}^2$ &$\sigma_p^2$
 \end{tabular} 
 \end{column}
@@ -348,17 +271,34 @@ $\sigma_1^2$ & $\sigma_2^2$ & $\dots$&$\dots$ &$\sigma_{p-1}^2$ &$\sigma_p^2$
 
 
 
+\begin{frame}{\textit{The ideal form of longitudinal data:}}
+
+\centering
+\begin{tabular}{cc|cccccc}
+\multicolumn{8}{c}{Time}\\
+& & $1$&$2$ &  $\dots$ & $t$ & $\dots$ & $p$ \\ \hline
+& 1 & $y_{11}$&$y_{12}$ &$\dots$ & $y_{1t}$ & $\dots$& $y_{1p}$ \\
+& 2 & $y_{21}$&$y_{22}$ &$\dots$ & $y_{2t}$ & $\dots$& $y_{2p}$ \\
+\begin{rotate}{90}%
+\mbox{Unit}\end{rotate} & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+& $i$ & $y_{i1}$&$y_{i2}$ &$\dots$ & $y_{it}$ & $\dots$& $y_{ip}$ \\
+ & $\vdots$ &$\vdots$&$\vdots$ & &$\vdots$ & & $\vdots$ \\
+ & $N$ & $y_{N1}$&$y_{N2}$ &$\dots$ & $y_{Nt}$ & $\dots$& $y_{Np}$ \\
+\end{tabular}
+\end{frame}
 
 
 
 
-\begin{frame}{\emph{Maximum Normal Likelihood Estimation for the Cholesky Decomposition}}{The MLE for $\left(T,D\right)$ has closed form.}
+
+
+\begin{frame}{\emph{Maximum Normal Likelihood Estimation for the Cholesky Decomposition}}{The MLE for $\left(T,D\right)$ has closed form under the Gaussian likelihood.}
 
 For  $Y_1,\dots , Y_N \sim N\left(0_p, \Sigma\right)$ and $S = N^{-1}\sum_{i=1}^N Y_iY'_i$,
 
 \begin{align}
 \begin{split} \label{eq:regular-cholesky-log-likelihood}
--2\ell\left(\Sigma \vert Y_1,\dots, Y_N\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y'_i\right) \\
+-2\ell\left(\Sigma \vert Y_1,\dots, Y_N\right) &= \sum_{i = 1}^N \left( \log \vert \Sigma \vert  + Y'_i \Sigma^{-1}Y_i\right) \\
 & = N \log \vert D \vert + N \mbox{tr}\left(D^{-1}TST'\right)
 \end{split}
 \end{align}
@@ -371,31 +311,25 @@ is quadratic in $T$ for fixed $D$, so the MLE for the $\phi_{tj}$ has closed for
 
 
 
-
-
-
-
 \begin{frame}{\emph{Parametric Models for the Cholesky Decomposition}}{} \label{polynomial-mcd-model}
 
 Pourahmadi (2000), Pan andMackenzie (2003) suggest modeling $\phi_{tj}$, $\sigma^2_{t}$ with covariates, letting 
 
 \begin{align*}
 \begin{split}  \label{eq:GARP-IV-parametric-model}
-\phi_{jk} &= z'_{jk} \gamma \\
+\phi_{jk} &= x'_{jk} \gamma \\
 \log \sigma^2_{j} &= z'_{j}\lambda. 
 \end{split}
 \end{align*}
 
 Common choices for the covariates $x_{jk}$ and $z_j$ are
 
-\begin{align}
-\begin{split} 
-x'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{p-1}\right)', \\
+\begin{align*}
+x'_{jk} &= \left(1, t_j - t_k, \left(t_j - t_k\right)^2,\dots, \left(t_j - t_k\right)^{d-1}\right)', \\
 z'_{j}  &= \left(1, t_j, \dots, t_j^{q-1}\right)'.
-\end{split}
-\end{align} \label{eq:mcd-polynomial-model}
+\end{align*} \label{eq:mcd-polynomial-model}
 \noindent
-Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection criterion (BIC, AIC).
+Polynomial orders $d$ and $q$ are tuning parameters chosen by a model selection criterion (BIC, AIC).
 \vspace{1cm}
 
 \hyperlink{simulation-studies-benchmark-estimators}{\beamerskipbutton{Simulations}}
@@ -419,7 +353,49 @@ Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection 
 %\end{frame}
 
 
-\begin{frame}{Accommodating Unbalanced Data}{by treating $\phi$ as a continuous bivariate function.}
+%\begin{frame}{Accommodating Unbalanced Data}{by treating $\phi$ as a continuous bivariate function.}
+%
+%  \begin{tikzpicture}
+%    \node (yend) at (-0.35, 5.5)  {};
+%    \node (xend) at ( 5.5, -0.35)  {};
+%    \node at (0,6) {$1$};
+%    \node at (1,5) {$1$};
+%    \node at (2,4) {$1$};
+%    \node at (3,3) {$1$};
+%    \node at (4,2) {$1$};
+%    \node at (5,1) {$1$};
+%    \node at (6,0) {$1$};
+%%    \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
+%    \node at (0,5) {$\phi_{21}$};
+%   \node at (0,4) {$\phi_{31}$};
+% \node at (0,3) {$\phi_{41}$};
+% \fill [white] (0,0.7) circle [radius=1pt];
+% \fill [white] (0,1) circle [radius=1pt]; 
+%  \fill [white] (0,1.3) circle [radius=1pt]; 
+%  \node at (1,3) {$\phi_{42}$};
+%   \node at (2,3) {$\phi_{43}$};
+% \node at (0,2) {$\phi_{51}$};
+%  \node at (1,2) {$\phi_{52}$};
+%      \node at (3,2) {$\phi_{54}$};
+%%\fill [mint] (2,2) circle [radius=2pt];
+%   \node at (0,0) {$\phi_{p1}$};
+%   \node at (1,0) {$\phi_{p2}$};
+%      \node at (2,0) {$\phi_{p3}$};
+%   \node at (5,0) {$\phi_{p, p-1}$};
+%    \fill [white] (3,0) circle [radius=1pt];
+% \fill [white] (3.5,0) circle [radius=1pt]; 
+%  \fill [white] (4,0) circle [radius=1pt]; 
+%   \node at (1,4) {$\phi_{32}$};
+%%  \path[->, color=mint, line width=1] (2,2) edge [out = 50,in = 160] (6,5);
+%% \node at (7.5,5) {\textcolor{mint}{$\phi_{54} = \phi\left(t_5,t_4\right)$}};
+%   \end{tikzpicture} \\
+%\end{frame}
+
+
+
+
+
+\begin{frame}{Accommodating Unbalanced Data}{Subjects 1 and 2 have different measurement times.}
 
   \begin{tikzpicture}
     \node (yend) at (-0.35, 5.5)  {};
@@ -429,33 +405,151 @@ Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection 
     \node at (2,4) {$1$};
     \node at (3,3) {$1$};
     \node at (4,2) {$1$};
-    \node at (5,1) {$1$};
+    \node at (5,1) {$\ddots$};
     \node at (6,0) {$1$};
-%    \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
-    \node at (0,5) {$\phi_{21}$};
-   \node at (0,4) {$\phi_{31}$};
- \node at (0,3) {$\phi_{41}$};
+     \node at (0,6) {$1$};
+    \node at (5,5.5) {\textcolor{paleale}{$t_1 = \left( t_{11}, t_{12}, \dots, t_{1p_1} \right)'$}};
+     \node at (5,5) {\textcolor{pink}{$t_2 = \left( t_{21}, t_{22}, \dots, t_{2p_2} \right)'$}};
+    \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
  \fill [white] (0,0.7) circle [radius=1pt];
  \fill [white] (0,1) circle [radius=1pt]; 
   \fill [white] (0,1.3) circle [radius=1pt]; 
+  \node at (2,1) {\textcolor{mint}{$\left( t_{ij}, t_{ik}\right):\; t_{ij} > t_{ik}$}};
+ \node at (4,2) {$1$};
+  \node at (4,2) {$1$};
+
+    \fill[white] (2.9,0) circle [radius=1pt];
+  \fill[white] (3.5,0) circle [radius=1pt]; 
+  \fill[white] (4.1,0) circle [radius=1pt]; 
+  
+  \fill[paleale]  (0,4.8) circle [radius=2.5pt];
+    \fill [paleale]  (0,4) circle [radius=2.5pt];
+ \fill [paleale]  (0,2.5) circle [radius=2.5pt];
+   \fill[paleale]  (1.2,2.5) circle [radius=2.5pt];
+       \fill[paleale]  (2,2.5) circle [radius=2.5pt];
+  \fill[paleale] (0,2) circle [radius=2.5pt];
+   \fill[paleale] (1,2) circle [radius=2.5pt];
+       \fill[paleale] (2.5,2) circle [radius=2.5pt];
+    \fill[paleale] (0,0)  circle [radius=2.5pt];
+    \fill[paleale] (1.2,0)  circle [radius=2.5pt];
+       \fill[paleale] (2,0) circle [radius=2.5pt];
+    \fill[paleale] (5,0) circle [radius=2.5pt];
+    \fill[paleale] (1.2,4) circle [radius=2.5pt];
+      \fill[paleale]  (0,4.8) circle [radius=2.5pt];     
+
+ \fill [pink]  (0.2,5) circle [radius=2.5pt];
+  \fill [pink]  (0.2,4) circle [radius=2.5pt];
+ \fill [pink]  (0.2,3) circle [radius=2.5pt];
+   \fill[pink] (0.2,2.3) circle [radius=2.5pt];
+       \fill[pink] (0.2,0.3)  circle [radius=2.5pt];
+           \fill[pink] (1,0.3)  circle [radius=2.5pt];
+   \fill[pink]  (1,2.3) circle [radius=2.5pt];
+    \fill[pink] (1,3) circle [radius=2.5pt];
+    \fill[pink] (1,4) circle [radius=2.5pt];
+%   \fill[pink] (2, 1) circle [radius=2.5pt];
+  \fill[pink] (2,0.3) circle [radius=2.5pt];
+  \fill[pink] (2.7,2.3) circle [radius=2.5pt];
+    \fill[pink] (5,.3) circle [radius=2.5pt];
+\draw[<-, color = mint] (-0.55,-0.55) -- (-0.55,5.85); 
+\draw[->, color = mint] (-0.55,-0.65) -- (5.95,-0.65); 
+% \node at (0,5) {$\phi_{21}$};
+%   \node at (0,4) {$\phi_{31}$};
+% \node at (0,3) {$\phi_{41}$};
+%  \node at (1,3) {$\phi_{42}$};
+%   \node at (2,3) {$\phi_{43}$};
+% \node at (0,2) {$\phi_{51}$};
+%  \node at (1,2) {$\phi_{52}$};
+%      \node at (3,2) {$\phi_{54}$};
+%   \node at (0,0) {$\phi_{p1}$};
+%   \node at (1,0) {$\phi_{p2}$};
+%      \node at (2,0) {$\phi_{p3}$};
+%   \node at (5,0) {$\phi_{p, p-1}$};
+%      \node at (1,4) {$\phi_{32}$};
+%        \node at (2,2) {$\phi_{53}$};
+%    \node at (2,0) {$\phi_{p3}$};
+%   \node at (5,0) {$\phi_{p, p-1}$};
+ \node at (-0.75,2.5) {\textcolor{mint}{$t$}};
+  \node at (2.5,-0.85) {\textcolor{mint}{$s$}};
+   \end{tikzpicture} \\
+\end{frame}
+
+
+
+
+
+\begin{frame}{Accommodating Unbalanced Data}{Subjects 1 and 2 have different measurement times.}
+
+  \begin{tikzpicture}
+    \node (yend) at (-0.35, 5.5)  {};
+    \node (xend) at ( 5.5, -0.35)  {};
+    \node at (0,6) {$1$};
+    \node at (1,5) {$1$};
+    \node at (2,4) {$1$};
+    \node at (3,3) {$1$};
+    \node at (4,2) {$1$};
+    \node at (5,1) {$\ddots$};
+    \node at (6,0) {$1$};
+    \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
+ \fill [white] (0,0.7) circle [radius=1pt];
+ \fill [white] (0,1) circle [radius=1pt]; 
+  \fill [white] (0,1.3) circle [radius=1pt]; 
+
+    \fill[white] (2.9,0) circle [radius=1pt];
+  \fill[white] (3.5,0) circle [radius=1pt]; 
+  \fill[white] (4.1,0) circle [radius=1pt]; 
+  
+  \fill[paleale]  (0,4.8) circle [radius=2.5pt];
+    \fill [paleale]  (0,4) circle [radius=2.5pt];
+ \fill [paleale]  (0,2.5) circle [radius=2.5pt];
+   \fill[paleale]  (1.2,2.5) circle [radius=2.5pt];
+       \fill[paleale]  (2,2.5) circle [radius=2.5pt];
+  \fill[paleale] (0,2) circle [radius=2.5pt];
+   \fill[paleale] (1,2) circle [radius=2.5pt];
+       \fill[paleale] (2.5,2) circle [radius=2.5pt];
+    \fill[paleale] (0,0)  circle [radius=2.5pt];
+    \fill[paleale] (1.2,0)  circle [radius=2.5pt];
+       \fill[paleale] (2,0) circle [radius=2.5pt];
+    \fill[paleale] (5,0) circle [radius=2.5pt];
+    \fill[paleale] (1.2,4) circle [radius=2.5pt];
+      \fill[paleale]  (0,4.8) circle [radius=2.5pt];     
+
+ \fill [pink]  (0.2,5) circle [radius=2.5pt];
+  \fill [pink]  (0.2,4) circle [radius=2.5pt];
+ \fill [pink]  (0.2,3) circle [radius=2.5pt];
+   \fill[pink] (0.2,2.3) circle [radius=2.5pt];
+       \fill[pink] (0.2,0.3)  circle [radius=2.5pt];
+           \fill[pink] (1,0.3)  circle [radius=2.5pt];
+   \fill[pink]  (1,2.3) circle [radius=2.5pt];
+    \fill[pink] (1,3) circle [radius=2.5pt];
+    \fill[pink] (1,4) circle [radius=2.5pt];
+%   \fill[pink] (2, 1) circle [radius=2.5pt];
+  \fill[pink] (2,0.3) circle [radius=2.5pt];
+  \fill[pink] (2.7,2.3) circle [radius=2.5pt];
+    \fill[pink] (5,.3) circle [radius=2.5pt];
+
+ \node at (0,5) {$\phi_{21}$};
+   \node at (0,4) {$\phi_{31}$};
+ \node at (0,3) {$\phi_{41}$};
   \node at (1,3) {$\phi_{42}$};
    \node at (2,3) {$\phi_{43}$};
  \node at (0,2) {$\phi_{51}$};
   \node at (1,2) {$\phi_{52}$};
       \node at (3,2) {$\phi_{54}$};
-%\fill [mint] (2,2) circle [radius=2pt];
    \node at (0,0) {$\phi_{p1}$};
    \node at (1,0) {$\phi_{p2}$};
       \node at (2,0) {$\phi_{p3}$};
    \node at (5,0) {$\phi_{p, p-1}$};
-    \fill [white] (3,0) circle [radius=1pt];
- \fill [white] (3.5,0) circle [radius=1pt]; 
-  \fill [white] (4,0) circle [radius=1pt]; 
-   \node at (1,4) {$\phi_{32}$};
-%  \path[->, color=mint, line width=1] (2,2) edge [out = 50,in = 160] (6,5);
-% \node at (7.5,5) {\textcolor{mint}{$\phi_{54} = \phi\left(t_5,t_4\right)$}};
+      \node at (1,4) {$\phi_{32}$};
+        \node at (2,2) {$\phi_{53}$};
+    \node at (2,0) {$\phi_{p3}$};
+   \node at (5,0) {$\phi_{p, p-1}$};
+    \node at (-0.75,2.5) {\textcolor{mint}{$t$}};
+  \node at (2.5,-0.85) {\textcolor{mint}{$s$}};
+   \draw[<-, color = mint] (-0.55,-0.55) -- (-0.55,5.85); 
+\draw[->, color = mint] (-0.55,-0.65) -- (5.95,-0.65); 
    \end{tikzpicture} \\
 \end{frame}
+
 
 
 \begin{frame}{Accommodating Unbalanced Data}{by treating $\phi$ as a continuous bivariate function.}
@@ -468,7 +562,7 @@ Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection 
     \node at (2,4) {$1$};
     \node at (3,3) {$1$};
     \node at (4,2) {$1$};
-    \node at (5,1) {$1$};
+    \node at (5,1) {$\ddots$};
     \node at (6,0) {$1$};
     \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
     \node at (0,5) {$\phi_{21}$};
@@ -513,7 +607,7 @@ Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection 
     \node at (2,4) {$1$};
     \node at (3,3) {$1$};
     \node at (4,2) {$1$};
-    \node at (5,1) {$1$};
+    \node at (5,1) {$\ddots$};
     \node at (6,0) {$1$};
     \path[top color=gray, bottom color=gray!60] (-0.35,-0.35) -- (-0.35,5.85)  -- (5.85,-0.35) --  (-0.35,-0.35);
     \node at (0,5) {$\phi_{21}$};
@@ -543,9 +637,11 @@ Polynomial orders $p$ and $q$ are tuning parameters chosen by a model selection 
    \node at (5,0) {$\phi_{p, p-1}$};
    \fill [mint] (2,2) circle [radius=2pt];
     \path[->, color=mint, line width=1] (2,2) edge [out = 50,in = 160] (6,5);
- \node at (7.5,5) {\footnotesize\textcolor{mint}{$\phi_{53} = \tilde{\phi}\left(t_5,t_3\right)$}};
-  \node at (6,4) {\footnotesize\textcolor{mint}{In general,}};
-  \node at (7.8,3.5) {\footnotesize\textcolor{mint}{$\phi_{ts} = \tilde{\phi}\left(t,s\right), \quad 0 \le s < t \le 1$}};
+ \node at (7.5,5) {\textcolor{mint}{$\phi_{53} = \tilde{\phi}\left(t_5,t_3\right)$}};
+  \node at (7.3,3.4) {\footnotesize\textcolor{mint}{In general, $\phi_{ts}= \tilde{\phi}\left(t,s\right), \;\;\;\;0 \le s < t \le 1$}};
+  \node at (7.7,2.7) {\footnotesize\textcolor{mint}{ $\sigma^2_{t} = \sigma^2\left(t\right), \;\;\;\;0 \le t \le 1$}};
+%  \node at (7.8,3.5) {\footnotesize\textcolor{mint}{$\phi_{ts} = \tilde{\phi}\left(t,s\right), \quad 0 \le s < t \le 1$}};
+%    \node at (7.4,3) {\footnotesize\textcolor{mint}{$\sigma^2_{t} = \sigma^2\left(t\right), \quad 0 \le s t \le 1$}};
    \end{tikzpicture} \\
 \end{frame}
 
@@ -557,18 +653,21 @@ Assume measurements $Y_i = \left(y_{i1}, \dots, y_{i,p_i}\right)'$ arise from $Y
 \[
 t_{i} = \left\{t_{i1} <  \dots < t_{i,p_i}\right\} \subset \mathcal{T} = \left[0,1\right]
 \]
-Model
-\nt{\boxedeq{eq:cholesky-regression-model-1} 
-{y\left(t_{ij} \right)  = \sum_{k < j} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \epsilon\left({t_{ij}}\right), \quad \begin{array}{l} i = 1, \dots, N\\ j = 1, \dots, p_i,\end{array}}
-}
-Transform $l = t - s, \quad m = \frac{t + s}{2}$, let
+%\nt{\begin{equation*}
+%{y\left(t_{ij} \right)  = \sum_{k < j} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \epsilon\left({t_{ij}}\right), \quad \begin{array}{l} i = 1, \dots, N\\ j = 2, \dots, p_i,\end{array}}
+%\end{equation*}
+%}
+\nt{\begin{empheq}[box=\fbox]{align}
+{y\left(t_{ij} \right)  = \sum_{k < j} \tilde{\phi}\left(t_{ij} ,t_{ik}\right) y\left(t_{ik}\right) + \epsilon\left({t_{ij}}\right), \quad \begin{array}{l} i = 1, \dots, N\\ j = 2, \dots, p_i,\end{array}} \nonumber
+\end{empheq}}
+where $\epsilon\left(t\right) \sim N\left(0,\sigma^2\left(t\right)\right)$. Transform $l = t - s, \quad m = \frac{t + s}{2}$, let
 \nt{\begin{align*}%\label{eq:l-m-transformation}
  \phi\left(l,m\right) = {\phi}\left(t-s, \frac{1}{2}\left(s+t\right)\right) = \tilde{\phi}\left(t,s\right),
 \end{align*}}
-so that
-\begin{equation} \label{eq:full-joint-likelihood}
--2\ell\left(\phi, \sigma^2 \vert Y_1,\dots, Y_N \right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \log \sigma_{ij}^2+  \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} \tilde{\phi}\left(t_{ij}, t_{ik}\right) y_{ik}  \right)^2
-\end{equation}
+so that \footnotesize
+\begin{equation*} \label{eq:full-joint-likelihood}
+-2\ell\left(\phi, \sigma^2 \vert Y_1,\dots, Y_N \right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \left[ \log \sigma_{ij}^2+ \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j} \tilde{\phi}\left(t_{ij}, t_{ik}\right) y_{ik}  \right)^2\right]
+\end{equation*}
 \end{frame}
 
 
@@ -590,32 +689,31 @@ so that
 \footnotesize
 For the cubic smoothing spline defined on $\chi = \left[0,1\right]$, 
 \begin{equation*} %\label{eq:SS-penalty-functional}
-J\left(f\right) = \int_0^1  \left(f''\left(x\right)\right)^2\;dx.
+J\left(f\right) = \int_0^1  \left(f''\left(x\right)\right)^2\;dx,
 \end{equation*}
-decomposes
 \begin{equation*}
 \hilbert = C^{\left(2\right)}\left[0,1\right] = \left\{f: \int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \right\}
 \end{equation*}
-equipped with inner product
+with inner product
 \begin{align*} 
-\langle f,g \rangle_\hilbert &= \left(M_{0} f \right)\left(M_{0} g\right) + \left(M_{1} f\right) \left(M_{1} g\right) + \int_0^1 f''\left(x\right)g''\left(x\right)\;dx,\\% \quad i = 1,2\\
-%M_i f &= \int_0^1 f^{\left( i \right)}\left(x\right)\;dx
+\langle f,g \rangle_\hilbert &= \left(M_{0} f \right)\left(M_{0} g\right) + \left(M_{1} f\right) \left(M_{1} g\right) + \int_0^1 f''\left(x\right)g''\left(x\right)\;dx% \quad i = 1,2\\
 \end{align*}
+where $M_i f = \int_0^1 f^{\left( i \right)}\left(x\right)\;dx$.
 
 \end{frame}
 
 \begin{frame}{ANOVA Decomposition of $\hilbert$}{}
-
-\begin{equation*}%\label{eq:RKHS-ANOVA-decomposition}
-\hilbert = \underbrace{\hilbert_{00}}_{\text{mean}}  \oplus  \underbrace{\hilbert_{01}}_{\substack{\text{parametric} \\ \text{constrast}}} \oplus \underbrace{\hilbert_1}_{\substack{\text{nonparametric} \\ \text{constrast}}}
-\end{equation*}
-where
+\footnotesize
+\begin{align*}%\label{eq:RKHS-ANOVA-decomposition}
+\hilbert &= \hilbert_0 \oplus \hilbert_1\\
+&= \underbrace{\hilbert_{00}}_{\text{mean}}  \oplus  \underbrace{\hilbert_{01}}_{\substack{\text{parametric} \\ \text{constrast}}} \oplus \underbrace{\hilbert_1}_{\substack{\text{nonparametric} \\ \text{constrast}}}
+\end{align*}
 \begin{align*}
 \hilbert_0 &=  \hilbert_{00} \oplus \hilbert_{01} = \left\{f: \;f \propto 1 \right\} \oplus \left\{f: \;f \propto k_1\right\} \\
 \hilbert_{1} &= \lbrace f: M_0 f = M_1 f =  0,\;\;\;\int_{0}^1 \left(f''\left(x\right)\right)^2\;dx < \infty \rbrace. %\quad i = 1,2.
 \end{align*}
 
-The reproducing kernel $K = K_{00} + K_{01} + K_1$ can be defined in terms of the corresponding reproducing kernels 
+With reproducing kernel $K = K_{00} + K_{01} + K_1$: 
 \begin{align*}
 %\begin{split} \label{eq:cubic-spline-hilbert-space-rks}
 K_{00}\left(x,y\right) &= 1,\\
@@ -680,10 +778,10 @@ Let
 &= \hilbert_0 \oplus \hilbert_1.
 \end{align*}
 \footnotesize
-with RK $K = K_{\left[l\right]}K_{\left[m\right]}$. Fix $\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right)$ in \eqref{eq:full-joint-likelihood},  find $\phi$ minimizing
+with RK $K = K_{\left[l\right]}K_{\left[m\right]}$. For fixed $\sigma_{ij}^2 = \sigma^2\left(t_{ij}\right)$,  find $\phi$ minimizing
 \nt{ \scriptsize
 \begin{equation} \label{eq:phi-penalized-sums-of-squares}
--2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\phi\left(\bfv_{_{ijk}}\right) y_{ik}  \right)^2 + \lambda \vert\vert P_1 \phi \vert \vert^2
+-2\ell\left(\phi \vert Y_1,\dots, Y_N, \sigma^2\right) + \lambda J\left(\phi\right) = \sum_{i=1}^N \sum_{j=2}^{p_i} \frac{1}{\sigma^{2}_{ij}}\left( y_{ij} - \sum_{k<j}\phi\left(\bfv_{_{ijk}}\right) y_{ik}  \right)^2 + \lambda J\left(\phi\right) 
 \end{equation}} 
 \footnotesize
 where $J\left(\phi\right) =\vert \vert P_1 \phi \vert\vert^2$ and $\bfv_{ijk} \in \mathcal{V} = \left[0,1\right]^2$, 
@@ -693,7 +791,7 @@ where $J\left(\phi\right) =\vert \vert P_1 \phi \vert\vert^2$ and $\bfv_{ijk} \i
 \end{align*}
 Define the set of unique within-subject pairs of observation times:  
 \[
-V = \bigcup\limits_{i,j,k} \left\{\bfv_{ijk} \right\} \equiv \left\{ \bfv_1,\dots,\bfv_{\vert V \vert} \right\}
+V \equiv \bigcup\limits_{i,j,k} \left\{\bfv_{ijk} \right\} = \left\{ \bfv_1,\dots,\bfv_{\vert V \vert} \right\}
 \]
 
 \end{frame}
@@ -714,7 +812,7 @@ where $K_1\left(\bfv_j, \bfv \right)$ denotes the reproducing kernel for $\hilbe
 
 \begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}
 \footnotesize
-By the Representer Theorem~\ref{theorem:finite-dimensional-minimizer}, \nt{\eqref{eq:phi-penalized-sums-of-squares}} becomes
+By the Representer Theorem, \nt{\eqref{eq:phi-penalized-sums-of-squares}} becomes
 \nt{ \begin{equation*}\label{eq:penalized-loglik-tilde-vectorized}
 -2\ell \left(c, d \vert \tildeY, \tildeB, \tildeK_{_{ V}} \right) + \lambda J\left( \phi \right) = \bigg[ \tildeY - \tildeB d - \tildeK_{_{ V}} c\bigg]'\bigg[ \tildeY - \tildeB d - \tildeK_{_{ V}} c\bigg] + \lambda c'K_Vc,
 \end{equation*}}\footnotesize
@@ -726,17 +824,18 @@ X_i &= \left(p_i-1\right) \times \vert V \vert \mbox{ matrix of AR covariates fo
 K_{_{ V}} &= \vert V \vert \times \vert V \vert \mbox{ matrix with } \left(i,j\right) \mbox{ element } K_1\left(\bfv_i, \bfv_j\right)\\
 B &= \vert V \vert \times \mathcal{N}_0 \mbox{ matrix with } \left(i,j\right) \mbox{ element } \nu_j\left(\bfv_i\right)
 \end{align*} \footnotesize
-and $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, and $\tildeK_{_{ V}} = D^{-1/2} X K_{_{ V}}$, $X = \begin{bmatrix} X'_1 & X'_2 & \dots & X'_N \end{bmatrix}'$ 
+and $\tildeY = D^{-1/2} Y$, $\tildeB = D^{-1/2} X B $, $\tildeK_{_{ V}} = D^{-1/2} X K_{_{ V}}$, $X = \begin{bmatrix} X'_1 & X'_2 & \dots & X'_N \end{bmatrix}'$ 
 \end{frame}
-
-
 
 
 \begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}
 \footnotesize
 Setting derivatives equal to zero, for fixed $\lambda$, $c$ and $d$ satisfy
 \begin{align*}% \label{eq:vectorized-normal-equations}
-\underbrace{\begin{bmatrix}
+\begin{bmatrix}
+\tildeB'\tildeY \\
+ \tildeK_{_{ V}}'\tildeY\\
+\end{bmatrix} &= \underbrace{\begin{bmatrix}
 \tildeB'\tildeB & \tildeB'\tildeK_{_{ V}} \\
 \tildeK_{_{ V}}'\tildeB & \tildeK_{_{ V}}'\tildeK_{_{ V}} + \lambda K_{_{ V}}\\
 \end{bmatrix}}_{C'C}
@@ -744,11 +843,8 @@ Setting derivatives equal to zero, for fixed $\lambda$, $c$ and $d$ satisfy
 d\\
 c\\
 \end{bmatrix}
-&= \begin{bmatrix}
-\tildeB'\tildeY \\
- \tildeK_{_{ V}}'\tildeY\\
-\end{bmatrix}\\
-\Longrightarrow  {C}^{-1} ({C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_{_{ V}}' \end{bmatrix} \tildeY&=  \begin{bmatrix} \hat{d} \\ \hat{c} \end{bmatrix} . 
+\\
+\Longrightarrow \begin{bmatrix} \hat{d} \\ \hat{c} \end{bmatrix} &=  {C}^{-1} ({C}')^{-1} \begin{bmatrix} \tildeB' \\ \tildeK_{_{ V}}' \end{bmatrix} \tildeY. 
 \end{align*}
 
 The fitted values are given by $\widehat{\tildeY} =  \tildeA_{\lambda,\bftheta} \tildeY$, where the smoothing matrix is
@@ -771,20 +867,22 @@ The fitted values are given by $\widehat{\tildeY} =  \tildeA_{\lambda,\bftheta} 
 	\begin{equation*} 
 	%U\left(\lambda\right) = \frac{1}{N}\tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + \frac{2}{N}\mbox{tr}\tildeA_{\lambda,\bftheta}
 	U\left(\lambda\right) = \tildeY'\left( I - \tildeA_{\lambda,\bftheta} \right)^2\tildeY + {2}\mbox{ tr}\left(\tildeA_{\lambda,\bftheta}\right)
-	\end{equation*}\footnotesize is an \textbf{unbiased estimator of the risk} $E\left[L\left(\lambda\right)\right] = E\left[\sum_{i = 1}^N \sum_{j = 1}^{p_i} \frac{1}{\sigma^2_{ij}}\left(\hat{y}_{ij} - {\mu}_{ij} \right)^2\right]$.
-	\item \footnotesize Let $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ denote the estimate of $E\left[ \tildeY_i \vert X_i \right]$ based on the data when $\tildeY_i$ is omitted. The \textbf{leave-one-subject-out cross validation score}
+	\end{equation*}\footnotesize is an \nt{unbiased estimator of the risk $E\left[L\left(\lambda\right)\right] = E\left[\sum_{i,j} \frac{1}{\sigma^2_{ij}}\left(\hat{y}^\lambda_{ij} - {\mu}_{ij} \right)^2\right]$}.
+	\item \footnotesize Let $\widehat{\tilde{\mu}}^{\left[-i\right]}_{i}$ denote the estimate of $E\left[ \tildeY_i \vert X_i \right]$ based on the data when $\tildeY_i$ is omitted. The \nt{leave-one-subject-out cross validation score}
 	\begin{equation*} %\label{eq:LOSOCV}
 	V_{loso}\left(\lambda\right) = \frac{1}{N}\sum_{i=1}^N \left( \tildeY_i - \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)'\left( \tildeY_i -  \widehat{\tilde{\mu}}^{\left[-i\right]}_{i}\right)
 	\end{equation*}
-	approximates $MSPE = \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - \widehat{\tilde{\mu}}_{i} \vert \vert^2 \right]$, where $\tildeY^*_i$ denotes a vector of new observations $\tilde{y}_{i1}^*, \tilde{y}_{i1}^*, \dots, \tilde{y}_{i, p_i}^*$. 
+	approximates \nt{$MSPE = \frac{1}{N}\sum_{i=1}^N E\left[ \vert \vert \tildeY^*_i - \widehat{\tilde{\mu}}_{i} \vert \vert^2 \right]$}, where $\tildeY^*_i$ denotes a vector of new 	observations $\tilde{y}_{i1}^*, \tilde{y}_{i1}^*, \dots, \tilde{y}_{i, p_i}^*$. The $V_{loso}$ satisfies
+  \begin{equation*}
+ V_{loso}\left( \lambda \right) = \frac{1}{N} \sum_{i = 1}^N \left(\tildeY_i - \widehat{\tildeY_i}\right)' \left(I_{p_i} - \tildeA_{ii}\right)^{-2}\left(\tildeY_i - \widehat{\tildeY_i}\right),
+  \end{equation*}
 	\end{itemize}
 	\end{frame}
 
 
 
 \begin{frame}{\textit{A RKHS Framework for $\log \sigma^2$}}
-\footnotesize
-Fixing $\phi$ in \eqref{eq:full-joint-likelihood}, let $Z_i = \left(z_{i1}, \dots , z_{ip_i}\right)'$, $z_{ij} = \epsilon_{ij}^2$, where
+For fixed $\phi\left(\cdot\right)$, let $Z_i = \left(z_{i1}, \dots , z_{ip_i}\right)'$, $z_{ij} = \epsilon_{ij}^2$, where
 \[
 \epsilon_{ij} =  y_{ij} - \sum_{k<j} \phi\left(\bfv_{ijk}\right) y_{ik}.
 \]
@@ -799,37 +897,72 @@ where $\eta_{ij} = \eta\left(t_{ij}\right) = \log \sigma^2\left(t_{ij}\right)$.
 
 \begin{frame}{\textit{A RKHS Framework for $\log \sigma^2$}}
 \footnotesize
-Take the estimator of $\eta\left(t\right) = \log\sigma^2\left(t\right)$ to minimize
-\begin{equation} \label{eq:penalized-joint-loglik-given-phi}
+Take the estimator of $\eta\left(t\right) = \log\sigma^2\left(t\right) \in \hilbert$ to minimize
+\begin{equation*} %\label{eq:penalized-joint-loglik-given-phi}
 -2\ell\left( \eta \vert Z_1,\dots, Z_N \right) +\lambda J \left(\eta\right) =  \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right)  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij} e^{-\eta\left(t_{ij}\right)} + \lambda J\left(\eta\right),  
-\end{equation}
+\end{equation*}
 \noindent
 for $\eta \in \hilbert$, where $J\left(\eta\right) =\vert \vert P_1 \eta \vert\vert^2$. Let 
  \[
  \mathcal{T} = \bigcup_{i,j} \left\{t_{ij}\right\},
  \]
- Theorem~\ref{theorem:finite-dimensional-minimizer} gives that the minimizer of \eqref{eq:penalized-joint-loglik-given-phi} has the form 
-\begin{equation} \label{eq:form-of-smoothing-spline-solution-kappa}
+ Theorem~\ref{theorem:finite-dimensional-minimizer} gives that the minimizer has the form 
+\begin{equation*}% \label{eq:form-of-smoothing-spline-solution-kappa}
 \eta_\lambda\left( t \right) = \sum_{i = 1}^{\mathcal{N}_0} d_i \nu_i\left( t \right) + \sum_{j = 1}^{\vert \mathcal{T} \vert} c_j K_1\left(t_j,t\right),
-\end{equation}  
+\end{equation*}  
 \noindent
 where $\left\{\nu_i \right\}$ span $\hilbert_0$, $K_1\left(t_j,t\right)$ is the RK for $\hilbert_1$ evalutated at ${t_j}$, the $j^{th}$ element of $\mathcal{T}$.
 
 \end{frame}
 
+\begin{frame}{\emph{Bivariate smoothing with tensor product P-splines}}{Penalized B-splines are a flexible alternative to smoothing splines.}
 
+	\begin{columns}
+	\begin{column}[T]{5.5cm}
+	\footnotesize Given B-splines bases for $l$ and $m$, let
+	\begin{equation*} %\label{eq:tensor-product-bspline-expansion-phi}
+	\phi\left(l,m\right) = \sum_{r=1}^{k_l} \sum_{c=1}^{k_m} \theta_{rc} {B_l}_{_r}\left(l\right) {B_m}_{_c}\left(m\right). 
+	\end{equation*}
+	For fixed $\sigma_{ij}^2$, take $\phi_{\lambda}$ to minimize 
+	\begin{align*}% \label{eq:tensor-pspline-objective-function}
+	-2&\ell\left(\phi \vert Y_1,\dots, Y_N\right) + J_{\lambda}\left(\phi\right) \\
+	&= \left( Y - XB\theta\right)^\prime D^{-1}\left( Y - XB\theta\right) \\
+	&\phantom{\left(Y\right.  } + \lambda_l\vert\vert P_l \theta \vert\vert^2 + \lambda_m \vert\vert P_m \theta\vert \vert^2,
+	\end{align*}\footnotesize
+	where $\vert\vert P_l \theta \vert\vert^2$, $\vert\vert P_m \theta \vert\vert^2$ are \nt{finite difference penalties} on the $\theta_{rc}$ along the $l$ and $m$ axes.
+	\end{column}
+	\begin{column}[T]{5.5cm}
+	 \centering
+	 \begin{tikzpicture}%[show background grid] %% Use grid for positioning, then turn off
+		\node[right]  at (0,4) {\includegraphics[width=\textwidth]{img/bicubic_basis_function}};
+		\node[right]  at (.5,1.6) {\footnotesize\textcolor{gray!100}{$T_{rc}\left(l,m\right) = {B_l}_{_r}\left(l\right){B_m}_{_{c}}\left(m\right)$}};
+		\node[right]  at (.9,5.3) {\scriptsize\textcolor{gray!100}{$\lbrace {B_l}_{_r}\rbrace$}};
+		\node[right]  at (4.05,5.3) {\scriptsize\textcolor{gray!100}{$\lbrace {B_m}_{_c}\rbrace$}};
+	\end{tikzpicture}
+	\end{column}	
+	\end{columns}
+	\end{frame}
 
-%\begin{frame}{\textit{Smoothing Parameter Selection for Exponential Families}}{}
-%
-%\end{frame}
+\begin{frame}{\emph{Bivariate smoothing with tensor product P-splines}}{The penalties are trivial to construct for any difference order.}
+\vspace{0.25cm}
+\footnotesize
+For $ f^{\prime \prime}\left(x\right) = \sum_{j=1}^k \theta_j B_j^{\prime \prime}\left(x\right)$,
+\begin{align*} 
+\int_0^1 \left( f^{\prime \prime}\left(x\right)\right)^2\;dx =  \int_{0}^{1} \sum_{j=1}^k \theta_i B_j^{\prime \prime}\left(x\right) \;dx \approx c_1 \sum\limits_{j} \left( \Delta^2 \theta_j\right)^2
+\end{align*}
+\begin{figure}[width = 1.2\textwidth]
+  \centering
+  \subfloat[\scriptsize{difference penalty of order $d = 0$}]{\includegraphics[height=3.5cm,width=3.5cm]{img/PS_penalty_section_figure_6_order_0}}\;
+  \subfloat[\scriptsize{difference penalty of order $d = 1$}]{\includegraphics[height=3.5cm,width=3.5cm]{img/PS_penalty_section_figure_6_order_1}}\;
+  \subfloat[\scriptsize{difference penalty of order $d = 2$}]{\includegraphics[height=3.5cm,width=3.5cm]{img/PS_penalty_section_figure_6_order_2}}\;
+%  \subfloat{\includegraphics[height=3.2cm,width=3.5cm]{img/PS_penalty_section_figure_6_order_3}}\hfill
+\end{figure}
+%\end{column}
+%\begin{column}[T]{4cm}\scriptsize
+%\end{column}
+%\end{columns}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -885,38 +1018,46 @@ Performance is measured with loss functions
 	\[
 	R_i \left(\Sigma,\hat{\Sigma}\right) = E_\Sigma\left[\Delta_i\left(\Sigma,\hat{\Sigma}\right)\right],\;\;i = 1,2
 	\]
-	In Study I, we compare to performance to that of the oracle estimator, \hyperlink{polynomial-mcd-model}{Polynomial MCD GLM} $\hat{\Sigma}_{poly}$, the sample covariance matrix $S = \left[s_{ij}\right]$, \hyperlink{shrinkage-estimators}{Shrinkage estimators} $S^\omega$, $S^\lambda$
+	In Study I, we compare performance to that of the oracle estimator, \hyperlink{polynomial-mcd-model}{Polynomial MCD GLM} $\hat{\Sigma}_{poly}$, the sample covariance matrix $S = \left[s_{ij}\right]$, \hyperlink{shrinkage-estimators}{Shrinkage estimators} $S^\omega$, $S^\lambda$
 
-%		\begin{itemize}
-%		\item Oracle estimator
-%		\item \hyperlink{polynomial-mcd-model}{Polynomial MCD GLM} $\hat{\Sigma}_{poly}$
-%		\item  Sample covariance matrix $S = \left[s_{ij}\right]$
-%		\item \hyperlink{shrinkage-estimators}{Shrinkage estimators} $S^\omega$, $S^\lambda$
-%		\end{itemize}
-	
-	%\end{equation}
+\end{frame}
+
+
+\begin{frame}{\textit{Applying Elementwise Shrinkage to $S$}}{Tapering Estimators}\label{shrinkage-estimators}
+%For $S = \left[ s_{ij} \right]$, a general tapering estimator has the form
+%\begin{equation} \label{eq:general-tapering-estimator} 
+%\hat{\Sigma} = R \ast S, 
+%\end{equation}
+%	\begin{columns}[T]
+%	\begin{column}{0.5\textwidth}
+	\footnotesize
+	\begin{itemize}
+ 	\item \textbf{The Banded Sample Covariance Matrix} 
+	\begin{align*}%\label{eq:variance-correlation-decomposition}
+		B_k\left(S\right) = \begin{bmatrix} s_{ij} 1\left(\vert i-j \vert \le k\right) \end{bmatrix} = R_B \ast S,\quad 0 < k < p.
+		%R_B &= \left[r_{ij}\right] = \left[ 1\left(\vert i-j \vert \le k\right)\right],
+		\end{align*}
+%		$R_B$ not positive definite $\Rightarrow$ $B_k$ not positive definite.
+	\item \textbf{The Tapered Sample Covariance Matrix} 
+		 	\begin{equation*}% \label{eq:cai-tapering-estimator}
+			S^{\omega} =  \begin{bmatrix} \omega_{ij}^k s_{ij} \end{bmatrix},
+			\end{equation*}
+		where $0 < k < p$, and if $k_h = k/2$ 
+		\begin{equation*}
+		\omega^k_{ij} = k_h^{-1} \left[ \left( k - \vert i-j\vert\right)_+ - \left(k_h - \vert i-j\vert\right)_+ \right].
+		\end{equation*}
 %	\end{column}
-%	\begin{columns}
-%	\begin{column}[T]{5.5cm}
-%	Alternative estimators:
-%		\begin{itemize}
-%		\item Oracle estimator
-%		\item \hyperlink{polynomial-mcd-model}{Polynomial MCD GLM} $\hat{\Sigma}_{poly}$
-%		\item  Sample covariance matrix $S = \left[s_{ij}\right]$
-%		\item \hyperlink{shrinkage-estimators}{Shrinkage estimators} $S^\omega$, $S^\lambda$
-%		\end{itemize}
+%	\begin{column}{0.5\textwidth}
+%	\footnotesize
+	\item \textbf{Soft Thresholding Estimator:} 
+			\begin{equation*}% \label{eq:spectral-decomposition}
+			S^{\lambda} =   \begin{bmatrix} \mbox{sign}\left(s_{ij}\right) \left(s_{ij} - \lambda\right)_+ \end{bmatrix}
+			\end{equation*}	\footnotesize
+%			$S^{\lambda}$ not guaranteed to be positive definite.
+	\end{itemize}
 %	\end{column}
-%	\begin{column}[T]{5.5cm}
-%	Alternative estimators:
-%		\begin{itemize}
-%		\item Oracle estimator
-%		\item \hyperlink{polynomial-mcd-model}{Polynomial MCD GLM} $\hat{\Sigma}_{poly}$
-%		\item  Sample covariance matrix $S = \left[s_{ij}\right]$
-%		\item \hyperlink{shrinkage-estimators}{Shrinkage estimators} $S^\omega$, $S^\lambda$
-%		\end{itemize}
-%	\end{column}	
 %	\end{columns}
-
+\hyperlink{simulation-studies-benchmark-estimators}{\beamerskipbutton{Simulations}}
 \end{frame}
 
 
@@ -950,74 +1091,85 @@ Performance is measured with loss functions
 \\
 \hline
 \\
-\textbf{V.} $\begin{aligned}\Sigma  &= \rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}, \\ &\rho = 0.7 \end{aligned}$ & $\phi_{ts} = \frac{\rho}{1 + \left(t-2\right)\rho}$, $t = 2,\dots, p$ & $ \sigma_t^2 = 1-\frac{\left(\max\left(t,2\right)-2\right)\rho^2}{1 + \left(\max\left(t,2\right)-2\right)\rho}$\\
+\textbf{V.} $\begin{aligned}\Sigma  &= \rho \mathrm{J} + \left(1-\rho\right)\mathrm{I}, \\ &\rho = 0.7 \end{aligned}$ & $\phi\left({t,s}\right) = \frac{\rho}{1 + \left(t-2\right)\rho}$, $t = 2,\dots, p$ & $ \sigma^2\left(t\right) = 1-\frac{\left(\max\left(t,2\right)-2\right)\rho^2}{1 + \left(\max\left(t,2\right)-2\right)\rho}$\\
 \end{tabular}
 \end{center}
 
 
 \end{frame}
-%
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{}
-% 
-%\begin{center}
-% \includegraphics[width = \textwidth]{img/chapter-4/cov-estimate-lattice-beamer}%}
-%\end{center}
-%
-%\end{frame}
-%
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{}
-% 
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/cholesky-estimate-lattice-beamer}%}
-%\end{center}
-%
-%\end{frame}
-%
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model I}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-1-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model II}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-2-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model III}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-3-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model IV}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-4-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model V}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-5-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model V}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/model-5-entropy-loss-boxplots}%}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[c]{\emph{Simulation Studies}}{Simulations with missing data}
-%\begin{center}
-%  \includegraphics[width = \textwidth]{img/chapter-4/simulation-study-2-entropy-loss-boxplots}
-%\end{center}
-%\end{frame}
-%
+
+
+\begin{frame}[c]{\emph{Simulation Studies}}{}
+ 
+\begin{center}
+ \includegraphics[width = \textwidth]{img/chapter-4/cov-estimate-lattice-beamer}%}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[c]{\emph{Simulation Studies}}{}
+ 
+\begin{center}
+  \includegraphics[width = \textwidth]{img/chapter-4/cholesky-estimate-lattice-beamer}%}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model I}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width =0.9\textwidth]{img/chapter-4/model-1-entropy-loss-boxplots}};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model I}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width = 0.9\textwidth]{img/chapter-4/model-1-entropy-loss-boxplots-zoom} };
+ \node at (0,3) {$\phi_{41}$};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model II}
+\begin{center}
+  \includegraphics[width = 0.9\textwidth]{img/chapter-4/model-2-entropy-loss-boxplots-p-20}
+\end{center}
+\end{frame}
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model III}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width = 0.9\textwidth]{img/chapter-4/model-3-entropy-loss-boxplots-zoom} };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model IV}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width = 0.9\textwidth]{img/chapter-4/model-4-entropy-loss-boxplots-zoom} };
+\end{tikzpicture}
+\end{frame}
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with complete data: Model V}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width = 0.9\textwidth]{img/chapter-4/model-5-entropy-loss-boxplots-zoom} };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[c]{\emph{Simulation Studies}}{Results with incomplete data, $N = 50$}
+\centering
+  \begin{tikzpicture}
+    \node at (0,0) {  \includegraphics[width = 0.95\textwidth]{img/chapter-4/simulation-study-2-entropy-loss-boxplots} };
+% \node at (-2,3) {\textcolor{wes1}{$p = 20$}};
+\draw[wes2] (-3.9,-.5) node {\footnotesize$p = 20$}; % Draws a circle
+\draw[wes2] (-3.9,2.8) node {\footnotesize${p = 10}$}; % Draws a circle
+\end{tikzpicture}
+
+
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1027,11 +1179,16 @@ Performance is measured with loss functions
 
 
 \begin{frame}[c]{\textit{Kenward Cattle Data}}
+\centering
+ \begin{tikzpicture}
+    \node at (0,0) { \includegraphics[width = .9\textwidth]{img/cattle/cattle-weights-vs-time-by-trt} };
+\draw[wes3] (-3.3,1.5) node {\scriptsize increasing variances over time}; % Draws a circle
+\draw[wes3] (-.44,-1) node {\scriptsize equidistant $\Rightarrow$ equicorrelated?}; % Draws a circle
+\draw[wes3] (-.85,-1.45) node {\scriptsize Toeplitz correlation matrix?}; % Draws a circle
+\draw[wes3] (2,2.7) node {\scriptsize LRT rejects $H_0: \Sigma_A = \Sigma_B$}; % Draws a circle
+\draw[paleale] (0,4.2) node {\scriptsize Suppressed immune resistance in animals infected with roundworm can significantly impact growth.}; % Draws a circle
+\end{tikzpicture}
 
-\begin{center}
-\includegraphics[width = .9\textwidth]{img/cattle/cattle-weights-vs-time-by-trt}
-%\caption{\textit{Subject-specific weight curves over time for treatment groups A and B.}}\label{fig:cattle-weights-by-trt}
-\end{center}
 \end{frame}
 
 
@@ -1108,7 +1265,7 @@ y_{ij} &= f\left(t_i  \right) + \alpha_i + \epsilon^*_{ij}, \\
 where the $\alpha_i \stackrel{\mbox{\tiny{i.i.d.}}}{\sim} N\left(0 ,\sigma_\alpha^2\right)$ mutually independent of $ \epsilon^*_{ij} = \left( \epsilon^*_{i1},\dots, \epsilon^*_{ip_i} \right)'$,
 \begin{align*}
 \epsilon^*_i &\sim N\left(0, \Sigma\right),\\
-f &\in \hilbert  = \mathcal{C}^2\left[\Re^+\right],
+f &\in \hilbert  = \mathcal{C}^2\left[0,1\right],
 \end{align*} \footnotesize
 and $J\left(f\right) = \int_0^1 \left(f''\left(x\right)\right)^2\;dx$.
 \end{column}
@@ -1129,6 +1286,7 @@ and $J\left(f\right) = \int_0^1 \left(f''\left(x\right)\right)^2\;dx$.
 \begin{column}[]{6cm}
 \centering
 \begin{figure}
+\captionsetup[subfigure]{labelformat=empty}
   \centering
   \subfloat[\scriptsize $S$]{\includegraphics[height=2.9cm,width=2.9cm]{img/chapter-5/cattle-cholesky-estimate-ggplot-S}}
   \subfloat[\scriptsize$\hat{\Sigma} = {\hat{T'}}^{-1}\hat{D}{\hat{T}}^{-1}$]{\includegraphics[height=2.9cm,width=2.9cm]{img/chapter-5/cattle-cholesky-estimate-ggplot-Sigma}}\hfill
@@ -1139,16 +1297,16 @@ and $J\left(f\right) = \int_0^1 \left(f''\left(x\right)\right)^2\;dx$.
 \begin{column}[]{5.5cm} \footnotesize
 Model
 \begin{equation*}% \label{eq:cattleA-dynamic-cond-mixed-model-1}
-\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ij}\right) + \epsilon\left(t_{ij}\right)
+\epsilon^*\left(t_{ij}\right) = \sum_{k < j} \phi\left( t_{ij}, t_{ik} \right) \epsilon^*\left(t_{ik}\right) + \epsilon\left(t_{ij}\right)
 \end{equation*}
 where $\epsilon\left(t\right) \sim N\left(0, \sigma^2\left(t\right)\right)$ and 
 \scriptsize
 \begin{align*} 
 \phi \in \hilbert &= \hilbert_{\left[l\right]} \otimes \hilbert_{\left[m\right]}\\
-\hilbert_{\left[l\right]} = &\phantom{\oplus} \bigg\{ \phi: \ddot{\phi} = 0 \bigg\} \\
-&\oplus  \left\{\phi: \phi\left(0\right),\dot{\phi}\left(0\right) = 0;\; \ddot{\phi} \in \mathcal{L}_2\left[0,1\right]   \right\} \\
+\hilbert_{\left[l\right]} = &\phantom{\oplus} \bigg\{ \phi: {\phi''} = 0 \bigg\} \\
+&\oplus  \left\{\phi: \phi\left(0\right),{\phi'}\left(0\right) = 0;\; {\phi''} \in \mathcal{L}_2\left[0,1\right]   \right\} \\
 \hilbert_{\left[m\right]} = &\phantom{\oplus} \bigg\{ \phi: \phi \propto 1 \bigg\} \\
-&\oplus \left\{ \phi: \int_0^1 \phi \;dx = 0, \;\; \dot{\phi} \in \mathcal{L}_2\left[0,1\right]  \right\} 
+&\oplus \left\{ \phi: \int_0^1 \phi \;dx = 0, \;\; {\phi'} \in \mathcal{L}_2\left[0,1\right]  \right\} 
 \end{align*} 
 \end{column}
 \end{columns} 
@@ -1180,6 +1338,13 @@ where $\epsilon\left(t\right) \sim N\left(0, \sigma^2\left(t\right)\right)$ and
 
 \begin{frame}[c]{\textit{Concluding Remarks and Future Work}}
 
+\begin{itemize}
+\item Joint mean-covariance estimation for longitudinal data 
+\item Use additional covariates to simultaneously model covariance matrices for $k$ groups $\Sigma_1, \dots, \Sigma_k$   
+\item Employ shrinkage alongside smoothing with P-splines 
+\item  P-spline mixed model framework with REML estimation
+\end{itemize}
+
 \end{frame}
 
 
@@ -1192,497 +1357,198 @@ where $\epsilon\left(t\right) \sim N\left(0, \sigma^2\left(t\right)\right)$ and
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[allowframebreaks] %allow to expand references to multiple frames (slides)
-
-\frametitle{References}
-%\bibliography{Master} %bibtex file name without .bib extension
-
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{\textit{Appendix}}
-
-\end{frame}
-
-
-
-
-%\begin{frame}[c]{\textit{Incoherence of the GARPs: a simple example}}{}
-%\footnotesize{
-%\begin{align*}
-%y_{it} &= t^{th}\mbox{ measurement on subject } i \\
-%&=\left\{ \begin{array}{ll} \epsilon_{it}, & t = 1, \\
-%	\phi y_{i,t-1} + \epsilon_{it}, &  t = 2,3,4, \end{array} \right. \;\; \epsilon_i = \left(\epsilon_{i1}, \dots, \epsilon_{ip_i} \right)'\sim N\left(0, I\right)
-%\end{align*}
+%\begin{frame}[allowframebreaks] %allow to expand references to multiple frames (slides)
 %
-%For a subject with a complete set of observations, $D = I_4$,} 
+%\frametitle{References}
+%%\bibliography{Master} %bibtex file name without .bib extension
+%
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{\textit{Appendix}}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}[c]{\emph{Tensor Product Cubic Spline Space}}{\textit{Reproducing Kernels}}
+%
 %\scriptsize
+%\begin{tabular}{lll} % centered columns (4 columns)
+%\hline 
+%\hline %inserts double horizontal lines
+%Subspace 	& 		Reproducing kernel 		 \\
+%\hline % inserts single horizontal line
+%$\hilbert_{00\left[1\right]} \otimes \hilbert_{00\left[2\right]}$ & 	$1$	\\ [1ex] 
+%$\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]} $& 	$k_1\left(x_1\right)k_1\left(y_1\right)$	\\ [1ex] 
+%$\hilbert_{00\left[1\right]} \otimes \hilbert_{01\left[2\right]} $& 	$k_1\left(x_2\right)k_1\left(y_2\right)$	\\ [1ex] 
+%$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(x_1\right)k_1\left(y_1\right)k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex] 
+%$\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$  	& 	$k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)$	\\ [1ex] 
+%$\hilbert_{00\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  	& 	$k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)$	\\ [1ex] 
+%$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	& 	$\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex]  
+%$ \hilbert_{01\left[1\right]}\otimes  \hilbert_{1\left[2\right]}$ 	& 	$k_1\left(x_1\right)k_1\left(y_1\right)\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$ \\ [1ex]  
+%$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  & $\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$	\\ [1ex]  
+%\hline %inserts single line
+%\hline %inserts single line
+%\end{tabular}
+%\end{frame}
+%
+%
+%\begin{frame}{\textit{A General Form for Multiple-Term RK Hilbert Spaces}}{}
+%\footnotesize
+%\begin{equation} \label{eq:multi-term-RKHS}
+%\hilbert = \bigoplus\limits_{\beta} \hilbert_\beta, 
+%\end{equation}
+%
+%with reproducing kernels $K_\beta$ and corresponding inner products $\langle f_\beta,g_\beta {\rangle_{\hilbert}}_\beta$, where $f_\beta = P_\beta f$ denotes the projection of $f$ into the subspace $\hilbert_\beta$.  
+%
+%\begin{equation} \label{eq:multi-term-inner-product}
+%\langle f,g \rangle_\hilbert = \sum_\beta \theta_\beta^{-1} \langle f,g {\rangle_{\hilbert_\beta}}.
+%\end{equation}
+%\noindent
+%where $\theta_\beta \in \left(0,\infty\right)$ are additional smoothing parameters. The corresponding reproducing kernel for $\hilbert$ is given by 
+%\begin{equation} \label{eq:multi-term-RK}
+%K = \sum_\beta \theta_\beta K_\beta,
+%\end{equation}
+%\noindent
+%which can be used to specify the penalty $J\left(f\right)$. Subspaces which don't contribute to $J\left(f\right)$ form $\hilbert_0 = \left\{f: J\left(f\right) = 0\right\}$, the null space of $J\left(f\right)$. The subspaces contributing to $J\left(f\right)$ form $\hilbert_1 = \hilbert \ominus \hilbert_0$. For this specification, denote the penalty constructed as such by 
+%\begin{equation}\label{eq:multi-term-penalty}
+%J\left(f\right) =  \sum_{\beta} \theta^{-1}_\beta  \langle f_\beta,f_\beta {\rangle_{\hilbert}}_\beta = \sum_{\beta} \theta^{-1}_\beta J_\beta \left( f_\beta \right).
+%\end{equation}
+%
+%\end{frame}
+%
+%
+%\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
+%\footnotesize
+%\begin{equation} \label{eq:normal-equation-cholesky}
+%\begin{bmatrix}
+%\tildeB'\tildeB & \tildeB'\tildeK_{_{ V}} \\
+%\tildeK_{_{ V}}'\tildeB & \tildeK_{_{ V}}'\tildeK_{_{ V}} + \lambda K_{_{ V}}\\
+%\end{bmatrix}
+%= \begin{bmatrix}
+%C'_1 & 0 \\
+%C'_2  & C'_3 
+%\end{bmatrix}
+%\begin{bmatrix}
+%C_1 & C_2 \\
+%0  & C_3 
+%\end{bmatrix}
+%\end{equation}
+%\noindent
+%where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_{_{ V}}$, and $C'_3 C_3 = \lambda K_{_{ V}} +  \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}}$. Using an exchange of indices known as pivoting, one may write 
 %\begin{equation*}
-%T = \begin{bmatrix}
-%1& 0 & 0 & 0  \\
-%\phi & 1& 0 & 0 \\
-%0 & \phi & 1& 0 \\
-%0 & 0 & \phi & 1\\
-%\end{bmatrix}, 
-%\Sigma = \begin{bmatrix} 
-%1 & \phi & \phi^2 & \phi^3 \\
-%\phi & 1 + \phi^2  & \phi^2 + \phi^3 &  \phi^3 + \phi^4 \\
-%\phi^2 & \phi^2 + \phi^3 & 1 + \phi^2 + \phi^4 & \phi + \phi^3 + \phi^5 \\
-%\phi^3 & \phi^3 + \phi^4 & \phi + \phi^3 + \phi^5 & 1 + \phi^2 + \phi^4 + \phi^6 
+%C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
+%\end{equation*}
+%\noindent
+%where $H_1$ is nonsingular. Define
+%\begin{equation} \label{eq:cholesky-factor-mod}
+%\tilde{C}_3 = \begin{bmatrix}
+%H_1 & H_2 \\
+%0  & \delta I 
+%\end{bmatrix}, \;\;
+%\tilde{C} = \begin{bmatrix}
+%C_1 & C_2 \\
+%0  & \tilde{C}_3 
+%\end{bmatrix};
+%\end{equation}
+%\end{frame}
+%
+%
+%\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
+%\footnotesize
+%\begin{equation} \label{eq:normal-equation-cholesky}
+%\begin{bmatrix}
+%\tildeB'\tildeB & \tildeB'\tildeK_{_{ V}} \\
+%\tildeK_{_{ V}}'\tildeB & \tildeK_{_{ V}}'\tildeK_{_{ V}} + \lambda K_{_{ V}}\\
+%\end{bmatrix}
+%= \begin{bmatrix}
+%C'_1 & 0 \\
+%C'_2  & C'_3 
+%\end{bmatrix}
+%\begin{bmatrix}
+%C_1 & C_2 \\
+%0  & C_3 
+%\end{bmatrix}
+%\end{equation}
+%\noindent
+%where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_{_{ V}}$, and $C'_3 C_3 = \lambda K_{_{ V}} +  \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}}$. Using an exchange of indices known as pivoting, one may write 
+%\begin{equation*}
+%C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
+%\end{equation*}
+%\noindent
+%where $H_1$ is nonsingular. Define
+%\begin{equation} \label{eq:cholesky-factor-mod}
+%\tilde{C}_3 = \begin{bmatrix}
+%H_1 & H_2 \\
+%0  & \delta I 
+%\end{bmatrix}, \;\;
+%\tilde{C} = \begin{bmatrix}
+%C_1 & C_2 \\
+%0  & \tilde{C}_3 
+%\end{bmatrix};
+%\end{equation}
+%\end{frame}
+%
+%\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
+%\footnotesize
+%
+%Then
+%\begin{equation} \label{eq:cholesky-factor-mod-inverse}
+%\tilde{C}^{-1} = \begin{bmatrix}
+%C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
+%0  & \tilde{C}_3^{-1}
+%\end{bmatrix}.
+%\end{equation}
+%
+%Premultiplying \eqref{eq:normal-equation-cholesky} by $(\tilde{C}')^{-1}$, 
+%\begin{equation*}% \label{eq:vectorized-normal-equations-cholesky}
+%\begin{bmatrix}
+%I & 0 \\
+%0 & (\tilde{C}'_3)^{-1} C'_3 C_3 \tilde{C}_3^{-1}\\
+%\end{bmatrix}
+%\begin{bmatrix}
+%\tilde{d}\\
+%\tilde{c}\\
+%\end{bmatrix}
+%= \begin{bmatrix}
+%(C'_1)^{-1} \tildeB'\tildeY \\
+%(\tilde{C}'_3)^{-1} \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY\\
 %\end{bmatrix}
 %\end{equation*}
+%%where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \right)'$. Partition $\tilde{C}_3 = \begin{bmatrix} F &  L\end{bmatrix}$; then $HF = I$ and $HL = 0$, 
+%%\begin{align*}
+%%(\tilde{C}'_3)^{-1} C'_3 C_3 \tilde{C}_3^{-1} &= \begin{bmatrix} F' \\ L' \end{bmatrix} C'_3C_3 \begin{bmatrix} F &  L\end{bmatrix} \\
+%%&= \begin{bmatrix} F' \\ L' \end{bmatrix} H'H \begin{bmatrix} F &  L\end{bmatrix} \\
+%%&= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
+%%\end{align*}
+%%If $L'C'_3 C_3 L = 0$, then $L'\tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}} L = 0$, so $L'\tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY = 0$.
+%\end{frame}
 %
-%\footnotesize{
-%\begin{center}
-%\begin{tabular}{llll}
-%\hline
-%\\
-%Subject 1 & $Y_1 = \left( y_{11}, y_{12}, y_{13} \right)$ & $t_1 = \left(1, 2, 4\right)'$ & $D_1 = T'_1\Sigma_1 T_1$ \\
-%Subject 2 & $Y_2 = \left( y_{21}, y_{22}, y_{23} \right)$ & $t_2 = \left(1, 3, 4\right)'$ & $D_2 = T'_2\Sigma_2 T_2$\\
-%\end{tabular}
-%\end{center}}
-%
-%\scriptsize{
-%\begin{align*}
-%T_1 &= \begin{bmatrix}
-%1& 0 & 0  \\
-%-\phi & 1& 0  \\
-%0 & -\phi^2 & 1
-%\end{bmatrix}, \;\;
-%D_1 = \begin{bmatrix} 
-%1 & 0 & 0  \\
-%0 & 1 & 0 \\
-%0 & 0 & 1 + \phi^2
-%\end{bmatrix}, \\
-%T_2 &= \begin{bmatrix}
-%1& 0 & 0  \\
-%-\phi^2 & 1& 0  \\
-%0 & -\phi & 1
-%\end{bmatrix}, \;\;
-%D_2 = \begin{bmatrix} 
-%1 & 0 & 0  \\
-%0 & 1 + \phi^2 & 0 \\
-%0 & 0 & 1 
-%\end{bmatrix}
-%\end{align*}}
+%\begin{frame}{\textit{Minimizing $U$, $V_{loso}$ with Multiple Smoothing Parameters}}{}
 %
 %\end{frame}
 %
-
-
-\begin{frame}[c]{\emph{Tensor Product Cubic Spline Space}}{\textit{Reproducing Kernels}}
-
-\scriptsize
-\begin{tabular}{lll} % centered columns (4 columns)
-\hline 
-\hline %inserts double horizontal lines
-Subspace 	& 		Reproducing kernel 		 \\
-\hline % inserts single horizontal line
-$\hilbert_{00\left[1\right]} \otimes \hilbert_{00\left[2\right]}$ & 	$1$	\\ [1ex] 
-$\hilbert_{01\left[1\right]} \otimes \hilbert_{00\left[2\right]} $& 	$k_1\left(x_1\right)k_1\left(y_1\right)$	\\ [1ex] 
-$\hilbert_{00\left[1\right]} \otimes \hilbert_{01\left[2\right]} $& 	$k_1\left(x_2\right)k_1\left(y_2\right)$	\\ [1ex] 
-$\hilbert_{01\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ & 	$k_1\left(x_1\right)k_1\left(y_1\right)k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex] 
-$\hilbert_{1\left[1\right]} \otimes \hilbert_{00\left[2\right]}$  	& 	$k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)$	\\ [1ex] 
-$\hilbert_{00\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  	& 	$k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)$	\\ [1ex] 
-$\hilbert_{1\left[1\right]} \otimes \hilbert_{01\left[2\right]}$ 	& 	$\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]k_1\left(x_2\right)k_1\left(y_2\right)$ \\ [1ex]  
-$ \hilbert_{01\left[1\right]}\otimes  \hilbert_{1\left[2\right]}$ 	& 	$k_1\left(x_1\right)k_1\left(y_1\right)\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$ \\ [1ex]  
-$\hilbert_{1\left[1\right]} \otimes \hilbert_{1\left[2\right]}$  & $\left[k_2\left(x_1\right)k_2\left(y_1\right) - k_4\left(x_1 - y_1\right)\right]\left[k_2\left(x_2\right)k_2\left(y_2\right) - k_4\left(x_2 - y_2\right)\right]$	\\ [1ex]  
-\hline %inserts single line
-\hline %inserts single line
-\end{tabular}
-\end{frame}
-
-
-\begin{frame}{\textit{A General Form for Multiple-Term RK Hilbert Spaces}}{}
-
-\end{frame}
-
-
-\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
-\footnotesize
-\begin{equation} \label{eq:normal-equation-cholesky}
-\begin{bmatrix}
-\tildeB'\tildeB & \tildeB'\tildeK_{_{ V}} \\
-\tildeK_{_{ V}}'\tildeB & \tildeK_{_{ V}}'\tildeK_{_{ V}} + \lambda K_{_{ V}}\\
-\end{bmatrix}
-= \begin{bmatrix}
-C'_1 & 0 \\
-C'_2  & C'_3 
-\end{bmatrix}
-\begin{bmatrix}
-C_1 & C_2 \\
-0  & C_3 
-\end{bmatrix}
-\end{equation}
-\noindent
-where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_{_{ V}}$, and $C'_3 C_3 = \lambda K_{_{ V}} +  \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}}$. Using an exchange of indices known as pivoting, one may write 
-\begin{equation*}
-C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
-\end{equation*}
-\noindent
-where $H_1$ is nonsingular. Define
-\begin{equation} \label{eq:cholesky-factor-mod}
-\tilde{C}_3 = \begin{bmatrix}
-H_1 & H_2 \\
-0  & \delta I 
-\end{bmatrix}, \;\;
-\tilde{C} = \begin{bmatrix}
-C_1 & C_2 \\
-0  & \tilde{C}_3 
-\end{bmatrix};
-\end{equation}
-\end{frame}
-
-
-\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
-\footnotesize
-\begin{equation} \label{eq:normal-equation-cholesky}
-\begin{bmatrix}
-\tildeB'\tildeB & \tildeB'\tildeK_{_{ V}} \\
-\tildeK_{_{ V}}'\tildeB & \tildeK_{_{ V}}'\tildeK_{_{ V}} + \lambda K_{_{ V}}\\
-\end{bmatrix}
-= \begin{bmatrix}
-C'_1 & 0 \\
-C'_2  & C'_3 
-\end{bmatrix}
-\begin{bmatrix}
-C_1 & C_2 \\
-0  & C_3 
-\end{bmatrix}
-\end{equation}
-\noindent
-where $\tildeB'\tildeB = C'_1 C_1$, $C_2 = \left(C'_1\right)^{-1} \tildeB' \tildeK_{_{ V}}$, and $C'_3 C_3 = \lambda K_{_{ V}} +  \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}}$. Using an exchange of indices known as pivoting, one may write 
-\begin{equation*}
-C_3 = \begin{bmatrix} H_1 & H_2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} H \\  0 \end{bmatrix},
-\end{equation*}
-\noindent
-where $H_1$ is nonsingular. Define
-\begin{equation} \label{eq:cholesky-factor-mod}
-\tilde{C}_3 = \begin{bmatrix}
-H_1 & H_2 \\
-0  & \delta I 
-\end{bmatrix}, \;\;
-\tilde{C} = \begin{bmatrix}
-C_1 & C_2 \\
-0  & \tilde{C}_3 
-\end{bmatrix};
-\end{equation}
-\end{frame}
-
-\begin{frame}{\textit{Obtaining the solution}  $\phi_\lambda$}{When $\tildeK_{_{V}}$ is not full rank}
-\footnotesize
-
-Then
-\begin{equation} \label{eq:cholesky-factor-mod-inverse}
-\tilde{C}^{-1} = \begin{bmatrix}
-C_1^{-1} & -C_1^{-1} C_2 \tilde{C}_3^{-1} \\
-0  & \tilde{C}_3^{-1}
-\end{bmatrix}.
-\end{equation}
-
-Premultiplying \eqref{eq:normal-equation-cholesky} by $(\tilde{C}')^{-1}$, 
-\begin{equation*}% \label{eq:vectorized-normal-equations-cholesky}
-\begin{bmatrix}
-I & 0 \\
-0 & (\tilde{C}'_3)^{-1} C'_3 C_3 \tilde{C}_3^{-1}\\
-\end{bmatrix}
-\begin{bmatrix}
-\tilde{d}\\
-\tilde{c}\\
-\end{bmatrix}
-= \begin{bmatrix}
-(C'_1)^{-1} \tildeB'\tildeY \\
-(\tilde{C}'_3)^{-1} \tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY\\
-\end{bmatrix}
-\end{equation*}
-%where $\left( \tilde{d}'\;\;\tilde{c}' \right)' =  \tilde{C}' \left( d\;\;c \right)'$. Partition $\tilde{C}_3 = \begin{bmatrix} F &  L\end{bmatrix}$; then $HF = I$ and $HL = 0$, 
-%\begin{align*}
-%(\tilde{C}'_3)^{-1} C'_3 C_3 \tilde{C}_3^{-1} &= \begin{bmatrix} F' \\ L' \end{bmatrix} C'_3C_3 \begin{bmatrix} F &  L\end{bmatrix} \\
-%&= \begin{bmatrix} F' \\ L' \end{bmatrix} H'H \begin{bmatrix} F &  L\end{bmatrix} \\
-%&= \begin{bmatrix} I & 0 \\ 0 & 0 \end{bmatrix}.
-%\end{align*}
-%If $L'C'_3 C_3 L = 0$, then $L'\tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right)\tildeK_{_{ V}} L = 0$, so $L'\tildeK_{_{ V}}'\left( I - \tildeB\left( \tildeB' \tildeB \right)^{-1} \tildeB' \right) \tildeY = 0$.
-\end{frame}
-
-\begin{frame}{\textit{Minimizing $U$, $V_{loso}$ with Multiple Smoothing Parameters}}{}
-
-\end{frame}
-
-
-\begin{frame}{\textit{A RKHS Framework for $\log \sigma^2$}}
-\begin{align}  \label{eq:penalized-likelihood-functional}
-%\begin{split}
-L\left( \eta \right) &= \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right)  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij} e^{-\eta\left(t_{ij}\right)} 
-%\end{split}
-\end{align}
-\noindent
-is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times \mathcal{N}_0$ matrix $B$ which has $\left(i,j\right)$ element $\nu_j\left(t_i\right)$ is full column rank, so that $L\left(\eta \right)$ is strictly convex in $\hilbert$ and the minimizer of \eqref{eq:penalized-joint-loglik-given-phi} uniquely exists.  
-
-Letting $\tilde{u}_{ij} = -z_{ij}e^{-\tilde{\eta}_{ij}}$, the Newton iteration uses the minimizer of the penalized weighted sums of squares
-\begin{equation} \label{eq:penalized-weighted-sums-of-squares}
-\sum_{i=1}^N\sum_{j=1}^{p_i} \left(\tilde{z}_{ij} - \eta\left(t_{ij}\right)  \right)^2 + \lambda J\left(\eta\right)
-\end{equation}
-\noindent
-to update $\tilde{\eta}$, where $\tilde{z}_{ij} = \tilde{\eta}\left(t_{ij}\right) - \tilde{u}_{ij}$.
-
-
-\end{frame}
-
-
-\begin{frame}[c]{Columns}{Sometimes it's useful to split the screen}
-	Test why is it gray?
-	
-	\begin{columns}[t]
-	\begin{column}[T]{5cm}
-		Here's a column where I can write a bunch of things. \\
-		\comment{There are all sorts of things I can do in paragraph form.}
-		
-		\vspace{1em}
-		\begin{block}{Blocks}
-			...work in here too.
-		\end{block}
-	\end{column}
-	\begin{column}[T]{5cm}
-		\begin{itemize}
-			\item Here's a column
-			\item where I can itemize
-			\item a bunch of things.
-		\end{itemize}
-	\end{column}
-	\end{columns}
-	
-\end{frame}
-
-
-\begin{frame}[c]{More Feynman diagrams}{'t Hooft operator}
-	
-	% \usebeamercolor[fg]{alerted text}
-	\begin{center}
-		\begin{tikzpicture}[line width=1.5 pt, scale=2.5]
-			\draw[fermionbar] (0:.75) -- (25:.29);
-			\draw[fermionnoarrow] (0:.75) -- (-25:.29);
-			\draw[scalar] (0:.75) -- (0:1.25);
-			\begin{scope}[shift={(1.25,0)}]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\draw[fermionbar] (60:.75) -- (85:.29);
-			\draw[fermionnoarrow] (60:.75) -- (35:.29);
-			\draw[scalar] (60:.75) -- (60:1.25);
-			\begin{scope}[shift={(60:1.25)}, rotate=60]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\draw[fermionbar] (120:.75) -- (145:.29);
-			\draw[fermionnoarrow] (120:.75) -- (95:.29);
-			\draw[scalar] (120:.75) -- (120:1.25);
-			\begin{scope}[shift={(120:1.25)}, rotate=120]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\draw[fermionbar] (300:.75) -- (325:.29);
-			\draw[fermionnoarrow] (300:.75) -- (275:.29);
-			\draw[scalar] (300:.75) -- (300:1.25);
-			\begin{scope}[shift={(300:1.25)}, rotate=300]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\draw (0,0) circle (.3cm);
-			% \draw[fill] (325:1) circle (.01);
-			% \draw[fill] (330:1) circle (.01);
-			% \draw[fill] (335:1) circle (.01);
-			% \draw[fill] (340:1) circle (.01);
-			% \draw[fill] (80:1) circle (.01);
-			% \draw[fill] (85:1) circle (.01);
-			% \draw[fill] (90:1) circle (.01);
-			% \draw[fill] (95:1) circle (.01);
-			% \draw[fill] (100:1) circle (.01);
-			% \draw[fill] (0,0) circle (.3cm);
-			% \draw[fill=white] (0,0) circle (.29cm);
-			\begin{scope}
-		    	\clip (0,0) circle (.3cm);
-		    	\foreach \x in {-.9,-.8,...,.3}
-					\draw[line width=1 pt] (\x,-.3) -- (\x+.6,.3);
-		  	\end{scope}
-			% \node at (0,0) {I};
-			\node at (278:.6) {$\lambda$};
-			\node at (323:.6) {$Q$};
-			\node at (98:.6) {$\lambda$};
-			\node at (143:.6) {$\overline Q$};
-			\node at (290:1) {$\tilde Q$};
-			\node at (130:1) {$\tilde Q$};
-			\node at (300:1.5) {$v$};
-			\node at (120:1.5) {$v$};
-			\node at (60:1.5) {$v$};
-			\node at (0:1.5) {$v$};
-			\draw[fermionnoarrow] (180:.75) -- (180:.29);
-			\draw[fermionnoarrow] (240:.75) -- (240:.29);
-			\draw[fermion] (160:1) -- (180:.75);
-			\draw[scalar] (180:.75) -- (200:1);
-			\begin{scope}[shift={(200:1)}, rotate=60]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\draw[fermion] (260:1) -- (240:.75);
-			\draw[scalar] (240:.75) -- (220:1);
-			\begin{scope}[shift={(220:1)}]
-				\draw (125:.1) -- (-55:.1);
-				\draw (55:.1) -- (-125:.1);			
-			\end{scope}
-			\node at (200:1.25) {$v$};
-			\node at (220:1.25) {$v$};
-			\node at (265:1.2) {$Q$};
-			\node at (155:1.2) {$\overline Q$};
-		 \end{tikzpicture}
-	\end{center}
-	\usebeamercolor[fg]{normal text} 
-	% Don't forget to include this when you're done futzing with colors
-\end{frame}
-
-
-
-\begin{frame}[c]{Drawing arrows onto a plot}
-
-	\begin{tikzpicture}%[show background grid] %% Use grid for positioning, then turn off
-		% \node[right] at (.5,8) {\comment{\ECFAugie(Left of this ruled out)}};
-		\node[right]  at (0,1) {\includegraphics[width=4.5cm]{img/cattle/cattleA-innovariogram-with-cubic-smooth}};
-		\node[right] (red) at (7.5,5.5) {\footnotesize\textcolor{red}{Well tempered neutralino}};
-		\node[right] (cya) at (7.5,4.5) {\footnotesize\textcolor{cyan}{$h^0$ resonance}};
-		\node[right] (blu) at (7.5,3.5) {\footnotesize\textcolor{blue}{slepton co-annihilations}};
-		\node[right] (gre) at (7.5,2.5) {\footnotesize\textcolor{green}{$A^0$ resonance}};
-		\node[right] (mag) at (7.5,1.5) {\footnotesize\textcolor{magenta}{stop co-annihilations}};
-%		\node[left] at (10,0) {ten_zero};
-%		\node[left] at (10,8) {ten_eight};
-		\node (cyadot) at (4,3.5) {};
-		\node (bludot) at (3.5,2.5) {};
-		\node (gredot) at (6,2.5) {};
-		\node (magdot) at (3,1.3) {};
-		\path[->, color=cyan, line width=1.5] (cya) edge [out = 170, in = 45] (cyadot);
-		\path[->, color=blue, line width=1.5] (blu) edge [out = 180, in = 45] (bludot);
-		\path[->, color=FlipGreen, line width=1.5] (gre) edge [out = 170, in = 45] (gredot);
-		\path[->, color=magenta, line width=1.5] (mag) edge [out = 185, in = 15] (magdot);
-	\end{tikzpicture}
-\end{frame}
-
-
 %
-%\begin{frame}[c]{Parameter space scan}
-%	% This is a template for Flip's Beamer theme. Features:
-%	
-%	\begin{center}
-%	\begin{tikzpicture}%[show background grid] %% Use grid for positioning, then turn off
-%		\node at (5,6) {\large \textbf{Direct Detection}};
-%		\node [inner sep=0pt,above right] 
-%			{\includegraphics[width=9cm]{\scan}};
-%		\node[rotate=90] at (.25,3.5) {\footnotesize $\sigma$ [cm$^2$]};
-%		\node at (5,.25) {\footnotesize$m_\chi$ [GeV]};
-%		\node[right] at (8.8,4.2) {\footnotesize XENON};
-%		\normalsize
-%		\node[rotate = 15, fill=blue, rounded corners] at (4,3) {
-%		\footnotesize
-%		\textcolor{white}{$500<f<700$ GeV}
-%		};
-%		\node[rotate = 15, fill=magenta, rounded corners] at (5.5,2.7) {
-%		\footnotesize
-%		\textcolor{white}{$700<f<800$ GeV}
-%		};
-%		\node[rotate = 15, fill=green, rounded corners] at (6.5,2.3) {
-%		\footnotesize
-%		\textcolor{white}{$800<f<900$ GeV}
-%		};
-%		\node[rotate = 0, fill=lager, rounded corners] at (9,1.7) {
-%		\footnotesize
-%		\textcolor{white}{$900<f<1000$ GeV}
-%		};
-%		\node[right]  at (4,5) {\comment{Ruled out}};
-%	\end{tikzpicture}
-%	\end{center}
-%	\normalsize 
-%		
+%\begin{frame}{\textit{A RKHS Framework for $\log \sigma^2$}}
+%\begin{align}  \label{eq:penalized-likelihood-functional}
+%%\begin{split}
+%L\left( \eta \right) &= \sum_{i = 1}^N \sum_{j = 1}^{p_i} \eta\left(t_{ij}\right)  + \sum_{i = 1}^N \sum_{j = 1}^{p_i} z_{ij} e^{-\eta\left(t_{ij}\right)} 
+%%\end{split}
+%\end{align}
+%\noindent
+%is continuous and convex in $\eta \in \hilbert$. We assume that the $\vert V \vert \times \mathcal{N}_0$ matrix $B$ which has $\left(i,j\right)$ element $\nu_j\left(t_i\right)$ is full column rank, so that $L\left(\eta \right)$ is strictly convex in $\hilbert$ and the minimizer of \eqref{eq:penalized-joint-loglik-given-phi} uniquely exists.  
 %
-%	% \footnotesize\textcolor{Comment}{1104.3572}
+%Letting $\tilde{u}_{ij} = -z_{ij}e^{-\tilde{\eta}_{ij}}$, the Newton iteration uses the minimizer of the penalized weighted sums of squares
+%\begin{equation} \label{eq:penalized-weighted-sums-of-squares}
+%\sum_{i=1}^N\sum_{j=1}^{p_i} \left(\tilde{z}_{ij} - \eta\left(t_{ij}\right)  \right)^2 + \lambda J\left(\eta\right)
+%\end{equation}
+%\noindent
+%to update $\tilde{\eta}$, where $\tilde{z}_{ij} = \tilde{\eta}\left(t_{ij}\right) - \tilde{u}_{ij}$.
 %\end{frame}
-
-
-% {
-% \setbeamercolor{background canvas}{bg=black}
-% \setbeamercolor{normal text}{bg=red!12}
-% \beamertemplateshadingbackground{yellow!50}{magenta!50}
-% \begin{frame}{Test}
-% 	% \setbeamertemplate{background canvas}[vertical shading][bottom=red!20,top=yellow!30]
-% 	
-% 	
-% 	\textcolor{white}\Large Test
-% \end{frame}
-% }
-
-
-
-\begin{frame}[c]{Miscellaneous}
-	\begin{itemize}
-		\item Use \texttt{\textbackslash only<2>} to only show something for one overlay
-		\item Can also use \texttt{<2->}
-		\item For example, can \only<2->{\textcolor{ALERT}{highlight}} highlight a word
-		\item If you use \texttt{\textbackslash uncover<3->} you get a \uncover<3->{\textcolor{Alert}{space}} ... see?
-		\item Protip: use \texttt{\textbackslash textbackslash} to get a backslash
-	\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}[c]{Problems and Kludges}{Things to work on}
-	\begin{itemize}
-		\item There seems to be a bug in Beamer where the footnote color (defined using \texttt{setbeamercolor\{footnote\}} and \texttt{setbeamercolor\{footnote mark\}}) contaminates the normal text color. For now I suggest not using footnotes. \comment{They're of questionable use in a talk, anyway.}
-		\item Even though comment text is footnote-sized, it still has normal text line spacing. The \texttt{setspace} environment can fix this, but it forces a newline and it seems to make footnotes disappear. 
-		\item Make color theme more uniform and based on palette colors.
-		% \item It seems like \texttt{setbeamertemplate} can only be used once, subsequent calls are ignored. This means that you can't use a custom background on a single slide. This seems to be due to \textit{XeLaTeX}. % http://tex.stackexchange.com/questions/29497/xelatex-preventing-beamer-from-using-different-backgrounds
-	\end{itemize}
-\end{frame}
-
-
-%% Not quite fixed 
-\setbeamertemplate{background canvas}[vertical shading][bottom=keynotebottom, middle=keynotemiddle, top=keynotetop]
-\begin{frame}[c]{Problems and Kludges}{XeLaTeX, LuaLaTeX}
-	 
-	XeLaTeX doesn't allow one to use \texttt{setbeamertemplate[background canvas]} multiple times (e.g. to have one slide with a different background). A fix is to include \texttt{\textbackslash def \textbackslash pgfsysdriver\{pgfsys-dvipdfmx.def\} } before the \texttt{documentclass}, but this ends up breaking the arrows pointing to nodes.
-	
-	In principle, LuaLaTeX can solve this, but that also requires some work since it only looks at Open Type Fonts (e.g. Gill Sans is not available by default).
-	
-	\comment{\url{http://tex.stackexchange.com/questions/29497/xelatex-preventing-beamer-from-using-different-backgrounds}}
-\end{frame}
-
-
-
-\begin{frame}[t]{Acknowledgements}
-	I have borrowed heavily (and learned much) from Marco Barisione's \alert{Torino theme}, which can be found one his blog. I have also learned and borrowed from Shawn Lankton's Keynote theme. 
-	
-	\vspace{1em}
-	These can be found at
-	\begin{itemize}
-		\item \url{http://blog.barisione.org}
-		\item \footnotesize{\url{http://www.shawnlankton.com/2008/02/beamer-and-latex-with-keynote-theme/}}
-	\end{itemize}
-	
-	\vspace{1em}
-	I've tried to maintain lots of comments in the \texttt{.tex} and \texttt{.sty} files to help other template-designers. At the moment it's all a jumbled mess, though!
-\end{frame}
-
-
-
-\addtocounter{framenumber}{-1}
-\begin{frame}[c]{Extra page: Additional hints}{Look, it doesn't add to the total page count!}
-	\begin{itemize}
-		\item Be sure to turn off any auto-notifiers (e.g.\ GMail)
-		\item Consider using a PDF-to-keynote program; \url{http://www.cs.hmc.edu/~oneill/freesoftware/pdftokeynote.html}.
-		\item Don't ever go over time.
-		\item TikZ transparency trick: \url{http://www.texample.net/tikz/examples/transparent-png-overlay/}
-		\item Use \alert{\texttt{addtocounter\{framenumber\}\{-1\}}} for extra slides (like this one) to prevent it from screwing up the page numbering.
-	\end{itemize}
-\end{frame}
-
